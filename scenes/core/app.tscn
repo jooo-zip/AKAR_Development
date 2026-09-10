@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[node name="App" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.055, 0.09, 0.085, 1)
+
+[node name="ScreenHost" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FoundationView" type="MarginContainer" parent="ScreenHost"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="ScreenHost/FoundationView"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="ScreenHost/FoundationView/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
+theme_override_font_sizes/font_size = 56
+text = "AKAR"
+horizontal_alignment = 1
+
+[node name="Status" type="Label" parent="ScreenHost/FoundationView/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.92, 0.9, 1)
+theme_override_font_sizes/font_size = 24
+text = "Interactive Historical Walkthrough
+Development Foundation"
+horizontal_alignment = 1
+autowrap_mode = 3
