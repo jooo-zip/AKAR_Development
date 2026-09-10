@@ -57,6 +57,58 @@ Do not introduce:
 - Use clear placeholders when validated content has not yet been supplied.
 - Keep historical content separate from application logic.
 
+## Capstone Research Alignment
+
+AKAR is an undergraduate Information Technology capstone project.
+Development decisions must remain consistent with the approved research
+manuscript, stakeholder requirements, and panel recommendations.
+
+Current project title:
+
+AKAR: A Web-Based Interactive Historical Walkthrough for Learning the
+History and Cultural Heritage of Lingayen, Pangasinan.
+
+The system must remain aligned with these research objectives:
+
+1. Identify the needs for an interactive historical walkthrough system
+   that promotes historical awareness of Lingayen, Pangasinan.
+
+2. Design and develop a web-based interactive historical walkthrough
+   system that integrates multimedia resources for learning the history
+   of Lingayen, Pangasinan.
+
+3. Evaluate the acceptability of the developed interactive historical
+   walkthrough system among museum visitors.
+
+Before adding or substantially changing a feature:
+
+- Check whether it is supported by the project objectives and scope.
+- Do not introduce functionality that changes the system into a game.
+- Do not implement features that contradict the current research design.
+- Flag features that would require revisions to Chapters 1–3.
+- Preserve museum and panel requirements.
+- Historical information must come from researcher-supplied and
+  validated sources.
+- Multimedia content should support historical learning rather than
+  entertainment-only interactions.
+- The walkthrough should remain suitable for museum visitors with
+  limited available time.
+- Do not claim that a feature improves learning effectiveness unless
+  supported by the study's evaluation design.
+
+The system evaluation focuses on acceptability. Software-quality
+evaluation uses selected ISO/IEC 25010 characteristics, while educational
+value is evaluated separately using appropriate educational criteria.
+
+The current administrator scope is analytics-oriented only. Do not
+implement a historical-content CMS unless explicitly approved.
+Visitor analytics must remain anonymous and must not collect personally
+identifiable information.
+
+If a requested development change conflicts with the manuscript,
+requirements, or validated specifications, report the conflict before
+implementing it.
+
 ## Architecture
 
 - Use reusable components.
