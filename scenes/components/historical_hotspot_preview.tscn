@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/components/historical_hotspot.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/components/historical_hotspot_content.gd" id="2"]
+
+[sub_resource type="Resource" id="PreviewContent"]
+script = ExtResource("2")
+title = "Test placeholder: information hotspot"
+body = "Test text only. No historical information is supplied.\n\nUse this standalone scene to inspect the reusable information component. Optional media can be assigned in the Inspector."
+transcript = "Test transcript placeholder. No narration is supplied."
+source_credit = "Test credit placeholder. Replace only with researcher-validated content."
+
+[node name="HistoricalHotspotPreview" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Instructions" type="Label" parent="."]
+offset_left = 48.0
+offset_top = 48.0
+offset_right = 1200.0
+offset_bottom = 160.0
+theme_override_font_sizes/font_size = 24
+text = "Component test preview — no historical content\nTab to the trigger; press E, Enter or Space. Close with Escape or Backspace.\nInside the popup, Tab to the scroll area and use arrow keys to read long content."
+autowrap_mode = 3
+
+[node name="HistoricalHotspot" parent="." instance=ExtResource("1")]
+offset_left = 48.0
+offset_top = 200.0
+offset_right = 328.0
+offset_bottom = 248.0
+content = SubResource("PreviewContent")
