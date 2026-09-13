@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="HistoricalHotspotContent" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/components/historical_hotspot_content.gd" id="1_content"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_exterior_photo.jpeg" id="2_photo"]
+
+[resource]
+script = ExtResource("1_content")
+title = "Urduja House"
+body = "Urduja House stands within the provincial government complex in
+Lingayen. Constructed in 1953 and originally known as Princess Urduja
+Palace, it has served for more than seven decades as the official residence
+of the Governor of Pangasinan.
+
+Today, it remains an active government landmark connected with
+provincial leadership, public service, and Pangasinan’s cultural identity."
+image = ExtResource("2_photo")
+transcript = "Urduja House is the official residence of the Governor of Pangasinan.
+Constructed in 1953 and originally known as Princess Urduja Palace, the
+residence has remained an important symbol of provincial leadership for
+more than seven decades."
