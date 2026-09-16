@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/components/historical_video_interaction.tscn" id="1_video"]
+[ext_resource type="Resource" path="res://data/landmarks/urduja_house/uh_ent_01.tres" id="2_content"]
+
+[node name="UH_ENT_01" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.055, 0.09, 0.085, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 32
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Header" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "The Story of Urduja House"
+horizontal_alignment = 1
+
+[node name="DevelopmentNote" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "DEVELOPMENT-ONLY · UH-ENT-01 standalone video interaction\nTranscript is a development placeholder. Watching remains optional."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="OpenVideo" type="Button" parent="Margin/Layout"]
+custom_minimum_size = Vector2(520, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "Watch: The Story of Urduja House"
+
+[node name="Status" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Development status: Ready. No lobby integration."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HistoricalVideoInteraction" parent="." instance=ExtResource("1_video")]
+content = ExtResource("2_content")
+
+[connection signal="ready" from="Margin/Layout/OpenVideo" to="Margin/Layout/OpenVideo" method="grab_focus"]
+[connection signal="pressed" from="Margin/Layout/OpenVideo" to="HistoricalVideoInteraction" method="open_interaction"]
+[connection signal="opened" from="HistoricalVideoInteraction" to="Margin/Layout/Status" method="set_text" binds=["Development status: Video interaction opened."]]
+[connection signal="closed" from="HistoricalVideoInteraction" to="Margin/Layout/Status" method="set_text" binds=["Development status: Interaction closed."]]
+[connection signal="skip_requested" from="HistoricalVideoInteraction" to="Margin/Layout/Status" method="set_text" binds=["DEVELOPMENT-ONLY: Skip requested — lobby integration will occur in the master scene."]]

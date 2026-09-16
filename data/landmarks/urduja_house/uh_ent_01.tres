@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="HistoricalVideoContent" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/components/historical_video_content.gd" id="1_content"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/urduja_house/video/uh_ent_01_story_of_urduja_house.ogv" id="2_video"]
+
+[resource]
+script = ExtResource("1_content")
+title = "The Story of Urduja House"
+video = ExtResource("2_video")
+transcript_is_development = true
+transcript = "DEVELOPMENT TRANSCRIPT PLACEHOLDER
+
+The final researcher-approved transcript for \"The Story of Urduja House\"
+will replace this development text before deployment.
+
+[00:00–00:15]
+[Insert approved opening narration]
+
+[00:15–00:30]
+[Insert approved historical narration]
+
+[00:30–00:45]
+[Insert approved historical narration]
+
+[00:45–01:00]
+[Insert approved historical narration]
+
+[01:00–01:15]
+[Insert approved narration if applicable]
+
+[01:15–01:30]
+[Insert approved closing narration if applicable]"
