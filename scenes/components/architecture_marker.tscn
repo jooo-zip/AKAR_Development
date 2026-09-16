@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.88, 0.5, 1)
+
+[node name="ArchitectureMarker" type="Button"]
+custom_minimum_size = Vector2(180, 56)
+texture_filter = 1
+focus_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_constants/icon_max_width = 48
+theme_override_styles/focus = SubResource("Focus")
+expand_icon = true

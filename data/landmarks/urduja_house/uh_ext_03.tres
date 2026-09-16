@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="HistoricalHotspotContent" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/components/historical_hotspot_content.gd" id="1_content"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_exterior_photo.jpeg" id="2_photo"]
+
+[resource]
+script = ExtResource("1_content")
+title = "Balinese-Inspired Architecture"
+body = "Urduja House is recognized for its Balinese-inspired architectural design.
+Its overall exterior character combines traditional design influence with
+the practical function of an official government residence.
+
+Observe the roofline, façade, entrance, and relationship of the building
+to its landscaped surroundings."
+image = ExtResource("2_photo")
+transcript = "Urduja House is known for its Balinese-inspired architectural character.
+Its exterior combines a distinctive traditional influence with the practical
+requirements of an official government residence."
