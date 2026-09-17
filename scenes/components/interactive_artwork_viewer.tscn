@@ -1,0 +1,334 @@
+[gd_scene format=3 uid="uid://2cad4cjimtji"]
+
+[ext_resource type="Script" uid="uid://boxikrqcibjb7" path="res://scripts/components/interactive_artwork_viewer.gd" id="1_script"]
+
+[ext_resource type="Texture2D" path="res://assets/ui/icons/speaker.svg" id="2_speaker"]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+
+[sub_resource type="Theme" id="ArtworkTheme"]
+default_font_size = 20
+Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
+Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Pressed")
+PanelContainer/styles/panel = SubResource("Panel")
+
+[node name="InteractiveArtworkViewer" type="Control" unique_id=2080080882]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("ArtworkTheme")
+script = ExtResource("1_script")
+
+[node name="Main" type="PanelContainer" parent="." unique_id=166127481]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Main" unique_id=391717361]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Main/Margin" unique_id=300680163]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Main/Margin/Layout" unique_id=1939925489]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
+theme_override_font_sizes/font_size = 28
+clip_text = true
+
+[node name="Columns" type="HBoxContainer" parent="Main/Margin/Layout" unique_id=325133911]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="Artwork" type="VBoxContainer" parent="Main/Margin/Layout/Columns" unique_id=1119016780]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.42
+theme_override_constants/separation = 12
+
+[node name="ImageArea" type="Control" parent="Main/Margin/Layout/Columns/Artwork" unique_id=933287170]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Image" type="TextureRect" parent="Main/Margin/Layout/Columns/Artwork/ImageArea" unique_id=1759125170]
+texture_filter = 2
+layout_mode = 0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AudioRow" type="HBoxContainer" parent="Main/Margin/Layout/Columns/Artwork"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SpeakerButton" type="Button" parent="Main/Margin/Layout/Columns/Artwork/AudioRow"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Play narration"
+accessibility_name = "Play narration"
+theme_override_colors/icon_pressed_color = Color(0.06, 0.09, 0.07, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+toggle_mode = true
+icon = ExtResource("2_speaker")
+
+[node name="PendingStatus" type="Label" parent="Main/Margin/Layout/Columns/Artwork/AudioRow"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "DEVELOPMENT ONLY: Approved narration audio has not yet been assigned."
+autowrap_mode = 3
+
+[node name="Views" type="HBoxContainer" parent="Main/Margin/Layout/Columns/Artwork" unique_id=394593674]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FullArtwork" type="Button" parent="Main/Margin/Layout/Columns/Artwork/Views" unique_id=408508634]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Full Artwork"
+
+[node name="DetailView" type="Button" parent="Main/Margin/Layout/Columns/Artwork/Views" unique_id=501200213]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Inspect Artwork"
+
+[node name="Education" type="VBoxContainer" parent="Main/Margin/Layout/Columns" unique_id=856792499]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.58
+theme_override_constants/separation = 4
+
+[node name="SectionTitle" type="Label" parent="Main/Margin/Layout/Columns/Education" unique_id=1379726290]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+clip_text = true
+
+[node name="Scroll" type="ScrollContainer" parent="Main/Margin/Layout/Columns/Education" unique_id=1442457927]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Body" type="Label" parent="Main/Margin/Layout/Columns/Education/Scroll" unique_id=1954177432]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="Sections" type="VBoxContainer" parent="Main/Margin/Layout/Columns/Education" unique_id=1275860126]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Actions" type="HBoxContainer" parent="Main/Margin/Layout/Columns/Education" unique_id=1499268227]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Sources" type="Button" parent="Main/Margin/Layout/Columns/Education/Actions" unique_id=1356981158]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sources / Artwork Credit"
+
+[node name="Close" type="Button" parent="Main/Margin/Layout/Columns/Education/Actions" unique_id=1014232634]
+custom_minimum_size = Vector2(96, 48)
+layout_mode = 2
+text = "Close"
+
+[node name="Detail" type="PanelContainer" parent="." unique_id=1346236233]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Detail" unique_id=1944588083]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Detail/Margin" unique_id=1836913584]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Detail/Margin/Layout" unique_id=1621616200]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Inspect Artwork"
+
+[node name="Columns" type="HBoxContainer" parent="Detail/Margin/Layout" unique_id=710185020]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="ImageArea" type="Control" parent="Detail/Margin/Layout/Columns" unique_id=788280021]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Image" type="TextureRect" parent="Detail/Margin/Layout/Columns/ImageArea" unique_id=259889989]
+texture_filter = 2
+layout_mode = 0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Inspection" type="VBoxContainer" parent="Detail/Margin/Layout/Columns" unique_id=638247441]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Regions" type="GridContainer" parent="Detail/Margin/Layout/Columns/Inspection" unique_id=583443490]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="Viewing" type="Label" parent="Detail/Margin/Layout/Columns/Inspection" unique_id=2125725402]
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="SectionTitle" type="Label" parent="Detail/Margin/Layout/Columns/Inspection" unique_id=319906267]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+clip_text = true
+
+[node name="Scroll" type="ScrollContainer" parent="Detail/Margin/Layout/Columns/Inspection" unique_id=650460457]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Body" type="Label" parent="Detail/Margin/Layout/Columns/Inspection/Scroll" unique_id=1539052319]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="Actions" type="HBoxContainer" parent="Detail/Margin/Layout" unique_id=253627078]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="Sources" type="Button" parent="Detail/Margin/Layout/Actions" unique_id=1456389292]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Sources / Artwork Credit"
+
+[node name="CloseDetail" type="Button" parent="Detail/Margin/Layout/Actions" unique_id=99013806]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+text = "Back to Full Artwork"
+
+[node name="Sources" type="PanelContainer" parent="." unique_id=441360514]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Sources" unique_id=1867723722]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Layout" type="VBoxContainer" parent="Sources/Margin" unique_id=1981941263]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Sources/Margin/Layout" unique_id=299080570]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Sources / Artwork Credit"
+
+[node name="Scroll" type="ScrollContainer" parent="Sources/Margin/Layout" unique_id=1621516863]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Text" type="Label" parent="Sources/Margin/Layout/Scroll" unique_id=666266819]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="CloseSources" type="Button" parent="Sources/Margin/Layout" unique_id=1990241505]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Close Sources"
+
+[node name="NarrationPlayer" type="AudioStreamPlayer" parent="." unique_id=1067910543]
