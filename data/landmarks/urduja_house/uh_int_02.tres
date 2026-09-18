@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="InteractiveTimelineContent" format=3 uid="uid://clwerucun048h"]
+
+[ext_resource type="Script" uid="uid://cj8caa3d3f8o3" path="res://scripts/components/interactive_timeline_content.gd" id="1_content"]
+[ext_resource type="Script" uid="uid://cq6jbfhec5jci" path="res://scripts/components/interactive_timeline_entry.gd" id="2_entry"]
+[ext_resource type="Texture2D" uid="uid://cnvphu1h27hk4" path="res://assets/landmarks/urduja_house/interior/uh_int_02_historical.jpg" id="3_historical"]
+[ext_resource type="Texture2D" uid="uid://8dspx4cj3km2" path="res://assets/landmarks/urduja_house/interior/uh_int_02_present.JPG" id="4_present"]
+[ext_resource type="AudioStream" uid="uid://cdpw07mxqjjou" path="res://assets/landmarks/urduja_house/audio/uh_int_02_narration.ogg" id="5_audio"]
+[ext_resource type="Texture2D" uid="uid://b6gxgd6685xjd" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_pixel_art.png" id="6_illustration"]
+
+[sub_resource type="Resource" id="Establishment"]
+script = ExtResource("2_entry")
+date_label = "1953"
+event_title = "Establishment"
+body = "Construction of the official governor’s residence began, and the building was
+originally named Princess Urduja Palace."
+image = ExtResource("6_illustration")
+pixel_art = true
+image_alt_text = "Illustrative pixel-art view of Urduja House."
+source_credit = "The displayed pixel-art image is an illustrative project visual. No verified historical photograph is assigned to this milestone."
+
+[sub_resource type="Resource" id="Residence"]
+script = ExtResource("2_entry")
+date_label = "1953–2007"
+event_title = "Residence and Office"
+body = "Urduja House served as both the Governor’s Residence and the Governor’s Office."
+image = ExtResource("3_historical")
+image_alt_text = "Historical photograph of Urduja House."
+
+[sub_resource type="Resource" id="Transfer"]
+script = ExtResource("2_entry")
+date_label = "2007"
+event_title = "Transfer of the Daily Office"
+body = "During the administration of Governor Amado T. Espino Jr., the Governor’s
+daily office was transferred to the Pangasinan Provincial Capitol."
+image = ExtResource("3_historical")
+image_alt_text = "Historical photograph of Urduja House."
+
+[sub_resource type="Resource" id="Present"]
+script = ExtResource("2_entry")
+date_label = "Present"
+event_title = "Continuing Official Role"
+body = "Urduja House remains the official residence of the Governor of Pangasinan.
+Its Ceremonial Hall continues to serve as a venue for selected official
+functions."
+image = ExtResource("4_present")
+image_alt_text = "Present-day photograph of Urduja House."
+
+[resource]
+script = ExtResource("1_content")
+title = "Urduja House Through Time"
+prompt = "Explore the timeline"
+entries = Array[ExtResource("2_entry")]([SubResource("Establishment"), SubResource("Residence"), SubResource("Transfer"), SubResource("Present")])
+narration_stream = ExtResource("5_audio")

@@ -1,0 +1,283 @@
+[gd_scene format=3 uid="uid://cmxx5uvp5qnto"]
+
+[ext_resource type="Script" uid="uid://dniqc6dx021a" path="res://scripts/components/interactive_timeline.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bi6w4cfu7eyhv" path="res://assets/ui/icons/speaker.svg" id="2_speaker"]
+[ext_resource type="Texture2D" uid="uid://becc65lglsn38" path="res://assets/ui/icons/timeline_clock.png" id="3_clock"]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+
+[sub_resource type="Theme" id="TimelineTheme"]
+default_font_size = 20
+Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
+Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Pressed")
+PanelContainer/styles/panel = SubResource("Panel")
+
+[sub_resource type="StyleBoxFlat" id="ContentPanel"]
+bg_color = Color(0.08, 0.13, 0.115, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.36, 0.29, 1)
+
+[sub_resource type="AtlasTexture" id="ClockIcon"]
+atlas = ExtResource("3_clock")
+region = Rect2(190, 190, 870, 870)
+
+[node name="InteractiveTimeline" type="Control" unique_id=522046118]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("TimelineTheme")
+script = ExtResource("1_script")
+
+[node name="Main" type="PanelContainer" parent="." unique_id=1630515782]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Main" unique_id=1290435110]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Main/Margin" unique_id=728383712]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Main/Margin/Layout" unique_id=392630041]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Main/Margin/Layout/Header" unique_id=1395288820]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
+theme_override_font_sizes/font_size = 28
+clip_text = true
+
+[node name="Close" type="Button" parent="Main/Margin/Layout/Header" unique_id=1157298237]
+custom_minimum_size = Vector2(96, 48)
+layout_mode = 2
+text = "Close"
+
+[node name="Columns" type="HBoxContainer" parent="Main/Margin/Layout" unique_id=1921675665]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="Media" type="PanelContainer" parent="Main/Margin/Layout/Columns" unique_id=498671632]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.48
+
+[node name="Image" type="TextureRect" parent="Main/Margin/Layout/Columns/Media" unique_id=368501980]
+texture_filter = 2
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NoImage" type="Label" parent="Main/Margin/Layout/Columns/Media" unique_id=318503371]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ContentFrame" type="PanelContainer" parent="Main/Margin/Layout/Columns" unique_id=1127676127]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.52
+theme_override_styles/panel = SubResource("ContentPanel")
+
+[node name="Margin" type="MarginContainer" parent="Main/Margin/Layout/Columns/ContentFrame" unique_id=660553374]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="Main/Margin/Layout/Columns/ContentFrame/Margin" unique_id=1142608382]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Meta" type="HBoxContainer" parent="Main/Margin/Layout/Columns/ContentFrame/Margin/Content" unique_id=1712621525]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Date" type="Label" parent="Main/Margin/Layout/Columns/ContentFrame/Margin/Content/Meta" unique_id=777593386]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Sources" type="Button" parent="Main/Margin/Layout/Columns/ContentFrame/Margin/Content/Meta" unique_id=663700415]
+custom_minimum_size = Vector2(120, 48)
+layout_mode = 2
+text = "Sources"
+
+[node name="Heading" type="Label" parent="Main/Margin/Layout/Columns/ContentFrame/Margin/Content" unique_id=2016700551]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+autowrap_mode = 3
+
+[node name="Scroll" type="ScrollContainer" parent="Main/Margin/Layout/Columns/ContentFrame/Margin/Content" unique_id=921085931]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Body" type="Label" parent="Main/Margin/Layout/Columns/ContentFrame/Margin/Content/Scroll" unique_id=630861002]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="TimelineArea" type="VBoxContainer" parent="Main/Margin/Layout" unique_id=1289973827]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="AudioMargin" type="MarginContainer" parent="Main/Margin/Layout/TimelineArea" unique_id=1214002528]
+layout_mode = 2
+theme_override_constants/margin_left = 52
+
+[node name="AudioRow" type="HBoxContainer" parent="Main/Margin/Layout/TimelineArea/AudioMargin" unique_id=1060061429]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Speaker" type="Button" parent="Main/Margin/Layout/TimelineArea/AudioMargin/AudioRow" unique_id=1205261996]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Play narration"
+accessibility_name = "Play narration"
+theme_override_colors/icon_pressed_color = Color(0.06, 0.09, 0.07, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+toggle_mode = true
+icon = ExtResource("2_speaker")
+
+[node name="Pending" type="Label" parent="Main/Margin/Layout/TimelineArea/AudioMargin/AudioRow" unique_id=2001549706]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "DEVELOPMENT ONLY: Narration audio pending."
+autowrap_mode = 3
+
+[node name="Track" type="Control" parent="Main/Margin/Layout/TimelineArea" unique_id=194771516]
+custom_minimum_size = Vector2(640, 104)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Handle" type="Button" parent="Main/Margin/Layout/TimelineArea/Track" unique_id=1601590682]
+texture_filter = 1
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 0
+offset_right = 56.0
+offset_bottom = 56.0
+tooltip_text = "Drag the time marker, or select a date"
+focus_mode = 0
+theme_override_constants/icon_max_width = 40
+theme_override_styles/normal = SubResource("Pressed")
+theme_override_styles/hover = SubResource("Pressed")
+icon = SubResource("ClockIcon")
+expand_icon = true
+
+[node name="Sources" type="PanelContainer" parent="." unique_id=1901975531]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Sources" unique_id=1392196603]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Layout" type="VBoxContainer" parent="Sources/Margin" unique_id=800875974]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Sources/Margin/Layout" unique_id=483044162]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+
+[node name="Scroll" type="ScrollContainer" parent="Sources/Margin/Layout" unique_id=1090341179]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Text" type="Label" parent="Sources/Margin/Layout/Scroll" unique_id=122493861]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="Close" type="Button" parent="Sources/Margin/Layout" unique_id=1615664965]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Close Sources"
+
+[node name="NarrationPlayer" type="AudioStreamPlayer" parent="." unique_id=1410966184]
