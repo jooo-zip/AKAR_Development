@@ -1,0 +1,350 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/components/historical_summary_interaction.gd" id="1_script"]
+
+[ext_resource type="Texture2D" path="res://assets/ui/icons/summary_visitor_marker.png" id="2_marker"]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+
+[sub_resource type="Theme" id="ArtworkTheme"]
+default_font_size = 20
+Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
+Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Pressed")
+PanelContainer/styles/panel = SubResource("Panel")
+
+
+
+[sub_resource type="StyleBoxFlat" id="PointNormal"]
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_color = Color(0.66, 0.7, 0.6, 1)
+border_width_left = 1
+border_width_right = 1
+border_width_top = 1
+border_width_bottom = 1
+corner_radius_top_left = 27
+corner_radius_top_right = 27
+corner_radius_bottom_left = 27
+corner_radius_bottom_right = 27
+expand_margin_left = -5.0
+expand_margin_top = -5.0
+expand_margin_right = -5.0
+expand_margin_bottom = -5.0
+
+
+[sub_resource type="StyleBoxFlat" id="PointHover"]
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_color = Color(0.94, 0.89, 0.73, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_top = 2
+border_width_bottom = 2
+corner_radius_top_left = 27
+corner_radius_top_right = 27
+corner_radius_bottom_left = 27
+corner_radius_bottom_right = 27
+expand_margin_left = -5.0
+expand_margin_top = -5.0
+expand_margin_right = -5.0
+expand_margin_bottom = -5.0
+
+
+[sub_resource type="StyleBoxFlat" id="PointPressed"]
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_color = Color(1, 0.95, 0.75, 1)
+border_width_left = 3
+border_width_right = 3
+border_width_top = 3
+border_width_bottom = 3
+corner_radius_top_left = 27
+corner_radius_top_right = 27
+corner_radius_bottom_left = 27
+corner_radius_bottom_right = 27
+expand_margin_left = -5.0
+expand_margin_top = -5.0
+expand_margin_right = -5.0
+expand_margin_bottom = -5.0
+
+
+[node name="HistoricalSummaryInteraction" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("ArtworkTheme")
+script = ExtResource("1_script")
+
+
+[node name="Main" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+
+[node name="Margin" type="MarginContainer" parent="Main"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_bottom = 12
+
+
+[node name="Layout" type="VBoxContainer" parent="Main/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+
+[node name="Header" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+
+
+[node name="Title" type="Label" parent="Main/Margin/Layout/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 28
+
+
+[node name="Close" type="Button" parent="Main/Margin/Layout/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(80, 48)
+text = "Close"
+
+
+[node name="Introduction" type="Label" parent="Main/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+autowrap_mode = 3
+
+
+[node name="SelectedPanel" type="HBoxContainer" parent="Main/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+
+[node name="Icon" type="TextureRect" parent="Main/Margin/Layout/SelectedPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(200, 0)
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+mouse_filter = 2
+
+
+[node name="Scroll" type="ScrollContainer" parent="Main/Margin/Layout/SelectedPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+
+[node name="Text" type="VBoxContainer" parent="Main/Margin/Layout/SelectedPanel/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+
+[node name="Heading" type="Label" parent="Main/Margin/Layout/SelectedPanel/Scroll/Text"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 24
+
+
+[node name="Body" type="Label" parent="Main/Margin/Layout/SelectedPanel/Scroll/Text"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 22
+
+
+[node name="Navigation" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Previous" type="Button" parent="Main/Margin/Layout/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(60, 60)
+size_flags_vertical = 8
+text = "<"
+accessibility_name = "Previous summary"
+tooltip_text = "Previous summary"
+theme_override_font_sizes/font_size = 28
+
+
+[node name="Track" type="Control" parent="Main/Margin/Layout/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(320, 124)
+size_flags_horizontal = 3
+mouse_filter = 2
+accessibility_name = "Summary navigation"
+
+
+[node name="Point1" type="Button" parent="Main/Margin/Layout/Navigation/Track"]
+unique_name_in_owner = true
+layout_mode = 0
+custom_minimum_size = Vector2(64, 64)
+offset_right = 64.0
+offset_bottom = 64.0
+toggle_mode = true
+text = "1"
+theme_override_styles/normal = SubResource("PointNormal")
+theme_override_styles/hover = SubResource("PointHover")
+theme_override_styles/pressed = SubResource("PointPressed")
+theme_override_styles/hover_pressed = SubResource("PointPressed")
+theme_override_font_sizes/font_size = 24
+
+
+[node name="Point2" type="Button" parent="Main/Margin/Layout/Navigation/Track"]
+unique_name_in_owner = true
+layout_mode = 0
+custom_minimum_size = Vector2(64, 64)
+offset_right = 64.0
+offset_bottom = 64.0
+toggle_mode = true
+text = "2"
+theme_override_styles/normal = SubResource("PointNormal")
+theme_override_styles/hover = SubResource("PointHover")
+theme_override_styles/pressed = SubResource("PointPressed")
+theme_override_styles/hover_pressed = SubResource("PointPressed")
+theme_override_font_sizes/font_size = 24
+
+
+[node name="Point3" type="Button" parent="Main/Margin/Layout/Navigation/Track"]
+unique_name_in_owner = true
+layout_mode = 0
+custom_minimum_size = Vector2(64, 64)
+offset_right = 64.0
+offset_bottom = 64.0
+toggle_mode = true
+text = "3"
+theme_override_styles/normal = SubResource("PointNormal")
+theme_override_styles/hover = SubResource("PointHover")
+theme_override_styles/pressed = SubResource("PointPressed")
+theme_override_styles/hover_pressed = SubResource("PointPressed")
+theme_override_font_sizes/font_size = 24
+
+
+[node name="Point4" type="Button" parent="Main/Margin/Layout/Navigation/Track"]
+unique_name_in_owner = true
+layout_mode = 0
+custom_minimum_size = Vector2(64, 64)
+offset_right = 64.0
+offset_bottom = 64.0
+toggle_mode = true
+text = "4"
+theme_override_styles/normal = SubResource("PointNormal")
+theme_override_styles/hover = SubResource("PointHover")
+theme_override_styles/pressed = SubResource("PointPressed")
+theme_override_styles/hover_pressed = SubResource("PointPressed")
+theme_override_font_sizes/font_size = 24
+
+
+[node name="Point5" type="Button" parent="Main/Margin/Layout/Navigation/Track"]
+unique_name_in_owner = true
+layout_mode = 0
+custom_minimum_size = Vector2(64, 64)
+offset_right = 64.0
+offset_bottom = 64.0
+toggle_mode = true
+text = "5"
+theme_override_styles/normal = SubResource("PointNormal")
+theme_override_styles/hover = SubResource("PointHover")
+theme_override_styles/pressed = SubResource("PointPressed")
+theme_override_styles/hover_pressed = SubResource("PointPressed")
+theme_override_font_sizes/font_size = 24
+
+
+[node name="VisitorMarker" type="TextureRect" parent="Main/Margin/Layout/Navigation/Track"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 56.0
+offset_bottom = 56.0
+mouse_filter = 2
+accessibility_name = "Visitor at selected summary"
+texture = ExtResource("2_marker")
+texture_filter = 1
+expand_mode = 1
+stretch_mode = 5
+
+
+[node name="Next" type="Button" parent="Main/Margin/Layout/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(60, 60)
+size_flags_vertical = 8
+text = ">"
+accessibility_name = "Next summary"
+tooltip_text = "Next summary"
+theme_override_font_sizes/font_size = 28
+
+
+[node name="Return" type="Button" parent="Main/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(48, 48)
+text = "RETURN TO LANDMARK MAP"
