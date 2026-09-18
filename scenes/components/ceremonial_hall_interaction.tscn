@@ -1,0 +1,367 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/components/ceremonial_hall_interaction.gd" id="1_script"]
+
+[ext_resource type="Texture2D" path="res://assets/ui/icons/speaker.svg" id="2_speaker"]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+
+[sub_resource type="Theme" id="ArtworkTheme"]
+default_font_size = 20
+Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
+Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Pressed")
+PanelContainer/styles/panel = SubResource("Panel")
+
+
+[node name="CeremonialHallInteraction" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("ArtworkTheme")
+script = ExtResource("1_script")
+
+
+[node name="Main" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+
+[node name="Margin" type="MarginContainer" parent="Main"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+
+[node name="Layout" type="VBoxContainer" parent="Main/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+
+[node name="Header" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+
+
+[node name="Title" type="Label" parent="Main/Margin/Layout/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
+
+
+[node name="Close" type="Button" parent="Main/Margin/Layout/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "Close"
+
+
+[node name="Columns" type="HBoxContainer" parent="Main/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+
+[node name="Image" type="TextureRect" parent="Main/Margin/Layout/Columns"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 2
+
+
+[node name="Information" type="VBoxContainer" parent="Main/Margin/Layout/Columns"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0
+theme_override_constants/separation = 8
+
+
+[node name="Meta" type="HBoxContainer" parent="Main/Margin/Layout/Columns/Information"]
+layout_mode = 2
+
+
+[node name="Heading" type="Label" parent="Main/Margin/Layout/Columns/Information/Meta"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+
+
+[node name="SourcesButton" type="Button" parent="Main/Margin/Layout/Columns/Information/Meta"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "Sources"
+
+
+[node name="Scroll" type="ScrollContainer" parent="Main/Margin/Layout/Columns/Information"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+
+[node name="Text" type="VBoxContainer" parent="Main/Margin/Layout/Columns/Information/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+
+[node name="Detail" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+autowrap_mode = 3
+
+
+[node name="Body" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+
+[node name="ExplorationCaption" type="Label" parent="Main/Margin/Layout"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="Controls" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+
+[node name="Speaker" type="Button" parent="Main/Margin/Layout/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+text = ""
+custom_minimum_size = Vector2(56, 56)
+icon = ExtResource("2_speaker")
+toggle_mode = true
+theme_override_colors/icon_pressed_color = Color(0.06, 0.09, 0.07, 1)
+
+
+[node name="Spacer" type="Control" parent="Main/Margin/Layout/Controls"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+
+[node name="EventControls" type="HBoxContainer" parent="Main/Margin/Layout/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+
+[node name="ViewControls" type="HBoxContainer" parent="Main/Margin/Layout/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+
+[node name="Previous" type="Button" parent="Main/Margin/Layout/Controls/EventControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "<"
+accessibility_name = "Previous Event"
+tooltip_text = "Previous Event"
+
+
+[node name="Event1" type="Button" parent="Main/Margin/Layout/Controls/EventControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "1"
+toggle_mode = true
+accessibility_name = "Event 1"
+
+
+[node name="Event2" type="Button" parent="Main/Margin/Layout/Controls/EventControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "2"
+toggle_mode = true
+accessibility_name = "Event 2"
+
+
+[node name="Next" type="Button" parent="Main/Margin/Layout/Controls/EventControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = ">"
+accessibility_name = "Next Event"
+tooltip_text = "Next Event"
+
+
+[node name="Photo" type="Button" parent="Main/Margin/Layout/Controls/ViewControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "FULL HALL PHOTO"
+toggle_mode = true
+
+
+[node name="Pixel" type="Button" parent="Main/Margin/Layout/Controls/ViewControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "PIXEL-ART VIEW"
+toggle_mode = true
+
+
+[node name="SpaceSources" type="Button" parent="Main/Margin/Layout/Controls"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "Sources"
+
+[node name="Sections" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+
+[node name="About" type="Button" parent="Main/Margin/Layout/Sections"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "ABOUT THE HALL"
+size_flags_horizontal = 3
+toggle_mode = true
+
+
+[node name="Events" type="Button" parent="Main/Margin/Layout/Sections"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "OFFICIAL EVENTS"
+size_flags_horizontal = 3
+toggle_mode = true
+
+
+[node name="Space" type="Button" parent="Main/Margin/Layout/Sections"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "VIEW THE SPACE"
+size_flags_horizontal = 3
+toggle_mode = true
+
+
+[node name="Sources" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+
+
+[node name="Margin" type="MarginContainer" parent="Sources"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+
+[node name="Layout" type="VBoxContainer" parent="Sources/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+
+[node name="SourceTitle" type="Label" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+
+
+[node name="SourceScroll" type="ScrollContainer" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+
+[node name="SourceText" type="Label" parent="Sources/Margin/Layout/SourceScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+
+[node name="SourceClose" type="Button" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "Close Sources"
+
+
+[node name="NarrationPlayer" type="AudioStreamPlayer" parent="."]

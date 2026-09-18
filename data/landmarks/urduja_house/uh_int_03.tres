@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="CeremonialHallContent" format=3]
+
+[ext_resource type="Script" path="res://scripts/components/ceremonial_hall_content.gd" id="content"]
+
+[ext_resource type="Script" path="res://scripts/components/ceremonial_event_entry.gd" id="entry"]
+
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_03_ceremonial_hall.png" id="hall"]
+
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_03_event_01.png" id="event1"]
+
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_03_event_02.jpg" id="event2"]
+
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_03_room_pixel_art.png" id="pixel"]
+
+[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh_int_03_narration.ogg" id="audio"]
+
+[sub_resource type="Resource" id="Event1"]
+script = ExtResource("entry")
+event_id = "UH-INT-03-EVENT-01"
+event_title = "Courtesy Call of the Dagupan City Prosecutor’s Office and Pangasinan Provincial Prosecutor’s Office"
+date_label = "March 5, 2025"
+venue = "Ceremonial Hall, Urduja House"
+participating_institution = "Dagupan City Prosecutor’s Office\nPangasinan Provincial Prosecutor’s Office"
+image_alt_text = "Official gathering inside the Ceremonial Hall of Urduja House."
+image = ExtResource("event1")
+
+[sub_resource type="Resource" id="Event2"]
+script = ExtResource("entry")
+event_id = "UH-INT-03-EVENT-02"
+event_title = "Ceremonial Awarding of Lotte Scholarships to Pangasinan Higher Education Institutions"
+date_label = "December 1, 2024"
+venue = "Ceremonial Hall, Urduja House"
+participating_institution = ""
+image_alt_text = "Ceremonial scholarship awarding activity held inside Urduja House."
+image = ExtResource("event2")
+
+[resource]
+script = ExtResource("content")
+hotspot_id = "UH-INT-03"
+title = "Ceremonial Hall"
+prompt = "Explore the Ceremonial Hall"
+body = "The Ceremonial Hall is used on selected special occasions for official receptions and government functions. Its continuing use demonstrates that Urduja House remains an active part of provincial governance. The hall connects the historical role of the residence with present-day public service and provincial leadership."
+hall_alt_text = "Ceremonial Hall"
+pixel_art_alt_text = "Pixel-art illustrative representation of the Ceremonial Hall."
+pixel_art_source_credit = "Pixel-art illustrative representation of the Ceremonial Hall."
+narration_transcript = "The Ceremonial Hall continues to serve as a venue for selected official events and government functions. Its use shows that Urduja House is not simply a preserved historical building. It remains an active setting for provincial leadership and public service."
+hall_image = ExtResource("hall")
+pixel_art_image = ExtResource("pixel")
+narration_stream = ExtResource("audio")
+events = Array[ExtResource("entry")]([SubResource("Event1"), SubResource("Event2")])
