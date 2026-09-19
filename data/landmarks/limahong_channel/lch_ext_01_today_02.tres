@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="HistoricalHotspotContent" format=3]
+[ext_resource type="Script" path="res://scripts/components/historical_hotspot_content.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/images/lch_ext_01_site_today_02.JPG" id="2"]
+[resource]
+script = ExtResource("1")
+title = "Visitor-center covered walkway"
+image = ExtResource("2")

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="HistoricalHotspotContent" format=3]
+[ext_resource type="Script" path="res://scripts/components/historical_hotspot_content.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/lch_ext_01_locator_map.png" id="2"]
+[resource]
+script = ExtResource("1")
+title = "Lingayen > Pangapisan Norte > Limahong Channel"
+image = ExtResource("2")
