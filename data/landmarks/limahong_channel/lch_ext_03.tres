@@ -1,0 +1,67 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_ext_03_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/tactical_map/lch_ext_03_tactical_map_base.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/tactical_map/lch_ext_03_blockade_marker.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/fortified_settlement.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/route_ship.png" id="6"]
+
+[sub_resource type="Resource" id="Settlement"]
+script = ExtResource("2")
+heading = "FORTIFIED SETTLEMENT"
+body = "Limahong and his followers had established a fortified settlement in Pangasinan before the expedition against them."
+
+[sub_resource type="Resource" id="Blockade"]
+script = ExtResource("2")
+heading = "THE BLOCKADE"
+body = "Juan de Salcedo led the Spanish and allied Luzonese expedition that blockaded Limahong's settlement in 1575."
+
+[sub_resource type="Resource" id="Passage"]
+script = ExtResource("2")
+heading = "REPORTED ESCAPE PASSAGE"
+body = "During the campaign, Limahong's followers reportedly excavated a passage leading from the settlement toward the sea."
+
+[sub_resource type="Resource" id="Escape"]
+script = ExtResource("2")
+heading = "ESCAPE BY WATER"
+body = "Limahong and many of his followers used the water route to move beyond the blockade and escape by water."
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "LCH-EXT-03"
+title = "THE SIEGE AND ESCAPE ROUTE"
+stage_labels = PackedStringArray("01 SETTLEMENT", "02 BLOCKADE", "03 PASSAGE", "04 ESCAPE")
+date_labels = PackedStringArray("1575", "1575", "1575", "AUGUST 1575")
+stage_notices = PackedStringArray("", "Symbolic blockade representation — not exact troop positions.", "Interpretive escape passage — exact historical path not established.", "Interpretive escape passage — exact historical path not established.")
+permanent_disclaimer = "Simplified historical visualization — not to scale. The present Limahong Channel is traditionally associated with the reported escape route; the exact historical path has not been independently established through archaeological evidence."
+compact_disclaimer = "Historical interpretation — not to scale; exact escape path not established."
+settlement_label = "SETTLEMENT"
+illustration = ExtResource("3")
+illustration_alt_text = "Simplified landscape and water context for symbolic settlement, blockade, reported passage and escape layers; not exact historical geography."
+blockade_marker = ExtResource("4")
+fortified_settlement = ExtResource("5")
+escape_vessel = ExtResource("6")
+narration_transcript = "In 1575, Juan de Salcedo led an expedition that blockaded Limahong's fortified settlement in Pangasinan. During the campaign, Limahong's followers reportedly excavated a passage toward the sea. Limahong and many of his followers later escaped by water. The present Limahong Channel is traditionally associated with this escape, although the exact historical route has not been independently established through archaeological evidence."
+source_credit = "Historical content
+Researcher-supplied LCH-EXT-03 wording.
+
+Researcher-identified source categories
+Francisco de Sande account
+Project Historical Profile / Validation Sheet
+Provincial Government historical material
+
+Full titles, editions/publication details, page references, source links and validation-sheet identifier/date await researcher submission. No complete bibliographic citation is claimed.
+
+Historical qualification
+Simplified historical visualization — not to scale. The present Limahong Channel is traditionally associated with the reported escape route; the exact historical path has not been independently established through archaeological evidence.
+
+Symbolic blockade representation — not exact troop positions.
+Interpretive escape passage — exact historical path not established.
+Four markers symbolize the blockading expedition; they do not indicate four units or troop counts. Settlement and vessel are interpretive symbols, not archaeological or vessel reconstructions.
+
+Media
+Researcher-supplied tactical map and blockade emblem; existing researcher-supplied settlement and vessel art. Creator, original source and usage permissions await researcher confirmation.
+
+Narration recording pending."
+concepts = Array[ExtResource("2")]([SubResource("Settlement"), SubResource("Blockade"), SubResource("Passage"), SubResource("Escape")])
