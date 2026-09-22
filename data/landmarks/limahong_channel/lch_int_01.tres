@@ -1,0 +1,46 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_01_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_int_01/photos/lch_int_01_statue_photo.jpg.png" id="3"]
+
+[sub_resource type="Resource" id="Who"]
+script = ExtResource("2")
+heading = "LIMAHONG / LIN FENG"
+body = "Limahong, also known as Lin Feng, was a Chinese pirate and military leader. After his failed attacks on Manila in late 1574, he sailed to Pangasinan and established a fortified settlement."
+
+[sub_resource type="Resource" id="Site"]
+script = ExtResource("2")
+heading = "WHY THIS SITE?"
+body = "During the 1575 campaign, Limahong and part of his force escaped from Pangasinan by water. The present Limahong Channel is traditionally associated with that escape route."
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "LCH-INT-01"
+title = "THE LIMAHONG STATUE"
+prompt = "DISCOVER LIMAHONG"
+section_labels = PackedStringArray("WHO WAS LIMAHONG?", "WHY THIS SITE?")
+compact_section_labels = PackedStringArray("WHO WAS HE?", "WHY THIS SITE?")
+default_section = 0
+default_lens_position = Vector2(0.42, 0.55)
+illustration = ExtResource("3")
+illustration_alt_text = "Researcher-supplied photograph of the Limahong statue, shown in its indoor exhibit setting."
+narration_transcript = "Limahong, also known as Lin Feng, was a Chinese pirate and military leader. His retreat to Pangasinan, establishment of a fortified settlement, and escape during the campaign of 1575 form the central historical narrative commemorated by this site."
+source_credit = "Historical content
+Researcher-supplied LCH-INT-01 wording.
+
+Researcher-identified source categories already recorded for Limahong
+Francisco de Sande account
+Project Historical Profile / Validation Sheet
+Provincial Government historical material
+
+Full bibliographic details, page references, source links and validation-sheet identifier/date await researcher submission. No complete bibliographic citation is claimed.
+
+Historical qualification
+The present Limahong Channel is traditionally associated with Limahong's escape. This presentation does not establish the exact sixteenth-century escape channel through archaeological evidence.
+
+Photo
+Researcher-supplied Limahong statue photograph. Photographer, original source and usage permissions await researcher confirmation.
+
+Narration recording pending."
+concepts = Array[ExtResource("2")]([SubResource("Who"), SubResource("Site")])
