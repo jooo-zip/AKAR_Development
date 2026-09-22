@@ -1,0 +1,60 @@
+[gd_resource type="Resource" format=3 uid="uid://bpk3f83abcuah"]
+
+[ext_resource type="Script" uid="uid://dir7644lxh21f" path="res://scripts/landmarks/limahong_channel/lch_ext_02_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://ck8i6x8rox4rx" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/lch_luzon_map.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://kmxj46xx74dd" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/location_marker.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://c2haoeiwdwj8g" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/route_ship.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://dt2wgrxv0vvy8" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/fortified_settlement.png" id="6"]
+
+[sub_resource type="Resource" id="Manila"]
+script = ExtResource("2")
+heading = "FAILED ATTACKS ON MANILA"
+body = "After his failed attacks on Manila in late 1574, Limahong left the area with his forces and sailed north."
+
+[sub_resource type="Resource" id="Northward"]
+script = ExtResource("2")
+heading = "SAIL TO PANGASINAN"
+body = "Limahong sailed to Pangasinan, bringing the conflict north from Manila."
+
+[sub_resource type="Resource" id="Pangasinan"]
+script = ExtResource("2")
+heading = "FORTIFIED SETTLEMENT"
+body = "In Pangasinan, Limahong established a fortified settlement.
+
+This settlement became the setting of the 1575 campaign."
+show_takeaway = true
+
+[resource]
+script = ExtResource("1")
+stage_labels = PackedStringArray("01 MANILA", "02 NORTHWARD", "03 PANGASINAN")
+date_labels = PackedStringArray("LATE 1574", "LATE 1574", "PANGASINAN")
+route_notice = "Schematic historical movement — not an exact voyage route."
+location_marker = ExtResource("4")
+route_ship = ExtResource("5")
+fortified_settlement = ExtResource("6")
+schematic_points = null
+hotspot_id = "LCH-EXT-02"
+title = "FROM MANILA TO PANGASINAN"
+illustration = ExtResource("3")
+illustration_alt_text = "Researcher-supplied regional illustration with broad Manila and Pangasinan overlays."
+narration_transcript = "After his failed attacks on Manila in late 1574, Limahong sailed north to Pangasinan and established a fortified settlement. This movement brought the conflict from Manila to Pangasinan and set the stage for the campaign that followed in 1575."
+learning_takeaway = "REMEMBER
+Limahong's retreat from Manila brought him to Pangasinan, where he established the fortified settlement that became the setting of the 1575 campaign."
+source_credit = "Historical content
+Researcher-supplied LCH-EXT-02 wording.
+
+Researcher-identified source basis
+Francisco de Sande account
+Shutz academic study
+Project Historical Profile / Validation Sheet
+
+Full titles, editions/publication details, page references and validation-sheet identifier/date await researcher submission.
+
+Map
+Researcher-supplied regional illustration. Creator, original source and usage permissions await researcher confirmation. Overlays indicate broad regions only.
+
+Schematic historical movement — not an exact voyage route.
+
+Narration recording pending."
+concepts = Array[ExtResource("2")]([SubResource("Manila"), SubResource("Northward"), SubResource("Pangasinan")])
