@@ -1,0 +1,77 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_02_content.gd" id="content"]
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_02_person.gd" id="person"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="base_entry"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_int_02/portraits/lch_int_02_lavezaris.png" id="lavezaris"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_int_02/portraits/lch_int_02_salcedo.png" id="salcedo"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_int_02/portraits/lch_int_02_limahong.png" id="limahong"]
+
+[sub_resource type="Resource" id="Lavezaris"]
+script = ExtResource("person")
+person_id = "lavezaris"
+heading = "GUIDO DE LAVEZARIS"
+role_label = "EXPEDITION PREPARATION"
+body = "Governor-General Guido de Lavezaris appointed Juan de Salcedo as master-of-camp and oversaw preparations for the expedition against Limahong."
+connection_body = "His role was connected to organizing and preparing the expedition rather than leading it in the field."
+portrait = ExtResource("lavezaris")
+narration_transcript = "Governor-General Guido de Lavezaris appointed Juan de Salcedo as master-of-camp and oversaw preparations for the expedition against Limahong."
+wide_anchor = Vector2(0.50, 0.22)
+medium_anchor = Vector2(0.50, 0.26)
+compact_anchor = Vector2(0.17, 0.31)
+
+[sub_resource type="Resource" id="Salcedo"]
+script = ExtResource("person")
+person_id = "salcedo"
+heading = "JUAN DE SALCEDO"
+role_label = "EXPEDITION LEADER"
+body = "Juan de Salcedo led the Spanish and allied Luzonese expedition that blockaded Limahong's settlement in 1575."
+connection_body = "He led the expedition in the field during the 1575 Pangasinan campaign."
+portrait = ExtResource("salcedo")
+narration_transcript = "Juan de Salcedo led the Spanish and allied Luzonese expedition that blockaded Limahong's settlement in Pangasinan in 1575."
+wide_anchor = Vector2(0.19, 0.78)
+medium_anchor = Vector2(0.15, 0.73)
+compact_anchor = Vector2(0.50, 0.31)
+
+[sub_resource type="Resource" id="Limahong"]
+script = ExtResource("person")
+person_id = "limahong"
+heading = "LIMAHONG / LIN FENG"
+role_label = "SETTLEMENT & ESCAPE"
+body = "Limahong, also known as Lin Feng, was a Chinese pirate leader. After his failed attacks on Manila in late 1574, he sailed to Pangasinan and established a fortified settlement."
+connection_body = "His settlement and escape in Pangasinan form the central historical narrative associated with the Limahong Channel."
+portrait = ExtResource("limahong")
+narration_transcript = "Limahong, also known as Lin Feng, established a fortified settlement in Pangasinan, and his 1575 escape became the central story associated with the Limahong Channel."
+wide_anchor = Vector2(0.81, 0.78)
+medium_anchor = Vector2(0.85, 0.73)
+compact_anchor = Vector2(0.83, 0.31)
+
+[resource]
+script = ExtResource("content")
+hotspot_id = "LCH-INT-02"
+title = "PEOPLE BEHIND THE 1575 CAMPAIGN"
+prompt = "MEET THE PEOPLE CONNECTED WITH THE CAMPAIGN"
+panel_prompt = "MEET THE PEOPLE"
+event_title = "1575 PANGASINAN CAMPAIGN"
+event_subtitle = "Different historical roles were connected to the same campaign."
+connection_heading = "CONNECTION TO THE 1575 CAMPAIGN"
+comparison_hint = "Select each person to compare their role in the campaign."
+default_person = 1
+source_credit = "Historical content
+Researcher-supplied LCH-INT-02 wording.
+
+Researcher-identified source categories already recorded for Limahong
+Francisco de Sande account
+Project Historical Profile / Validation Sheet
+Provincial Government historical material
+
+Full bibliographic details, page references, source links and validation-sheet identifier/date await researcher submission. No complete bibliographic citation or signed validator approval is claimed.
+
+Historical qualification
+The present Limahong Channel is traditionally associated with the escape narrative. This presentation does not establish the exact sixteenth-century escape channel through archaeological evidence.
+
+Portraits
+Researcher-supplied image files. Image types, creators, original sources and permission/license status await researcher confirmation.
+
+Individual narration recordings pending."
+concepts = Array[ExtResource("base_entry")]([SubResource("Lavezaris"), SubResource("Salcedo"), SubResource("Limahong")])
