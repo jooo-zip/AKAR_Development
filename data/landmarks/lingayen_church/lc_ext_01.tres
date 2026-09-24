@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_ext_01_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_ext_01_section.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_01/images/lc_ext_01_exterior_current.jpg" id="4"]
+
+[sub_resource type="Resource" id="About"]
+script = ExtResource("2")
+section_id = &"ABOUT"
+tab_label = "ABOUT THE CHURCH"
+heading = "Epiphany of Our Lord Co-Cathedral Parish"
+body = "Commonly known as Lingayen Church, it is an active Roman Catholic parish in Lingayen, Pangasinan. Its history is connected with centuries of Catholic missionary activity and the religious development of the community."
+takeaway = "Lingayen Church is both a historic landmark and a living religious community."
+image = ExtResource("4")
+image_caption = "Lingayen Church — present-day view"
+source_credit = "Archdiocese of Lingayen-Dagupan — Parishes\n\nFull bibliographic details pending researcher input."
+
+[sub_resource type="Resource" id="HistoricalName"]
+script = ExtResource("2")
+section_id = &"HISTORICAL_NAME"
+tab_label = "HISTORICAL NAME"
+heading = "Los Tres Reyes — The Three Kings Parish"
+body = "The parish was historically known as Los Tres Reyes, or the Three Kings Parish. The name is connected with the biblical Magi associated with the Epiphany of the Lord. Its history reaches back to Catholic missionary activity in Lingayen during the Spanish colonial period."
+takeaway = "The church's historical name reflects its long religious identity in Lingayen."
+image_caption = "Lingayen Church — present-day view"
+source_credit = "Epiphany of the Lord Parish — historical account\n\nFull bibliographic details pending researcher input."
+
+[sub_resource type="Resource" id="PresentRole"]
+script = ExtResource("2")
+section_id = &"PRESENT_ROLE"
+tab_label = "PRESENT ROLE"
+heading = "A Living Religious and Cultural Landmark"
+body = "Lingayen Church continues to serve its parish community while retaining its historical role as a co-cathedral. Its continuing religious use connects the church's past with the community that still gathers here today."
+takeaway = "Its historical importance continues alongside its present religious function."
+image_caption = "Lingayen Church — present-day view"
+source_credit = "Archdiocese of Lingayen-Dagupan — Parishes\n\nFull bibliographic details pending researcher input."
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "LC-EXT-01"
+title = "Meet Lingayen Church"
+formal_name = "Epiphany of Our Lord Co-Cathedral Parish"
+illustration = ExtResource("4")
+illustration_alt_text = "Lingayen Church — present-day exterior photograph"
+image_credit = "PHOTO: AKAR Research Team, 2026"
+concepts = Array[ExtResource("3")]([SubResource("About"), SubResource("HistoricalName"), SubResource("PresentRole")])

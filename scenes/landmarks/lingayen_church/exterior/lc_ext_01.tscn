@@ -1,0 +1,41 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/components/conference_room_interaction.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_ext_01.gd" id="2"]
+[ext_resource type="Resource" path="res://data/landmarks/lingayen_church/lc_ext_01.tres" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="HeritagePanel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.46, 0.40, 0.25, 1)
+
+[sub_resource type="StyleBoxFlat" id="ListenPending"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.15, 0.13, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.4, 0.32, 1)
+
+[node name="LC_EXT_01" instance=ExtResource("1")]
+script = ExtResource("2")
+content = ExtResource("3")
+
+[node name="Main" parent="." index="0"]
+theme_override_styles/panel = SubResource("HeritagePanel")
+
+[node name="Speaker" parent="Main/Margin/Layout/Controls" index="0"]
+expand_icon = true
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/disabled = SubResource("ListenPending")
+theme_override_colors/font_disabled_color = Color(0.72, 0.70, 0.61, 1)
+theme_override_colors/icon_disabled_color = Color(0.72, 0.70, 0.61, 1)
+
+[node name="Sources" parent="." index="1"]
+theme_override_styles/panel = SubResource("HeritagePanel")
