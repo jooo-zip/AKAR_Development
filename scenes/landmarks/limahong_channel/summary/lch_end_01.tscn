@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/components/conference_room_interaction.tscn" id="shell"]
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_end_01.gd" id="controller"]
+[ext_resource type="Resource" path="res://data/landmarks/limahong_channel/lch_end_01.tres" id="content"]
+
+[node name="LCH_END_01" instance=ExtResource("shell")]
+script = ExtResource("controller")
+content = ExtResource("content")

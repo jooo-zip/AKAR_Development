@@ -1,0 +1,91 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_end_01_content.gd" id="content"]
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_end_01_topic.gd" id="topic"]
+
+[sub_resource type="Resource" id="Retreat"]
+script = ExtResource("topic")
+topic_id = 0
+card_number = "01"
+compact_label = "RETREAT"
+full_title = "RETREAT TO PANGASINAN"
+time_label = "LATE 1574"
+short_body = "Limahong sailed to Pangasinan and established a fortified settlement."
+detail_body = "After his failed attacks on Manila in late 1574, Limahong sailed to Pangasinan and established a fortified settlement."
+icon_type = "path"
+
+[sub_resource type="Resource" id="Blockade"]
+script = ExtResource("topic")
+topic_id = 1
+card_number = "02"
+compact_label = "BLOCKADE"
+full_title = "THE 1575 BLOCKADE"
+short_body = "Juan de Salcedo led the expedition that blockaded Limahong's settlement."
+detail_body = "Juan de Salcedo led the expedition against Limahong's fortified settlement in Pangasinan. Spanish and allied Luzonese forces blockaded the settlement in 1575."
+icon_type = "arc"
+
+[sub_resource type="Resource" id="Escape"]
+script = ExtResource("topic")
+topic_id = 2
+card_number = "03"
+compact_label = "ESCAPE"
+full_title = "ESCAPE BY CHANNEL"
+short_body = "Limahong's group escaped through a channel reportedly dug toward the sea."
+detail_body = "During the 1575 blockade, Limahong's group escaped through a channel that official provincial history states they had dug toward the China Sea."
+icon_type = "water"
+
+[sub_resource type="Resource" id="Tradition"]
+script = ExtResource("topic")
+topic_id = 3
+card_number = "04"
+compact_label = "TRADITION"
+full_title = "HISTORICAL TRADITION"
+qualifier_label = "TRADITIONAL ASSOCIATION"
+short_body = "The present channel is traditionally associated with the 1575 escape route."
+detail_body = "The present-day Limahong Channel is traditionally associated with the 1575 escape route. Its exact identification has not been independently established through archaeological evidence."
+icon_type = "document"
+
+[sub_resource type="Resource" id="Heritage"]
+script = ExtResource("topic")
+topic_id = 4
+card_number = "05"
+compact_label = "HERITAGE"
+full_title = "MODERN HERITAGE VALUE"
+short_body = "The channel continues to support local historical memory, heritage education, and tourism."
+detail_body = "The Limahong Channel preserves local memory of the 1575 Pangasinan campaign and supports heritage education and tourism initiatives in Lingayen."
+icon_type = "book"
+
+[resource]
+script = ExtResource("content")
+hotspot_id = "LCH-END-01"
+title = "WHAT THE LIMAHONG CHANNEL REPRESENTS"
+intro_heading = "AT A GLANCE"
+intro_body = "The Limahong Channel is a historical waterway in Pangapisan Norte, Lingayen, traditionally associated with Limahong's escape during the 1575 Pangasinan campaign."
+default_detail_heading = "THE STORY IN BRIEF"
+default_detail_body = "The Limahong Channel connects the memory of the 1575 Pangasinan campaign with Lingayen's continuing heritage."
+reflection_heading = "THINK ABOUT IT"
+reflection_prompt = "Why has the Limahong Channel remained historically significant to Lingayen?"
+takeaway_heading = "KEY TAKEAWAY"
+learning_takeaway = "The Limahong Channel is remembered because of its traditional association with Limahong's 1575 escape from the Pangasinan blockade. That historical memory continues to contribute to Lingayen's local heritage, education, and tourism initiatives."
+topics = Array[ExtResource("topic")]([SubResource("Retreat"), SubResource("Blockade"), SubResource("Escape"), SubResource("Tradition"), SubResource("Heritage")])
+narration_transcript = "After his failed attacks on Manila in late 1574, Limahong established a fortified settlement in Pangasinan. In 1575, an expedition led by Juan de Salcedo blockaded the settlement, while Limahong's group escaped through a channel reportedly dug toward the sea. The present Limahong Channel is traditionally associated with that escape route, although its exact identification has not been independently established archaeologically. Today, the channel preserves the memory of the event as part of Lingayen's heritage."
+source_credit = "RETREAT TO PANGASINAN
+Researcher-supplied END-01 wording. Existing project source basis: Francisco de Sande account, Shutz academic study, and Project Historical Profile / Validation Sheet. Full bibliographic details and page references remain pending.
+
+1575 BLOCKADE
+Researcher-supplied summary of Salcedo's expedition and the Spanish and allied Luzonese blockade in 1575. Existing project source categories include Francisco de Sande, provincial historical material, and the Project Historical Profile / Validation Sheet. Exact citations remain pending.
+
+ESCAPE CHANNEL
+The researcher identifies official provincial history as the basis for the historical account of a channel dug toward the China Sea. Full provincial document title, publication details, page and source link remain pending. This account does not establish the exact identity of the modern channel.
+
+HISTORICAL TRADITION
+The present-day Limahong Channel is traditionally associated with the 1575 escape route. Its exact identification has not been independently established through archaeological evidence. The modern association is kept separate from the historical escape narrative.
+
+MODERN HERITAGE VALUE
+Researcher-supplied content about local historical memory, heritage education and tourism, consistent with the project's historical profile. Full citations remain pending.
+
+VALIDATION STATUS
+Source-backed project content prepared for validation. The available validation-sheet copy has unchecked boxes and no signed overall approval; formal signed validation is not claimed.
+
+PRESENTATION
+Interface symbols and storyline are generated in Godot. They are conceptual reading aids, not a map or a claim about the exact historical route. No documentary media is required. One overall narration recording remains pending."
