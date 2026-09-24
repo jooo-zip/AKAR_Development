@@ -87,14 +87,32 @@ PANGAPISAN NORTE and LIMAHONG CHANNEL. Each existing locator resource now assign
 its own image through HistoricalHotspotContent.image. All three supplied PNG files
 were present and are referenced without renaming, conversion or geographic edits.
 Selection changes the image, active button and present-day caption immediately.
-A 180 ms sine-eased Tween crossfades the outgoing and incoming TextureRects.
-The outgoing layer is noninteractive and uses the same aspect-fit bounds/filter.
-Repeated input cancels the previous Tween, and the latest state wins. Section
-changes, close, hide and removal clear the layer and restore full image opacity.
-No position/zoom/bounce effects are used. With a missing per-state image the existing
-site-detail map is used and identified as a fallback; if both are missing, the
-existing neutral placeholder appears. Mouse, touch, Enter/Space and clamped
-Left/Right remain supported. Default/reopen is LINGAYEN with its image.
+A stable 4:3 frame is centered inside the parent-sized visual area for all locator
+levels. TextureRect aspect-fit preserves the complete supplied images, with
+letterboxing where needed. Only the 3–6% transition zoom is clipped to the frame.
+The photo viewer retains its previous full visual area and aspect-fit behavior.
+
+A 300 ms sine-eased, two-phase Tween suggests geographic depth between separate
+screenshots. Moving to a higher index fades/scales the outgoing image 1.00 to 1.06
+in 140 ms, then reveals the target at scale 1.03 settling to 1.00 over 160 ms.
+Moving to a lower index fades/scales the outgoing image 1.00 to 0.96, then reveals
+the broader view at 1.01 settling to 1.00. Direct jumps use the same index-based
+direction without stopping at an intermediate level. Selecting the current level
+does not restart a transition. This is an exhibit transition, not a continuous map.
+
+The active button, target image and caption update together. Captions are exactly:
+- LINGAYEN • municipality locator
+- PANGAPISAN NORTE • barangay locator
+- LIMAHONG CHANNEL • landmark locator
+
+Repeated input cancels the previous Tween and resets both image layers before
+starting from the most recently selected level. Section changes, resize, close,
+hide and removal restore scale 1.00 / opacity 1 and clear the outgoing layer.
+The frame size is derived only from parent space, not the selected texture.
+Missing per-state images retain the existing explicitly labeled site-detail fallback;
+fully missing media retains the neutral placeholder. Mouse, touch, Enter/Space and
+clamped Left/Right remain supported. Reopen restores LINGAYEN with no transition.
+No breadcrumb was added because the smallest landscape layout takes priority.
 WHY IS IT HISTORIC?: the full information-icon row is always visible above Sources.
 It starts collapsed. Enter/Space or a tap reveals the exact approved qualification
 inside the existing information scroll area; scroll reveals the note on expansion.
@@ -200,7 +218,7 @@ untracked directories; revision files are within those existing untracked paths.
 The pre/post file-hash audit identifies only the exact files listed above.
 No commit or push. Stop here for researcher manual F6 review, not LCH-EXT-02.
 
-## Targeted locator-image revision (latest)
+## Earlier locator-image revision
 
 Modified in this pass only:
 - scripts/landmarks/limahong_channel/lch_ext_01.gd
@@ -246,3 +264,53 @@ opacity and reopening to restore Lingayen. Confirm visible disabled LISTEN with 
 same Urduja speaker icon. Historical text and other sections are unchanged.
 
 No commit or push. Stop for researcher review; no other hotspot work.
+
+## Fixed-frame geographic zoom revision (latest)
+
+Baseline: local milestone commit c2110f5 already existed before this revision.
+Pre-existing changes preserved: four staged Urduja icon/import files, modified
+project.godot, untracked Limahong narration/import and marker/import files.
+
+Files modified in this pass:
+- scripts/landmarks/limahong_channel/lch_ext_01.gd
+- scenes/landmarks/limahong_channel/exterior/lch_ext_01.tscn
+- data/landmarks/limahong_channel/lch_ext_01_locator_lingayen.tres
+- data/landmarks/limahong_channel/lch_ext_01_locator_pangapisan.tres
+- data/landmarks/limahong_channel/lch_ext_01_locator_channel.tres
+- tests/lch_ext_01_test.gd
+- docs/lch_ext_01_testing.md
+Files created: none. Original media/imports and the preview scene are unchanged.
+
+Uses the existing lch_ext_01_lingayen.png, lch_ext_01_pangapisan_norte.png and
+lch_ext_01_limahong_channel.png. Their source proportions differ; the DISPLAY frame
+is consistently 4:3. No conversion, permanent crop, distortion, map annotation or
+new geography was introduced. Full geographic subjects remain visible at rest.
+The new ImageArea expands within the inherited visual column. LocatorFrame is
+centered and sized with width = min(parent width, parent height * 4/3), height =
+width * 3/4. A subdued background makes letterboxing part of the stable frame.
+Both image layers share its bounds and center pivot. Captions reserve one text line
+at supported sizes to keep more room for the visual; tests check frame stability.
+
+Tests preserve all earlier input, historical-note, gallery, Sources, speaker, audio,
+missing-media and reset checks. Additional assertions cover fixed 4:3 bounds and
+aspect-fit mode, equal frame rectangles across levels, exact captions, mouse and
+synthetic touch on every locator, both adjacent/direct direction paths, settled
+scale/opacity, rapid final image/caption/button consistency, neutral scale on section
+change and no active animation after reopen. Tweens are advanced deterministically;
+checks do not rely on frame-perfect timing.
+
+Godot 4.7.2 headless and Compatibility rendered tests passed at 1280x720, 960x540
+and 854x480, including the existing 5% inset parent. Rendered images were inspected
+for fit, captions, touch controls and no locator layout jump. OS certificate-store
+warning persists in this environment; no script/resource errors occurred.
+
+Manual F6: open the unchanged lch_ext_01_preview.tscn. Compare 0→1→2 and 2→1→0,
+then direct 0→2 and 2→0. Confirm outgoing scale direction, gently settling incoming
+image, identical frame bounds and the exact matching caption. Rapidly choose
+0→1→2→0→2, switch sections during animation, then close/reopen. Expect the final
+selection to be consistent and fresh open to restore Lingayen, full opacity and
+scale 1.00. Review all three landscape sizes; existing body scrolling is unchanged.
+
+Approved historical text, historical note, gallery, Sources, Close, speaker and
+shared Urduja code are unchanged. No commit or push during this revision. Stop for
+researcher F6 review; no other hotspot work.

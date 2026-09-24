@@ -245,3 +245,23 @@ text = "Next"
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
+
+[node name="ImageArea" type="Control" parent="Main/Margin/Layout/Columns/Visual" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="LocatorFrame" type="Control" parent="Main/Margin/Layout/Columns/Visual/ImageArea"]
+unique_name_in_owner = true
+layout_mode = 0
+clip_contents = true
+mouse_filter = 2
+
+[node name="Background" type="ColorRect" parent="Main/Margin/Layout/Columns/Visual/ImageArea/LocatorFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.10, 0.14, 0.12, 1)

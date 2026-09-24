@@ -4,5 +4,5 @@
 [resource]
 script = ExtResource("1")
 title = "PANGAPISAN NORTE"
-body = "present-day locator"
+body = "barangay locator"
 image = ExtResource("2")

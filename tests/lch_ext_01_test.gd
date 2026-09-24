@@ -11,6 +11,12 @@ func settle() -> void:
 	for i in 5:
 		await process_frame
 
+func finish_locator(panel: Control) -> void:
+	if panel._locator_fade != null and panel._locator_fade.is_valid():
+		panel._locator_fade.pause()
+		panel._locator_fade.custom_step(1.0)
+	await settle()
+
 func key(code: Key, shift: bool = false) -> void:
 	var event := InputEventKey.new()
 	event.keycode = code
@@ -75,6 +81,20 @@ func run() -> void:
 		check(panel.get_node("%Title").get_global_rect().end.x <= speaker.get_global_rect().position.x, "Title/Listen collision")
 		check(panel._locator_index == 0 and panel._media_index == 0, "Locator/media reset")
 		check(panel.get_node("%Image").texture == panel.locator_steps[0].image, "Default Lingayen visual")
+		check(panel.get_node("%Caption").text == "LINGAYEN • municipality locator", "Default exact caption")
+		check(is_equal_approx(panel._locator_frame.size.x / panel._locator_frame.size.y, 4.0 / 3.0), "4:3 locator frame")
+		check(panel._image_area.get_global_rect().grow(1).encloses(panel._locator_frame.get_global_rect()), "Frame fits parent")
+		check(panel.get_node("%Image").stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "Aspect-preserving image fit")
+		var initial_frame: Rect2 = panel._locator_frame.get_global_rect()
+		for locator in 3:
+			await click(panel._locator_buttons[locator])
+			await finish_locator(panel)
+			check(panel._locator_index == locator, "Mouse selects every locator")
+			await touch(panel._locator_buttons[(locator + 1) % 3])
+			await touch(panel._locator_buttons[locator])
+			await finish_locator(panel)
+			check(panel._locator_index == locator, "Touch selects every locator")
+			check(panel._locator_frame.get_global_rect().is_equal_approx(initial_frame), "Frame identical at every level")
 		await click(panel.get_node("%Pangapisan"))
 		check(panel._locator_index == 1, "Locator mouse activation")
 		check(panel.get_node("%Image").texture == panel.locator_steps[1].image, "Pangapisan Norte visual")
@@ -97,35 +117,50 @@ func run() -> void:
 		check(panel._locator_index == 0, "Locator Space")
 		for locator in 3:
 			panel.select_locator(locator)
-			await create_timer(0.23).timeout
+			await finish_locator(panel)
 			check(panel.get_node("%Image").texture == panel.locator_steps[locator].image, "Settled locator visual")
 			check(is_equal_approx(panel.get_node("%Image").self_modulate.a, 1.0) and not panel._outgoing_locator.visible, "Transition settles")
 			if "--capture" in OS.get_cmdline_user_args():
 				await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(OS.get_environment("TEMP") + "/lch_locator_" + str(dimensions.x) + "_" + str(locator) + ".png")
-		panel.select_locator(0)
-		check(panel._outgoing_locator.visible and panel.get_node("%Image").self_modulate.a == 0.0, "Crossfade starts with both visual layers")
-		# Advance deterministically: a slow rendered frame may exceed the full fade.
-		panel._locator_fade.pause()
-		panel._locator_fade.custom_step(0.08)
-		check(panel.get_node("%Image").self_modulate.a > 0.0 and panel.get_node("%Image").self_modulate.a < 1.0, "Crossfade progresses")
+		# Both adjacent steps and direct jumps; deterministic advancement, no frame timing.
+		for pair in [[0, 1], [1, 2], [0, 2], [2, 1], [1, 0], [2, 0]]:
+			panel.select_locator(pair[0])
+			await finish_locator(panel)
+			var frame_before: Rect2 = panel._locator_frame.get_global_rect()
+			panel.select_locator(pair[1])
+			var direction: int = signi(pair[1] - pair[0])
+			check(panel._locator_direction == direction, "Geographic zoom direction")
+			check(panel._outgoing_locator.visible and panel.get_node("%Image").self_modulate.a == 0.0, "Zoom starts with outgoing image")
+			panel._locator_fade.pause()
+			panel._locator_fade.custom_step(0.07)
+			check((panel._outgoing_locator.scale.x > 1.0) == (direction > 0), "Outgoing zoom path")
+			check(panel._locator_frame.get_global_rect().is_equal_approx(frame_before), "No frame jump during zoom")
+			await finish_locator(panel)
+			check(panel._locator_frame.get_global_rect().is_equal_approx(frame_before), "No frame jump after zoom")
+			check(panel.get_node("%Image").scale.is_equal_approx(Vector2.ONE), "Settled zoom scale")
+			check(panel._locator_fade == null and panel.get_node("%Image").self_modulate.a == 1.0, "Settled zoom opacity")
+			check(panel.get_node("%Caption").text == panel.locator_steps[pair[1]].title + " • " + panel.locator_steps[pair[1]].body, "Caption follows selected level")
 		for i in 50:
 			panel.select_locator(i % 3)
-		await create_timer(0.23).timeout
+		await finish_locator(panel)
 		check(panel._locator_index == 1 and panel.get_node("%Image").texture == panel.locator_steps[1].image, "Rapid locator last input wins")
+		check(panel.get_node("%Caption").text == "PANGAPISAN NORTE • barangay locator" and panel._locator_buttons[1].button_pressed, "Rapid caption and button agree")
 		check(not panel._outgoing_locator.visible and is_equal_approx(panel.get_node("%Image").self_modulate.a, 1.0), "Rapid transition settles")
 		panel.select_locator(2)
 		panel.select_concept(1)
-		await create_timer(0.23).timeout
+		await finish_locator(panel)
 		check(panel.get_node("%Image").texture == panel.section_media[1].image and not panel._outgoing_locator.visible, "Section change cancels locator transition")
+		check(panel.get_node("%Image").scale.is_equal_approx(Vector2.ONE), "Other section retains neutral scale")
 		panel.select_concept(0)
 		panel.select_locator(0)
 		panel.close_interaction()
 		await settle()
 		trigger.grab_focus()
 		panel.open_interaction()
-		await create_timer(0.23).timeout
+		await finish_locator(panel)
 		check(panel._locator_index == 0 and panel.get_node("%Image").texture == panel.locator_steps[0].image, "Reopen during locator transition")
+		check(panel.get_node("%Image").scale.is_equal_approx(Vector2.ONE) and panel._locator_fade == null, "Reopen neutral scale and no transition")
 		check(not panel._outgoing_locator.visible and is_equal_approx(panel.get_node("%Image").self_modulate.a, 1.0), "Close clears locator transition")
 		for button in panel._locator_buttons:
 			check(button.size.y >= 56 and button.size.x >= 48, "Locator touch target")
@@ -145,7 +180,7 @@ func run() -> void:
 				check(button.size.y >= 48, "Small target " + name)
 				check(panel.get_global_rect().grow(1).encloses(button.get_global_rect()), "Clipped " + name + " at " + str(dimensions))
 			check(panel.get_node("%Scroll").size.y >= 100, "Information scroll too short")
-			check(panel.get_node("%Image").size.x >= panel.size.x * 0.5, "Visual emphasis")
+			check(panel.get_node("%Visual").size.x >= panel.size.x * 0.5, "Visual region emphasis")
 		check(panel.get_node("%Previous").disabled, "Media first boundary")
 		await click(panel.get_node("%Next"))
 		check(panel._media_index == 1, "Media mouse next")

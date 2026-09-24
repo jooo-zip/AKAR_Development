@@ -21,11 +21,14 @@ signal section_changed(index: int)
 @onready var _locator_buttons: Array[Button] = [%Lingayen, %Pangapisan, %Channel]
 @onready var _previous: Button = %Previous
 @onready var _next: Button = %Next
+@onready var _image_area: Control = %ImageArea
+@onready var _locator_frame: Control = %LocatorFrame
 
 var _locator_index: int = 0
 var _media_index: int = 0
 var _locator_fade: Tween
 var _outgoing_locator: TextureRect
+var _locator_direction: int = 0
 
 
 func _ready() -> void:
@@ -38,18 +41,19 @@ func _ready() -> void:
 	_subtitle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	%NarrationStatus.reparent(%SubtitleRow)
 	$Main/Margin/Layout/Controls.hide()
-	_image.reparent(%Visual)
-	%Visual.move_child(_image, 0)
-	_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_image.reparent(_locator_frame)
+	_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_image.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	_outgoing_locator = TextureRect.new()
 	_outgoing_locator.name = "OutgoingLocator"
 	_outgoing_locator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_outgoing_locator.stretch_mode = _image.stretch_mode
 	_outgoing_locator.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_image.add_child(_outgoing_locator)
+	_outgoing_locator.texture_filter = _image.texture_filter
+	_locator_frame.add_child(_outgoing_locator)
 	_outgoing_locator.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_outgoing_locator.hide()
+	_image_area.resized.connect(_layout_visual_frame)
 	_note_button.pressed.connect(_toggle_note)
 	_note_button.reparent(_information)
 	_information.move_child(_note_button, 2)
@@ -93,6 +97,9 @@ func _render() -> void:
 	_caption.text = media.title if media != null else ""
 	%LocatorSteps.visible = _selected == 0
 	%MediaControls.visible = _selected == 2 and site_media.size() > 1
+	# All three locator captions fit one line at the supported landscape sizes.
+	_caption.custom_minimum_size.y = 26.0 if _selected == 0 else 0.0
+	_layout_visual_frame()
 	if _selected == 0:
 		_render_locator()
 	if _selected == 2:
@@ -118,7 +125,9 @@ func select_locator(index: int) -> void:
 	if index == _locator_index:
 		return
 	var previous_texture := _image.texture
+	var direction := signi(index - _locator_index)
 	_cancel_locator_transition()
+	_locator_direction = direction
 	_locator_index = index
 	_render_locator()
 	if previous_texture != null and _image.texture != null and previous_texture != _image.texture:
@@ -126,10 +135,16 @@ func select_locator(index: int) -> void:
 		_outgoing_locator.modulate.a = 1.0
 		_outgoing_locator.show()
 		_image.self_modulate.a = 0.0
-		_locator_fade = create_tween().set_parallel(true)
+		_image.pivot_offset = _locator_frame.size * 0.5
+		_outgoing_locator.pivot_offset = _image.pivot_offset
+		_image.scale = Vector2.ONE * (1.03 if direction > 0 else 1.01)
+		_locator_fade = create_tween()
 		_locator_fade.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-		_locator_fade.tween_property(_image, "self_modulate:a", 1.0, 0.18)
-		_locator_fade.tween_property(_outgoing_locator, "modulate:a", 0.0, 0.18)
+		# Separate screenshots: suggest depth without claiming a continuous map.
+		_locator_fade.tween_property(_outgoing_locator, "scale", Vector2.ONE * (1.06 if direction > 0 else 0.96), 0.14)
+		_locator_fade.parallel().tween_property(_outgoing_locator, "modulate:a", 0.0, 0.14)
+		_locator_fade.tween_property(_image, "scale", Vector2.ONE, 0.16)
+		_locator_fade.parallel().tween_property(_image, "self_modulate:a", 1.0, 0.16)
 		_locator_fade.finished.connect(_cancel_locator_transition)
 
 
@@ -140,7 +155,7 @@ func _render_locator() -> void:
 			_locator_buttons[i].text = locator_steps[i].title
 	if _locator_index < locator_steps.size():
 		var step := locator_steps[_locator_index]
-		_caption.text = step.title + " · " + step.body
+		_caption.text = step.title + " • " + step.body
 		# Each existing content Resource has its own optional image slot.
 		_image.texture = step.image if step.image != null else section_media[0].image
 		_image.accessibility_name = step.title if step.image != null else "Present-day site-detail fallback"
@@ -153,11 +168,29 @@ func _cancel_locator_transition() -> void:
 	if _locator_fade != null and _locator_fade.is_valid():
 		_locator_fade.kill()
 	_locator_fade = null
+	_locator_direction = 0
 	if is_instance_valid(_image):
 		_image.self_modulate.a = 1.0
+		_image.scale = Vector2.ONE
 	if is_instance_valid(_outgoing_locator):
 		_outgoing_locator.hide()
 		_outgoing_locator.texture = null
+		_outgoing_locator.scale = Vector2.ONE
+		_outgoing_locator.modulate.a = 1.0
+
+
+func _layout_visual_frame() -> void:
+	if not is_node_ready():
+		return
+	_cancel_locator_transition()
+	var available := _image_area.size
+	var frame_size := available
+	if _selected == 0:
+		var width := minf(available.x, available.y * 4.0 / 3.0)
+		frame_size = Vector2(width, width * 3.0 / 4.0)
+	_locator_frame.size = frame_size
+	_locator_frame.position = (available - frame_size) * 0.5
+	_locator_frame.get_node("Background").visible = _selected == 0
 
 
 func close_interaction() -> void:
