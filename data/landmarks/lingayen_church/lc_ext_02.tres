@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_ext_02_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_ext_02_observation.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_02/images/lc_ext_02_main_overview.jpg" id="4_main"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_02/images/lc_ext_02_detail_overall_form.jpg" id="5_form"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_02/images/lc_ext_02_detail_tiered_silhouette.JPG" id="6_tiers"]
+
+[sub_resource type="Resource" id="Overview"]
+script = ExtResource("2")
+observation_id = &"OVERVIEW"
+heading = "Look Closely at the Bell Tower"
+body = "Lingayen Church is distinguished by a tall, tiered bell tower commonly described as pagoda-like. Select a marker to examine its visible form and relationship to the church."
+
+[sub_resource type="Resource" id="OverallForm"]
+script = ExtResource("2")
+observation_id = &"OVERALL_FORM"
+label = "Overall Form"
+heading = "A Tall, Tiered Tower"
+body = "The bell tower rises prominently beside the main church structure. Its form is divided into several visible levels or tiers, giving the tower a strong vertical presence."
+marker_position = Vector2(0.535, 0.59)
+focus_rect = Rect2(0.39, 0.09, 0.29, 0.91)
+detail_image = ExtResource("5_form")
+
+[sub_resource type="Resource" id="TieredSilhouette"]
+script = ExtResource("2")
+observation_id = &"TIERED_SILHOUETTE"
+label = "Tiered Silhouette"
+heading = "A Pagoda-Like Profile"
+body = "The tower's stacked and narrowing form creates a distinctive silhouette commonly described as pagoda-like."
+marker_position = Vector2(0.535, 0.30)
+focus_rect = Rect2(0.415, 0.135, 0.25, 0.435)
+detail_image = ExtResource("6_tiers")
+
+[sub_resource type="Resource" id="TowerAndChurch"]
+script = ExtResource("2")
+observation_id = &"TOWER_AND_CHURCH"
+label = "Tower & Church"
+heading = "Part of the Church's Present Form"
+body = "The tower stands as a prominent part of the church's exterior composition. Because Lingayen Church experienced major wartime damage and later reconstruction, the present structure reflects different periods of architectural development."
+marker_position = Vector2(0.355, 0.83)
+focus_rect = Rect2(0.04, 0.64, 0.67, 0.36)
+detail_crop = Rect2(0.04, 0.64, 0.67, 0.36)
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "LC-EXT-02"
+title = "THE PAGODA-LIKE BELL TOWER"
+subtitle = "Lingayen Church"
+category = "Exterior Architectural Observation"
+prompt = "Select a marker on the tower."
+illustration = ExtResource("4_main")
+illustration_alt_text = "Present-day photograph of the bell tower and adjoining Lingayen Church"
+image_caption = "Lingayen Church bell tower — present-day view"
+image_credit = "PHOTO: AKAR Research Team, 2026"
+learning_takeaway = "The bell tower's tiered, pagoda-like form is one of the most recognizable features of Lingayen Church."
+source_credit = "Historical source details pending researcher input."
+concepts = Array[ExtResource("3")]([SubResource("Overview"), SubResource("OverallForm"), SubResource("TieredSilhouette"), SubResource("TowerAndChurch")])
