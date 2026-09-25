@@ -1,0 +1,154 @@
+[gd_resource type="Resource" script_class="LCINT02Content" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_int_02_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_int_02_milestone_content.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_01/images/lc_ext_01_exterior_current.jpg" id="3"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_guerrero_portrait.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_sheehan_portrait.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_03/images/lc_ext_03_church_postwar_damage.jpg" id="6"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_madriaga_portrait.png" id="7"]
+
+[sub_resource type="Resource" id="Early"]
+script = ExtResource("2")
+milestone_id = &"early_mission"
+year_short = "1500s"
+date_display = "16th Century"
+era_id = &"missionary_foundations"
+era_display = "Missionary Foundations"
+title = "Early Missionary Activity"
+context_label = "EARLY CATHOLIC MISSION"
+change_label = "AUGUSTINIAN MISSIONARIES"
+result_label = "LATER DOMINICAN ADMINISTRATION"
+explanation = "Catholic missionary activity began in Lingayen during the 16th century through Augustinian missionaries. The mission was later administered by the Dominicans."
+source_basis = "Archdiocese of Lingayen-Dagupan; Epiphany parish history"
+show_historical_note = true
+historical_note_title = "Historical Note"
+historical_note_body = "1710 is traditionally associated with the historic church structure, but it should not be treated as a confirmed parish founding date."
+
+[sub_resource type="Resource" id="Transition"]
+script = ExtResource("2")
+milestone_id = &"transition_1898"
+year_short = "1898"
+date_display = "1898"
+era_id = &"missionary_foundations"
+era_display = "Missionary Foundations"
+title = "Transition in Parish Administration"
+context_label = "DOMINICAN ADMINISTRATION"
+change_label = "TRANSITION TOWARD"
+result_label = "FILIPINO DIOCESAN CLERGY"
+result_connector = "none"
+explanation = "Dominican administration came to an end around the close of Spanish rule, and the parish later came under Filipino diocesan clergy."
+source_basis = "Epiphany of Our Lord Parish historical account"
+
+[sub_resource type="Resource" id="Cathedral"]
+script = ExtResource("2")
+milestone_id = &"cathedral_1928"
+year_short = "1928"
+date_display = "1928"
+era_id = &"cathedral_development"
+era_display = "Cathedral Development"
+title = "Cathedral and Episcopal Seat"
+context_label = "PARISH CHURCH"
+change_label = "CATHEDRAL"
+result_label = "EPISCOPAL SEAT"
+result_connector = "plus"
+explanation = "On May 19, 1928, the Diocese of Lingayen was established, and Lingayen Church became its cathedral and episcopal seat."
+media_mode = &"CONTEXTUAL_PORTRAIT"
+media = ExtResource("4")
+media_caption = "Bishop César María Guerrero became the first Bishop of Lingayen."
+media_credit = "SOURCE: Lingayen: Memories of Times Past (2021), p. 16."
+source_basis = "Archdiocese of Lingayen-Dagupan — historical materials and The Archbishops"
+
+[sub_resource type="Resource" id="Columban"]
+script = ExtResource("2")
+milestone_id = &"columban_1933"
+year_short = "1933"
+date_display = "1933"
+era_id = &"cathedral_development"
+era_display = "Cathedral Development"
+title = "Columban Missionary Service Begins"
+context_label = "PARISH ADMINISTRATION"
+change_label = "COLUMBAN MISSIONARY\nSERVICE BEGINS"
+explanation = "Columban missionaries began serving the cathedral parish in 1933, supporting pastoral, educational, and community work."
+media_mode = &"CONTEXTUAL_PORTRAIT"
+media = ExtResource("5")
+media_caption = "Father Samuel Sheehan is identified in parish history as the first Columban priest to arrive in Lingayen in 1933."
+media_credit = "IMAGE SOURCE: Missionary Society of St. Columban — Philippines"
+source_basis = "Epiphany of Our Lord Parish historical account"
+rights_status = "Source/identity verified by the research team. Reuse/permission status remains subject to project documentation."
+
+[sub_resource type="Resource" id="Wartime"]
+script = ExtResource("2")
+milestone_id = &"wartime_1945"
+year_short = "1945"
+date_display = "1945"
+era_id = &"war_and_change"
+era_display = "War & Institutional Change"
+title = "Wartime Destruction"
+context_label = "PREWAR CHURCH"
+change_label = "1945 WARTIME DAMAGE"
+explanation = "During the liberation of Lingayen on January 9, 1945, the bishop's residence was greatly damaged, the church was partially destroyed, and old church bells fell."
+media_mode = &"DOCUMENTARY_PHOTO"
+media = ExtResource("6")
+media_caption = "Lingayen Church showing wartime/postwar damage."
+media_credit = "SOURCE: Lingayen: Memories of Times Past (2021), p. 20."
+source_basis = "Epiphany of Our Lord Parish historical account; Lingayen: Memories of Times Past (2021), p. 20"
+
+[sub_resource type="Resource" id="CoCathedral"]
+script = ExtResource("2")
+milestone_id = &"co_cathedral_1954"
+year_short = "1954"
+date_display = "1954"
+era_id = &"war_and_change"
+era_display = "War & Institutional Change"
+title = "Co-Cathedral Transition"
+context_label = "EPISCOPAL SEAT\nIN LINGAYEN"
+change_label = "SEAT TRANSFERRED\nTO DAGUPAN"
+result_label = "LINGAYEN REMAINS\nCO-CATHEDRAL"
+result_connector = "none"
+explanation = "In 1954, the episcopal seat was transferred to Dagupan, while Lingayen retained its historical role as a co-cathedral."
+source_basis = "Archdiocese of Lingayen-Dagupan — historical materials; Epiphany of Our Lord Parish historical account"
+
+[sub_resource type="Resource" id="Archdiocese"]
+script = ExtResource("2")
+milestone_id = &"archdiocese_1963"
+year_short = "1963"
+date_display = "1963"
+era_id = &"continuing_leadership"
+era_display = "Continuing Leadership"
+title = "Metropolitan Archdiocese"
+context_label = "DIOCESE OF\nLINGAYEN-DAGUPAN"
+change_label = "METROPOLITAN\nARCHDIOCESE"
+explanation = "On February 16, 1963, Lingayen-Dagupan became a metropolitan archdiocese."
+media_mode = &"CONTEXTUAL_PORTRAIT"
+media = ExtResource("7")
+media_caption = "Mariano A. Madriaga became the first Metropolitan Archbishop of Lingayen-Dagupan."
+media_credit = "SOURCE: Lingayen: Memories of Times Past (2021), p. 17."
+source_basis = "Archdiocese of Lingayen-Dagupan — historical materials and The Archbishops"
+
+[sub_resource type="Resource" id="Leadership"]
+script = ExtResource("2")
+milestone_id = &"leadership_1981"
+year_short = "1981"
+date_display = "1981"
+era_id = &"continuing_leadership"
+era_display = "Continuing Leadership"
+title = "Filipino Diocesan Leadership Continues"
+context_label = "COLUMBAN ADMINISTRATION"
+change_label = "FILIPINO DIOCESAN\nLEADERSHIP CONTINUES"
+explanation = "In 1981, the Columban Fathers concluded their parish administration, and Filipino diocesan priests continued the ministry."
+source_basis = "Epiphany of Our Lord Parish historical account"
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "LC-INT-02"
+title = "Lingayen Church Through Time"
+subtitle = "Lingayen Church"
+prompt = "Select a point in time to see how Lingayen Church changed."
+overview_heading = "A Church Across Changing Times"
+overview_body = "From its missionary beginnings to its role as a co-cathedral, Lingayen Church passed through major periods of religious, institutional, and wartime change."
+overview_media = ExtResource("3")
+overview_media_credit = "PHOTO: AKAR Research Team, 2026"
+takeaway = "Lingayen Church developed across missionary, cathedral, wartime, and co-cathedral periods while continuing to serve the religious community of Lingayen."
+milestones = Array[ExtResource("2")]([SubResource("Early"), SubResource("Transition"), SubResource("Cathedral"), SubResource("Columban"), SubResource("Wartime"), SubResource("CoCathedral"), SubResource("Archdiocese"), SubResource("Leadership")])
+sources_text = "Archdiocese of Lingayen-Dagupan\nHistorical and evangelization/history materials\nThe Archbishops\n\nEpiphany of Our Lord Parish, Lingayen\nA Brief History of the Epiphany of Our Lord Parish\n\nLingayen: Memories of Times Past (2021)\nGuerrero portrait: p. 16\nMadriaga portrait: p. 17\nWartime/postwar church photograph: p. 20\n\nMissionary Society of St. Columban — Philippines\nSamuel Sheehan portrait/image source\n\nPresent-day exterior photograph: AKAR Research Team, 2026\n\nFull bibliographic details for historical/evangelization materials remain pending researcher documentation."
