@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_ext_03_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_ext_03_story_point.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_03/images/lc_ext_03_bells_overview.jpg.JPG" id="4_overview"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_03/images/lc_ext_03_bell_display_detail.jpg.JPG" id="5_bells"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_03/images/lc_ext_03_church_postwar_damage.jpg" id="6_damage"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_03/images/lc_ext_03_book_bell_fell_crop.png" id="7_fell"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_03/images/lc_ext_03_book_bells_display_crop.png" id="8_display"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_01/images/lc_ext_01_exterior_current.jpg" id="9_present"]
+
+[sub_resource type="Resource" id="Overview"]
+script = ExtResource("2")
+story_id = &"OVERVIEW"
+heading = "A Material Link to 1945"
+body = "Historical accounts record that Lingayen Church was partially destroyed during the liberation of Lingayen in 1945 and that old church bells fell during the destruction. Explore the three story points to understand how the bells connect the church’s earlier history, the wartime event, and its heritage today."
+main_image = ExtResource("4_overview")
+main_caption = "Historic bells preserved on the church grounds today."
+main_credit = "PHOTO: AKAR Research Team, 2026"
+
+[sub_resource type="Resource" id="HistoricBells"]
+script = ExtResource("2")
+story_id = &"HISTORIC_BELLS"
+label = "HISTORIC BELLS"
+compact_label = "BELLS"
+heading = "Bells of the Earlier Church"
+body = "Old church bells formed part of Lingayen Church’s earlier religious life. Parish historical accounts record that bells were present when the church was damaged during the liberation of Lingayen in 1945."
+main_image = ExtResource("5_bells")
+main_caption = "Historic bells displayed on the church grounds."
+main_credit = "PHOTO: AKAR Research Team, 2026"
+support_image = ExtResource("8_display")
+support_caption = "Book source showing the historic bells on display."
+support_credit = "SOURCE: Lingayen: Memories of Times Past (2021), p. 30."
+
+[sub_resource type="Resource" id="Wartime1945"]
+script = ExtResource("2")
+story_id = &"WARTIME_1945"
+label = "JANUARY 9, 1945"
+compact_label = "1945"
+heading = "Wartime Destruction"
+body = "During the liberation of Lingayen on January 9, 1945, bombing greatly damaged the bishop’s residence and partially destroyed the church. Historical accounts also record that old church bells fell during the destruction."
+main_image = ExtResource("6_damage")
+main_caption = "Lingayen Church showing wartime/postwar damage."
+main_credit = "SOURCE: Lingayen: Memories of Times Past (2021), p. 20."
+support_image = ExtResource("7_fell")
+support_caption = "Book source describing the large church bell that fell from the belfry."
+support_credit = "SOURCE: Lingayen: Memories of Times Past (2021), p. 30."
+
+[sub_resource type="Resource" id="HeritageToday"]
+script = ExtResource("2")
+story_id = &"HERITAGE_TODAY"
+label = "HERITAGE TODAY"
+compact_label = "TODAY"
+heading = "What the Bells Tell Us Today"
+body = "Historic bells preserved at Lingayen Church connect visitors with the parish’s earlier history and its wartime story. Project sources record that old bells fell during the 1945 destruction, but the exact identity and dates of the bells currently displayed still require historical confirmation."
+main_image = ExtResource("4_overview")
+main_caption = "Historic bells preserved on the church grounds today."
+main_credit = "PHOTO: AKAR Research Team, 2026"
+historical_note = "The exact identity and dates of the currently displayed bells remain subject to historical confirmation."
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "LC-EXT-03"
+title = "HISTORIC BELLS AND THE 1945 DESTRUCTION"
+subtitle = "Lingayen Church"
+category = "Exterior historical-material heritage interpretation"
+prompt = "Select a story point."
+learning_takeaway = "The story of Lingayen Church’s bells provides a tangible link to the wartime destruction of 1945."
+source_credit = "Arcinue, Arabela Ventenilla (Ed.), & Sicam, Paulynn Paredes. (2021). Lingayen: Memories of Times Past. Lingayen, Pangasinan: Arabela Ventenilla Arcinue (Self-published).\n\nChurch showing wartime/postwar damage: p. 20.\nDocumentary bell images: p. 30."
+present_day_image = ExtResource("9_present")
+present_day_caption = "Lingayen Church at present."
+present_day_credit = "PHOTO: AKAR Research Team, 2026"
+concepts = Array[ExtResource("3")]([SubResource("Overview"), SubResource("HistoricBells"), SubResource("Wartime1945"), SubResource("HeritageToday")])
