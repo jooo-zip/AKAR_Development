@@ -1,0 +1,88 @@
+[gd_resource type="Resource" script_class="LCINT01Content" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_int_01_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_int_01_person_content.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_guerrero_portrait.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_madriaga_portrait.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_sheehan_portrait.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_feeny_portrait.png" id="6"]
+
+[sub_resource type="Resource" id="Guerrero"]
+script = ExtResource("2")
+person_id = &"guerrero"
+display_name = "Bishop César María Guerrero"
+short_role = "First Bishop of Lingayen"
+compact_display_name = "Bishop Guerrero"
+compact_role = "First Bishop"
+detail_heading = "Establishing Episcopal Leadership"
+body = "César María Guerrero became the first Bishop of Lingayen. He was consecrated on May 24, 1929 and served as bishop until December 16, 1937."
+parish_connection = "His episcopate belongs to the period when Lingayen Church served as the cathedral and episcopal center of the Diocese of Lingayen."
+compact_source_line = "Source: Archdiocese of Lingayen-Dagupan · Portrait: Lingayen: Memories of Times Past (2021), p. 16"
+primary_anchor = &"1929"
+portrait = ExtResource("3")
+image_credit = "SOURCE: Lingayen: Memories of Times Past (2021), p. 16."
+source_basis = "Archdiocese of Lingayen-Dagupan"
+
+[sub_resource type="Resource" id="Madriaga"]
+script = ExtResource("2")
+person_id = &"madriaga"
+display_name = "Archbishop Mariano A. Madriaga"
+short_role = "Wartime & Postwar Leadership"
+compact_display_name = "Archbishop Madriaga"
+compact_role = "War & postwar"
+detail_heading = "Leadership Through War and Reconstruction"
+body = "Mariano A. Madriaga led the jurisdiction during the Second World War and postwar period. In 1963, he became the first Metropolitan Archbishop of Lingayen-Dagupan."
+parish_connection = "His leadership connects the church's wartime recovery with the later development of the archdiocese."
+compact_source_line = "Source: Archdiocese of Lingayen-Dagupan · Portrait: Lingayen: Memories of Times Past (2021), p. 17"
+primary_anchor = &"WAR / POSTWAR"
+secondary_anchor = &"1963"
+portrait = ExtResource("4")
+image_credit = "SOURCE: Lingayen: Memories of Times Past (2021), p. 17."
+source_basis = "Archdiocese of Lingayen-Dagupan"
+
+[sub_resource type="Resource" id="Sheehan"]
+script = ExtResource("2")
+person_id = &"sheehan"
+display_name = "Father Samuel Sheehan"
+short_role = "Columban Missionary Service"
+compact_display_name = "Father Sheehan"
+compact_role = "Columban mission"
+detail_heading = "Beginning the Columban Mission"
+body = "Father Samuel Sheehan was the first Columban priest identified as arriving in Lingayen in 1933 and helped coordinate the early Columban mission."
+parish_connection = "His arrival marked the beginning of the Columban missionary presence in the parish."
+compact_source_line = "Source: Epiphany of Our Lord Parish history · Image: Missionary Society of St. Columban — Philippines"
+primary_anchor = &"1933"
+portrait = ExtResource("5")
+image_credit = "IMAGE SOURCE: Missionary Society of St. Columban — Philippines"
+source_basis = "Epiphany of Our Lord Parish history"
+rights_status = "Source/identity verified by the research team. Reuse/permission status remains subject to project documentation."
+
+[sub_resource type="Resource" id="Feeny"]
+script = ExtResource("2")
+person_id = &"feeny"
+display_name = "Father Dermot Feeny"
+short_role = "Wartime Service & Recovery"
+compact_display_name = "Father Feeny"
+compact_role = "War & recovery"
+detail_heading = "Serving Through War and Recovery"
+body = "Father Dermot Feeny served as parish priest during the wartime period and was associated with postwar reconstruction efforts."
+parish_connection = "His parish service connects him with the church's wartime experience and the recovery that followed."
+compact_source_line = "Source: Epiphany of Our Lord Parish history · Image: Missionary Society of St. Columban — Philippines"
+primary_anchor = &"WAR / POSTWAR"
+portrait = ExtResource("6")
+image_credit = "IMAGE SOURCE: Missionary Society of St. Columban — Philippines"
+source_basis = "Epiphany of Our Lord Parish history"
+internal_validation_note = "Surname spelling should be reconfirmed using parish or Columban records."
+rights_status = "Source/identity verified by the research team. Reuse/permission status remains subject to project documentation."
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "LC-INT-01"
+title = "People Who Shaped the Parish"
+subtitle = "Lingayen Church"
+prompt = "Select a portrait to discover how each person was connected with Lingayen Church."
+overview_heading = "People Across the Parish's History"
+overview_body = "Bishops and missionaries helped guide Lingayen Church through major periods of cathedral leadership, missionary service, war, and postwar recovery."
+takeaway = "Lingayen Church's history was shaped by bishops and missionaries who guided the parish through major periods of change."
+people = Array[ExtResource("2")]([SubResource("Guerrero"), SubResource("Madriaga"), SubResource("Sheehan"), SubResource("Feeny")])
+sources_text = "Archdiocese of Lingayen-Dagupan\nThe Archbishops\n\nEpiphany of Our Lord Parish, Lingayen\nA Brief History of the Epiphany of Our Lord Parish\n\nLingayen: Memories of Times Past (2021)\nGuerrero portrait: p. 16\nMadriaga portrait: p. 17\n\nMissionary Society of St. Columban — Philippines\nSamuel Sheehan portrait/image source\nDermot Feeny portrait/image source"
