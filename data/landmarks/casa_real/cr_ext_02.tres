@@ -1,0 +1,65 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_ext_02_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_ext_02_detail.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/cr_ext_01_facade.png" id="facade"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/architecture/cr_ext_02_masonry.jpg" id="masonry"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/architecture/cr_ext_02_balcony.png" id="balcony"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/architecture/cr_ext_02_piedra_china.jpg" id="piedra"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/casa_real/audio/cr_ext_02_narration.ogg" id="audio"]
+
+[sub_resource type="Resource" id="Overview"]
+script = ExtResource("2")
+heading = "Spanish Colonial Architecture with Georgian Influence"
+body = "Casa Real is a two-storey stone-and-brick masonry structure. Among its documented architectural features are its thick masonry walls, wooden balcony, and piedra china staircase."
+image = ExtResource("facade")
+caption = "Casa Real — Full Façade"
+image_credit = "Province of Pangasinan — Official Website\nLGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8\nhttps://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/"
+
+[sub_resource type="Resource" id="Masonry"]
+script = ExtResource("2")
+selector_label = "MASONRY WALLS"
+compact_label = "MASONRY"
+key_label = "ADOBE · BRICK · STONE"
+heading = "Thick Masonry Walls"
+body = "Casa Real's thick adobe and brick walls form part of its stone-and-brick masonry construction and were designed for durability."
+image = ExtResource("masonry")
+caption = "Masonry Detail"
+image_credit = "AKAR Research Team"
+
+[sub_resource type="Resource" id="Balcony"]
+script = ExtResource("2")
+selector_label = "WOODEN BALCONY"
+compact_label = "BALCONY"
+key_label = "FAÇADE DETAIL"
+heading = "Wooden Balcony"
+body = "The wooden balcony is one of Casa Real's documented architectural features and is a prominent exterior element of the building."
+image = ExtResource("balcony")
+caption = "Wooden Balcony"
+image_credit = "Benjie Layug / B.L.A.S.T.\nCasa Real (Lingayen, Pangasinan)\nhttps://benjielayug.com/2023/09/casa-real-lingayen-pangasinan.html"
+
+[sub_resource type="Resource" id="Piedra"]
+script = ExtResource("2")
+selector_label = "PIEDRA CHINA STAIRCASE"
+compact_label = "PIEDRA CHINA"
+key_label = "GRANITE STAIRCASE"
+heading = "Piedra China Staircase"
+body = "Casa Real includes a piedra china staircase, a granite staircase that forms part of the building's documented architectural character."
+image = ExtResource("piedra")
+caption = "Piedra China Staircase"
+image_credit = "AKAR Research Team"
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "CR-EXT-02"
+title = "ARCHITECTURE OF THE ROYAL HOUSE"
+prompt = "Spanish Colonial Architecture with Georgian Influence"
+illustration = ExtResource("facade")
+illustration_alt_text = "Casa Real — Full Façade"
+narration_stream = ExtResource("audio")
+narration_transcript = "Casa Real combines Spanish colonial architecture with Georgian influence. Its architectural character includes thick masonry walls designed for durability, a prominent wooden balcony, and a piedra china staircase made of granite. These features are important details to observe when examining the historic structure."
+learning_takeaway = "Casa Real's architecture combines durable masonry construction with distinctive features such as its wooden balcony and piedra china staircase."
+source_credit = "Architectural interpretation\nResearcher-approved CR-EXT-02 content, Phases 1–4. Complete bibliographic citations for the architectural classification, masonry construction and durability remain pending researcher supply.\n\nResearcher-supplied reference\nBenjie Layug / B.L.A.S.T. — Casa Real (Lingayen, Pangasinan)\nhttps://benjielayug.com/2023/09/casa-real-lingayen-pangasinan.html\nThis reference documents the balcony and piedra china granite staircase."
+overview = SubResource("Overview")
+concepts = Array[ExtResource("3")]([SubResource("Masonry"), SubResource("Balcony"), SubResource("Piedra")])
