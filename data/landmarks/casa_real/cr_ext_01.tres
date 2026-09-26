@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+
+[ext_resource type="Script" path="res://scripts/components/conference_room_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_ext_01_identity.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/cr_ext_01_facade.png" id="3"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/casa_real/audio/cr_ext_01_narration.ogg" id="4"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="5"]
+
+[sub_resource type="Resource" id="Royal"]
+script = ExtResource("2")
+selector_label = "ROYAL HOUSE"
+key_label = "1840"
+heading = "The Royal House"
+body = "Casa Real, meaning “Royal House,” was constructed in 1840 during the Spanish colonial period."
+
+[sub_resource type="Resource" id="Government"]
+script = ExtResource("2")
+selector_label = "GOVERNMENT CENTER"
+key_label = "PROVINCIAL GOVERNMENT"
+heading = "Residence and Office of the Alcalde Mayor"
+body = "Casa Real served as the residence and office of the Alcalde Mayor and supported Pangasinan's provincial administrative and judicial functions."
+
+[sub_resource type="Resource" id="Banaan"]
+script = ExtResource("2")
+selector_label = "BANÁAN TODAY"
+key_label = "PRESENT DAY"
+heading = "Banáan Pangasinan Provincial Museum"
+body = "Today, the restored Casa Real houses the Banáan Pangasinan Provincial Museum, continuing its public role through heritage preservation and education."
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "CR-EXT-01"
+title = "MEET CASA REAL"
+prompt = "The Royal House of Pangasinan"
+illustration = ExtResource("3")
+illustration_alt_text = "Casa Real façade photograph"
+narration_stream = ExtResource("4")
+narration_transcript = "Casa Real, meaning “Royal House,” was constructed in 1840. It served as the residence and office of the Alcalde Mayor and supported the administration and judicial functions of Pangasinan during the Spanish colonial period. Today, this historic building is home to the Banáan Pangasinan Provincial Museum."
+learning_takeaway = "Casa Real's public role evolved from provincial government to heritage preservation and education."
+source_credit = "Historical citations\nResearcher-approved CR-EXT-01 interpretation. Bibliographic citations for the Royal House meaning, 1840 construction, Alcalde Mayor, administrative and judicial functions, and present museum role are pending researcher supply.\n\nFaçade photograph source (supplied by the researcher)\nProvince of Pangasinan — Official Website\nLGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8\nhttps://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/"
+concepts = Array[ExtResource("5")]([SubResource("Royal"), SubResource("Government"), SubResource("Banaan")])
