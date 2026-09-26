@@ -1,0 +1,123 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_ext_03_content.gd" id="content"]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_ext_03_role.gd" id="role"]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_ext_03_photo.gd" id="photo"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="entry"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/cr_ext_01_facade.png" id="facade"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_government_center.jpg.jpg" id="government"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_public_service.jpg" id="public"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_public_service_secondary.jpg" id="secondary"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_historical_marker.jpg" id="marker"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_cosme_damage.JPG" id="cosme"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_heritage_museum.jpg" id="restored"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_banaan_identity.jpg" id="banaan"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/casa_real/audio/cr_ext_03_narration.ogg" id="audio"]
+
+[sub_resource type="Resource" id="Photo_facade"]
+script = ExtResource("photo")
+texture = ExtResource("facade")
+caption = "Casa Real — Full Façade"
+source_label = "Province of Pangasinan — Official Website\nLGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8\nhttps://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/"
+
+[sub_resource type="Resource" id="Photo_government"]
+script = ExtResource("photo")
+texture = ExtResource("government")
+caption = "Provincial Government Center"
+source_label = "Arabela Ventenilla Arcinue. Lingayen: Memories of Times Past. Quezon City: Studio Graphics Corporation, 2021. p. 99."
+
+[sub_resource type="Resource" id="Photo_public"]
+script = ExtResource("photo")
+texture = ExtResource("public")
+caption = "Continued Public Service"
+source_label = "Arabela Ventenilla Arcinue. Lingayen: Memories of Times Past. Quezon City: Studio Graphics Corporation, 2021. p. 97."
+
+[sub_resource type="Resource" id="Photo_secondary"]
+script = ExtResource("photo")
+texture = ExtResource("secondary")
+caption = "Continued Public Service — Additional View"
+source_label = "Arabela Ventenilla Arcinue. Lingayen: Memories of Times Past. Quezon City: Studio Graphics Corporation, 2021. p. 97."
+
+[sub_resource type="Resource" id="Photo_marker"]
+script = ExtResource("photo")
+texture = ExtResource("marker")
+caption = "National Historical Landmark Recognition"
+source_label = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
+
+[sub_resource type="Resource" id="Photo_cosme"]
+script = ExtResource("photo")
+texture = ExtResource("cosme")
+caption = "Typhoon Cosme Damage — 2008"
+source_label = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
+
+[sub_resource type="Resource" id="Photo_restored"]
+script = ExtResource("photo")
+texture = ExtResource("restored")
+caption = "Restored Casa Real"
+source_label = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
+
+[sub_resource type="Resource" id="Photo_banaan"]
+script = ExtResource("photo")
+texture = ExtResource("banaan")
+caption = "Banáan Pangasinan Provincial Museum"
+source_label = "Banáan Pangasinan Provincial Museum official website\nhttps://banaan.seepangasinan.com/"
+
+[sub_resource type="Resource" id="Overview"]
+script = ExtResource("role")
+period = ""
+selector_label = ""
+compact_label = ""
+heading = "ONE BUILDING, CHANGING ROLES"
+tagline = "HOW DID CASA REAL'S ROLE CHANGE?"
+body = "Casa Real has served Pangasinan in different ways across generations. Select a period to see how its public role changed."
+milestone_dates = PackedStringArray()
+milestone_labels = PackedStringArray()
+photos = Array[ExtResource("photo")]([SubResource("Photo_facade")])
+
+[sub_resource type="Resource" id="Government"]
+script = ExtResource("role")
+period = "1840–1918"
+selector_label = "1840–1918\nGOVERNMENT"
+compact_label = "1840–18"
+heading = "PROVINCIAL GOVERNMENT CENTER"
+tagline = "GOVERNMENT · ADMINISTRATION · JUDICIARY"
+body = "Constructed in 1840, Casa Real served as Pangasinan's provincial government center, housing the residence and office of the Alcalde Mayor and supporting administrative and judicial functions."
+milestone_dates = PackedStringArray("1840", "1898", "1901", "1918")
+milestone_labels = PackedStringArray("CONSTRUCTED / GOVERNMENT CENTER", "REVOLUTIONARY ATTACK", "TAFT COMMISSION RECEPTION", "END AS PRINCIPAL PROVINCIAL CAPITOL")
+photos = Array[ExtResource("photo")]([SubResource("Photo_government")])
+
+[sub_resource type="Resource" id="Public"]
+script = ExtResource("role")
+period = "1919–1996"
+selector_label = "1919–1996\nPUBLIC SERVICE"
+compact_label = "1919–96"
+heading = "CONTINUED PUBLIC SERVICE"
+tagline = "SCHOOL · COURTHOUSE · GOVERNMENT USE"
+body = "After the new Pangasinan Provincial Capitol opened in 1919, Casa Real continued serving the public in different ways. It was used as a school, courthouse, and government office, including wartime office use before returning to court functions after the war."
+milestone_dates = PackedStringArray("1919", "1942–1945", "POSTWAR–1996")
+milestone_labels = PackedStringArray("CHANGING PUBLIC USES", "WARTIME OFFICE", "COURT USE")
+photos = Array[ExtResource("photo")]([SubResource("Photo_public"), SubResource("Photo_secondary")])
+
+[sub_resource type="Resource" id="Heritage"]
+script = ExtResource("role")
+period = "2002–PRESENT"
+selector_label = "2002–NOW\nHERITAGE & MUSEUM"
+compact_label = "2002–NOW"
+heading = "HERITAGE & MUSEUM"
+tagline = "RECOGNITION · PRESERVATION · EDUCATION"
+body = "Casa Real entered a new chapter centered on heritage preservation. After historical recognition, typhoon damage, and restoration, the building formally opened in 2023 as the Banáan Pangasinan Provincial Museum."
+milestone_dates = PackedStringArray("2002", "2008", "2015", "2021", "2023")
+milestone_labels = PackedStringArray("NATIONAL HISTORICAL LANDMARK", "TYPHOON COSME DAMAGE", "RESTORATION BEGAN", "FORMAL TURNOVER", "BANÁAN MUSEUM")
+photos = Array[ExtResource("photo")]([SubResource("Photo_marker"), SubResource("Photo_cosme"), SubResource("Photo_restored"), SubResource("Photo_banaan")])
+
+[resource]
+script = ExtResource("content")
+hotspot_id = "CR-EXT-03"
+title = "CASA REAL THROUGH CHANGING ROLES"
+prompt = "One historic building, different public purposes"
+illustration = ExtResource("facade")
+narration_stream = ExtResource("audio")
+narration_transcript = "Casa Real has served Pangasinan in different ways across generations. It began as the province's government and judicial center. After the new Capitol opened, the building continued serving the public as a school, courthouse, and government office, including wartime and postwar government use. Later, preservation efforts gave Casa Real a new role, and in 2023 it opened as the Banáan Pangasinan Provincial Museum."
+source_credit = "HISTORICAL CONTENT\nResearcher-approved CR-EXT-03 wording and chronology, Phases 1–4: government/judicial role (1840–1918), 1898 attack, 1901 Taft Commission reception, 1918/1919 Capitol transition, public/government uses including wartime and postwar courts (1919–1996), historical recognition (2002), Typhoon Cosme (2008), restoration (2015), turnover (2021), and Banáan opening (2023).\nComplete claim-to-page citations remain pending researcher documentation. Documentary photo credits below are recorded separately and do not substitute for historical claim citations.\n\nDOCUMENTARY MEDIA\nGovernment Center: Arabela Ventenilla Arcinue. Lingayen: Memories of Times Past. Quezon City: Studio Graphics Corporation, 2021. p. 99.\nPublic Service, both views: Arabela Ventenilla Arcinue. Lingayen: Memories of Times Past. Quezon City: Studio Graphics Corporation, 2021. p. 97.\nHistorical marker, Cosme damage, restored Casa Real: National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html\nBanáan identity: Banáan Pangasinan Provincial Museum official website\nhttps://banaan.seepangasinan.com/\nOverview façade: Province of Pangasinan — Official Website\nLGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8\nhttps://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/"
+overview = SubResource("Overview")
+concepts = Array[ExtResource("entry")]([SubResource("Government"), SubResource("Public"), SubResource("Heritage")])

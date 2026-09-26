@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/components/conference_room_interaction.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_ext_03.gd" id="2"]
+[ext_resource type="Resource" path="res://data/landmarks/casa_real/cr_ext_03.tres" id="3"]
+
+[node name="CR_EXT_03" instance=ExtResource("1")]
+script = ExtResource("2")
+content = ExtResource("3")
+
+[node name="DimLayer" type="ColorRect" parent="." index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.3)
+
+[node name="Main" parent="." index="1"]
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
