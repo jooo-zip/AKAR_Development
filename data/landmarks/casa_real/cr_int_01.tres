@@ -1,0 +1,83 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_int_01_content.gd" id="content"]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_int_01_stage.gd" id="stage"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="entry"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/cr_ext_01_facade.png" id="facade"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/transformation/cr_int_01_cosme_damage.png" id="damage"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/transformation/cr_int_01_restored_2022.png" id="after"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_heritage_museum.jpg" id="museum"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_banaan_identity.jpg" id="banaan"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/casa_real/audio/cr_int_01_narration.ogg" id="audio"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/casa_real/audio/cr_int_01_storm_ambience.ogg" id="storm"]
+
+[sub_resource type="Resource" id="Overview"]
+script = ExtResource("stage")
+year = ""
+selector_label = ""
+compact_label = ""
+heading = "A HISTORIC BUILDING, A NEW PURPOSE"
+prompt = "HOW DID CASA REAL BEGIN A NEW CHAPTER?"
+body = "After years of changing public use and deterioration, Casa Real underwent a major preservation effort that transformed the historic structure into the Banáan Pangasinan Provincial Museum."
+helper_text = "SELECT A STAGE OF THE TRANSFORMATION"
+primary_texture = ExtResource("facade")
+primary_caption = "Casa Real — Full Façade"
+media_credit = "Province of Pangasinan — Official Website\nLGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8\nhttps://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/\nPermission / license: Unspecified / pending documentation"
+interaction = 0
+
+[sub_resource type="Resource" id="Damage"]
+script = ExtResource("stage")
+year = "2008"
+selector_label = "2008\nDAMAGE"
+compact_label = "2008\nDAMAGE"
+heading = "TYPHOON COSME DAMAGE"
+body = "After decades of changing use and deterioration, Casa Real suffered severe damage during Typhoon Cosme in 2008."
+primary_texture = ExtResource("damage")
+primary_caption = "DOCUMENTARY PHOTOGRAPH — 2008"
+media_credit = "NorthWatch — “Casa Real coming back to life”\nArticle by Yolanda Sotelo; photographer not identified on the source page.\nhttps://northwatch.wordpress.com/2016/06/18/casa-real-coming-back-to-life/\nPermission / license: Unspecified / pending documentation"
+interaction = 1
+
+[sub_resource type="Resource" id="Restoration"]
+script = ExtResource("stage")
+year = "2015–2021"
+selector_label = "2015–2021\nRESTORATION"
+compact_label = "15–21\nRESTORE"
+heading = "PRESERVING CASA REAL"
+body = "A multi-phase restoration involving national and provincial government institutions sought to preserve Casa Real’s architectural and historical significance. Restoration began in 2015, and the restored structure was formally turned over to the Provincial Government of Pangasinan in 2021."
+primary_texture = ExtResource("damage")
+secondary_texture = ExtResource("after")
+primary_caption = "BEFORE RESTORATION"
+secondary_caption = "AFTER RESTORATION"
+helper_text = "DRAG TO COMPARE"
+media_credit = "BEFORE RESTORATION\nNorthWatch — “Casa Real coming back to life”\nArticle by Yolanda Sotelo; photographer not identified on the source page.\nhttps://northwatch.wordpress.com/2016/06/18/casa-real-coming-back-to-life/\nPermission / license: Unspecified / pending documentation\n\nAFTER RESTORATION\nPatrickroque01 — Wikimedia Commons — 5 December 2022\nhttps://commons.wikimedia.org/wiki/File:Lingayen_Casa_Real_(Poblacion,_Lingayen,_Pangasinan;_12-05-2022).jpg\nCC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0/\nCropped/resized for AKAR presentation. Proportional display resizing only; supplied PNG preserved."
+interaction = 2
+
+[sub_resource type="Resource" id="Museum"]
+script = ExtResource("stage")
+year = "2023"
+selector_label = "2023\nMUSEUM REBIRTH"
+compact_label = "2023\nMUSEUM"
+heading = "A NEW PURPOSE"
+body = "In 2023, Casa Real formally opened as the Banáan Pangasinan Provincial Museum. The restored historic building now serves as a center for education, cultural memory, and Pangasinan identity."
+identity_label = "CASA REAL\nHistoric Government Building\n↓\nBANÁAN PANGASINAN\nPROVINCIAL MUSEUM\n2023"
+primary_texture = ExtResource("museum")
+secondary_texture = ExtResource("banaan")
+primary_caption = "Restored Casa Real"
+secondary_caption = "Banáan Pangasinan Provincial Museum"
+helper_text = "TAP PHOTO TO SEE BANÁAN TODAY"
+secondary_helper = "TAP PHOTO TO RETURN"
+media_credit = "Restored Casa Real\nNational Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html\nPermission / license: Unspecified / pending documentation\n\nBanáan identity\nBanáan Pangasinan Provincial Museum official website\nhttps://banaan.seepangasinan.com/\nPermission / license: Unspecified / pending documentation"
+interaction = 3
+
+[resource]
+script = ExtResource("content")
+hotspot_id = "CR-INT-01"
+title = "FROM ROYAL HOUSE TO PROVINCIAL MUSEUM"
+prompt = "How Casa Real was preserved and given a new purpose"
+illustration = ExtResource("facade")
+narration_stream = ExtResource("audio")
+storm_stream = ExtResource("storm")
+narration_transcript = "Casa Real suffered severe damage during Typhoon Cosme in 2008. Restoration began in 2015 through a multi-agency preservation effort, and the restored building was formally turned over to the Provincial Government of Pangasinan in 2021. In 2023, Casa Real formally opened as the Banáan Pangasinan Provincial Museum, giving the historic structure a new purpose in heritage preservation and public education."
+source_credit = "HISTORICAL CONTENT\nResearcher-approved CR-INT-01 interpretation: Typhoon Cosme damage (2008), restoration beginning (2015), formal turnover (2021), museum opening (2023), and present educational/cultural purpose. Complete claim-to-page citations remain pending researcher documentation.\n\nDOCUMENTARY MEDIA\nDamage / Before Restoration:\nNorthWatch — “Casa Real coming back to life”\nArticle by Yolanda Sotelo; photographer not identified on the source page.\nhttps://northwatch.wordpress.com/2016/06/18/casa-real-coming-back-to-life/\nPermission / license: Unspecified / pending documentation\n\nAfter Restoration:\nPatrickroque01 — Wikimedia Commons — 5 December 2022\nhttps://commons.wikimedia.org/wiki/File:Lingayen_Casa_Real_(Poblacion,_Lingayen,_Pangasinan;_12-05-2022).jpg\nCC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0/\nCropped/resized for AKAR presentation. Proportional display resizing only; supplied PNG preserved.\n\nMuseum Rebirth:\nNational Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html\nPermission / license: Unspecified / pending documentation\n\nBanáan identity:\nBanáan Pangasinan Provincial Museum official website\nhttps://banaan.seepangasinan.com/\nPermission / license: Unspecified / pending documentation\n\nOverview façade:\nProvince of Pangasinan — Official Website\nLGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8\nhttps://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/\nPermission / license: Unspecified / pending documentation\n\nATMOSPHERIC MEDIA\nStorm ambience: researcher-supplied audio. Creator/source and license details beyond researcher supply are not documented. Permission / license: Unspecified / pending documentation.\nThe storm is atmospheric interpretation; the authentic photograph is documentary evidence.\n\nNARRATION\nResearcher-supplied narration. Narrator/creator not identified in repository metadata. Permission / license: Unspecified / pending documentation."
+overview = SubResource("Overview")
+concepts = Array[ExtResource("entry")]([SubResource("Damage"), SubResource("Restoration"), SubResource("Museum")])
