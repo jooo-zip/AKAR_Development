@@ -1,0 +1,212 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_int_02_content.gd" id="content"]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_int_02_gallery.gd" id="gallery"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/casa_real/audio/cr_int_02_narration.ogg" id="audio"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g01.JPG" id="photo_g01"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g01_preview.ogv" id="video_g01"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g02.png" id="photo_g02"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g02_preview.ogv" id="video_g02"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g03.jpg" id="photo_g03"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g03_preview.ogv" id="video_g03"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g04.png" id="photo_g04"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g04_preview.ogv" id="video_g04"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g05a.jpg" id="photo_g05a"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g05a_preview.ogv" id="video_g05a"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g05b.jpg" id="photo_g05b"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g05b_preview.ogv" id="video_g05b"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g06a.png" id="photo_g06a"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g06a_preview.ogv" id="video_g06a"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g06b.jpg" id="photo_g06b"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g06b_preview.ogv" id="video_g06b"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g07.png" id="photo_g07"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g07_preview.ogv" id="video_g07"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g08.jpg" id="photo_g08"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g08_preview.ogv" id="video_g08"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g09.png" id="photo_g09"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g09_preview.ogv" id="video_g09"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g10.png" id="photo_g10"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g10_preview.ogv" id="video_g10"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/galleries/cr_int_02_g11.png" id="photo_g11"]
+[ext_resource type="VideoStream" path="res://assets/landmarks/casa_real/interior/galleries/previews/cr_int_02_g11_preview.ogv" id="video_g11"]
+[sub_resource type="Resource" id="g01"]
+script = ExtResource("gallery")
+gallery_id = "G01"
+display_number = "Gallery 1"
+official_title = "Where Asin and Bolo Embraced"
+principal_group = 1
+preview_texture = ExtResource("photo_g01")
+preview_video = ExtResource("video_g01")
+media_credit = "AKAR Research Team. Project-use approval: confirmed. License unspecified."
+media_source = "Researcher-supplied gallery photograph; AKAR Research Team."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g02"]
+script = ExtResource("gallery")
+gallery_id = "G02"
+display_number = "Gallery 2"
+official_title = "The Shape of Our Homeland"
+principal_group = 2
+preview_texture = ExtResource("photo_g02")
+preview_video = ExtResource("video_g02")
+media_credit = "Daily Tribune. Article author: Roel Hoang Manipon. Photographer not identified in supplied documentation. Project-use approval confirmed by researcher; license/copyright unspecified."
+media_source = "Cultural encounter, historic gathering: Pangasinan opens its first provincial museum. Daily Tribune, 27 November 2023. Article author: Roel Hoang Manipon."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g03"]
+script = ExtResource("gallery")
+gallery_id = "G03"
+display_number = "Gallery 3"
+official_title = "Asin Gallery & Dayat Exhibit"
+principal_group = 3
+preview_texture = ExtResource("photo_g03")
+preview_video = ExtResource("video_g03")
+media_credit = "AKAR Research Team. Project-use approval: confirmed. License unspecified."
+media_source = "Researcher-supplied gallery photograph; AKAR Research Team."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g04"]
+script = ExtResource("gallery")
+gallery_id = "G04"
+display_number = "Gallery 4"
+official_title = "Watered by the Hands of Ama-Gaolay"
+principal_group = 4
+preview_texture = ExtResource("photo_g04")
+preview_video = ExtResource("video_g04")
+media_credit = "Daily Tribune. Article author: Roel Hoang Manipon. Photographer not identified in supplied documentation. Project-use approval confirmed by researcher; license/copyright unspecified."
+media_source = "Cultural encounter, historic gathering: Pangasinan opens its first provincial museum. Daily Tribune, 27 November 2023. Article author: Roel Hoang Manipon."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g05a"]
+script = ExtResource("gallery")
+gallery_id = "G05A"
+display_number = "Gallery 5A"
+official_title = "The Descendants of Apolaqui"
+principal_group = 5
+preview_texture = ExtResource("photo_g05a")
+preview_video = ExtResource("video_g05a")
+media_credit = "AKAR Research Team. Project-use approval: confirmed. License unspecified."
+media_source = "Researcher-supplied gallery photograph; AKAR Research Team."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g05b"]
+script = ExtResource("gallery")
+gallery_id = "G05B"
+display_number = "Gallery 5B"
+official_title = "Desired by the Sea Merchants"
+principal_group = 5
+preview_texture = ExtResource("photo_g05b")
+preview_video = ExtResource("video_g05b")
+media_credit = "TikTok — source account: Tom Ora | Akar ng Pangasinense. Photographer not documented. Project-use approval confirmed by researcher; license/copyright unspecified. Exact post URL not recorded in project documentation."
+media_source = "Tom Ora | Akar ng Pangasinense / TikTok. Researcher-supplied source mapping; exact post URL not recorded."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g06a"]
+script = ExtResource("gallery")
+gallery_id = "G06A"
+display_number = "Gallery 6A"
+official_title = "Patriots and Nation Builders"
+principal_group = 6
+preview_texture = ExtResource("photo_g06a")
+preview_video = ExtResource("video_g06a")
+media_credit = "Daily Tribune. Article author: Roel Hoang Manipon. Photographer not identified in supplied documentation. Project-use approval confirmed by researcher; license/copyright unspecified."
+media_source = "Cultural encounter, historic gathering: Pangasinan opens its first provincial museum. Daily Tribune, 27 November 2023. Article author: Roel Hoang Manipon."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g06b"]
+script = ExtResource("gallery")
+gallery_id = "G06B"
+display_number = "Gallery 6B"
+official_title = "Frontrunner of Modernization"
+principal_group = 6
+preview_texture = ExtResource("photo_g06b")
+preview_video = ExtResource("video_g06b")
+media_credit = "TikTok — source account: Tom Ora | Akar ng Pangasinense. Photographer not documented. Project-use approval confirmed by researcher; license/copyright unspecified. Exact post URL not recorded in project documentation."
+media_source = "Tom Ora | Akar ng Pangasinense / TikTok. Researcher-supplied source mapping; exact post URL not recorded."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g07"]
+script = ExtResource("gallery")
+gallery_id = "G07"
+display_number = "Gallery 7"
+official_title = "Festivals by the Sea and the Fields"
+principal_group = 7
+preview_texture = ExtResource("photo_g07")
+preview_video = ExtResource("video_g07")
+media_credit = "Daily Tribune. Article author: Roel Hoang Manipon. Photographer not identified in supplied documentation. Project-use approval confirmed by researcher; license/copyright unspecified."
+media_source = "Cultural encounter, historic gathering: Pangasinan opens its first provincial museum. Daily Tribune, 27 November 2023. Article author: Roel Hoang Manipon."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g08"]
+script = ExtResource("gallery")
+gallery_id = "G08"
+display_number = "Gallery 8"
+official_title = "Beachhead of Valor"
+principal_group = 8
+preview_texture = ExtResource("photo_g08")
+preview_video = ExtResource("video_g08")
+media_credit = "TikTok — source account: Tom Ora | Akar ng Pangasinense. Photographer not documented. Project-use approval confirmed by researcher; license/copyright unspecified. Exact post URL not recorded in project documentation."
+media_source = "Tom Ora | Akar ng Pangasinense / TikTok. Researcher-supplied source mapping; exact post URL not recorded."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g09"]
+script = ExtResource("gallery")
+gallery_id = "G09"
+display_number = "Gallery 9"
+official_title = "The Pilgrims Who Responded to the Call"
+principal_group = 9
+preview_texture = ExtResource("photo_g09")
+preview_video = ExtResource("video_g09")
+media_credit = "Getaway.PH. Author and photographer: Kenneth M. del Rosario. Project-use approval confirmed by researcher; license/copyright unspecified."
+media_source = "BANÁAN: Pangasinan’s first-ever provincial museum opens to the public. Getaway.PH, 25 September 2023. Kenneth M. del Rosario."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g10"]
+script = ExtResource("gallery")
+gallery_id = "G10"
+display_number = "Gallery 10"
+official_title = "Sung Romances under the Guava Tree"
+principal_group = 10
+preview_texture = ExtResource("photo_g10")
+preview_video = ExtResource("video_g10")
+media_credit = "Daily Tribune. Article author: Roel Hoang Manipon. Photographer not identified in supplied documentation. Project-use approval confirmed by researcher; license/copyright unspecified."
+media_source = "Cultural encounter, historic gathering: Pangasinan opens its first provincial museum. Daily Tribune, 27 November 2023. Article author: Roel Hoang Manipon."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[sub_resource type="Resource" id="g11"]
+script = ExtResource("gallery")
+gallery_id = "G11"
+display_number = "Gallery 11"
+official_title = "Luminaries of Anacbanuas"
+principal_group = 11
+preview_texture = ExtResource("photo_g11")
+preview_video = ExtResource("video_g11")
+media_credit = "Daily Tribune. Article author: Roel Hoang Manipon. Photographer not identified in supplied documentation. Project-use approval confirmed by researcher; license/copyright unspecified."
+media_source = "Cultural encounter, historic gathering: Pangasinan opens its first provincial museum. Daily Tribune, 27 November 2023. Article author: Roel Hoang Manipon."
+video_credit = "AKAR Research Team. Project-use approval confirmed. Individual videographer and license unspecified."
+video_source = "Researcher-supplied documentary gallery-space recording."
+[resource]
+script = ExtResource("content")
+hotspot_id = "CR-INT-02"
+visit_modal_title = "ENTER THE FULL EXPERIENCE AT BANÁAN"
+visit_modal_body = "You’ve seen a glimpse of this gallery in AKAR.\n\nVisit the Banáan Pangasinan Provincial Museum to experience the complete exhibits, artifacts, and curatorial narratives in person."
+reservation_heading = "Online Reservation"
+reservation_label = "banaan.seepangasinan.com/online-reservation/"
+reservation_url = "https://banaan.seepangasinan.com/online-reservation/"
+visitor_info_heading = "Visitor Information"
+visitor_info_label = "banaan.seepangasinan.com/visitor-guidelines/"
+visitor_info_url = "https://banaan.seepangasinan.com/visitor-guidelines/"
+museum_inquiries_heading = "Museum inquiries"
+museum_phone = "(075) 511-9821"
+museum_email = "banaanppm@gmail.com"
+visit_back_label = "BACK"
+title = "DISCOVER BANÁAN"
+subtitle = "Explore the gallery spaces of the Banáan Pangasinan Provincial Museum"
+overview_heading = "EXPLORE BANÁAN MUSEUM"
+overview_body = "Banáan Museum presents the environment, history, traditions, people, creativity, and identity of Pangasinan through 11 principal gallery groupings. Select a gallery to preview its identity, then explore the museum at your own pace."
+invitation = "Visit Banáan Museum to experience the complete exhibition."
+directory_helper = "SWIPE OR TAP A GALLERY TO PREVIEW · DRAG OR USE ← → TO BROWSE"
+learning_takeaway = "Banáan Museum brings different aspects of Pangasinan’s environment, history, people, and cultural identity together within the restored Casa Real."
+narration_transcript = "The Banáan Pangasinan Provincial Museum presents the many stories that shape Pangasinan’s identity. Explore the gallery spaces at your own pace, then visit Banáan Museum to experience the complete exhibits, artifacts, and curatorial narratives."
+source_credit = "GALLERY DIRECTORY\nOfficial Banáan gallery titles supplied and approved by the researcher in the CR-INT-02 Phase 5 specification. 11 principal gallery groupings; 13 selectable entries because Galleries 5 and 6 have A/B subdivisions. A separate directory publication URL was not supplied.\n\nGALLERY PHOTOGRAPHS\nDaily Tribune — Galleries 2, 4, 6A, 7, 10, 11\nCultural encounter, historic gathering: Pangasinan opens its first provincial museum. Daily Tribune, 27 November 2023. Article author: Roel Hoang Manipon.\nDaily Tribune. Article author: Roel Hoang Manipon. Photographer not identified in supplied documentation. Project-use approval confirmed by researcher; license/copyright unspecified.\n\nTikTok — Galleries 5B, 6B, 8\nTikTok — source account: Tom Ora | Akar ng Pangasinense. Photographer not documented. Project-use approval confirmed by researcher; license/copyright unspecified. Exact post URL not recorded in project documentation.\n\nGetaway.PH — Gallery 9\nBANÁAN: Pangasinan’s first-ever provincial museum opens to the public. Getaway.PH, 25 September 2023. Kenneth M. del Rosario.\nGetaway.PH. Author and photographer: Kenneth M. del Rosario. Project-use approval confirmed by researcher; license/copyright unspecified.\n\nAKAR Research Team — Galleries 1, 3, 5A\nAKAR Research Team. Project-use approval: confirmed. License unspecified.\n\nGALLERY GLIMPSE VIDEOS\nAll 13 recordings: AKAR Research Team. Documentary gallery-space recordings. Project-use approval confirmed. Individual videographer and license unspecified. Playback muted; original files preserved.\n\nNARRATION\nAKAR Research Team — approved CR-INT-02 narration. Project-use approval confirmed. Narrator name and license unspecified. No background music added by this component."
+narration_stream = ExtResource("audio")
+galleries = Array[ExtResource("gallery")]([SubResource("g01"), SubResource("g02"), SubResource("g03"), SubResource("g04"), SubResource("g05a"), SubResource("g05b"), SubResource("g06a"), SubResource("g06b"), SubResource("g07"), SubResource("g08"), SubResource("g09"), SubResource("g10"), SubResource("g11")])
