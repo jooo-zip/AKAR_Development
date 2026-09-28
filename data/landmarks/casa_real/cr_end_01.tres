@@ -1,0 +1,103 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_end_01_content.gd" id="content"]
+[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_end_01_theme.gd" id="entry"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_government_center.jpg.jpg" id="government"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/cr_ext_01_facade.png" id="architecture"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_historical_marker.jpg" id="history"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_cosme_damage.JPG" id="preservation"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_banaan_identity.jpg" id="museum"]
+
+[sub_resource type="Resource" id="government"]
+script = ExtResource("entry")
+id = "government"
+card_label = "GOVERNMENT &\nCIVIC LIFE"
+compact_label = "GOVERNMENT"
+anchor_label = "1840"
+heading = "FROM ROYAL HOUSE TO GOVERNMENT CENTER"
+body = "Casa Real was constructed in 1840 as the residence and office of the Alcalde Mayor and became an important center of provincial administration and judicial activity."
+interpretation = "Casa Real reflects Lingayen's long connection with provincial government and public service."
+caption = "CASA REAL · c. 1917–1918\nHISTORICAL BUILDING CONTEXT"
+media_credit = "Arabela Ventenilla Arcinue. Lingayen: Memories of Times Past. Quezon City: Studio Graphics Corporation, 2021. p. 99."
+historical_basis = "Government & Civic Life: locked researcher-approved CR-END-01 synthesis; established CR-EXT-01 and CR-EXT-03 interpretation."
+permission_status = "Unspecified / pending documentation. Inherited from the original Casa Real asset documentation; attribution does not establish reuse permission."
+image = ExtResource("government")
+
+[sub_resource type="Resource" id="architecture"]
+script = ExtResource("entry")
+id = "architecture"
+card_label = "HERITAGE\nARCHITECTURE"
+compact_label = "ARCHITECTURE"
+anchor_label = ""
+heading = "ARCHITECTURE THAT CARRIES HISTORY"
+body = "Casa Real's stone-and-brick masonry, wooden balcony, French doors, ventanillas, and piedra china staircase contribute to its historic architectural character."
+interpretation = "These features help visitors recognize Casa Real as a historic public structure as well as the present home of Banáan Museum."
+caption = "CASA REAL — FULL FAÇADE"
+media_credit = "Province of Pangasinan — Official Website\nLGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8\nhttps://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/"
+historical_basis = "Heritage Architecture: locked researcher-approved CR-END-01 synthesis; established CR-EXT-02 interpretation. Researcher-supplied reference: Benjie Layug / B.L.A.S.T., Casa Real (Lingayen, Pangasinan)\nhttps://benjielayug.com/2023/09/casa-real-lingayen-pangasinan.html"
+permission_status = "Unspecified / pending documentation. Inherited from the original Casa Real asset documentation; attribution does not establish reuse permission."
+image = ExtResource("architecture")
+
+[sub_resource type="Resource" id="history"]
+script = ExtResource("entry")
+id = "history"
+card_label = "HISTORICAL\nCHANGE"
+compact_label = "HISTORICAL CHANGE"
+anchor_label = "ACROSS PERIODS"
+heading = "A WITNESS TO CHANGING TIMES"
+body = "Casa Real witnessed revolution, political transition, wartime occupation, and changing public functions while remaining connected with Pangasinan's civic history."
+interpretation = "The building connects several periods of Pangasinan history within one surviving historic place."
+caption = "CASA REAL HISTORICAL MARKER"
+media_credit = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
+historical_basis = "Historical Change: locked researcher-approved CR-END-01 synthesis; established CR-EXT-03 interpretation."
+permission_status = "Unspecified / pending documentation. Inherited from the original Casa Real asset documentation; attribution does not establish reuse permission."
+image = ExtResource("history")
+
+[sub_resource type="Resource" id="preservation"]
+script = ExtResource("entry")
+id = "preservation"
+card_label = "PRESERVATION &\nRESTORATION"
+compact_label = "PRESERVATION"
+anchor_label = "2008 → 2021"
+heading = "PRESERVING CASA REAL"
+body = "After years of deterioration and severe damage from Typhoon Cosme in 2008, Casa Real underwent a multi-phase restoration and was formally turned over to the Provincial Government of Pangasinan in 2021."
+interpretation = "Preservation allowed Casa Real's historical and architectural character to remain part of public life."
+caption = "CASA REAL — BEFORE RESTORATION"
+media_credit = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
+historical_basis = "Preservation & Restoration: locked researcher-approved CR-END-01 synthesis; established CR-EXT-03 and CR-INT-01 interpretation."
+permission_status = "Unspecified / pending documentation. Inherited from the original Casa Real asset documentation; attribution does not establish reuse permission."
+image = ExtResource("preservation")
+
+[sub_resource type="Resource" id="museum"]
+script = ExtResource("entry")
+id = "museum"
+card_label = "BANÁAN MUSEUM\nTODAY"
+compact_label = "BANÁAN TODAY"
+anchor_label = "2023"
+heading = "A HISTORIC BUILDING WITH A NEW PUBLIC ROLE"
+body = "In 2023, the restored Casa Real formally opened as the Banáan Pangasinan Provincial Museum, continuing the building's public role through heritage preservation and education."
+interpretation = "Casa Real now provides a setting where visitors can encounter different stories of Pangasinan's history and cultural identity."
+caption = "BANÁAN PANGASINAN PROVINCIAL MUSEUM"
+media_credit = "Banáan Pangasinan Provincial Museum official website\nhttps://banaan.seepangasinan.com/"
+historical_basis = "Banáan Museum Today: locked researcher-approved CR-END-01 synthesis; established CR-EXT-01, CR-EXT-03, CR-INT-01 and CR-INT-03 interpretation."
+permission_status = "Unspecified / pending documentation. Inherited from the original Casa Real asset documentation; attribution does not establish reuse permission."
+image = ExtResource("museum")
+
+[resource]
+script = ExtResource("content")
+hotspot_id = "CR-END-01"
+title = "CASA REAL AT A GLANCE"
+subtitle = "Key ideas to remember about this historic landmark"
+interpretation_label = "WHY IT MATTERS"
+narration_path = "res://assets/landmarks/casa_real/audio/cr_end_01_narration.ogg"
+narration_transcript = "Casa Real has served Pangasinan across different historical periods. From a provincial government center, it witnessed historical change, changing public functions, deterioration, and restoration. Today, its preserved architecture houses the Banáan Pangasinan Provincial Museum, continuing Casa Real's role as a place for public heritage and education."
+reflect_label = "REFLECT ON CASA REAL'S STORY"
+reflection_eyebrow = "REFLECTION"
+reflection_heading = "CASA REAL: A PLACE THAT CONTINUES TO SERVE"
+reflection_question = "How can preserving a historic building like Casa Real help communities understand and pass on their heritage?"
+reflection_prompt = "Think about how Casa Real changed from a government building into a museum while continuing to serve the public."
+learning_takeaway = "Casa Real shows how a historic place can change in function while continuing to connect people with the history, public life, and cultural heritage of Pangasinan."
+reflection_background = ExtResource("museum")
+back_label = "BACK TO SUMMARY"
+themes = Array[ExtResource("entry")]([SubResource("government"), SubResource("architecture"), SubResource("history"), SubResource("preservation"), SubResource("museum")])
+source_credit = "HISTORICAL CONTENT\nAKAR Research Team — locked CR-END-01 visitor copy and the established researcher-validated Casa Real interpretations. Complete historical claim-to-page citations remain pending researcher documentation. Documentary credits below do not substitute for those citations."
