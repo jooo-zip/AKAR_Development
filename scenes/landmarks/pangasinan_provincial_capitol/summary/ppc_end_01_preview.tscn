@@ -1,0 +1,60 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/landmarks/pangasinan_provincial_capitol/summary/ppc_end_01.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/landmarks/pangasinan_provincial_capitol/ppc_end_01_preview.gd" id="2"]
+
+[node name="PPC_END_01_Preview" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("2")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.16, 0.18, 0.2, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_right = 24
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="Margin/Layout"]
+layout_mode = 2
+text = "PPC-END-01 · DEVELOPMENT PREVIEW"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 26
+autowrap_mode = 3
+
+[node name="OpenHotspot" type="Button" parent="Margin/Layout"]
+layout_mode = 2
+custom_minimum_size = Vector2(480, 64)
+size_flags_horizontal = 4
+text = "What the Pangasinan Provincial Capitol Represents"
+theme_override_font_sizes/font_size = 22
+
+[node name="HotspotFrame" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.015
+anchor_top = 0.015
+anchor_right = 0.985
+anchor_bottom = 0.985
+mouse_filter = 2
+
+[node name="CapitolInteraction" parent="HotspotFrame" instance=ExtResource("1")]
+
+[connection signal="pressed" from="Margin/Layout/OpenHotspot" to="HotspotFrame/CapitolInteraction" method="open_hotspot"]
+[connection signal="opened" from="HotspotFrame/CapitolInteraction" to="Margin" method="hide"]
+[connection signal="closed" from="HotspotFrame/CapitolInteraction" to="Margin" method="show"]
