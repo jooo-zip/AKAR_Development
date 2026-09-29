@@ -1,0 +1,110 @@
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+
+[ext_resource type="Script" path="res://scripts/components/conference_room_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_02/ppc_int_02_lobby.png" id="lobby"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_02/ppc_int_02_governor_office.png" id="office"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_02/ppc_int_02_session_hall.jpeg" id="hall"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/pangasinan_provincial_capitol/audio/ppc_int_02_narration.ogg" id="audio"]
+
+[sub_resource type="Resource" id="overview"]
+script = ExtResource("2")
+heading = "A Heritage Building Still in Use"
+body = "The Pangasinan Provincial Capitol is both a historic landmark and an active government building. Explore its approved civic spaces to see how executive and legislative functions continue within the Capitol."
+metadata/id = &"overview"
+metadata/context = "THE CAPITOL AT WORK"
+
+[sub_resource type="Resource" id="lobby"]
+script = ExtResource("2")
+heading = "Second-Floor Public Lobby"
+body = "The second-floor lobby connects the approved public areas used to introduce the Capitol's continuing government functions."
+metadata/id = &"lobby"
+metadata/context = "PUBLIC SPACE"
+metadata/image = ExtResource("lobby")
+metadata/caption = "Second-floor lobby and reception area of the Pangasinan Provincial Capitol."
+metadata/credit = "ARKITHIRD / MAG-ARCHISTORY · University of Pangasinan-PEN · 2013–2014"
+metadata/rights = "External source — reuse/permission documentation pending."
+
+[sub_resource type="Resource" id="executive"]
+script = ExtResource("2")
+heading = "Governor's Office"
+body = "The Governor's Office represents the executive function carried out within the Provincial Capitol."
+metadata/id = &"executive"
+metadata/context = "EXECUTIVE FUNCTION"
+metadata/image = ExtResource("office")
+metadata/caption = "Governor's Office inside the Pangasinan Provincial Capitol."
+metadata/credit = "Victory Liner · The Provincial Capitol of Pangasinan"
+metadata/rights = "External source — reuse/permission documentation pending."
+metadata/summary = "Represents the executive side of provincial government and its continuing administrative and public-service role."
+
+[sub_resource type="Resource" id="legislative"]
+script = ExtResource("2")
+heading = "Session Hall"
+body = "The Session Hall represents the legislative function of the provincial government and the continuing work of the Sangguniang Panlalawigan."
+metadata/id = &"legislative"
+metadata/context = "LEGISLATIVE FUNCTION"
+metadata/image = ExtResource("hall")
+metadata/caption = "Session Hall of the Pangasinan Provincial Capitol."
+metadata/credit = "Photo: AKAR Research Team"
+metadata/rights = "Research-team-produced documentary photograph."
+metadata/summary = "Represents the legislative work of the Sangguniang Panlalawigan, including ordinances, resolutions, and provincial policies."
+
+[sub_resource type="Resource" id="comparison"]
+script = ExtResource("2")
+heading = "COMPARE CIVIC FUNCTIONS"
+metadata/id = &"comparison"
+metadata/context = "THE CAPITOL AT WORK"
+
+[sub_resource type="Resource" id="executive_role"]
+script = ExtResource("2")
+heading = "Executive Function"
+body = "The Governor's Office represents the executive side of provincial government within the Capitol."
+metadata/id = &"executive_role"
+metadata/label = "EXECUTIVE ROLE"
+
+[sub_resource type="Resource" id="coordination"]
+script = ExtResource("2")
+heading = "Coordinating Provincial Administration"
+body = "Provincial executive offices coordinate administrative work and the implementation of government programs and services."
+metadata/id = &"coordination"
+metadata/label = "COORDINATION"
+
+[sub_resource type="Resource" id="public_service"]
+script = ExtResource("2")
+heading = "Serving the Province"
+body = "Provincial executive offices support public programs and services that connect the provincial government with the people it serves."
+metadata/id = &"public_service"
+metadata/label = "PUBLIC SERVICE"
+
+[sub_resource type="Resource" id="ordinances"]
+script = ExtResource("2")
+heading = "Provincial Ordinances"
+body = "The Sangguniang Panlalawigan enacts provincial ordinances as part of its legislative responsibilities."
+metadata/id = &"ordinances"
+metadata/label = "ORDINANCES"
+
+[sub_resource type="Resource" id="resolutions"]
+script = ExtResource("2")
+heading = "Provincial Resolutions"
+body = "The provincial legislative body also approves resolutions as part of its official work."
+metadata/id = &"resolutions"
+metadata/label = "RESOLUTIONS"
+
+[sub_resource type="Resource" id="provincial_policies"]
+script = ExtResource("2")
+heading = "Provincial Policies"
+body = "Through legislation, the Sangguniang Panlalawigan helps establish policies under which the provincial government operates."
+metadata/id = &"provincial_policies"
+metadata/label = "PROVINCIAL POLICIES"
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "ppc_int_02"
+title = "A LIVING SEAT OF GOVERNMENT"
+prompt = "THE CAPITOL AT WORK"
+narration_stream = ExtResource("audio")
+source_credit = "PROJECT / VALIDATED SOURCES\n\nResearcher-approved PPC-INT-02 institutional interpretation and supplied Phase 5 specification.\n\nDOCUMENTARY MEDIA\n\nLOBBY\nARKITHIRD / MAG-ARCHISTORY, Department of Architecture, University of Pangasinan-PEN, 2013–2014, 2nd Semester.\nARKITHIRD, MAG-ARCHISTORY: The American—Classic Style Capitol, University of Pangasinan-PEN, 2013–2014.\nExternal media — permission/reuse documentation pending.\n\nGOVERNOR'S OFFICE\nVictory Liner — The Provincial Capitol of Pangasinan.\nExternal media — permission/reuse documentation pending.\nDocumentary view; physical access is subject to actual Capitol access and authorization.\n\nSESSION HALL\nPhoto: AKAR Research Team.\nResearch-team-produced documentary photograph.\n\nNARRATION\nAKAR Research Team — ppc_int_02_narration.ogg."
+concepts = [SubResource("overview"), SubResource("lobby"), SubResource("executive"), SubResource("legislative"), SubResource("comparison"), SubResource("executive_role"), SubResource("coordination"), SubResource("public_service"), SubResource("ordinances"), SubResource("resolutions"), SubResource("provincial_policies")]
+metadata/question = "How does the historic Capitol continue to serve Pangasinan today?"
+metadata/schematic = "SCHEMATIC PUBLIC-SPACE VIEW — NOT TO SCALE"
+metadata/instruction = "CHOOSE A PUBLIC SPACE"
