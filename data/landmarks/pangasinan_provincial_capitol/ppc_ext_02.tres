@@ -1,0 +1,166 @@
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3 uid="uid://h1mvsnoe4dwj"]
+
+[ext_resource type="Script" uid="uid://qmronjk2nqch" path="res://scripts/components/conference_room_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://5hknvxjl0cnx" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_government_today.jpeg" id="3"]
+[ext_resource type="AudioStream" uid="uid://c1oh1xqqv2tkr" path="res://assets/landmarks/pangasinan_provincial_capitol/audio/ppc_ext_02_narration.ogg" id="4"]
+[ext_resource type="Texture2D" uid="uid://8fj6bst80rcl" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_02/ppc_ext_02_detail_facade_rhythm.JPG" id="10"]
+[ext_resource type="Texture2D" uid="uid://bb210xhw50mvb" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_02/ppc_ext_02_detail_entrance.jpg" id="11"]
+[ext_resource type="Texture2D" uid="uid://usplkjh11rph" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_02/ppc_ext_02_detail_pediment.JPG" id="12"]
+[ext_resource type="Texture2D" uid="uid://bx2l1od813jfi" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_02/ppc_ext_02_detail_back_passage.JPG" id="13"]
+[ext_resource type="Texture2D" uid="uid://b4rof51mqqtot" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_02/ppc_ext_02_detail_corridor.jpg" id="14"]
+
+[sub_resource type="Resource" id="overview"]
+script = ExtResource("2")
+heading = "Look Closely at the Capitol"
+body = "The Capitol's neoclassical character can be seen in its balanced façade, monumental entrance, and Ionic-order columns. Its large windows, colonnades, and projecting cornices also help the building respond to Pangasinan's tropical climate."
+metadata/id = &"overview"
+metadata/label = "READ THE FAÇADE"
+metadata/note = "Designed by Ralph Harrington Doane
+Choose a feature of the façade to examine."
+
+[sub_resource type="Resource" id="balance"]
+script = ExtResource("2")
+heading = "A Balanced Façade"
+body = "A strong central entrance anchors the extended sides of the building. Repeated openings and architectural elements create a regular rhythm across the façade."
+metadata/id = &"balance"
+metadata/label = "BALANCE"
+metadata/note = "Balance and repetition give the Capitol an orderly civic appearance."
+
+[sub_resource type="Resource" id="entrance"]
+script = ExtResource("2")
+heading = "Monumental Entrance"
+body = "Select an architectural feature to examine."
+metadata/id = &"entrance"
+metadata/label = "MONUMENTAL ENTRANCE"
+metadata/note = ""
+
+[sub_resource type="Resource" id="steps"]
+script = ExtResource("2")
+heading = "Broad Steps"
+body = "A broad flight of steps raises the approach toward the Capitol's main entrance."
+metadata/id = &"steps"
+metadata/label = "BROAD STEPS"
+metadata/note = ""
+
+[sub_resource type="Resource" id="portico"]
+script = ExtResource("2")
+heading = "Formal Portico"
+body = "The formal portico marks the center of the façade and frames the Capitol's principal entrance."
+metadata/id = &"portico"
+metadata/label = "PORTICO"
+metadata/note = ""
+
+[sub_resource type="Resource" id="ionic_columns"]
+script = ExtResource("2")
+heading = "Ionic-Order Columns"
+body = "Tall Ionic-order columns frame the main entrance and are among the defining classical features of the Capitol."
+metadata/id = &"ionic_columns"
+metadata/label = "IONIC COLUMNS"
+metadata/note = ""
+
+[sub_resource type="Resource" id="doors"]
+script = ExtResource("2")
+heading = "Main Entrance Doors"
+body = "Large hardwood doors form the principal entrance beneath the portico."
+metadata/id = &"doors"
+metadata/label = "MAIN DOORS"
+metadata/note = ""
+
+[sub_resource type="Resource" id="airflow"]
+script = ExtResource("2")
+heading = "Natural Airflow"
+body = "Large windows help admit natural light and air into the building."
+metadata/id = &"airflow"
+metadata/label = "AIRFLOW"
+metadata/note = ""
+
+[sub_resource type="Resource" id="shade"]
+script = ExtResource("2")
+heading = "Shaded Colonnades"
+body = "Exterior colonnades create shaded passageways and help reduce direct exposure to the sun."
+metadata/id = &"shade"
+metadata/label = "SHADE"
+metadata/note = ""
+
+[sub_resource type="Resource" id="rain"]
+script = ExtResource("2")
+heading = "Protection from Rain"
+body = "Projecting cornices and covered exterior spaces help protect walls and openings from rain."
+metadata/id = &"rain"
+metadata/label = "RAIN"
+metadata/note = ""
+
+[sub_resource type="Resource" id="facade_rhythm"]
+script = ExtResource("2")
+heading = "REPEATED COLUMNS & WINDOWS"
+body = "Repeated columns and tall window openings create a regular rhythm across the Capitol's façade. Their orderly arrangement contributes to the building's balanced and formal appearance."
+metadata/id = &"facade_rhythm"
+metadata/label = "REPEATED COLUMNS & WINDOWS"
+metadata/note = "Repeated columns and window openings along the Capitol façade."
+metadata/image = ExtResource("10")
+
+[sub_resource type="Resource" id="entrance_composition"]
+script = ExtResource("2")
+heading = "MAIN ENTRANCE COMPOSITION"
+body = "Broad steps lead toward the Capitol's central entrance, framed by a formal portico, tall Ionic-order columns, large hardwood doors, and oversized windows."
+metadata/id = &"entrance_composition"
+metadata/label = "MAIN ENTRANCE"
+metadata/note = "Front entrance of the Pangasinan Provincial Capitol."
+metadata/image = ExtResource("11")
+
+[sub_resource type="Resource" id="pediment_relief"]
+script = ExtResource("2")
+heading = "PEDIMENT & DECORATIVE RELIEF"
+body = "A triangular pediment crowns the central entrance. Within it are decorative reliefs and an inscription identifying the building as the Provincial Capitol of Pangasinan."
+metadata/id = &"pediment_relief"
+metadata/label = "PEDIMENT & RELIEF"
+metadata/note = "Pediment and decorative relief above the Capitol's central entrance."
+metadata/image = ExtResource("12")
+
+[sub_resource type="Resource" id="back_entrance_passage"]
+script = ExtResource("2")
+heading = "BACK ENTRANCE COLUMNED PASSAGEWAY"
+body = "This columned passageway at the back entrance provides a closer view of the Capitol's sheltered exterior circulation. Exterior colonnades form shaded passageways that help protect the building from direct sun and rain."
+metadata/id = &"back_entrance_passage"
+metadata/label = "BACK ENTRANCE PASSAGEWAY"
+metadata/note = "Columned passageway at the back entrance of the Capitol."
+metadata/image = ExtResource("13")
+
+[sub_resource type="Resource" id="interior_corridor"]
+script = ExtResource("2")
+heading = "WIDE INTERIOR CORRIDOR"
+body = "Wide corridors and high interior spaces are part of the Capitol's climate-responsive design. Together with large openings, they support the circulation of natural light and air through the building."
+metadata/id = &"interior_corridor"
+metadata/label = "WIDE INTERIOR CORRIDOR"
+metadata/note = "Wide interior corridor of the Pangasinan Provincial Capitol."
+metadata/image = ExtResource("14")
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "ppc_ext_02"
+title = "MONUMENTAL NEOCLASSICAL DESIGN"
+prompt = "READ THE CAPITOL'S FAÇADE"
+illustration = ExtResource("3")
+illustration_alt_text = "Full façade of the Pangasinan Provincial Capitol, Lingayen."
+narration_stream = ExtResource("4")
+learning_takeaway = "The Capitol combines classical form with features adapted to Pangasinan's tropical climate."
+source_credit = "HISTORICAL / ARCHITECTURAL REFERENCES
+
+AKAR Historical Information Validation Sheet — Pangasinan Provincial Capitol
+Historical Profile of Pangasinan Provincial Capitol
+Researcher-supplied architectural interpretation approved for PPC-EXT-02.
+
+DOCUMENTARY MEDIA
+
+Photo: AKAR Research Team
+Research-team-produced documentary photograph.
+Full façade: ppc_ext_01_government_today.jpeg
+Details: ppc_ext_02_detail_facade_rhythm.JPG, ppc_ext_02_detail_entrance.jpg, ppc_ext_02_detail_pediment.JPG, ppc_ext_02_detail_back_passage.JPG, ppc_ext_02_detail_corridor.jpg
+Back-passage photograph: back entrance, as confirmed by the researcher.
+
+AUDIO
+Researcher-supplied ppc_ext_02_narration.ogg"
+concepts = Array[ExtResource("2")]([SubResource("overview"), SubResource("balance"), SubResource("entrance"), SubResource("steps"), SubResource("portico"), SubResource("ionic_columns"), SubResource("doors"), SubResource("airflow"), SubResource("shade"), SubResource("rain"), SubResource("facade_rhythm"), SubResource("entrance_composition"), SubResource("pediment_relief"), SubResource("back_entrance_passage"), SubResource("interior_corridor")])
+metadata/photo_credit = "Photo: AKAR Research Team"
+metadata/media_status = "Research-team-produced documentary photograph."
