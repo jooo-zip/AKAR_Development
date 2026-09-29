@@ -1,0 +1,89 @@
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+
+[ext_resource type="Script" path="res://scripts/components/conference_room_content.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_government_today.jpeg" id="3"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/pangasinan_provincial_capitol/audio/ppc_int_01_narration.ogg" id="4"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_01/ppc_int_01_1945_damage.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_01/ppc_int_01_2003_recognition.png" id="6"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_01/ppc_int_01_2008_refurbished.png" id="7"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_01/ppc_int_01_2018_heritage_protection.png" id="8"]
+
+[sub_resource type="Resource" id="overview"]
+script = ExtResource("2")
+heading = "FROM WARTIME RUINS TO PRESERVATION"
+body = "The Pangasinan Provincial Capitol experienced wartime destruction, postwar reconstruction, later refurbishment, and formal heritage protection. Explore five moments that shaped the building after 1945."
+metadata/id = &"overview"
+metadata/label = ""
+metadata/caption = "Present-day contextual view of the Pangasinan Provincial Capitol."
+metadata/credit = "Photo: AKAR Research Team\nResearch-team-produced documentary photograph."
+metadata/note = "SELECT A YEAR TO TRACE WHAT CHANGED."
+metadata/image = ExtResource("3")
+
+[sub_resource type="Resource" id="damage_1945"]
+script = ExtResource("2")
+heading = "THE CAPITOL IN RUINS"
+body = "During the liberation of Pangasinan in January 1945, the Capitol was left in ruins. Its surviving structure later made reconstruction possible."
+metadata/id = &"damage_1945"
+metadata/label = "1945\nWAR DAMAGE"
+metadata/caption = "Pangasinan Provincial Capitol after wartime damage, 1945."
+metadata/credit = "Researcher-supplied historical photograph.\nCreator not identified in available source."
+metadata/note = ""
+metadata/image = ExtResource("5")
+
+[sub_resource type="Resource" id="reconstruction_1946_1949"]
+script = ExtResource("2")
+heading = "REBUILDING THE CAPITOL"
+body = "Postwar rebuilding received assistance associated with the Philippine Rehabilitation Act under Governor Enrique Braganza, and the Capitol was reconstructed in 1949."
+metadata/id = &"reconstruction_1946_1949"
+metadata/label = "1946–1949\nRECONSTRUCTION"
+metadata/caption = "Present-day contextual view; no verified reconstruction photograph was supplied."
+metadata/credit = "Photo: AKAR Research Team\nResearch-team-produced documentary photograph."
+metadata/note = "Reconstruction restored the Capitol while preserving its neoclassical character and its role as the province's administrative center."
+metadata/image = ExtResource("3")
+
+[sub_resource type="Resource" id="recognition_2003"]
+script = ExtResource("2")
+heading = "ARCHITECTURAL RECOGNITION"
+body = "The Capitol was recognized as one of the Eight Architectural Treasures of the Philippines by Filipino Heritage Festival, Inc., an NCCA grantee."
+metadata/id = &"recognition_2003"
+metadata/label = "2003\nARCHITECTURAL RECOGNITION"
+metadata/caption = "Researcher-supplied source excerpt documenting the Capitol's architectural recognition."
+metadata/credit = "Source shown in supplied screenshot: See Pangasinan.\nCreator not identified in available source."
+metadata/note = ""
+metadata/image = ExtResource("6")
+
+[sub_resource type="Resource" id="refurbishment_2008"]
+script = ExtResource("2")
+heading = "A REFURBISHED CAPITOL"
+body = "The refurbished Capitol building was inaugurated in June 2008 under Governor Amado T. Espino Jr."
+metadata/id = &"refurbishment_2008"
+metadata/label = "2008\nREFURBISHMENT"
+metadata/caption = "Refurbished Pangasinan Provincial Capitol, 2008."
+metadata/credit = "Researcher-supplied photograph.\nCreator not identified in available source."
+metadata/note = "Compare the wartime-damaged Capitol with its later refurbished appearance."
+metadata/image = ExtResource("7")
+
+[sub_resource type="Resource" id="protection_2018"]
+script = ExtResource("2")
+heading = "HERITAGE SITE PROTECTION"
+body = "Provincial Ordinance No. 220-2018 declared the Capitol a heritage site in the Province of Pangasinan and provided funds for its preservation."
+metadata/id = &"protection_2018"
+metadata/label = "2018\nHERITAGE PROTECTION"
+metadata/caption = "Certification page for Provincial Ordinance No. 220-2018."
+metadata/credit = "Source shown on supplied document: Office of the Sangguniang Panlalawigan Secretary, Province of Pangasinan.\nResearcher-supplied documentary copy."
+metadata/note = ""
+metadata/image = ExtResource("8")
+
+[resource]
+script = ExtResource("1")
+hotspot_id = "ppc_int_01"
+title = "DAMAGE, REBUILDING, AND PRESERVATION"
+prompt = "THE CAPITOL THROUGH CHANGE"
+illustration = ExtResource("3")
+illustration_alt_text = "Present-day contextual view of the Pangasinan Provincial Capitol."
+narration_stream = ExtResource("4")
+source_credit = "HISTORICAL SOURCES\n\nAKAR Historical Information Validation Sheet — Pangasinan Provincial Capitol\nHistorical Profile of Pangasinan Provincial Capitol\nResearcher-approved PPC-INT-01 historical sequence and interpretation.\n\nRecognition: Filipino Heritage Festival, Inc., an NCCA grantee.\nProtection: Provincial Ordinance No. 220-2018.\n\nDOCUMENTARY MEDIA\n\n1945 damage and 2008 refurbishment: researcher-supplied historical photographs. Creator not identified in available source.\n2003 recognition: researcher-supplied screenshot bearing See Pangasinan branding. Creator not identified in available source.\n2018 protection: researcher-supplied certification page; Office of the Sangguniang Panlalawigan Secretary, Province of Pangasinan.\nPresent-day contextual photograph: Photo: AKAR Research Team. Research-team-produced documentary photograph.\nNo verified reconstruction photograph was supplied.\nExternal media permission/license status was not supplied.\n\nAUDIO\nResearcher-supplied ppc_int_01_narration.ogg. Researcher confirmed the narration matches the approved wording."
+concepts = [SubResource("overview"), SubResource("damage_1945"), SubResource("reconstruction_1946_1949"), SubResource("recognition_2003"), SubResource("refurbishment_2008"), SubResource("protection_2018")]
+metadata/comparison_left = "1945 — WAR DAMAGE"
+metadata/comparison_right = "2008 — REFURBISHED CAPITOL"
