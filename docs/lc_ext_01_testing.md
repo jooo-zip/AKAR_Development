@@ -622,3 +622,112 @@ Shared activation suite: **1,887 headless checks and 1,923 rendered checks,
 rendered log: `akar_lc_activation_render.log`. Saved-resource screenshots are
 `lc_header_after_<id>_<width>.png` in the same directory; these now show enabled
 LISTEN. Human audio review is the next F6 step, not a prerequisite to activation.
+
+
+## 2026-10-02 — LC_EXT_01 editor-visibility pilot
+
+### Root cause and scope
+
+The production scene already assigns `lc_ext_01.tres`. The previous controller
+built/reparented the Church presentation in runtime `_ready()` and populated
+historical fields on open/render; neither ran in the 2D editor. The preview
+scene only supplies its launch button, inset parent and F6 sizing policy.
+
+Only LC_EXT_01 gains editor execution. No production/preview scene, `.tres`,
+image, audio, resource schema, base controller or project setting was changed.
+Historical content remains authoritative in the original content resource.
+
+### Implementation and exact files
+
+- `scripts/landmarks/lingayen_church/lc_ext_01.gd`: the sole production `@tool`
+  annotation. Separates `_ensure_presentation()`, `_apply_presentation(index)`,
+  `_resize_layout()` and `_initialize_runtime()`. Editor refresh uses ABOUT and
+  the same presentation/layout code without invoking runtime open/reset/render.
+- `scripts/landmarks/lingayen_church/lc_header_utilities.gd`: extracts static
+  `build_presentation()` and `resize_presentation()` from the existing constructor
+  and resize method. Runtime constructor/signals/audio/focus retain their behavior.
+  This avoids marking the helper `@tool` or copying its styling into another implementation.
+- `tests/lc_ext_01_editor_test.gd` and its `.uid`: editor-specific verification.
+- `tests/lc_ext_01_editor_test.tscn`: a normal editor test fixture, not a plugin
+  and not a replacement for the production or F6 preview scene.
+- `docs/lc_ext_01_testing.md`: this audit, evidence and review procedure.
+
+Actual editor-mode probes confirmed the existing four resource-schema scripts
+and `conference_room_interaction.gd` work without changes or `@tool` annotations.
+The static helper functions are callable in editor mode without constructing
+its runtime RefCounted instance. No custom editor plugin was introduced.
+
+### Editor representation and isolation
+
+The production root receives one temporary `_LC_EXT_01_EditorPresentation`
+branch. It is instantiated from the existing shared shell; its runtime script
+and audio player are removed before presentation setup. It retains the exact
+production panel StyleBox references and builds the existing Church layout.
+
+All generated descendants have no scene owner. Authored nodes are never hidden,
+reparented or edited by the editor path; the temporary presentation draws over
+the authored empty shell. Thus generated structure and displayed historical
+text cannot become unintended saved scene overrides. Runtime still uses the
+original nodes and adds no editor presentation branch.
+
+Refresh removes only the old temporary branch, rebuilds it once and reconnects
+resize only when needed. It handles the existing branch by name after script
+reload, rather than depending solely on member references. Generated Controls,
+including internal scrollbars, ignore input and have no keyboard focus.
+
+No editor path opens/closes the hotspot, changes narration state, assigns an
+audio stream to the authored player, emits visitor signals, registers narration
+groups, grabs focus, creates tweens/timers or changes project settings.
+Idle LISTEN availability is displayed directly from the content resource.
+
+An Inspector **Refresh Editor Preview** button is available on the production
+root. Use it after editing nested resource properties or reloading scripts.
+Continuous nested-resource change tracking is deliberately outside this pilot.
+The component uses its editor dimensions; an unsized root previews at 1280×720.
+The fallback only sizes the temporary branch and does not impose a runtime minimum.
+
+### Shared-file consumers
+
+All known runtime consumers of the changed header helper are LC-EXT-01,
+LC-EXT-02, LC-EXT-03, LC-INT-01, LC-INT-02 and LC-END-01. No other landmark uses
+this Church helper. Its constructor remains backward compatible. The shared
+conference-room base and its other landmark consumers are unchanged.
+
+### Verification procedure
+
+Run the fixture only in a disposable test editor process with the explicit
+`--lc-editor-test` flag. Without that flag the fixture is inert, so merely opening
+it cannot execute the suite or close the editor.
+
+```powershell
+& 'C:\Users\Admin\OneDrive\Documents\Godot Files\Godot_v4.7.2-stable_win64.exe' --editor --rendering-method gl_compatibility --path . res://tests/lc_ext_01_editor_test.tscn -- --lc-editor-test --capture
+```
+
+The suite checks resource-driven ABOUT content, caption/credit/image and header;
+all three dimensions; repeated refresh; one resize connection; no focus/audio/
+visitor signals/runtime state; controller script reload; three fresh scene
+instances; and packed scene equality before/after refresh and reload. It saves
+a roundtrip scene only to TEMP and verifies the generated branch is absent.
+It also opens the actual production scene through EditorInterface and checks
+that the 2D editor displays the presentation without F6.
+
+### Researcher visual review
+
+1. Open `scenes/landmarks/lingayen_church/exterior/lc_ext_01.tscn` in Godot 4.7.2.
+   Switch to **2D**; do not press F6. Frame/zoom the component to view its full area.
+2. Confirm the title, formal name, photograph, three tabs with ABOUT selected,
+   heading, body, KEY TAKEAWAY, takeaway, caption, credit and header utilities.
+3. Select the production root and use **Refresh Editor Preview** repeatedly.
+   Close/reopen the scene and reload the controller. The view must remain complete.
+4. Inspect temporary component dimensions at 1280×720, 960×540 and 854×480;
+   do not save review-only size changes. Generated nodes must not appear in saved
+   production scene data.
+5. Run the unchanged `lc_ext_01_preview.tscn` with F6. Exercise all three sections,
+   mouse/keyboard/touch, Sources/Escape, LISTEN/PAUSE/RESUME, Close and reopening.
+   Run the production scene directly with F6 as well. Its full-parent size differs
+   from the preview's 5% inset; compare at equal component sizes.
+
+The approach is suitable for evaluating the remaining hotspots after visual
+approval, but is not a blanket rollout: each controller's generated layout and
+runtime side effects must be separated and checked individually. No propagation,
+staging, commit or push is included in this pilot.

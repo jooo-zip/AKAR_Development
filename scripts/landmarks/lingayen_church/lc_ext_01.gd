@@ -1,3 +1,4 @@
+@tool
 extends ConferenceRoomInteraction
 
 const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
@@ -11,21 +12,43 @@ enum Section { ABOUT, HISTORICAL_NAME, PRESENT_ROLE }
 const SectionEntry = preload("res://scripts/landmarks/lingayen_church/lc_ext_01_section.gd")
 const ChurchContent = preload("res://scripts/landmarks/lingayen_church/lc_ext_01_content.gd")
 
-var _media := VBoxContainer.new()
-var _caption := Label.new()
-var _formal_name := Label.new()
-var _credit := Label.new()
-var _pending := Label.new()
-var _key_label := Label.new()
+var _media: VBoxContainer
+var _caption: Label
+var _formal_name: Label
+var _credit: Label
+var _pending: Label
+var _key_label: Label
 var _tabs: HBoxContainer
 var _panel_tween: Tween
 var _closing: bool = false
+var _presentation_root: Control
+var _presentation_built := false
+const EDITOR_VIEW_NAME := "_LC_EXT_01_EditorPresentation"
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	closed.connect(func() -> void: hotspot_closed.emit())
-	var header := $Main/Margin/Layout/Header
+	_ensure_presentation()
+	_initialize_runtime()
+
+
+func _ensure_presentation() -> void:
+	if _presentation_built:
+		return
+	_presentation_built = true
+	if not is_instance_valid(_media):
+		_media = VBoxContainer.new()
+		_caption = Label.new()
+		_formal_name = Label.new()
+		_credit = Label.new()
+		_pending = Label.new()
+		_key_label = Label.new()
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -57,8 +80,8 @@ func _ready() -> void:
 	_media.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_media.size_flags_stretch_ratio = 0.46
 	_information.size_flags_stretch_ratio = 0.54
-	%Columns.add_child(_media)
-	%Columns.move_child(_media, 0)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_child(_media)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").move_child(_media, 0)
 	_image.reparent(_media)
 	_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_image.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -66,13 +89,13 @@ func _ready() -> void:
 	_media.add_child(_caption)
 	_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_caption.add_theme_font_size_override("font_size", 16)
-	_tabs = $Main/Margin/Layout/Sections
+	_tabs = _presentation_root.get_node("Main/Margin/Layout/Sections")
 	_tabs.reparent(_information)
 	_information.move_child(_tabs, 0)
 	_heading.reparent(_body.get_parent())
 	_body.get_parent().move_child(_heading, 0)
 	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	$Main/Margin/Layout/Columns/Information/Meta.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Columns/Information/Meta").hide()
 	_key_label.text = "KEY TAKEAWAY"
 	_key_label.add_theme_font_size_override("font_size", 16)
 	_key_label.add_theme_color_override("font_color", Color("d8c58b"))
@@ -80,7 +103,7 @@ func _ready() -> void:
 	_body.get_parent().add_child(_key_label)
 	_body.get_parent().move_child(_key_label, 2)
 	_information.add_child(_credit)
-	$Main/Margin/Layout/Controls.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
 	_credit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_credit.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_credit.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -89,17 +112,96 @@ func _ready() -> void:
 	_source_close.custom_minimum_size.y = 56
 	for i in _concepts.size():
 		_concepts[i].custom_minimum_size = Vector2(48, 56)
+
+
+func _initialize_runtime() -> void:
+	closed.connect(func() -> void: hotspot_closed.emit())
+	for i in _concepts.size():
 		_concepts[i].gui_input.connect(_tab_input.bind(i))
 	_header_utilities = HeaderUtilities.new(self, _pending)
 	add_to_group("lingayen_church_narration")
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
-	# F6 on the component itself is also useful; the preview provides the trigger.
 	_open_standalone.call_deferred()
 
 
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready():
+		return
+	# Rebuild only our unowned preview. Never reparent, hide or edit authored nodes.
+	# A named branch also survives script hot reload when member references reset.
+	var old := get_node_or_null(NodePath(EDITOR_VIEW_NAME))
+	if old != null:
+		remove_child(old)
+		old.queue_free()
+	for control in [_media, _caption, _formal_name, _credit, _pending, _key_label]:
+		if is_instance_valid(control) and control.get_parent() == null:
+			control.free()
+	_media = VBoxContainer.new()
+	_caption = Label.new()
+	_formal_name = Label.new()
+	_credit = Label.new()
+	_pending = Label.new()
+	_key_label = Label.new()
+	var shell: Control = load("res://scenes/components/conference_room_interaction.tscn").instantiate()
+	shell.set_script(null)
+	shell.name = EDITOR_VIEW_NAME
+	# No player or runtime controller exists in this presentation-only branch.
+	shell.get_node("NarrationPlayer").free()
+	_presentation_root = shell
+	add_child(shell)
+	_clear_editor_owners(shell)
+	shell.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	for path in ["Main", "Sources"]:
+		shell.get_node(path).add_theme_stylebox_override("panel", get_node(path).get_theme_stylebox("panel"))
+	_title = shell.find_child("Title", true, false)
+	_close = shell.find_child("Close", true, false)
+	_image = shell.find_child("Image", true, false)
+	_information = shell.find_child("Information", true, false)
+	_heading = shell.find_child("Heading", true, false)
+	_body = shell.find_child("Body", true, false)
+	_takeaway = shell.find_child("Takeaway", true, false)
+	_scroll = shell.find_child("Scroll", true, false)
+	_sources_button = shell.find_child("SourcesButton", true, false)
+	_speaker = shell.find_child("Speaker", true, false)
+	_concepts.assign([shell.find_child("PublicInterior", true, false), shell.find_child("OfficialFunction", true, false), shell.find_child("WhyItMatters", true, false)])
+	_sources = shell.find_child("Sources", true, false)
+	_source_text = shell.find_child("SourceText", true, false)
+	_source_close = shell.find_child("SourceClose", true, false)
+	_presentation_built = false
+	_ensure_presentation()
+	HeaderUtilities.build_presentation(self, _pending, shell.get_node("Main/Margin/Layout/Header"))
+	# Show idle availability from the resource without touching narration state.
+	_speaker.text = "LISTEN"
+	_speaker.disabled = content == null or content.narration_stream == null
+	_pending.visible = _speaker.disabled
+	if content != null and content.concepts.size() == 3:
+		_apply_presentation(Section.ABOUT)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()
+	# No visitor controls participate in editor input/focus.
+	_disable_editor_input(shell)
+
+
+func _clear_editor_owners(node: Node) -> void:
+	node.owner = null
+	for child in node.get_children():
+		_clear_editor_owners(child)
+
+
+func _disable_editor_input(node: Node) -> void:
+	if node is Control:
+		node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		node.focus_mode = Control.FOCUS_NONE
+	for child in node.get_children(true):
+		_disable_editor_input(child)
+
+
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
@@ -109,6 +211,8 @@ func open_hotspot() -> bool:
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is ChurchContent or content.concepts.size() != 3:
 		return false
 	for entry in content.concepts:
@@ -128,6 +232,8 @@ func open_interaction() -> bool:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or not content is ChurchContent:
 		return
 	_cancel_panel_tween()
@@ -135,16 +241,20 @@ func reset_hotspot() -> void:
 	_sources.hide()
 	stop_narration()
 	select_section(Section.ABOUT, false)
-	if _open:
+	if _open and not Engine.is_editor_hint():
 		_sync_focus()
 		_concepts[0].grab_focus()
 
 
 func select_concept(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	select_section(index)
 
 
 func select_section(index: int, animate: bool = true) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or content == null or _sources.visible or _closing:
 		return
 	_selected = index if index >= Section.ABOUT and index <= Section.PRESENT_ROLE else Section.ABOUT
@@ -158,7 +268,15 @@ func select_section(index: int, animate: bool = true) -> void:
 
 
 func _render() -> void:
-	var entry := content.concepts[_selected] as SectionEntry
+	if Engine.is_editor_hint():
+		return
+	_apply_presentation(_selected)
+	_scroll.scroll_vertical = 0
+	_resize_layout()
+
+
+func _apply_presentation(index: int) -> void:
+	var entry := content.concepts[index] as SectionEntry
 	_title.text = content.title.to_upper()
 	_formal_name.text = content.formal_name
 	_heading.text = entry.heading
@@ -173,12 +291,12 @@ func _render() -> void:
 	_credit.text = entry.image_credit if not entry.image_credit.is_empty() else content.image_credit
 	_source_text.text = entry.heading + "\n\n" + entry.source_credit
 	for i in _concepts.size():
-		_concepts[i].set_pressed_no_signal(i == _selected)
-	_scroll.scroll_vertical = 0
-	_resize_layout()
+		_concepts[i].set_pressed_no_signal(i == index)
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _closing:
 		return
 	super.open_sources()
@@ -188,19 +306,27 @@ func open_sources() -> void:
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.update_speaker(self, _pending)
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.toggle_narration(self)
 
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 
 func _tab_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _sources.visible or _closing:
 		return
 	var step := 0
@@ -216,14 +342,16 @@ func _tab_input(event: InputEvent, index: int) -> void:
 
 
 func _resize_layout() -> void:
-	if not is_node_ready() or _tabs == null:
+	if not is_node_ready() or not is_instance_valid(_tabs) or not is_instance_valid(_presentation_root):
 		return
-	var compact := size.x < 1000 or size.y < 550
+	if Engine.is_editor_hint():
+		_presentation_root.size = size if size.x > 0 and size.y > 0 else Vector2(1280, 720)
+	var compact := _presentation_root.size.x < 1000 or _presentation_root.size.y < 550
 	var margin := 8 if compact else 16
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, margin)
-	%Columns.add_theme_constant_override("separation", 12 if compact else 24)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 4 if compact else 8)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, margin)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_theme_constant_override("separation", 12 if compact else 24)
+	_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 4 if compact else 8)
 	_information.add_theme_constant_override("separation", 4 if compact else 8)
 	_body.get_parent().add_theme_constant_override("separation", 8 if compact else 12)
 	_title.add_theme_font_size_override("font_size", 24 if compact else 30)
@@ -239,17 +367,23 @@ func _resize_layout() -> void:
 				label = label.replace("THE CHURCH", "THE\nCHURCH").replace("HISTORICAL NAME", "HISTORICAL\nNAME").replace("PRESENT ROLE", "PRESENT\nROLE")
 			_concepts[i].text = label
 			_concepts[i].add_theme_font_size_override("font_size", 16 if compact else 18)
-	if _open:
+	if _open and not Engine.is_editor_hint():
 		_sync_focus()
-	if _header_utilities != null:
+	if Engine.is_editor_hint():
+		HeaderUtilities.resize_presentation(self, _pending, _presentation_root.size.x)
+	elif _header_utilities != null:
 		_header_utilities.resize()
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing:
 		return
 	_cancel_fade()
@@ -262,6 +396,8 @@ func close_interaction() -> void:
 
 
 func _finish_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_panel_tween = null
 	_closing = false
 	modulate.a = 1.0
@@ -269,6 +405,8 @@ func _finish_close() -> void:
 
 
 func _cancel_panel_tween() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _panel_tween != null and _panel_tween.is_valid():
 		_panel_tween.kill()
 	_panel_tween = null
@@ -276,14 +414,25 @@ func _cancel_panel_tween() -> void:
 
 
 func _visibility_changed() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and not is_visible_in_tree():
 		_cancel_panel_tween()
 		_finish_close()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_panel_tween()
 	super._exit_tree()
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.sync_focus(self)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint():
+		super._unhandled_input(event)
