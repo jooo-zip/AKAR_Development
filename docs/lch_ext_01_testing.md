@@ -1,5 +1,104 @@
 # LCH-EXT-01 revision — Meet the Limahong Channel
 
+## Sources overlay finalized - 2026-10-01
+
+This Sources-only revision supersedes older pending-reference/portrait-provenance
+notes below. The header and narration assignments from the prior revision remain
+unchanged. Visitor layout is **SOURCES**, **HISTORICAL REFERENCES**, then
+**MEDIA CREDITS**, with fixed title/Close and an internally scrolling text region.
+The Label-based overlay has no clickable-link support. Canonical historical URLs
+are retained in the content Resource's `historical_source_urls` metadata; INT-02
+portrait webpage URLs use each person Resource's `source_url` metadata.
+
+### Historical References and canonical URLs
+
+Municipality of Lingayen. (2020).
+Limahong Channel Tourism Center Soon to Be Operational.
+Canonical URL: https://www.lingayen.gov.ph/limahong-channel-tourism-center-soon-to-be-operational/
+
+Austria, H. (2019).
+Limahong Channel Tourism Center in Pangasinan Groundbreaks.
+Philippine News Agency.
+Canonical URL: https://www.pna.gov.ph/articles/1071673
+
+Provincial Government of Pangasinan. (n.d.).
+History.
+Canonical URL: https://www.pangasinan.gov.ph/the-province/history/
+
+Martindale, W. (2024).
+The Many Names of Limahong: Remembering a Chinese Pirate in the Philippines.
+BYU Asian Studies Student Journal, 9, Article 6.
+Canonical URL: https://scholarsarchive.byu.edu/asj/vol9/iss1/6
+
+### Media Credits and provenance
+
+Present-day Limahong Channel photograph
+Asset: lch_ext_01_channel_present
+Courtesy of the Lingayen Tourism Office.
+Provided directly to the AKAR Research Team for project use.
+
+All other locator graphics, interface graphics, map treatments, icons, and AKAR-created visual elements used by LCH-EXT-01:
+AKAR Project / AKAR Research Team.
+Original project resources.
+
+Citations identify supporting information or image provenance; they do not by
+themselves establish ownership, license or permission. Only the researcher-supplied
+AKAR-created/captured media is credited to the project. No new author, photographer,
+license, permission, publisher or ownership was inferred. The internal validation
+sheet is not listed as a visitor-facing historical reference.
+
+### Sources verification
+
+Sources passes at 1280x720, 960x540 and 854x480: bounded overlay, wrapped titles,
+20 px compact / 22 px wide text, fixed reachable 48 px Close control, no horizontal
+scrolling, internal mouse-wheel / synthetic-touch swipe / keyboard scrolling.
+Tab stays within Sources; Home/PageDown/End work. Escape closes Sources first and
+returns focus to its header button. Each selected hotspot state survives the round
+trip; audio continues without changing stream or restarting. Source opening starts
+at the historical references. Existing content, interactions and narration remain
+unchanged. See [the complete Sources report](lch_sources_testing.md) for regression
+totals, the full file inventory, repository preservation checks and F6 instructions.
+
+Manual F6: open this hotspot's existing preview at all three target sizes, select a
+non-default state, start Listen, open Sources, read/scroll to Media Credits, then
+close with Escape or Close Sources. Check state/audio continuity and the unchanged
+SOURCES / LISTEN / CLOSE header. No commit or push; researcher visual review pending.
+
+
+## LIMAHONG SHARED HEADER STANDARD - 2026-09-30
+
+LIMAHONG GLOBAL HEADER: title/context on the left; **SOURCES | LISTEN | CLOSE**
+on the right. The shared speaker remains `res://assets/ui/icons/speaker.svg`.
+All controls have matching heritage styling and 56 px (wide) / 48 px (compact)
+heights. Narration status sits beneath HeaderActions with reserved geometry.
+
+Current LCH-EXT-01 narration is assigned through
+`data/landmarks/limahong_channel/lch_ext_01.tres` to
+`res://assets/landmarks/limahong_channel/audio/lch_ext_01_narration.ogg`.
+**LISTEN is enabled and Narration pending is hidden.** Earlier pending-audio
+notes in this document describe the previous milestone state. Generic null-audio
+fallback remains tested: visible disabled LISTEN and right-aligned Narration pending.
+
+The seven currently supplied Limahong narration files have identical binary
+content. The researcher explicitly authorized their temporary use for their
+respective hotspots. Replace the corresponding files later if distinct final
+recordings are produced; each hotspot retains its own matching resource path.
+No audio was copied, renamed, moved, or recreated during this revision.
+
+The existing hotspot regression suite passes at 1280x720, 960x540, and 854x480.
+The cross-hotspot `tests/lch_header_test.gd` covers layout, assigned OGG playback,
+no autoplay, repeated Listen activation, state changes, Sources preservation,
+mouse/keyboard/synthetic touch, Escape, close/reopen, and null-audio fallback.
+Historical wording, sources, transcripts, media and content interactions are unchanged.
+
+See [the complete header report](lch_header_testing.md) for all seven mappings,
+file inventory, verification results, preserved Git state, and F6 review instructions.
+F6 review: open this hotspot's existing preview, confirm SOURCES / LISTEN / CLOSE
+at all three sizes, play narration, change content, open Sources, press Escape
+twice, then reopen. Expect preserved state through Sources and stopped audio
+after close/reopen. No commit or push; stop for researcher visual review.
+
+
 ## Audit
 
 This revision extends the working inherited ConferenceRoomInteraction panel.

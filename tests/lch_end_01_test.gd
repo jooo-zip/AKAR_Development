@@ -91,7 +91,7 @@ func layout(panel, dimensions: Vector2i) -> void:
 	var bounds: Rect2 = panel.get_global_rect().grow(1)
 	check(panel.size.is_equal_approx(Vector2(dimensions) * 0.9), "Real embedded 90 percent parent")
 	for control in [panel._title, panel._speaker, panel._sources_button, panel._close, panel._intro_heading, panel._intro_body, panel._board, panel._information, panel._reflection_heading, panel._reflection_body, panel._takeaway_heading, panel._takeaway]:
-		check(bounds.encloses(control.get_global_rect()), "Layout stays in component: " + control.name)
+		check(bounds.encloses(control.get_global_rect()), "Layout stays in component: " + control.name + " " + str(control.get_global_rect()) + " bounds=" + str(bounds))
 	check(not panel._title.get_global_rect().intersects(panel._speaker.get_global_rect()), "No header collision")
 	check(panel._intro_body.text == INTRO and panel._intro_heading.text == "AT A GLANCE", "Standalone introduction visible")
 	for i in 5:
@@ -124,6 +124,9 @@ func run() -> void:
 	root.add_child(preview)
 	await settle()
 	var panel = preview.get_node("HotspotFrame/HeritageSummaryInteraction")
+	# Keep the existing missing-narration regression scenario; assigned audio is covered by lch_header_test.
+	panel.content = panel.content.duplicate(true)
+	panel.content.narration_stream = null
 	var trigger = preview.get_node("Margin/Layout/OpenArtwork")
 	panel.topic_changed.connect(func(topic: int): reported_topics.append(topic))
 	panel.close_requested.connect(func(): close_requests += 1)

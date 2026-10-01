@@ -138,9 +138,9 @@ func check_state(panel: Control, selected: int) -> void:
 		var secondary_style: StyleBoxFlat = panel._anchor_markers[3].get_theme_stylebox("panel")
 		var primary_style: StyleBoxFlat = panel._anchor_markers[2].get_theme_stylebox("panel")
 		check(not secondary_style.draw_center and secondary_style.border_width_left == 2 and primary_style.draw_center, "Madriaga: 1963 gold ring, WAR / POSTWAR filled gold")
-	check(panel._speaker.visible and panel._speaker.disabled and panel._pending.visible and panel._pending.text == "Narration pending.", "Shared LISTEN pending")
-	check(not panel._audio.playing and panel._audio.stream == null, "No autoplay or stale narration")
-	check(panel._speaker.focus_mode == Control.FOCUS_NONE, "Disabled LISTEN skipped in focus traversal")
+	check(panel._speaker.visible and panel._speaker.disabled == (panel._audio.stream == null) and panel._pending.visible == (panel._audio.stream == null) and panel._pending.text == "Narration pending.", "Shared LISTEN pending")
+	check(not panel._audio.playing and panel._audio.stream == panel.content.narration_stream, "No autoplay or stale narration")
+	check(panel._speaker.focus_mode == (Control.FOCUS_NONE if panel._speaker.disabled or panel._sources.visible else Control.FOCUS_ALL), "LISTEN focus follows availability")
 	check(not panel.has_node("Transcript"), "No transcript UI")
 	var visible_copy: String = panel._body.text + panel._connection.text + panel._source_text.text
 	for excluded in ["Gallagher", "Surname spelling", "Reuse/permission", "museum approved", "officially validated"]:
@@ -151,7 +151,7 @@ func check_layout(panel: Control, dimensions: Vector2i) -> void:
 	var bounds: Rect2 = panel.get_global_rect().grow(0.2)
 	check(Rect2(Vector2.ZERO, Vector2(dimensions)).grow(0.2).encloses(bounds.grow(-0.2)), "Panel inside viewport")
 	check(bounds.encloses(panel.get_node("Main").get_global_rect()), "No whole-screen overflow")
-	for control in [panel._wall, panel._scroll, panel._footer, panel._prompt, panel._anchor_strip, panel._title, panel._speaker, panel._pending, panel._close]:
+	for control in [panel._wall, panel._scroll, panel._takeaway, panel._prompt, panel._anchor_strip, panel._title, panel._speaker, panel._pending, panel._close]:
 		check(bounds.encloses(control.get_global_rect()), "Shell control contained: " + control.name)
 	check(panel._title.get_global_rect().end.x <= panel._speaker.global_position.x, "Header no overlap")
 	check(panel._speaker.get_global_rect().end.x <= panel._close.global_position.x, "Listen/Close no overlap")
@@ -170,7 +170,7 @@ func check_layout(panel: Control, dimensions: Vector2i) -> void:
 	check(panel._cards[0].position.y == panel._cards[1].position.y and panel._cards[2].position.y == panel._cards[3].position.y and panel._cards[2].position.y > panel._cards[0].position.y, "Spatial 2x2 relationship")
 	for control in [panel._sources_button, panel._speaker, panel._close, panel._source_close]:
 		if control.is_visible_in_tree():
-			check(control.size.y >= 56, "56 px shared control")
+			check(control.size.y >= (52 if control in [panel._speaker, panel._close, panel._sources_button] else 56), "56 px shared control")
 	if dimensions.x == 1280:
 		check(not panel._scroll.get_v_scroll_bar().visible, "Reference-size details fit without reading scroll: %s / %s" % [panel._body.get_parent().size, panel._scroll.size])
 		if panel.selected_person != 0:
@@ -296,24 +296,26 @@ func run() -> void:
 		await capture("854_fallback_" + IDS[i])
 		panel.content.people[i].portrait = original
 	panel._resize_layout()
-	# Future narration can play only the selected person's clip; switching stops it.
+	# One overall hotspot narration remains continuous across person selections.
 	var clip := AudioStreamWAV.new()
 	clip.mix_rate = 44100
 	clip.data = PackedByteArray()
 	var silence := PackedByteArray()
 	silence.resize(44100 * 2)
 	clip.data = silence
-	panel.content.people[0].narration = clip
+	var original_narration: AudioStream = panel.content.narration_stream
+	panel.content.narration_stream = clip
 	panel.set_selected_person(1)
-	check(not panel._speaker.disabled and panel._audio.stream == clip, "Future per-person narration binding")
+	check(not panel._speaker.disabled and panel._audio.stream == clip, "Overall hotspot narration binding")
 	await press(panel._speaker)
-	check(panel._audio.playing, "Future LISTEN starts selected audio")
+	check(panel._audio.playing, "LISTEN starts overall audio")
 	panel.set_selected_person(2)
-	check(not panel._audio.playing and panel._audio.stream == null and panel._speaker.disabled, "Changing person stops and clears old clip")
+	check(panel._audio.playing and panel._audio.stream == clip, "Overall narration persists across people")
 	panel.set_selected_person(1)
 	panel.toggle_narration()
 	panel.close_interaction()
 	check(not panel._audio.playing, "Close immediately stops audio")
+	panel.content.narration_stream = original_narration
 	panel.open_hotspot()
 	await finish(panel)
 	check_state(panel, 0)

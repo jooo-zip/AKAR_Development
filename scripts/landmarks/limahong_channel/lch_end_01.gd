@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
+const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
+var _header_utilities: HeaderUtilities
 ## Standalone optional summary: reading alone is valid; NONE is a real state.
 signal close_requested
 signal topic_changed(topic_index: int)
@@ -42,6 +45,8 @@ func _ready() -> void:
 	visibility_changed.connect(func():
 		if _open and not is_visible_in_tree(): close_interaction())
 	_resize_layout()
+	_header_utilities = HeaderUtilities.new(self, _pending)
+	add_child(SourcesOverlay.new(self))
 
 func _label(parent: Node, value: String, font: int, color: Color = Color(0.97, 0.96, 0.92)) -> Label:
 	var label := Label.new()
@@ -244,7 +249,11 @@ func _resize_layout() -> void:
 	_compact = size.x < 820
 	for side in ["left", "top", "right", "bottom"]:
 		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if small else 16)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 6 if small else 12)
+	# Reclaim shell spacing for the utility status row at the smallest viewport.
+	if _compact:
+		$Main/Margin.add_theme_constant_override("margin_top", 4)
+		$Main/Margin.add_theme_constant_override("margin_bottom", 4)
+	$Main/Margin/Layout.add_theme_constant_override("separation", 1 if _compact else (6 if small else 12))
 	_title.add_theme_font_size_override("font_size", 18 if small else 26)
 	_intro_heading.add_theme_font_size_override("font_size", 12 if small else 15)
 	_intro_body.add_theme_font_size_override("font_size", 13 if small else 18)
@@ -279,7 +288,7 @@ func _layout_cards() -> void:
 		var lower := _compact and i >= 3
 		var x := (i - 3) * (width + gap) + (width + gap) * 0.5 if lower else i * (width + gap)
 		_concepts[i].position = Vector2(x, 96 if lower else 12)
-		_concepts[i].size = Vector2(width, 84 if lower else (76 if _compact else _board.size.y - 12))
+		_concepts[i].size = Vector2(width, 84.0 if lower else (76.0 if _compact else _board.size.y - 12.0))
 	_board.queue_redraw()
 
 func _draw_storyline() -> void:
@@ -336,19 +345,10 @@ func _scroll_key(event: InputEvent, scroll: ScrollContainer) -> void:
 	scroll.scroll_vertical += delta
 
 func _sync_focus() -> void:
-	var main: Array[Control] = [_speaker, _sources_button, _close]
-	main.append_array(_concepts)
-	main.append(_scroll)
-	var overlay: Array[Control] = [_source_scroll, _source_close]
-	var active: Array[Control] = []
-	for control in main + overlay: control.focus_mode = Control.FOCUS_NONE
-	for control in (overlay if _sources.visible else main):
-		if control.is_visible_in_tree() and not (control is BaseButton and control.disabled):
-			control.focus_mode = Control.FOCUS_ALL
-			active.append(control)
-	for i in active.size():
-		active[i].focus_next = active[i].get_path_to(active[(i + 1) % active.size()])
-		active[i].focus_previous = active[i].get_path_to(active[posmod(i - 1, active.size())])
+	var controls: Array[Control] = []
+	controls.append_array(_concepts)
+	controls.append(_scroll)
+	HeaderUtilities.sync_focus(self, controls)
 
 func open_sources() -> void:
 	if not _open or _sources.visible: return
@@ -366,6 +366,7 @@ func _update_speaker() -> void:
 	_speaker.show()
 	_speaker.disabled = _audio.stream == null
 	_pending.visible = _audio.stream == null
+	if _header_utilities != null: _header_utilities.refresh()
 
 func close_interaction() -> void:
 	if not _open: return

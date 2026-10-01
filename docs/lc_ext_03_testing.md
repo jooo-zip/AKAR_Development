@@ -1,5 +1,7 @@
 # LC-EXT-03 — Historic Bells and the 1945 Destruction
 
+> Current utility/audio behavior is documented in the 2026-10-01 revision below; earlier milestone results are historical.
+
 Phase 5 implementation report, 25 September 2026. Automated and rendered checks
 passed. Researcher F6 visual review and physical-device review remain pending.
 
@@ -586,3 +588,99 @@ No staging, commit or push occurred.
 - [ ] No source images modified.
 
 Stop for researcher visual review. No other hotspot work, staging, commit or push.
+
+
+## 2026-10-01 — Casa Real utility header and narration revision
+
+**Narration is activated with researcher approval.** The identical temporary
+recordings are intentional and are not a defect or activation blocker.
+
+Current narration assets are intentionally temporary and may contain the
+same recording. Each hotspot already uses its permanent hotspot-specific
+audio path so that final narration can later be substituted by replacing the
+corresponding .ogg file without changing code or resource mappings.
+
+### Actual audio audit
+
+- Hotspot: **LC-EXT-03**
+- Existing file: `res://assets/landmarks/lingayen_church/audio/lc_ext_03_narration.ogg`
+- Size: 288,586 bytes; Godot type: AudioStreamOggVorbis; duration: 21.0 seconds.
+- Existing `.ogg.import` metadata is present; loop is false.
+- SHA-256: `5E44ADB87270F4DC7586CF026902718C597544C394376FC0FDEFE1E38FA4BD44`.
+- Assigned resource slot: `narration_stream (inherited from ConferenceRoomContent)` in `data/landmarks/lingayen_church/lc_ext_03.tres`.
+- Delivered LISTEN: visible and enabled; “Narration pending.” is hidden.
+- Playback through the saved resource mapping: passed start, advancing
+  playback position, pause/resume, actual completion, close and stopped reopen.
+- No autoplay. No new player. No audio conversion, generation, copy, rename or move.
+- Nonzero decoded PCM was verified. Human audibility/content listening remains
+  researcher review; this agent's tools do not support hearing the audio.
+
+### Exact UI reference and reuse
+
+Reference: `scenes/landmarks/casa_real/end/cr_end_01.tscn` and
+`scripts/landmarks/casa_real/cr_end_01.gd`, with CR-EXT-01/CR-INT-03 inspected for
+comparison. No Casa Real-only reusable toolbar exists. The actual reusable
+`scenes/components/conference_room_interaction.tscn` Theme/StyleBoxes are inherited
+unchanged, rather than copying colors from screenshots. The Church-only adapter
+is `scripts/landmarks/lingayen_church/lc_header_utilities.gd`; Casa Real, Limahong
+and the shared shell were not edited.
+
+Header actions are one HBox: **SOURCES → speaker + LISTEN → CLOSE**. The existing
+buttons retain their signals. Target height is CR-END-01's 52 px; fonts are
+18 px wide / 16 px compact; icon is the same 22 px
+`res://assets/ui/icons/speaker.svg`. Normal, hover, pressed, hover-pressed, focus
+and disabled StyleBoxes are the same shared resources as the actual Casa Real
+instance. A calculated minimum width preserves the icon beside LISTEN/PAUSE/RESUME.
+There is exactly one Sources control. Sources stays at the top at every size.
+
+Sources leaves the interpretation column; the scroll area reclaims that row. Evidence controls, documentary overlay, responsive takeaway row and all image/source credits remain. Compact title spacing retains the documentary image minimum height.
+
+### Behavior and validation
+
+Casa Real CR-END-01 playback semantics are used: LISTEN starts at zero; PAUSE
+holds position; RESUME continues; natural completion returns to LISTEN. Sources
+preserves selection and ongoing narration, and traps focus. Overall hotspot
+narration continues across educational selections; reset/close/hide/removal stop
+it. Opening/playing another Church hotspot prevents overlapping narration.
+Missing/null audio retains a disabled button and collapsible pending label.
+
+The utility focus order is Sources → Listen → Close, skipping unavailable audio.
+Mouse, Enter/Space, Tab/Escape and synthetic-touch checks passed. Existing
+educational selection, sources wording, media, credits and close signals remain.
+At 1280×720, 960×540 and 854×480, utilities remain grouped/unclipped and the old
+Sources footprint is removed. Existing internal scrolling remains available;
+no whole-screen scroll or new interaction was introduced.
+
+The shared revision suite verifies the saved permanent audio mapping before
+playback, without injecting the stream. A separate null-stream check exercises
+the safe missing-audio fallback, then restores the supplied stream in memory. See [revision audit](lingayen_church_shared_header_narration_revision.md)
+for final test totals, all six mappings, Git boundaries, environment warnings and
+before/after captures. Earlier disabled-only/per-person/per-milestone audio test
+expectations have been updated for the one-stream-per-hotspot contract.
+
+### F6 review for this revision
+
+Open this hotspot's existing preview scene and press F6. Open the actual hotspot,
+then inspect the top SOURCES/LISTEN/CLOSE row and the former Sources position.
+Check that no blank utility-sized hole remains, credits retain their placement,
+and the educational interaction is unchanged. Repeat at 960×540 and 854×480.
+Sources must preserve selection and Escape must close Sources first. LISTEN is enabled and the pending label is absent. Listen to the beginning;
+verify audibility, pause, resume, completion, immediate stop on Close and stopped
+reopen. The shared temporary recording is approved; final narration replacement
+only requires replacing the matching .ogg at its existing path and normal Godot
+reimport. No code, scene, player or resource-mapping edits are needed.
+
+### Authorized temporary narration activation — 2026-10-01
+
+Retested the saved resource mapping at 1280×720, 960×540 and 854×480.
+LISTEN enabled, pending label hidden, correct path, no autoplay, start/pause/
+resume, completion, immediate Close stop, stopped reopen, replay from zero,
+Sources state preservation and cross-hotspot non-overlap all pass. Mouse,
+keyboard and synthetic touch pass; the Casa Real header remains unchanged.
+
+Shared activation suite: **1,887 headless checks and 1,923 rendered checks,
+0 failures**. All six existing educational regression suites pass. Final logs:
+`C:\Users\Admin\AppData\Local\Temp\akar_lc_activation_<id>.log`;
+rendered log: `akar_lc_activation_render.log`. Saved-resource screenshots are
+`lc_header_after_<id>_<width>.png` in the same directory; these now show enabled
+LISTEN. Human audio review is the next F6 step, not a prerequisite to activation.

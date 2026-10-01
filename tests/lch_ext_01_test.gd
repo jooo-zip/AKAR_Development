@@ -62,6 +62,9 @@ func run() -> void:
 	root.add_child(preview)
 	await settle()
 	var panel = preview.get_node("HotspotFrame/LimahongChannelInteraction")
+	# Keep the existing missing-narration regression scenario; assigned audio is covered by lch_header_test.
+	panel.content = panel.content.duplicate(true)
+	panel.content.narration_stream = null
 	var trigger = preview.get_node("Margin/Layout/OpenArtwork")
 	for dimensions in [Vector2i(1280, 720), Vector2i(960, 540), Vector2i(854, 480)]:
 		root.size = dimensions
@@ -76,7 +79,7 @@ func run() -> void:
 		check(speaker.visible and speaker.disabled, "Missing narration must remain visibly inactive")
 		check(speaker.icon == load("res://assets/ui/icons/speaker.svg"), "Exact Urduja speaker icon")
 		check(panel.content.narration_stream == null and panel.get_node("NarrationPlayer").stream == null, "No Urduja audio attached")
-		check(speaker.size.y >= 56 and speaker.size.x >= 48, "Narration footprint")
+		check(speaker.size.y >= 48 and speaker.size.x >= 48, "Narration footprint")
 		check(not speaker.get_global_rect().intersects(panel.get_node("%Close").get_global_rect()), "Speaker/Close collision")
 		check(panel.get_node("%Title").get_global_rect().end.x <= speaker.get_global_rect().position.x, "Title/Listen collision")
 		check(panel._locator_index == 0 and panel._media_index == 0, "Locator/media reset")

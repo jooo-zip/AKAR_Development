@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+
+const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
+var _header_utilities: RefCounted
 ## Four portrait controls inside the shared AKAR shell. No completion state.
 
 signal close_requested
@@ -24,7 +27,6 @@ var _source_line := Label.new()
 var _anchor_strip := HBoxContainer.new()
 var _anchor_labels: Array[Label] = []
 var _anchor_markers: Array[Panel] = []
-var _footer := HBoxContainer.new()
 var _cards: Array[LCINT01PersonCard] = []
 var _panel_tween: Tween
 var _closing: bool = false
@@ -38,6 +40,8 @@ func _ready() -> void:
 	_build_footer()
 	_scroll.gui_input.connect(_reading_input.bind(_scroll))
 	_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+	_header_utilities = HeaderUtilities.new(self, _pending)
+	add_to_group("lingayen_church_narration")
 	resized.connect(_resize_layout)
 	_wall.resized.connect(_layout_cards)
 	visibility_changed.connect(_visibility_changed)
@@ -157,14 +161,9 @@ func _build_footer() -> void:
 		label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		anchor.add_child(label)
 		_anchor_labels.append(label)
-	$Main/Margin/Layout.add_child(_footer)
-	_footer.add_theme_constant_override("separation", 20)
-	_takeaway.reparent(_footer)
+	_takeaway.reparent($Main/Margin/Layout)
 	_takeaway.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_style_label(_takeaway, 17, true)
-	_sources_button.reparent(_footer)
-	_sources_button.custom_minimum_size = Vector2(110, 56)
-	_sources_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
 
 func _open_standalone() -> void:
@@ -203,6 +202,7 @@ func reset_hotspot() -> void:
 	_cancel_panel_tween()
 	_closing = false
 	_sources.hide()
+	stop_narration()
 	set_selected_person(PersonSelection.NONE)
 	_cancel_fade()
 	_resize_layout()
@@ -219,7 +219,6 @@ func set_selected_person(person: PersonSelection) -> void:
 		return
 	selected_person = person if person >= PersonSelection.NONE and person <= PersonSelection.FEENY else PersonSelection.NONE
 	_cancel_fade()
-	stop_narration()
 	_title.text = parish.title.to_upper()
 	_subtitle.text = parish.subtitle
 	_prompt.text = parish.prompt
@@ -258,7 +257,7 @@ func set_selected_person(person: PersonSelection) -> void:
 		_anchor_markers[i].position = Vector2.ZERO if primary or secondary else Vector2(3, 3)
 		_anchor_markers[i].size = Vector2.ONE * (12 if primary or secondary else 6)
 		_anchor_labels[i].accessibility_name = String(ANCHORS[i]) + (", primary connection" if primary else (", secondary connection" if secondary else ""))
-	_audio.stream = entry.narration if entry != null else null
+	HeaderUtilities.bind_narration(self, content.narration_stream)
 	_update_speaker()
 	_scroll.scroll_vertical = 0
 	if _open:
@@ -281,11 +280,11 @@ func open_sources() -> void:
 
 
 func _update_speaker() -> void:
-	super._update_speaker()
-	_speaker.show()
-	_speaker.disabled = _audio.stream == null
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
-	_pending.visible = _audio.stream == null
+	HeaderUtilities.update_speaker(self, _pending)
+
+
+func toggle_narration() -> void:
+	HeaderUtilities.toggle_narration(self)
 
 
 func stop_narration() -> void:
@@ -357,6 +356,8 @@ func _resize_layout() -> void:
 	_body.get_parent().add_theme_constant_override("separation", 6 if compact else 14)
 	_source_text.add_theme_font_size_override("font_size", 18 if compact else 22)
 	_layout_cards()
+	if _header_utilities != null:
+		_header_utilities.resize()
 
 
 func _layout_cards() -> void:
@@ -413,3 +414,6 @@ func _visibility_changed() -> void:
 func _exit_tree() -> void:
 	_cancel_panel_tween()
 	super._exit_tree()
+
+func _sync_focus() -> void:
+	HeaderUtilities.sync_focus(self)

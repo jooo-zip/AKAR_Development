@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+
+const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
+var _header_utilities: RefCounted
 ## Timeline-led historical interpretation. Animation presents, never owns, state.
 
 signal close_requested
@@ -56,6 +59,8 @@ func _ready() -> void:
 	_build_chronology()
 	_scroll.gui_input.connect(_reading_input.bind(_scroll))
 	_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+	_header_utilities = HeaderUtilities.new(self, _pending)
+	add_to_group("lingayen_church_narration")
 	resized.connect(_resize_layout)
 	_stage.resized.connect(_layout_visual)
 	_ribbon.resized.connect(_layout_ribbon)
@@ -232,15 +237,9 @@ func _build_chronology() -> void:
 		_concepts.append(point)
 		point.pressed.connect(set_timeline_state.bind(i + 1))
 		point.gui_input.connect(_point_input.bind(i))
-	var footer := HBoxContainer.new()
-	footer.add_theme_constant_override("separation", 16)
-	$Main/Margin/Layout.add_child(footer)
-	_takeaway.reparent(footer)
+	_takeaway.reparent($Main/Margin/Layout)
 	_takeaway.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_style_label(_takeaway, 16, true)
-	_sources_button.reparent(footer)
-	_sources_button.custom_minimum_size = Vector2(110, 56)
-	_sources_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
 
 func _entry() -> LCINT02MilestoneContent:
@@ -290,6 +289,7 @@ func reset_hotspot() -> void:
 	_cancel_panel_tween()
 	_closing = false
 	_sources.hide()
+	stop_narration()
 	set_timeline_state(TimelineState.NONE)
 	cancel_active_reveal()
 	if _open:
@@ -304,7 +304,6 @@ func set_timeline_state(state: TimelineState) -> void:
 	if history.milestones.size() != 8 or history.milestones.has(null):
 		return
 	cancel_active_reveal()
-	stop_narration()
 	var previous_texture := _image.texture
 	var previous_rect := Rect2(_image.position, _image.size)
 	selected_timeline_state = state if state >= TimelineState.NONE and state <= TimelineState.LEADERSHIP_1981 else TimelineState.NONE
@@ -355,7 +354,7 @@ func set_timeline_state(state: TimelineState) -> void:
 		_era_panels[i].add_theme_stylebox_override("panel", style)
 		_era_labels[i].add_theme_color_override("font_color", GOLD if active else SECONDARY)
 		_era_labels[i].accessibility_name = ERA_NAMES[i] + (", active era" if active else "")
-	_audio.stream = entry.narration if entry != null else null
+	HeaderUtilities.bind_narration(self, content.narration_stream)
 	_update_speaker()
 	_scroll.scroll_vertical = 0
 	_resize_layout()
@@ -508,6 +507,8 @@ func _resize_layout() -> void:
 		label.add_theme_font_size_override("font_size", 11 if compact else 14)
 	_layout_visual()
 	_layout_ribbon()
+	if _header_utilities != null:
+		_header_utilities.resize()
 
 
 func _point_input(event: InputEvent, index: int) -> void:
@@ -546,11 +547,11 @@ func open_sources() -> void:
 
 
 func _update_speaker() -> void:
-	super._update_speaker()
-	_speaker.show()
-	_speaker.disabled = _audio.stream == null
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
-	_pending.visible = _audio.stream == null
+	HeaderUtilities.update_speaker(self, _pending)
+
+
+func toggle_narration() -> void:
+	HeaderUtilities.toggle_narration(self)
 
 
 func stop_narration() -> void:
@@ -594,3 +595,6 @@ func _exit_tree() -> void:
 	cancel_active_reveal()
 	_cancel_panel_tween()
 	super._exit_tree()
+
+func _sync_focus() -> void:
+	HeaderUtilities.sync_focus(self)

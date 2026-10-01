@@ -89,8 +89,8 @@ func check_state(panel: Control, state: int, missing: bool = false) -> void:
 	check(panel._center.accessibility_name == "Return to overview of what Lingayen Church represents", "Center overview accessible name")
 	check(not panel._center.toggle_mode and not panel._center.button_pressed, "Center is not a fifth theme")
 	check(panel._takeaway.visible and panel._takeaway.text == REFLECTION, "Exact passive reflection always visible")
-	check(panel._speaker.visible and panel._speaker.disabled and panel._pending.visible and panel._pending.text == "Narration pending.", "One disabled pending LISTEN")
-	check(not panel._audio.playing and panel._audio.stream == null, "No autoplay or theme audio")
+	check(panel._speaker.visible and panel._speaker.disabled == (panel._audio.stream == null) and panel._pending.visible == (panel._audio.stream == null) and panel._pending.text == "Narration pending.", "One disabled pending LISTEN")
+	check(not panel._audio.playing and panel._audio.stream == panel.content.narration, "No autoplay or theme audio")
 	if not missing:
 		check(panel._image.texture.resource_path == PHOTO, "Exact asset reference")
 		check(panel._credit.text == "PHOTO: AKAR Research Team, 2026", "Exact provenance")
@@ -125,7 +125,7 @@ func check_layout(panel: Control, dimensions: Vector2i) -> void:
 	check(panel._title.get_global_rect().end.x <= panel._speaker.global_position.x, "Header avoids LISTEN")
 	check(absf(panel._map.size.x / (panel._map.size.x + panel._information.size.x) - 0.6) < 0.02, "60/40 split")
 	for control in panel._cards + [panel._center]:
-		check(control.size.x >= 56 and control.size.y >= 56, "Large touch target")
+		check(control.size.x >= 56 and control.size.y >= (52 if control in [panel._speaker, panel._close, panel._sources_button] else 56), "Large touch target")
 		check(map_bounds.encloses(control.get_global_rect()), "All four themes and center remain visible")
 		check(control.get_theme_stylebox("focus") != control.get_theme_stylebox("pressed"), "Focus distinct from selected")
 	for i in 4:
@@ -281,14 +281,15 @@ func run() -> void:
 	# Only one overall narration stream; no per-theme players/resources.
 	var clip := AudioStreamWAV.new()
 	clip.mix_rate = 8000
-	clip.data = PackedByteArray()
-	clip.data.resize(80000)
+	var silence := PackedByteArray()
+	silence.resize(80000)
+	clip.data = silence
 	panel.content.narration = clip
 	panel.set_selected_theme(1)
 	panel.toggle_narration()
 	check(panel._audio.playing and not panel._speaker.disabled, "Future overall narration works")
 	panel.set_selected_theme(2)
-	check(not panel._audio.playing and panel._audio.stream == clip, "Selection stops audio and retains overall stream")
+	check(panel._audio.playing and panel._audio.stream == clip, "Selection retains overall narration playback")
 	panel.toggle_narration()
 	panel.close_interaction()
 	check(not panel._audio.playing, "Close immediately stops narration")

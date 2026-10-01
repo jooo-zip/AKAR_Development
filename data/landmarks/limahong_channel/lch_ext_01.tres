@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://qmronjk2nqch" path="res://scripts/components/conference_room_content.gd" id="1"]
 [ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="AudioStream" uid="uid://bhqdg41gqslak" path="res://assets/landmarks/limahong_channel/audio/lch_ext_01_narration.ogg" id="header_narration"]
 
 [sub_resource type="Resource" id="Where"]
 script = ExtResource("2")
@@ -24,14 +25,34 @@ script = ExtResource("1")
 hotspot_id = "LCH-EXT-01"
 title = "LIMAHONG CHANNEL"
 prompt = "Meet the Limahong Channel"
+narration_stream = ExtResource("header_narration")
 learning_takeaway = "REMEMBER
 The channel seen today is traditionally connected with Limahong's escape during the 1575 Pangasinan campaign."
-source_credit = "Historical content
-Researcher-supplied LCH-EXT-01 text. Bibliographic citations pending researcher submission.
+source_credit = "HISTORICAL REFERENCES
 
-Media / photo credits
-Locator image and present-day photographs supplied in the project. Original source, photographer, and usage permissions pending researcher confirmation.
+Municipality of Lingayen. (2020).
+Limahong Channel Tourism Center Soon to Be Operational.
 
-Narration
-Recording pending content verification; playback is currently unavailable."
+Austria, H. (2019).
+Limahong Channel Tourism Center in Pangasinan Groundbreaks.
+Philippine News Agency.
+
+Provincial Government of Pangasinan. (n.d.).
+History.
+
+Martindale, W. (2024).
+The Many Names of Limahong: Remembering a Chinese Pirate in the Philippines.
+BYU Asian Studies Student Journal, 9, Article 6.
+
+MEDIA CREDITS
+
+Present-day Limahong Channel photograph
+Asset: lch_ext_01_channel_present
+Courtesy of the Lingayen Tourism Office.
+Provided directly to the AKAR Research Team for project use.
+
+All other locator graphics, interface graphics, map treatments, icons, and AKAR-created visual elements used by LCH-EXT-01:
+AKAR Project / AKAR Research Team.
+Original project resources."
 concepts = Array[ExtResource("2")]([SubResource("Where"), SubResource("History"), SubResource("Today")])
+metadata/historical_source_urls = PackedStringArray("https://www.lingayen.gov.ph/limahong-channel-tourism-center-soon-to-be-operational/", "https://www.pna.gov.ph/articles/1071673", "https://www.pangasinan.gov.ph/the-province/history/", "https://scholarsarchive.byu.edu/asj/vol9/iss1/6")

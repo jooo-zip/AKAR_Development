@@ -1,11 +1,12 @@
-[gd_resource type="Resource" format=3]
+[gd_resource type="Resource" format=3 uid="uid://dqbq1vev6puxd"]
 
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_end_01_content.gd" id="content"]
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_end_01_topic.gd" id="topic"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="1_cusl8"]
+[ext_resource type="Script" uid="uid://dj582b7usx6wn" path="res://scripts/landmarks/limahong_channel/lch_end_01_content.gd" id="content"]
+[ext_resource type="AudioStream" uid="uid://dmstub5dg7067" path="res://assets/landmarks/limahong_channel/audio/lch_end_01_narration.ogg" id="header_narration"]
+[ext_resource type="Script" uid="uid://c1h6hbdo0bp8w" path="res://scripts/landmarks/limahong_channel/lch_end_01_topic.gd" id="topic"]
 
 [sub_resource type="Resource" id="Retreat"]
 script = ExtResource("topic")
-topic_id = 0
 card_number = "01"
 compact_label = "RETREAT"
 full_title = "RETREAT TO PANGASINAN"
@@ -40,9 +41,9 @@ topic_id = 3
 card_number = "04"
 compact_label = "TRADITION"
 full_title = "HISTORICAL TRADITION"
-qualifier_label = "TRADITIONAL ASSOCIATION"
 short_body = "The present channel is traditionally associated with the 1575 escape route."
 detail_body = "The present-day Limahong Channel is traditionally associated with the 1575 escape route. Its exact identification has not been independently established through archaeological evidence."
+qualifier_label = "TRADITIONAL ASSOCIATION"
 icon_type = "document"
 
 [sub_resource type="Resource" id="Heritage"]
@@ -57,35 +58,58 @@ icon_type = "book"
 
 [resource]
 script = ExtResource("content")
-hotspot_id = "LCH-END-01"
-title = "WHAT THE LIMAHONG CHANNEL REPRESENTS"
 intro_heading = "AT A GLANCE"
 intro_body = "The Limahong Channel is a historical waterway in Pangapisan Norte, Lingayen, traditionally associated with Limahong's escape during the 1575 Pangasinan campaign."
+topics = Array[ExtResource("topic")]([SubResource("Retreat"), SubResource("Blockade"), SubResource("Escape"), SubResource("Tradition"), SubResource("Heritage")])
 default_detail_heading = "THE STORY IN BRIEF"
 default_detail_body = "The Limahong Channel connects the memory of the 1575 Pangasinan campaign with Lingayen's continuing heritage."
 reflection_heading = "THINK ABOUT IT"
 reflection_prompt = "Why has the Limahong Channel remained historically significant to Lingayen?"
 takeaway_heading = "KEY TAKEAWAY"
-learning_takeaway = "The Limahong Channel is remembered because of its traditional association with Limahong's 1575 escape from the Pangasinan blockade. That historical memory continues to contribute to Lingayen's local heritage, education, and tourism initiatives."
-topics = Array[ExtResource("topic")]([SubResource("Retreat"), SubResource("Blockade"), SubResource("Escape"), SubResource("Tradition"), SubResource("Heritage")])
+hotspot_id = "LCH-END-01"
+title = "WHAT THE LIMAHONG CHANNEL REPRESENTS"
+narration_stream = ExtResource("header_narration")
 narration_transcript = "After his failed attacks on Manila in late 1574, Limahong established a fortified settlement in Pangasinan. In 1575, an expedition led by Juan de Salcedo blockaded the settlement, while Limahong's group escaped through a channel reportedly dug toward the sea. The present Limahong Channel is traditionally associated with that escape route, although its exact identification has not been independently established archaeologically. Today, the channel preserves the memory of the event as part of Lingayen's heritage."
-source_credit = "RETREAT TO PANGASINAN
-Researcher-supplied END-01 wording. Existing project source basis: Francisco de Sande account, Shutz academic study, and Project Historical Profile / Validation Sheet. Full bibliographic details and page references remain pending.
+learning_takeaway = "The Limahong Channel is remembered because of its traditional association with Limahong's 1575 escape from the Pangasinan blockade. That historical memory continues to contribute to Lingayen's local heritage, education, and tourism initiatives."
+source_credit = "HISTORICAL REFERENCES
 
-1575 BLOCKADE
-Researcher-supplied summary of Salcedo's expedition and the Spanish and allied Luzonese blockade in 1575. Existing project source categories include Francisco de Sande, provincial historical material, and the Project Historical Profile / Validation Sheet. Exact citations remain pending.
+Sande, F. de. (1903).
+Relation of the Filipinas Islands.
+In E. H. Blair & J. A. Robertson (Eds. & Trans.),
+The Philippine Islands, 1493–1803, Vol. 4, pp. 21–97.
+Original work dated 1576.
 
-ESCAPE CHANNEL
-The researcher identifies official provincial history as the basis for the historical account of a channel dug toward the China Sea. Full provincial document title, publication details, page and source link remain pending. This account does not establish the exact identity of the modern channel.
+Shutz, J. T. (2019).
+Limahong's Pirates, Ming Mariners, and Early Sino-Spanish Relations: The Pangasinan Campaign of 1575 and Global History from Below.
+Philippine Studies: Historical and Ethnographic Viewpoints, 67(3–4), 315–342.
 
-HISTORICAL TRADITION
+Martindale, W. (2024).
+The Many Names of Limahong: Remembering a Chinese Pirate in the Philippines.
+BYU Asian Studies Student Journal, 9, Article 6.
+
+Provincial Government of Pangasinan. (n.d.).
+History.
+
+Municipality of Lingayen. (2020).
+Limahong Channel Tourism Center Soon to Be Operational.
+
+Austria, H. (2018).
+Limahong Channel Tourism Center to Be Built This Year.
+Philippine News Agency.
+
+Austria, H. (2019).
+Limahong Channel Tourism Center in Pangasinan Groundbreaks.
+Philippine News Agency.
+
+Pasiliao, J. J. (2020).
+Limahong Channel Hub to Boost Tourism, Jobs in Pangasinan Town.
+Philippine News Agency.
+
 The present-day Limahong Channel is traditionally associated with the 1575 escape route. Its exact identification has not been independently established through archaeological evidence. The modern association is kept separate from the historical escape narrative.
 
-MODERN HERITAGE VALUE
-Researcher-supplied content about local historical memory, heritage education and tourism, consistent with the project's historical profile. Full citations remain pending.
+MEDIA CREDITS
 
-VALIDATION STATUS
-Source-backed project content prepared for validation. The available validation-sheet copy has unchecked boxes and no signed overall approval; formal signed validation is not claimed.
-
-PRESENTATION
-Interface symbols and storyline are generated in Godot. They are conceptual reading aids, not a map or a claim about the exact historical route. No documentary media is required. One overall narration recording remains pending."
+All summary symbols, diagrams, icons, storyline graphics, interface graphics, and other visual resources used by LCH-END-01:
+AKAR Project / AKAR Research Team.
+Original project resources."
+metadata/historical_source_urls = PackedStringArray("https://www.gutenberg.org/cache/epub/12635/pg12635-images.html", "https://doi.org/10.13185/2244-1638.1019", "https://scholarsarchive.byu.edu/asj/vol9/iss1/6", "https://www.pangasinan.gov.ph/the-province/history/", "https://www.lingayen.gov.ph/limahong-channel-tourism-center-soon-to-be-operational/", "https://www.pna.gov.ph/articles/1029395", "https://www.pna.gov.ph/articles/1071673", "https://www.pna.gov.ph/articles/1091355")

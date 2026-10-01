@@ -65,6 +65,9 @@ func run() -> void:
 	root.add_child(preview)
 	await settle()
 	var panel = preview.get_node("HotspotFrame/LimahongChannelInteraction")
+	# Keep the existing missing-narration regression scenario; assigned audio is covered by lch_header_test.
+	panel.content = panel.content.duplicate(true)
+	panel.content.narration_stream = null
 	var trigger = preview.get_node("Margin/Layout/OpenArtwork")
 	for dimensions in [Vector2i(1280,720), Vector2i(960,540), Vector2i(854,480)]:
 		root.size = dimensions

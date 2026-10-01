@@ -1,30 +1,31 @@
-[gd_resource type="Resource" format=3]
+[gd_resource type="Resource" format=3 uid="uid://cx8i34nlf6kl3"]
 
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_03_content.gd" id="content"]
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_03_stage.gd" id="stage"]
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_03_facility.gd" id="facility"]
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_03_media.gd" id="media"]
-[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="base_entry"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="base_entry"]
+[ext_resource type="Script" uid="uid://doduydqmniueq" path="res://scripts/landmarks/limahong_channel/lch_int_03_content.gd" id="content"]
+[ext_resource type="Script" uid="uid://b6s01ngvac8xo" path="res://scripts/landmarks/limahong_channel/lch_int_03_facility.gd" id="facility"]
+[ext_resource type="AudioStream" uid="uid://nqbw477py1l1" path="res://assets/landmarks/limahong_channel/audio/lch_int_03_narration.ogg" id="header_narration"]
+[ext_resource type="Script" uid="uid://b4olhvyi65q60" path="res://scripts/landmarks/limahong_channel/lch_int_03_media.gd" id="media"]
+[ext_resource type="Script" uid="uid://jgmvxbov8drt" path="res://scripts/landmarks/limahong_channel/lch_int_03_stage.gd" id="stage"]
 
 [sub_resource type="Resource" id="Milestone"]
 script = ExtResource("stage")
 stage_id = "milestone_2019"
 short_label = "01 — 2019 MILESTONE"
 compact_label = "2019"
+takeaway = "It marked an important modern milestone in the site's heritage and tourism development."
 heading = "2019 — A NEW MILESTONE"
 body = "The groundbreaking of the Limahong Channel Tourism Center was held in June 2019 in Barangay Pangapisan Norte, Lingayen."
-takeaway = "It marked an important modern milestone in the site's heritage and tourism development."
 
 [sub_resource type="Resource" id="Preservation"]
 script = ExtResource("stage")
 stage_id = "preservation"
 short_label = "02 — PRESERVING THE STORY"
 compact_label = "PRESERVATION"
+takeaway = "Modern heritage efforts give visitors another way to encounter and learn about the history remembered at the site."
 heading = "PRESERVING THE STORY"
 body = "The Limahong Channel preserves local memory of the 1575 Pangasinan campaign and Limahong's escape.
 
 Its historical association also supports heritage education and tourism initiatives."
-takeaway = "Modern heritage efforts give visitors another way to encounter and learn about the history remembered at the site."
 
 [sub_resource type="Resource" id="Development"]
 script = ExtResource("stage")
@@ -34,19 +35,6 @@ compact_label = "DEVELOPMENT"
 heading = "DEVELOPMENT IN PHASES"
 body = "The Limahong Channel Tourism Center has been developed as a phased tourism project at the site."
 
-[sub_resource type="Resource" id="Groundbreaking"]
-script = ExtResource("media")
-image_path = "res://assets/landmarks/limahong_channel/lch_int_03/photos/lch_int_03_2019_groundbreaking.jpg"
-media_type = "Documentary photograph"
-event = "Limahong Channel Tourism Center groundbreaking"
-date = "June 2019"
-photographer = "Liwayway Yparraguirre"
-article_author = "Hilda Austria"
-source = "Philippine News Agency"
-credit = "Liwayway Yparraguirre / Philippine News Agency"
-permission_status = "PENDING"
-location = "Barangay Pangapisan Norte, Lingayen, Pangasinan"
-
 [sub_resource type="Resource" id="Bataoil"]
 script = ExtResource("media")
 image_path = "res://assets/landmarks/limahong_channel/lch_int_03/people/lch_int_03_bataoil.png"
@@ -54,17 +42,6 @@ media_type = "Documentary portrait photograph"
 source = "Municipality of Lingayen official website"
 page_context = "Official page identifying Hon. Leopoldo Bataoil"
 credit = "Municipality of Lingayen"
-permission_status = "PENDING"
-
-[sub_resource type="Resource" id="PresentSite"]
-script = ExtResource("media")
-image_path = "res://assets/landmarks/limahong_channel/lch_int_03/photos/lch_int_03_present_site.jpg"
-media_type = "Original field/site documentation photograph"
-date = "2026-07-18 11:44:09 (embedded EXIF DateTimeOriginal; timezone unspecified)"
-source = "AKAR research team"
-credit = "AKAR research team"
-permission_status = "Research-team captured / authorized for AKAR use"
-location = "Limahong Channel / Pangapisan Norte, Lingayen, Pangasinan"
 
 [sub_resource type="Resource" id="Park"]
 script = ExtResource("facility")
@@ -120,11 +97,33 @@ facility_id = "roads"
 display_name = "Improved Access Roads"
 status_note = "Listed in the original development plan."
 
+[sub_resource type="Resource" id="Groundbreaking"]
+script = ExtResource("media")
+image_path = "res://assets/landmarks/limahong_channel/lch_int_03/photos/lch_int_03_2019_groundbreaking.jpg"
+media_type = "Documentary photograph"
+event = "Limahong Channel Tourism Center groundbreaking"
+date = "June 2019"
+photographer = "Liwayway Yparraguirre"
+article_author = "Hilda Austria"
+source = "Philippine News Agency"
+credit = "Liwayway Yparraguirre / Philippine News Agency"
+location = "Barangay Pangapisan Norte, Lingayen, Pangasinan"
+
+[sub_resource type="Resource" id="PresentSite"]
+script = ExtResource("media")
+image_path = "res://assets/landmarks/limahong_channel/lch_int_03/photos/lch_int_03_present_site.jpg"
+media_type = "Original field/site documentation photograph"
+date = "2026-07-18 11:44:09 (embedded EXIF DateTimeOriginal; timezone unspecified)"
+source = "AKAR research team"
+credit = "AKAR research team"
+permission_status = "Research-team captured / authorized for AKAR use"
+location = "Limahong Channel / Pangapisan Norte, Lingayen, Pangasinan"
+
 [resource]
 script = ExtResource("content")
-hotspot_id = "LCH-INT-03"
-title = "FROM ESCAPE ROUTE TO HERITAGE DESTINATION"
-prompt = "EXPLORE THE CHANNEL'S MODERN LEGACY"
+groundbreaking = SubResource("Groundbreaking")
+contributor_image = SubResource("Bataoil")
+present_site = SubResource("PresentSite")
 documentary_label = "JUNE 2019
 LIMAHONG CHANNEL TOURISM CENTER
 GROUNDBREAKING"
@@ -135,23 +134,34 @@ contributor_body = "Former representative Leopoldo N. Bataoil promoted the Limah
 preservation_nodes = PackedStringArray("HISTORICAL MEMORY", "HERITAGE EDUCATION", "TOURISM INITIATIVES")
 plan_heading = "ORIGINAL DEVELOPMENT PLAN"
 qualification = "Development has proceeded in phases. Facilities listed in the original development plan should not automatically be interpreted as completed facilities."
-groundbreaking = SubResource("Groundbreaking")
-contributor_image = SubResource("Bataoil")
-present_site = SubResource("PresentSite")
-concepts = Array[ExtResource("base_entry")]([SubResource("Milestone"), SubResource("Preservation"), SubResource("Development")])
 facilities = Array[ExtResource("facility")]([SubResource("Park"), SubResource("Pavilion"), SubResource("Artifacts"), SubResource("Cruise"), SubResource("Garden"), SubResource("Forest"), SubResource("EcoPark"), SubResource("Activity"), SubResource("Roads")])
+hotspot_id = "LCH-INT-03"
+title = "FROM ESCAPE ROUTE TO HERITAGE DESTINATION"
+prompt = "EXPLORE THE CHANNEL'S MODERN LEGACY"
+narration_stream = ExtResource("header_narration")
 narration_transcript = "The Limahong Channel Tourism Center reached an important milestone with its groundbreaking in June 2019. The site's historical association supports heritage education and tourism initiatives. Development has continued in phases, so facilities included in the original plan should be distinguished from those confirmed as completed."
-source_credit = "2019 MILESTONE
-Researcher-supplied Philippine News Agency metadata: article author Hilda Austria; photograph by Liwayway Yparraguirre; June 2019 groundbreaking. Exact article title, URL and publication date remain pending. No claim that the whole center was completed in 2019 is made.
+source_credit = "HISTORICAL REFERENCES
 
-MODERN CONTRIBUTOR
-Researcher-supplied role statement for Leopoldo N. Bataoil. Municipality of Lingayen official website image and identifying page context supplied by researcher. Exact page URL and House-measure citation remain pending.
+Austria, H. (2018).
+Limahong Channel Tourism Center to Be Built This Year.
+Philippine News Agency.
 
-HERITAGE SIGNIFICANCE
-Source-backed project content prepared for validation. The site's historical association supports heritage education and tourism initiatives. A signed validator approval is not claimed.
+Austria, H. (2019).
+Limahong Channel Tourism Center in Pangasinan Groundbreaks.
+Philippine News Agency.
 
-DEVELOPMENT PLAN
-The nine categories are from the researcher-supplied original development plan. Full plan document citation and independently supported current facility statuses remain pending. All categories are labelled ORIGINAL PLAN. The present-site photograph provides present-day context only; it does not verify completion of the planned facilities.
+Municipality of Lingayen. (2020).
+Limahong Channel Tourism Center Soon to Be Operational.
+
+Municipality of Lingayen. (2025).
+Bidding Documents for the Construction of a Multi-Purpose Building in the Limahong Tourism Center, Barangay Pangapisan North, Lingayen, Pangasinan.
+
+Pasiliao, J. J. (2020).
+Limahong Channel Hub to Boost Tourism, Jobs in Pangasinan Town.
+Philippine News Agency.
 
 MEDIA CREDITS
+
 Credits and known metadata are listed below. PNA and Municipality of Lingayen reuse permissions remain pending. The present-site image is research-team captured and authorized for AKAR use; its individual photographer remains pending. Its embedded EXIF capture timestamp is recorded in the media metadata, with no timezone supplied."
+concepts = Array[ExtResource("base_entry")]([SubResource("Milestone"), SubResource("Preservation"), SubResource("Development")])
+metadata/historical_source_urls = PackedStringArray("https://www.pna.gov.ph/articles/1029395", "https://www.pna.gov.ph/articles/1071673", "https://www.lingayen.gov.ph/limahong-channel-tourism-center-soon-to-be-operational/", "https://www.lingayen.gov.ph/wp-content/uploads/INVITATION-TO-BID-_CONSTRUCTION-OF-MULTI-PURPOSE-BUILDING-SENIOR-CITIZEN-BUILDING-IN-LIMAHONG-TOURSIM-CENTER-BARANGAY-PANGAPISAN-NORTH.pdf", "https://www.pna.gov.ph/articles/1091355")

@@ -1,8 +1,9 @@
-[gd_resource type="Resource" format=3]
+[gd_resource type="Resource" format=3 uid="uid://dp52lhys1wu70"]
 
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_01_content.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_int_01/photos/lch_int_01_statue_photo.jpg.png" id="3"]
+[ext_resource type="Script" uid="uid://d4l1gqegcxy36" path="res://scripts/landmarks/limahong_channel/lch_int_01_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://djbcj0opvwuv3" path="res://assets/landmarks/limahong_channel/lch_int_01/photos/lch_int_01_statue_photo.jpg.png" id="3"]
+[ext_resource type="AudioStream" uid="uid://dpukuyc5q67a4" path="res://assets/landmarks/limahong_channel/audio/lch_int_01_narration.ogg" id="header_narration"]
 
 [sub_resource type="Resource" id="Who"]
 script = ExtResource("2")
@@ -16,31 +17,38 @@ body = "During the 1575 campaign, Limahong and part of his force escaped from Pa
 
 [resource]
 script = ExtResource("1")
+section_labels = PackedStringArray("WHO WAS LIMAHONG?", "WHY THIS SITE?")
+compact_section_labels = PackedStringArray("WHO WAS HE?", "WHY THIS SITE?")
 hotspot_id = "LCH-INT-01"
 title = "THE LIMAHONG STATUE"
 prompt = "DISCOVER LIMAHONG"
-section_labels = PackedStringArray("WHO WAS LIMAHONG?", "WHY THIS SITE?")
-compact_section_labels = PackedStringArray("WHO WAS HE?", "WHY THIS SITE?")
-default_section = 0
-default_lens_position = Vector2(0.42, 0.55)
 illustration = ExtResource("3")
 illustration_alt_text = "Researcher-supplied photograph of the Limahong statue, shown in its indoor exhibit setting."
+narration_stream = ExtResource("header_narration")
 narration_transcript = "Limahong, also known as Lin Feng, was a Chinese pirate and military leader. His retreat to Pangasinan, establishment of a fortified settlement, and escape during the campaign of 1575 form the central historical narrative commemorated by this site."
-source_credit = "Historical content
-Researcher-supplied LCH-INT-01 wording.
+source_credit = "HISTORICAL REFERENCES
 
-Researcher-identified source categories already recorded for Limahong
-Francisco de Sande account
-Project Historical Profile / Validation Sheet
-Provincial Government historical material
+Sande, F. de. (1903).
+Relation of the Filipinas Islands.
+In E. H. Blair & J. A. Robertson (Eds. & Trans.),
+The Philippine Islands, 1493–1803, Vol. 4, pp. 21–97.
+Original work dated 1576.
 
-Full bibliographic details, page references, source links and validation-sheet identifier/date await researcher submission. No complete bibliographic citation is claimed.
+Shutz, J. T. (2019).
+Limahong's Pirates, Ming Mariners, and Early Sino-Spanish Relations: The Pangasinan Campaign of 1575 and Global History from Below.
+Philippine Studies: Historical and Ethnographic Viewpoints, 67(3–4), 315–342.
 
-Historical qualification
-The present Limahong Channel is traditionally associated with Limahong's escape. This presentation does not establish the exact sixteenth-century escape channel through archaeological evidence.
+Provincial Government of Pangasinan. (n.d.).
+History.
 
-Photo
-Researcher-supplied Limahong statue photograph. Photographer, original source and usage permissions await researcher confirmation.
+Martindale, W. (2024).
+The Many Names of Limahong: Remembering a Chinese Pirate in the Philippines.
+BYU Asian Studies Student Journal, 9, Article 6.
 
-Narration recording pending."
+MEDIA CREDITS
+
+Limahong statue photograph and all interface graphics/icons used by LCH-INT-01:
+AKAR Project / AKAR Research Team.
+Original project resources."
 concepts = Array[ExtResource("2")]([SubResource("Who"), SubResource("Site")])
+metadata/historical_source_urls = PackedStringArray("https://www.gutenberg.org/cache/epub/12635/pg12635-images.html", "https://doi.org/10.13185/2244-1638.1019", "https://www.pangasinan.gov.ph/the-province/history/", "https://scholarsarchive.byu.edu/asj/vol9/iss1/6")

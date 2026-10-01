@@ -1,50 +1,50 @@
-[gd_resource type="Resource" script_class="HistoricalSummaryContent" format=3]
-[ext_resource type="Script" path="res://scripts/components/historical_summary_content.gd" id="content"]
-[ext_resource type="Script" path="res://scripts/components/historical_summary_entry.gd" id="entry"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_end_01_established_icon.png" id="icon0"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_end_01_urduja_icon.png" id="icon1"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_end_01_changing_function_icon.png" id="icon2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_end_01_official_role_icon.png" id="icon3"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_end_01_cultural_architecture_icon.jpg" id="icon4"]
+[gd_resource type="Resource" script_class="HistoricalSummaryContent" format=3 uid="uid://blb2cqve3ls0g"]
+
+[ext_resource type="Script" uid="uid://c7rcuq3vgvv0" path="res://scripts/components/historical_summary_content.gd" id="content"]
+[ext_resource type="Script" uid="uid://8cby6fk1xehf" path="res://scripts/components/historical_summary_entry.gd" id="entry"]
+[ext_resource type="Texture2D" uid="uid://cu3yk35qtigm7" path="res://assets/landmarks/urduja_house/icons/uh_end_01_established_icon.png" id="icon0"]
+[ext_resource type="Texture2D" uid="uid://5fieaeh1yln1" path="res://assets/landmarks/urduja_house/icons/uh_end_01_urduja_icon.png" id="icon1"]
+[ext_resource type="Texture2D" uid="uid://b8l2tpuidm04g" path="res://assets/landmarks/urduja_house/icons/uh_end_01_changing_function_icon.png" id="icon2"]
+[ext_resource type="Texture2D" uid="uid://41hggtjdq168" path="res://assets/landmarks/urduja_house/icons/uh_end_01_official_role_icon.png" id="icon3"]
+[ext_resource type="Texture2D" uid="uid://x0nkojh8agra" path="res://assets/landmarks/urduja_house/icons/uh_end_01_cultural_architecture_icon.jpg" id="icon4"]
 
 [sub_resource type="Resource" id="Entry0"]
 script = ExtResource("entry")
-icon = ExtResource("icon0")
 title = "Established in 1953"
 body = "Urduja House was constructed as the official residence of the Governor of Pangasinan."
+icon = ExtResource("icon0")
 icon_alt_text = "Pixel-art building icon representing the establishment of Urduja House."
 
 [sub_resource type="Resource" id="Entry1"]
 script = ExtResource("entry")
-icon = ExtResource("icon1")
 title = "Named for Princess Urduja"
 body = "Its original name, Princess Urduja Palace, reflects the cultural importance of the legendary warrior figure associated with Pangasinan."
+icon = ExtResource("icon1")
 icon_alt_text = "Pixel-art cultural icon representing Princess Urduja."
 
 [sub_resource type="Resource" id="Entry2"]
 script = ExtResource("entry")
-icon = ExtResource("icon2")
 title = "A Changing Government Function"
 body = "The building served as both residence and office until the daily Governor’s Office moved to the Provincial Capitol in 2007."
+icon = ExtResource("icon2")
 icon_alt_text = "Pixel-art time and transition icon representing the changing government function of Urduja House."
 
 [sub_resource type="Resource" id="Entry3"]
 script = ExtResource("entry")
-icon = ExtResource("icon3")
 title = "Continuing Official Role"
 body = "Urduja House remains the governor’s official residence, while the Ceremonial Hall is used for selected official events."
+icon = ExtResource("icon3")
 icon_alt_text = "Pixel-art official-function icon representing the continuing government role of Urduja House."
 
 [sub_resource type="Resource" id="Entry4"]
 script = ExtResource("entry")
-icon = ExtResource("icon4")
 title = "Cultural and Architectural Identity"
 body = "Its Balinese-inspired character and association with Princess Urduja contribute to its distinctive place in Pangasinan’s heritage."
+icon = ExtResource("icon4")
 icon_alt_text = "Pixel-art architectural icon representing the cultural and architectural identity of Urduja House."
 
 [resource]
 script = ExtResource("content")
 title = "What Urduja House Represents"
 introduction = "A quick look back at what you explored."
-return_button_label = "RETURN TO LANDMARK MAP"
 summary_entries = Array[ExtResource("entry")]([SubResource("Entry0"), SubResource("Entry1"), SubResource("Entry2"), SubResource("Entry3"), SubResource("Entry4")])

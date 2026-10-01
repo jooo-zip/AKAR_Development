@@ -107,6 +107,9 @@ func run() -> void:
 	root.add_child(preview)
 	await settle()
 	var panel = preview.get_node("HotspotFrame/LimahongStatueInteraction")
+	# Keep the existing missing-narration regression scenario; assigned audio is covered by lch_header_test.
+	panel.content = panel.content.duplicate(true)
+	panel.content.narration_stream = null
 	var trigger = preview.get_node("Margin/Layout/OpenArtwork")
 	var lens = panel._magnifier
 	var close_events: Array[int] = [0]
@@ -124,7 +127,8 @@ func run() -> void:
 		for control in panel._explorer.find_children("*", "Control", true, false):
 			if control != lens.lens:
 				check(control.focus_mode == Control.FOCUS_NONE and control.mouse_filter == Control.MOUSE_FILTER_IGNORE, "Only lens captures photo-area input")
-		check(lens.LENS_SIZE == 76.0 and lens.lens.size == Vector2(96, 96), "Larger lens and generous hit area")
+		# Fractional parent placement can round a 96 px Control to 96.000015 px.
+		check(lens.LENS_SIZE == 76.0 and lens.lens.size.is_equal_approx(Vector2(96, 96)), "Larger lens and generous hit area: %.9f x %.9f" % [lens.lens.size.x, lens.lens.size.y])
 		check(lens.lens.visible and lens.detail.visible and lens.hint.visible, "Lens/detail/hint immediately available")
 		check(lens.lens_normalized_position.is_equal_approx(panel.content.default_lens_position), "Default lens reset")
 		check(panel._image.texture.resource_path.ends_with("lch_int_01_statue_photo.jpg.png"), "Actual provided filename retained")
@@ -259,7 +263,7 @@ func run() -> void:
 		check(panel._sources.visible and not lens._enabled, "Sources blocks inspection")
 		await key(KEY_TAB)
 		check(root.gui_get_focus_owner() in [panel._source_scroll, panel._source_close], "Modal Sources focus trap")
-		check(panel._source_text.text.begins_with("WHY THIS SITE?"), "Sources identifies active section")
+		check(panel._source_text.text.begins_with("HISTORICAL REFERENCES") and panel.current_section == 1, "Standard Sources keeps active section")
 		panel.select_section(0)
 		assert_section(panel, 1)
 		await key(KEY_ESCAPE)

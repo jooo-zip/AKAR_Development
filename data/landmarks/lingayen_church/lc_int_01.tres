@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="LCINT01Content" format=3]
+[gd_resource type="Resource" script_class="LCINT01Content" format=3 uid="uid://betkfa7opvnxb"]
 
-[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_int_01_content.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_int_01_person_content.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_guerrero_portrait.png" id="3"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_madriaga_portrait.png" id="4"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_sheehan_portrait.png" id="5"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_feeny_portrait.png" id="6"]
+[ext_resource type="Script" uid="uid://cfn0o5k5vr1tl" path="res://scripts/landmarks/lingayen_church/lc_int_01_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="1_5o2gy"]
+[ext_resource type="Script" uid="uid://bcsbb6viraaof" path="res://scripts/landmarks/lingayen_church/lc_int_01_person_content.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://1p4k8vqdfe4j" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_guerrero_portrait.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://dsbpymo7jbdc3" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_madriaga_portrait.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://26f2k5363pgy" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_sheehan_portrait.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://dws4fcrfbr1s" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_feeny_portrait.png" id="6"]
+[ext_resource type="AudioStream" uid="uid://corgxt75m2jhq" path="res://assets/landmarks/lingayen_church/audio/lc_int_01_narration.ogg" id="church_narration"]
 
 [sub_resource type="Resource" id="Guerrero"]
 script = ExtResource("2")
@@ -77,12 +79,25 @@ rights_status = "Source/identity verified by the research team. Reuse/permission
 
 [resource]
 script = ExtResource("1")
-hotspot_id = "LC-INT-01"
-title = "People Who Shaped the Parish"
 subtitle = "Lingayen Church"
-prompt = "Select a portrait to discover how each person was connected with Lingayen Church."
 overview_heading = "People Across the Parish's History"
 overview_body = "Bishops and missionaries helped guide Lingayen Church through major periods of cathedral leadership, missionary service, war, and postwar recovery."
 takeaway = "Lingayen Church's history was shaped by bishops and missionaries who guided the parish through major periods of change."
 people = Array[ExtResource("2")]([SubResource("Guerrero"), SubResource("Madriaga"), SubResource("Sheehan"), SubResource("Feeny")])
-sources_text = "Archdiocese of Lingayen-Dagupan\nThe Archbishops\n\nEpiphany of Our Lord Parish, Lingayen\nA Brief History of the Epiphany of Our Lord Parish\n\nLingayen: Memories of Times Past (2021)\nGuerrero portrait: p. 16\nMadriaga portrait: p. 17\n\nMissionary Society of St. Columban — Philippines\nSamuel Sheehan portrait/image source\nDermot Feeny portrait/image source"
+sources_text = "Archdiocese of Lingayen-Dagupan
+The Archbishops
+
+Epiphany of Our Lord Parish, Lingayen
+A Brief History of the Epiphany of Our Lord Parish
+
+Lingayen: Memories of Times Past (2021)
+Guerrero portrait: p. 16
+Madriaga portrait: p. 17
+
+Missionary Society of St. Columban — Philippines
+Samuel Sheehan portrait/image source
+Dermot Feeny portrait/image source"
+hotspot_id = "LC-INT-01"
+title = "People Who Shaped the Parish"
+prompt = "Select a portrait to discover how each person was connected with Lingayen Church."
+narration_stream = ExtResource("church_narration")

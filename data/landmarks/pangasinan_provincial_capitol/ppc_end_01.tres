@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3 uid="uid://di53i7kuskg2g"]
 
-[ext_resource type="Script" path="res://scripts/components/conference_room_content.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_government_today.jpeg" id="present"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_02/ppc_ext_02_detail_facade_rhythm.JPG" id="architecture"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_01/ppc_int_01_1945_damage.png" id="damage"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_02/ppc_int_02_governor_office.png" id="office"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_02/ppc_int_02_session_hall.jpeg" id="hall"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_01/ppc_int_01_2018_heritage_protection.png" id="heritage"]
-[ext_resource type="AudioStream" path="res://assets/landmarks/pangasinan_provincial_capitol/audio/ppc_end_01_narration.ogg" id="audio"]
+[ext_resource type="Script" uid="uid://qmronjk2nqch" path="res://scripts/components/conference_room_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://8fj6bst80rcl" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_02/ppc_ext_02_detail_facade_rhythm.JPG" id="architecture"]
+[ext_resource type="AudioStream" uid="uid://c7aun2witeh3q" path="res://assets/landmarks/pangasinan_provincial_capitol/audio/ppc_end_01_narration.ogg" id="audio"]
+[ext_resource type="Texture2D" uid="uid://c61f4i7w07vnb" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_01/ppc_int_01_1945_damage.png" id="damage"]
+[ext_resource type="Texture2D" uid="uid://dg53smsvur80w" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_02/ppc_int_02_session_hall.jpeg" id="hall"]
+[ext_resource type="Texture2D" uid="uid://d4e7ls84sa4b3" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_01/ppc_int_01_2018_heritage_protection.png" id="heritage"]
+[ext_resource type="Texture2D" uid="uid://c6s355pn175no" path="res://assets/landmarks/pangasinan_provincial_capitol/interior/ppc_int_02/ppc_int_02_governor_office.png" id="office"]
+[ext_resource type="Texture2D" uid="uid://5hknvxjl0cnx" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_government_today.jpeg" id="present"]
 
 [sub_resource type="Resource" id="overview"]
 script = ExtResource("2")
@@ -17,7 +17,8 @@ body = "The Pangasinan Provincial Capitol brings together more than a century of
 metadata/id = &"overview"
 metadata/image = ExtResource("present")
 metadata/caption = "Present-day view of the Pangasinan Provincial Capitol, Lingayen."
-metadata/credit = "Photographer/creator: AKAR Team\nSource: AKAR Research Team"
+metadata/credit = "Photographer/creator: AKAR Team
+Source: AKAR Research Team"
 metadata/rights = "Research-team-produced documentary photograph."
 metadata/takeaway = "SELECT A THEME TO EXPLORE WHAT THE CAPITOL REPRESENTS."
 
@@ -29,7 +30,8 @@ metadata/id = &"origins"
 metadata/label = "ORIGINS"
 metadata/image = ExtResource("present")
 metadata/caption = "Present-day view of the Pangasinan Provincial Capitol, Lingayen."
-metadata/credit = "Photographer/creator: AKAR Team\nSource: AKAR Research Team"
+metadata/credit = "Photographer/creator: AKAR Team
+Source: AKAR Research Team"
 metadata/rights = "Research-team-produced documentary photograph."
 metadata/takeaway = "The Capitol represents Pangasinan's transition from the Spanish-era Casa Real to an American-period provincial government center."
 metadata/cue = "1917 · CONSTRUCTION BEGAN  →  1918 · COMPLETED"
@@ -55,7 +57,8 @@ metadata/id = &"resilience"
 metadata/label = "RESILIENCE"
 metadata/image = ExtResource("damage")
 metadata/caption = "Pangasinan Provincial Capitol after wartime damage, 1945."
-metadata/credit = "Researcher-supplied historical photograph.\nCreator not identified in available source."
+metadata/credit = "Researcher-supplied historical photograph.
+Creator not identified in available source."
 metadata/rights = "External media permission/license status was not supplied."
 metadata/takeaway = "The Capitol's survival, reconstruction, and later renewal became part of its continuing historical significance."
 metadata/cue = "1945 · WAR DAMAGE  →  1949 · RECONSTRUCTION  →  2008 · REFURBISHMENT"
@@ -68,11 +71,15 @@ metadata/id = &"public_service"
 metadata/label = "PUBLIC SERVICE"
 metadata/image = ExtResource("office")
 metadata/second_image = ExtResource("hall")
-metadata/left_label = "EXECUTIVE\nGovernor's Office"
-metadata/right_label = "LEGISLATIVE\nSession Hall"
+metadata/left_label = "EXECUTIVE
+Governor's Office"
+metadata/right_label = "LEGISLATIVE
+Session Hall"
 metadata/caption = "Governor's Office and Session Hall of the Pangasinan Provincial Capitol."
-metadata/credit = "Victory Liner · The Provincial Capitol of Pangasinan\nPhoto: AKAR Research Team"
-metadata/rights = "Governor's Office: External source — reuse/permission documentation pending.\nSession Hall: Research-team-produced documentary photograph."
+metadata/credit = "Victory Liner · The Provincial Capitol of Pangasinan
+Photo: AKAR Research Team"
+metadata/rights = "Governor's Office: External source — reuse/permission documentation pending.
+Session Hall: Research-team-produced documentary photograph."
 metadata/takeaway = "The building is both a preserved heritage landmark and a working center of provincial government."
 
 [sub_resource type="Resource" id="heritage"]
@@ -83,10 +90,12 @@ metadata/id = &"heritage"
 metadata/label = "HERITAGE"
 metadata/image = ExtResource("heritage")
 metadata/caption = "Certification page for Provincial Ordinance No. 220-2018."
-metadata/credit = "Source shown on supplied document: Office of the Sangguniang Panlalawigan Secretary, Province of Pangasinan.\nResearcher-supplied documentary copy."
+metadata/credit = "Source shown on supplied document: Office of the Sangguniang Panlalawigan Secretary, Province of Pangasinan.
+Researcher-supplied documentary copy."
 metadata/rights = "External media permission/license status was not supplied."
 metadata/takeaway = "Recognition and preservation help protect the Capitol's architectural and historical significance for future generations."
-metadata/cue = "HERITAGE RECOGNITION & PROTECTION\nPROVINCIAL ORDINANCE NO. 220-2018"
+metadata/cue = "HERITAGE RECOGNITION & PROTECTION
+PROVINCIAL ORDINANCE NO. 220-2018"
 
 [sub_resource type="Resource" id="reflection"]
 script = ExtResource("2")
@@ -125,5 +134,51 @@ title = "WHAT THE PANGASINAN PROVINCIAL CAPITOL REPRESENTS"
 prompt = "REFLECT ON THE CAPITOL'S STORY"
 narration_stream = ExtResource("audio")
 learning_takeaway = "The Capitol connects Pangasinan's past with its present through architecture, historical memory, preservation, and continuing public service."
-source_credit = "HISTORICAL DEVELOPMENT\n\nAKAR Historical Information Validation Sheet — Pangasinan Provincial Capitol\nHistorical Profile of Pangasinan Provincial Capitol\nResearcher-approved Capitol historical sequence and PPC-END-01 synthesis.\n\nARCHITECTURE\n\nResearcher-supplied architectural interpretation approved for PPC-EXT-02, supported by the validation sheet and historical profile.\n\nRECOGNITION & PRESERVATION\n\nArchitectural recognition: Filipino Heritage Festival, Inc., an NCCA grantee.\nProvincial Ordinance No. 220-2018 declared the Capitol a heritage site in the Province of Pangasinan and provided funds for its preservation.\n\nDOCUMENTARY MEDIA\n\nPresent-day Capitol — inherited from PPC-EXT-01:\nPhotographer/creator: AKAR Team\nSource: AKAR Research Team\nResearch-team-produced documentary photograph.\n\nFaçade rhythm — inherited from PPC-EXT-02:\nPhoto: AKAR Research Team\nResearch-team-produced documentary photograph.\n\n1945 wartime damage — inherited from PPC-INT-01:\nResearcher-supplied historical photograph.\nCreator not identified in available source.\nExternal media permission/license status was not supplied.\n\nGovernor's Office — inherited from PPC-INT-02:\nVictory Liner · The Provincial Capitol of Pangasinan\nExternal source — reuse/permission documentation pending.\nDocumentary view; physical access is subject to actual Capitol access and authorization.\n\nSession Hall — inherited from PPC-INT-02:\nPhoto: AKAR Research Team\nResearch-team-produced documentary photograph.\n\n2018 heritage-protection certification — inherited from PPC-INT-01:\nSource shown on supplied document: Office of the Sangguniang Panlalawigan Secretary, Province of Pangasinan.\nResearcher-supplied documentary copy.\nExternal media permission/license status was not supplied.\n\nNARRATION\nResearcher-supplied ppc_end_01_narration.ogg."
-concepts = [SubResource("overview"), SubResource("origins"), SubResource("architecture"), SubResource("resilience"), SubResource("public_service"), SubResource("heritage"), SubResource("reflection"), SubResource("reflection_history"), SubResource("reflection_architecture"), SubResource("reflection_public_role"), SubResource("reflection_preservation")]
+source_credit = "HISTORICAL DEVELOPMENT
+
+AKAR Historical Information Validation Sheet — Pangasinan Provincial Capitol
+Historical Profile of Pangasinan Provincial Capitol
+Researcher-approved Capitol historical sequence and PPC-END-01 synthesis.
+
+ARCHITECTURE
+
+Researcher-supplied architectural interpretation approved for PPC-EXT-02, supported by the validation sheet and historical profile.
+
+RECOGNITION & PRESERVATION
+
+Architectural recognition: Filipino Heritage Festival, Inc., an NCCA grantee.
+Provincial Ordinance No. 220-2018 declared the Capitol a heritage site in the Province of Pangasinan and provided funds for its preservation.
+
+DOCUMENTARY MEDIA
+
+Present-day Capitol — inherited from PPC-EXT-01:
+Photographer/creator: AKAR Team
+Source: AKAR Research Team
+Research-team-produced documentary photograph.
+
+Façade rhythm — inherited from PPC-EXT-02:
+Photo: AKAR Research Team
+Research-team-produced documentary photograph.
+
+1945 wartime damage — inherited from PPC-INT-01:
+Researcher-supplied historical photograph.
+Creator not identified in available source.
+External media permission/license status was not supplied.
+
+Governor's Office — inherited from PPC-INT-02:
+Victory Liner · The Provincial Capitol of Pangasinan
+External source — reuse/permission documentation pending.
+Documentary view; physical access is subject to actual Capitol access and authorization.
+
+Session Hall — inherited from PPC-INT-02:
+Photo: AKAR Research Team
+Research-team-produced documentary photograph.
+
+2018 heritage-protection certification — inherited from PPC-INT-01:
+Source shown on supplied document: Office of the Sangguniang Panlalawigan Secretary, Province of Pangasinan.
+Researcher-supplied documentary copy.
+External media permission/license status was not supplied.
+
+NARRATION
+Researcher-supplied ppc_end_01_narration.ogg."
+concepts = Array[ExtResource("2")]([SubResource("overview"), SubResource("origins"), SubResource("architecture"), SubResource("resilience"), SubResource("public_service"), SubResource("heritage"), SubResource("reflection"), SubResource("reflection_history"), SubResource("reflection_architecture"), SubResource("reflection_public_role"), SubResource("reflection_preservation")])

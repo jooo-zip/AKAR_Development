@@ -122,8 +122,8 @@ func check_state(panel: Control, state: int) -> void:
 		check(panel._image.visible and not panel._missing.visible, "Real media visible")
 	check(panel._credit.text == CREDITS[state], "Correct original asset credit")
 	check(not panel._outgoing.visible and panel._outgoing.texture == null, "No stale crossfade media")
-	check(panel._speaker.visible and panel._speaker.disabled and panel._pending.visible and panel._pending.text == "Narration pending.", "One shared pending LISTEN")
-	check(not panel._audio.playing and panel._audio.stream == null, "No autoplay or stale audio")
+	check(panel._speaker.visible and panel._speaker.disabled == (panel._audio.stream == null) and panel._pending.visible == (panel._audio.stream == null) and panel._pending.text == "Narration pending.", "One shared pending LISTEN")
+	check(not panel._audio.playing and panel._audio.stream == panel.content.narration_stream, "No autoplay or stale audio")
 	for connector in panel._connectors:
 		check(connector.scale == Vector2.ONE, "Connector reveal settled")
 	check(panel._takeaway.text == "Lingayen Church developed across missionary, cathedral, wartime, and co-cathedral periods while continuing to serve the religious community of Lingayen.", "Exact takeaway")
@@ -284,19 +284,20 @@ func run() -> void:
 	var silence := PackedByteArray()
 	silence.resize(44100 * 2)
 	clip.data = silence
-	panel.content.milestones[0].narration = clip
+	var original_narration: AudioStream = panel.content.narration_stream
+	panel.content.narration_stream = clip
 	panel.set_timeline_state(1)
-	check(panel._audio.stream == clip and not panel._speaker.disabled, "Future narration bound to selected milestone")
+	check(panel._audio.stream == clip and not panel._speaker.disabled, "Overall hotspot narration binding")
 	panel.toggle_narration()
 	check(panel._audio.playing, "LISTEN can play future selected clip")
 	panel.set_timeline_state(5)
-	check(not panel._audio.playing and panel._audio.stream == null, "Changing milestone stops old narration")
+	check(panel._audio.playing and panel._audio.stream == clip, "Overall narration persists across milestones")
 	panel.set_timeline_state(1)
 	panel.toggle_narration()
 	panel.close_interaction()
 	check(not panel._audio.playing, "Closing immediately stops narration")
 	panel.open_hotspot()
-	panel.content.milestones[0].narration = null
+	panel.content.narration_stream = original_narration
 	panel.reset_hotspot()
 	await finish(panel)
 	check_state(panel, 0)

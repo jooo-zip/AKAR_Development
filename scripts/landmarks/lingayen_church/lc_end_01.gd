@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+
+const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
+var _header_utilities: RefCounted
 ## One church, four meanings. State is authoritative; animation is presentation.
 
 signal close_requested
@@ -48,6 +51,8 @@ func _ready() -> void:
 	_outgoing_detail.hide()
 	_scroll.gui_input.connect(_reading_input.bind(_scroll))
 	_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+	_header_utilities = HeaderUtilities.new(self, _pending)
+	add_to_group("lingayen_church_narration")
 	resized.connect(_on_resized)
 	_map.resized.connect(_layout_map)
 	visibility_changed.connect(_visibility_changed)
@@ -171,15 +176,9 @@ func _build_interpretation() -> void:
 	_source_close.custom_minimum_size.y = 56
 
 func _build_footer() -> void:
-	var footer := HBoxContainer.new()
-	footer.add_theme_constant_override("separation", 16)
-	$Main/Margin/Layout.add_child(footer)
-	_takeaway.reparent(footer)
+	_takeaway.reparent($Main/Margin/Layout)
 	_takeaway.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_style_label(_takeaway, 17, true)
-	_sources_button.reparent(footer)
-	_sources_button.custom_minimum_size = Vector2(110, 56)
-	_sources_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
 func _entry() -> LCEND01ThemeContent:
 	return null if selected_theme == ThemeSelection.NONE else (content as LCEND01Content).themes[selected_theme - 1]
@@ -212,6 +211,7 @@ func reset_hotspot() -> void:
 	_cancel_panel_tween()
 	_closing = false
 	_sources.hide()
+	stop_narration()
 	set_selected_theme(ThemeSelection.NONE)
 	cancel_active_tweens()
 	if _open:
@@ -227,7 +227,6 @@ func set_selected_theme(theme: ThemeSelection) -> void:
 	cancel_active_tweens()
 	if _open and animate_transitions:
 		_capture_outgoing_detail()
-	stop_narration()
 	selected_theme = theme if theme >= ThemeSelection.NONE and theme <= ThemeSelection.LIVING_HERITAGE else ThemeSelection.NONE
 	_title.text = summary.title.to_upper()
 	_subtitle.text = summary.subtitle
@@ -320,7 +319,7 @@ func _capture_outgoing_detail() -> void:
 	_outgoing_detail.show()
 
 func update_narration_state() -> void:
-	_audio.stream = (content as LCEND01Content).narration
+	HeaderUtilities.bind_narration(self, (content as LCEND01Content).narration)
 	_pending.text = (content as LCEND01Content).narration_pending
 	_update_speaker()
 
@@ -396,6 +395,9 @@ func _resize_layout() -> void:
 		update_theme_cards()
 		update_center_context()
 	_layout_map()
+	if _header_utilities != null:
+		_header_utilities.resize()
+
 
 func _layout_map() -> void:
 	if not is_node_ready() or _cards.size() != 4:
@@ -467,11 +469,12 @@ func open_sources() -> void:
 	sources_opened.emit()
 
 func _update_speaker() -> void:
-	super._update_speaker()
-	_speaker.show()
-	_speaker.disabled = _audio.stream == null
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
-	_pending.visible = _audio.stream == null
+	HeaderUtilities.update_speaker(self, _pending)
+
+
+func toggle_narration() -> void:
+	HeaderUtilities.toggle_narration(self)
+
 
 func stop_narration() -> void:
 	_audio.stream_paused = false
@@ -510,3 +513,6 @@ func _exit_tree() -> void:
 	cancel_active_tweens()
 	_cancel_panel_tween()
 	super._exit_tree()
+
+func _sync_focus() -> void:
+	HeaderUtilities.sync_focus(self)

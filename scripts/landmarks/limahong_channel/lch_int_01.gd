@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
+const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
+var _header_utilities: HeaderUtilities
 ## Embedded statue explorer. The inherited shell owns Sources, audio and Escape.
 signal section_changed(index: int)
 signal close_requested
@@ -99,7 +102,8 @@ func _ready() -> void:
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
-
+	_header_utilities = HeaderUtilities.new(self, _status, _status.get_parent())
+	add_child(SourcesOverlay.new(self))
 
 func open_interaction() -> bool:
 	var data := content as StatueContent
@@ -175,7 +179,7 @@ func _update_speaker() -> void:
 	_speaker.disabled = _audio.stream == null
 	if _status != null:
 		_status.visible = _audio.stream == null
-
+	if _header_utilities != null: _header_utilities.refresh()
 
 func open_sources() -> void:
 	if _open:
@@ -190,24 +194,10 @@ func close_sources() -> void:
 
 
 func _sync_focus() -> void:
-	var previous := get_viewport().gui_get_focus_owner()
-	var main: Array[Control] = []
-	main.append_array(_section_buttons)
-	main.append_array([_magnifier.lens, _scroll, _speaker, _sources_button, _close])
-	var overlay: Array[Control] = [_source_scroll, _source_close]
-	var active: Array[Control] = []
-	for control in main + overlay:
-		control.focus_mode = Control.FOCUS_NONE
-	for control in (overlay if _sources.visible else main):
-		if control.is_visible_in_tree() and not (control is BaseButton and (control as BaseButton).disabled):
-			control.focus_mode = Control.FOCUS_ALL
-			active.append(control)
-	for i in active.size():
-		active[i].focus_next = active[i].get_path_to(active[(i + 1) % active.size()])
-		active[i].focus_previous = active[i].get_path_to(active[posmod(i - 1, active.size())])
-	if previous in active:
-		previous.grab_focus()
-
+	var controls: Array[Control] = []
+	controls.append_array(_section_buttons)
+	controls.append_array([_magnifier.lens, _scroll])
+	HeaderUtilities.sync_focus(self, controls)
 
 func close_interaction() -> void:
 	if not _open:

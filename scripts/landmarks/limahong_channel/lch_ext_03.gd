@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
+const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
+var _header_utilities: HeaderUtilities
 ## Four cumulative historical layers within the existing embedded panel shell.
 const SiegeContent = preload("res://scripts/landmarks/limahong_channel/lch_ext_03_content.gd")
 enum HistoricalStage { SETTLEMENT, BLOCKADE, PASSAGE, ESCAPE }
@@ -123,7 +126,8 @@ func _ready() -> void:
 	_map_area.resized.connect(_layout_map)
 	resized.connect(_resize_layout)
 	_resize_layout()
-
+	_header_utilities = HeaderUtilities.new(self, _pending)
+	add_child(SourcesOverlay.new(self))
 
 func open_interaction() -> bool:
 	# The shared opener validates exactly three concepts. Keep its lifecycle here
@@ -371,7 +375,7 @@ func _update_speaker() -> void:
 	_speaker.show()
 	_speaker.text = "STOP" if _audio.playing else "LISTEN"
 	_pending.text = "LCH-EXT-03   ·   Narration pending" if _audio.stream == null else "LCH-EXT-03"
-
+	if _header_utilities != null: _header_utilities.refresh()
 
 func _input(event: InputEvent) -> void:
 	if not _open or _sources.visible:
@@ -397,3 +401,9 @@ func close_interaction() -> void:
 func _exit_tree() -> void:
 	_cancel_animation()
 	super._exit_tree()
+
+func _sync_focus() -> void:
+	var controls: Array[Control] = []
+	controls.append_array(_concepts)
+	controls.append(_scroll)
+	HeaderUtilities.sync_focus(self, controls)

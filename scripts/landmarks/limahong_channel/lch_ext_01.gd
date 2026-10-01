@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
+const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
+var _header_utilities: HeaderUtilities
 ## LCH-EXT-01 specialization of the existing embedded Urduja panel.
 ## Parent owns navigation; closed is the inherited close notification.
 
@@ -68,7 +71,8 @@ func _ready() -> void:
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
-
+	_header_utilities = HeaderUtilities.new(self, %NarrationStatus, %SubtitleRow)
+	add_child(SourcesOverlay.new(self))
 
 func open_interaction() -> bool:
 	if not is_node_ready() or introduction == null or historical_note == null or section_media.size() != 3:
@@ -290,29 +294,11 @@ func _section_input(event: InputEvent, index: int) -> void:
 
 
 func _sync_focus() -> void:
-	# Include the inline note in the inherited modal Sources focus convention.
-	var previous := get_viewport().gui_get_focus_owner()
-	var main: Array[Control] = [_close, _speaker]
-	main.append_array(_concepts)
-	main.append_array(_locator_buttons)
-	main.append_array([_previous, _next])
-	main.append_array([_scroll, _note_button, _sources_button])
-	var overlay: Array[Control] = [_source_scroll, _source_close]
-	var active: Array[Control] = []
-	for control in main + overlay:
-		control.focus_mode = Control.FOCUS_NONE
-	for control in (overlay if _sources.visible else main):
-		if control.is_visible_in_tree() and not (control is BaseButton and (control as BaseButton).disabled):
-			control.focus_mode = Control.FOCUS_ALL
-			active.append(control)
-	for i in active.size():
-		active[i].focus_next = active[i].get_path_to(active[(i + 1) % active.size()])
-		active[i].focus_previous = active[i].get_path_to(active[posmod(i - 1, active.size())])
-	if previous in active:
-		previous.grab_focus()
-	elif _open and not active.is_empty() and previous != null and is_ancestor_of(previous):
-		active[0].grab_focus()
-
+	var controls: Array[Control] = []
+	controls.append_array(_concepts)
+	controls.append_array(_locator_buttons)
+	controls.append_array([_previous, _next, _scroll, _note_button])
+	HeaderUtilities.sync_focus(self, controls)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _open and event.is_action_pressed(&"narration_toggle"):
@@ -358,7 +344,7 @@ func _update_speaker() -> void:
 	_speaker.set_pressed_no_signal(_audio.playing and not _audio.stream_paused)
 	_speaker.tooltip_text = action
 	_speaker.accessibility_name = action
-
+	if _header_utilities != null: _header_utilities.refresh()
 
 func _visibility_changed() -> void:
 	# A parent hiding the component must not leave narration running invisibly.

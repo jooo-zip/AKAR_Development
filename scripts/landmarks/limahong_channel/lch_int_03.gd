@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
+const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
+var _header_utilities: HeaderUtilities
 ## Three self-paced views within the shared interior shell.
 signal close_requested
 signal stage_changed(stage_index: int)
@@ -59,6 +62,8 @@ func _ready() -> void:
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
+	_header_utilities = HeaderUtilities.new(self, _pending, _pending.get_parent())
+	add_child(SourcesOverlay.new(self))
 
 func _build_shell() -> void:
 	var header := $Main/Margin/Layout/Header
@@ -480,29 +485,14 @@ func _input(event: InputEvent) -> void:
 		_drag_scroll.scroll_vertical = _drag_value + int(_drag_origin.y - event.position.y)
 
 func _sync_focus() -> void:
-	var previous := get_viewport().gui_get_focus_owner()
-	var main: Array[Control] = [_speaker, _sources_button, _close]
-	main.append_array(_concepts)
-	main.append_array([_contributor, _facility_scroll, _scroll])
-	var overlay: Array[Control] = [_source_scroll, _source_close]
-	var active: Array[Control] = []
-	for control in main + overlay:
-		control.focus_mode = Control.FOCUS_NONE
-	for control in (overlay if _sources.visible else main):
-		if control == _contributor and current_stage != HeritageStage.MILESTONE_2019:
-			continue
-		if control == _facility_scroll and current_stage != HeritageStage.DEVELOPMENT:
-			continue
-		if control.is_visible_in_tree() and not (control is BaseButton and control.disabled):
-			control.focus_mode = Control.FOCUS_ALL
-			active.append(control)
-	for i in active.size():
-		active[i].focus_next = active[i].get_path_to(active[(i + 1) % active.size()])
-		active[i].focus_previous = active[i].get_path_to(active[posmod(i - 1, active.size())])
-	if previous in active:
-		previous.grab_focus()
-	elif not active.is_empty():
-		active[0].grab_focus()
+	var controls: Array[Control] = []
+	_contributor.focus_mode = Control.FOCUS_NONE
+	_facility_scroll.focus_mode = Control.FOCUS_NONE
+	controls.append_array(_concepts)
+	if current_stage == HeritageStage.MILESTONE_2019: controls.append(_contributor)
+	if current_stage == HeritageStage.DEVELOPMENT: controls.append(_facility_scroll)
+	controls.append(_scroll)
+	HeaderUtilities.sync_focus(self, controls)
 
 func open_sources() -> void:
 	if not _open or _sources.visible:
@@ -526,6 +516,7 @@ func _update_speaker() -> void:
 	_speaker.show()
 	_speaker.disabled = _audio.stream == null
 	_pending.visible = _audio.stream == null
+	if _header_utilities != null: _header_utilities.refresh()
 
 func close_interaction() -> void:
 	if not _open:

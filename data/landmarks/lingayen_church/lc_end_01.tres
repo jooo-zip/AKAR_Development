@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="LCEND01Content" format=3]
+[gd_resource type="Resource" script_class="LCEND01Content" format=3 uid="uid://q4ms5rv6cd8k"]
 
-[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_end_01_content.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_end_01_theme_content.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_01/images/lc_ext_01_exterior_current.jpg" id="3"]
+[ext_resource type="Script" uid="uid://dgxfxcgccdp70" path="res://scripts/landmarks/lingayen_church/lc_end_01_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bqmtbkmxxqs6a" path="res://scripts/landmarks/lingayen_church/lc_end_01_theme_content.gd" id="2"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="2_ycsp2"]
+[ext_resource type="Texture2D" uid="uid://r7barnf8ekrh" path="res://assets/landmarks/lingayen_church/lc_ext_01/images/lc_ext_01_exterior_current.jpg" id="3"]
+[ext_resource type="AudioStream" uid="uid://dxlit8qp4eoss" path="res://assets/landmarks/lingayen_church/audio/lc_end_01_narration.ogg" id="church_narration"]
 
 [sub_resource type="Resource" id="Roots"]
 script = ExtResource("2")
@@ -26,8 +28,10 @@ accessible_title = "Cathedral and Co-Cathedral"
 heading = "A Changing Institutional Role"
 interpretation = "Lingayen Church became the cathedral and episcopal seat of the Diocese of Lingayen in 1928. After the episcopal seat moved to Dagupan in 1954, the church retained its historical role as a co-cathedral."
 meaning_statement = "A church whose institutional role changed while its historical significance continued."
-center_context_primary = "1928\nCATHEDRAL & EPISCOPAL SEAT"
-center_context_secondary = "1954\nCO-CATHEDRAL"
+center_context_primary = "1928
+CATHEDRAL & EPISCOPAL SEAT"
+center_context_secondary = "1954
+CO-CATHEDRAL"
 source_basis = "Archdiocese of Lingayen-Dagupan — historical materials; Epiphany parish history"
 
 [sub_resource type="Resource" id="War"]
@@ -39,8 +43,10 @@ accessible_title = "War and Recovery"
 heading = "History Marked by Wartime Change"
 interpretation = "The church was partially destroyed during the 1945 liberation of Lingayen and was later reconstructed. Surviving historical features continue to connect the present church with its wartime past."
 meaning_statement = "A heritage site shaped by destruction, recovery, and historical continuity."
-center_context_primary = "1945\nWARTIME DAMAGE"
-center_context_secondary = "↓\nRECONSTRUCTION"
+center_context_primary = "1945
+WARTIME DAMAGE"
+center_context_secondary = "↓
+RECONSTRUCTION"
 source_basis = "Epiphany parish history; Lingayen: Memories of Times Past (2021), pp. 20, 30"
 
 [sub_resource type="Resource" id="Living"]
@@ -53,15 +59,13 @@ heading = "A Historic Church Still in Use"
 interpretation = "Lingayen Church is not only a historical site. It remains an active Roman Catholic parish and co-cathedral serving the religious community of Lingayen."
 meaning_statement = "A connection between Lingayen's historical heritage and continuing religious community life."
 center_context_primary = "ACTIVE PARISH"
-center_context_secondary = "+\nCO-CATHEDRAL TODAY"
+center_context_secondary = "+
+CO-CATHEDRAL TODAY"
 source_basis = "Archdiocese of Lingayen-Dagupan — Parishes; Epiphany parish history"
 
 [resource]
 script = ExtResource("1")
-hotspot_id = "LC-END-01"
-title = "What Lingayen Church Represents"
 subtitle = "Summary & Reflection"
-prompt = "Select a theme to see what it reveals about Lingayen Church."
 overview_heading = "Four Meanings, One Historic Church"
 overview_body = "Lingayen Church brings together centuries of religious history, institutional change, wartime experience, and continuing community life."
 center_media = ExtResource("3")
@@ -70,8 +74,32 @@ center_media_credit = "PHOTO: AKAR Research Team, 2026"
 center_overview_primary = "ONE CHURCH"
 center_overview_secondary = "FOUR CONNECTED MEANINGS"
 center_accessible_name = "Return to overview of what Lingayen Church represents"
-center_fallback = "LINGAYEN CHURCH\nEPIPHANY OF OUR LORD\nCO-CATHEDRAL PARISH"
+center_fallback = "LINGAYEN CHURCH
+EPIPHANY OF OUR LORD
+CO-CATHEDRAL PARISH"
 themes = Array[ExtResource("2")]([SubResource("Roots"), SubResource("Cathedral"), SubResource("War"), SubResource("Living")])
 reflection_prompt = "What makes Lingayen Church both a historical landmark and a living place of faith today?"
 synthesis = "Lingayen Church represents centuries of religious history, institutional change, wartime experience, and continuing community life. Its role has changed across time, but it remains an active co-cathedral and an important part of Lingayen's heritage."
-sources_text = "Historical Roots\nArchdiocese of Lingayen-Dagupan — historical and evangelization/history materials\nEpiphany of Our Lord Parish, Lingayen — A Brief History of the Epiphany of Our Lord Parish\n\nCathedral & Co-Cathedral\nArchdiocese of Lingayen-Dagupan — historical materials\nEpiphany of Our Lord Parish historical account\n\nWar & Recovery\nEpiphany of Our Lord Parish historical account\nLingayen: Memories of Times Past (2021), pp. 20, 30 — wartime/postwar photograph and documentary bell evidence\n\nLiving Heritage\nArchdiocese of Lingayen-Dagupan — Parishes\nEpiphany of Our Lord Parish historical account\n\nPresent-day exterior photograph: AKAR Research Team, 2026\n\nFull bibliographic details for historical/evangelization materials remain pending researcher documentation."
+narration = ExtResource("church_narration")
+sources_text = "Historical Roots
+Archdiocese of Lingayen-Dagupan — historical and evangelization/history materials
+Epiphany of Our Lord Parish, Lingayen — A Brief History of the Epiphany of Our Lord Parish
+
+Cathedral & Co-Cathedral
+Archdiocese of Lingayen-Dagupan — historical materials
+Epiphany of Our Lord Parish historical account
+
+War & Recovery
+Epiphany of Our Lord Parish historical account
+Lingayen: Memories of Times Past (2021), pp. 20, 30 — wartime/postwar photograph and documentary bell evidence
+
+Living Heritage
+Archdiocese of Lingayen-Dagupan — Parishes
+Epiphany of Our Lord Parish historical account
+
+Present-day exterior photograph: AKAR Research Team, 2026
+
+Full bibliographic details for historical/evangelization materials remain pending researcher documentation."
+hotspot_id = "LC-END-01"
+title = "What Lingayen Church Represents"
+prompt = "Select a theme to see what it reveals about Lingayen Church."

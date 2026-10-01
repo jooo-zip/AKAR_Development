@@ -143,6 +143,9 @@ func run() -> void:
 	root.add_child(preview)
 	await settle()
 	var panel = preview.get_node("HotspotFrame/CampaignPeopleInteraction")
+	# Keep the existing missing-narration regression scenario; assigned audio is covered by lch_header_test.
+	panel.content = panel.content.duplicate(true)
+	panel.content.narration_stream = null
 	var trigger = preview.get_node("Margin/Layout/OpenArtwork")
 	var close_events: Array[int] = [0]
 	panel.close_requested.connect(func(): close_events[0] += 1)
@@ -240,7 +243,7 @@ func run() -> void:
 		panel.select_person(2)
 		panel.open_sources() # Also safely resolves an in-flight emphasis.
 		check(panel._sources.visible, "Sources opens")
-		check(panel._source_text.text.contains(NAMES[2]) and panel._source_text.text.contains("Permission/license status: Pending researcher confirmation."), "Sources uses selected person's pending metadata")
+		check(panel._source_text.text.contains("Lingayen in Time, p. 5.") and panel._source_text.text.contains("Kahimyang.") and panel._source_text.text.contains("Jardin Solei / The Crafty Historian."), "Sources includes all three supplied portrait provenances")
 		check(panel._source_text.text.contains("traditionally associated"), "Historical qualification retained")
 		panel.select_person(0)
 		await key(KEY_TAB)

@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3 uid="uid://dmc2phwyan7be"]
 
-[ext_resource type="Script" path="res://scripts/components/conference_room_content.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_ext_01_identity.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/cr_ext_01_facade.png" id="3"]
-[ext_resource type="AudioStream" path="res://assets/landmarks/casa_real/audio/cr_ext_01_narration.ogg" id="4"]
-[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="5"]
+[ext_resource type="Script" uid="uid://qmronjk2nqch" path="res://scripts/components/conference_room_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://cbls5l68jeitf" path="res://scripts/landmarks/casa_real/cr_ext_01_identity.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://ipko0mjiri7h" path="res://assets/landmarks/casa_real/exterior/cr_ext_01_facade.png" id="3"]
+[ext_resource type="AudioStream" uid="uid://1ul7qurck3xx" path="res://assets/landmarks/casa_real/audio/cr_ext_01_narration.ogg" id="4"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="5"]
 
 [sub_resource type="Resource" id="Royal"]
 script = ExtResource("2")
@@ -37,5 +37,11 @@ illustration_alt_text = "Casa Real façade photograph"
 narration_stream = ExtResource("4")
 narration_transcript = "Casa Real, meaning “Royal House,” was constructed in 1840. It served as the residence and office of the Alcalde Mayor and supported the administration and judicial functions of Pangasinan during the Spanish colonial period. Today, this historic building is home to the Banáan Pangasinan Provincial Museum."
 learning_takeaway = "Casa Real's public role evolved from provincial government to heritage preservation and education."
-source_credit = "Historical citations\nResearcher-approved CR-EXT-01 interpretation. Bibliographic citations for the Royal House meaning, 1840 construction, Alcalde Mayor, administrative and judicial functions, and present museum role are pending researcher supply.\n\nFaçade photograph source (supplied by the researcher)\nProvince of Pangasinan — Official Website\nLGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8\nhttps://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/"
+source_credit = "Historical citations
+Researcher-approved CR-EXT-01 interpretation. Bibliographic citations for the Royal House meaning, 1840 construction, Alcalde Mayor, administrative and judicial functions, and present museum role are pending researcher supply.
+
+Façade photograph source (supplied by the researcher)
+Province of Pangasinan — Official Website
+LGU-P’sinan inaugurates Banaan Pangasinan Provincial Museum on Sept. 8
+https://www.pangasinan.gov.ph/lgu-psinan-inaugurates-banaan-pangasinan-provincial-museum-on-sept-8/"
 concepts = Array[ExtResource("5")]([SubResource("Royal"), SubResource("Government"), SubResource("Banaan")])

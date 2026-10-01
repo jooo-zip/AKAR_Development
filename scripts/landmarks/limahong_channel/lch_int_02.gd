@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
+const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
+var _header_utilities: HeaderUtilities
 ## Event-role explorer within the existing interior shell; no navigation ownership.
 signal close_requested
 signal person_changed(person_index: int)
@@ -94,7 +97,8 @@ func _ready() -> void:
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
-
+	_header_utilities = HeaderUtilities.new(self, _pending, _pending.get_parent())
+	add_child(SourcesOverlay.new(self))
 
 func _build_header() -> void:
 	var header := $Main/Margin/Layout/Header
@@ -252,7 +256,8 @@ func select_person(person: int, animate: bool = true) -> void:
 	_cancel_selection()
 	if person == current_person:
 		return
-	stop_narration()
+	if content.narration_stream == null:
+		stop_narration()
 	current_person = person as CampaignPerson
 	_render()
 	_sync_focus()
@@ -285,8 +290,10 @@ func _render() -> void:
 	var person := _person(current_person)
 	_role.text = person.role_label
 	_connection_body.text = person.connection_body
-	if _audio.stream != person.narration_audio:
-		_audio.stream = person.narration_audio
+	# Overall hotspot narration takes precedence; retain optional per-person fallback.
+	var narration: AudioStream = content.narration_stream if content.narration_stream != null else person.narration_audio
+	if _audio.stream != narration:
+		_audio.stream = narration
 	_update_speaker()
 	for i in 3:
 		_concepts[i].text = ""
@@ -419,23 +426,20 @@ func _update_speaker() -> void:
 	_speaker.show()
 	_speaker.disabled = _audio.stream == null
 	_pending.visible = _audio.stream == null
-
+	if _header_utilities != null: _header_utilities.refresh()
 
 func open_sources() -> void:
 	if not _open or _sources.visible:
 		return
 	_cancel_selection()
 	super.open_sources()
-	var person := _person(current_person)
-	_source_text.text += "\n\nSelected image — " + person.heading
-	_source_text.text += "\nImage type: " + _metadata_or_pending(person.portrait_media_type)
-	_source_text.text += "\nCredit: " + _metadata_or_pending(person.portrait_credit)
-	_source_text.text += "\nSource: " + _metadata_or_pending(person.portrait_source)
-	_source_text.text += "\nPermission/license status: " + _metadata_or_pending(person.portrait_permission_status)
-
-
-func _metadata_or_pending(value: String) -> String:
-	return value if not value.is_empty() else "Pending researcher confirmation."
+	# Show provenance for every portrait, regardless of the currently selected person.
+	for entry in content.concepts:
+		_source_text.text += "\n\n" + entry.heading
+		for field in [["Image type", entry.portrait_media_type], ["Credit", entry.portrait_credit],
+			["Image source", entry.portrait_source], ["Permission/license status", entry.portrait_permission_status]]:
+			if not field[1].is_empty():
+				_source_text.text += "\n" + field[0] + ": " + field[1]
 
 
 func close_interaction() -> void:
@@ -457,3 +461,9 @@ func _exit_tree() -> void:
 		_selection_tween.kill()
 	_cancel_hint()
 	super._exit_tree()
+
+func _sync_focus() -> void:
+	var controls: Array[Control] = []
+	controls.append_array(_concepts)
+	controls.append(_scroll)
+	HeaderUtilities.sync_focus(self, controls)

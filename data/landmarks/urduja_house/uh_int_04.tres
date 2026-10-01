@@ -1,24 +1,19 @@
-[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3]
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3 uid="uid://diq2wi0barcd7"]
 
-[ext_resource type="Script" path="res://scripts/components/conference_room_content.gd" id="content"]
-
-[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="entry"]
-
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_04_conference_room_pixel_art.png" id="image"]
-
-[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh_int_04_narration.ogg" id="audio"]
+[ext_resource type="AudioStream" uid="uid://cxtq8k50ftkie" path="res://assets/landmarks/urduja_house/audio/uh_int_04_narration.ogg" id="audio"]
+[ext_resource type="Script" uid="uid://qmronjk2nqch" path="res://scripts/components/conference_room_content.gd" id="content"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="entry"]
+[ext_resource type="Texture2D" uid="uid://bn82yaol43jly" path="res://assets/landmarks/urduja_house/interior/uh_int_04_conference_room_pixel_art.png" id="image"]
 
 [sub_resource type="Resource" id="Concept0"]
 script = ExtResource("entry")
 heading = "Public Interior"
 body = "This conference room forms part of the publicly accessible interior of Urduja House."
-show_takeaway = false
 
 [sub_resource type="Resource" id="Concept1"]
 script = ExtResource("entry")
 heading = "Official Function"
 body = "Together with the reception spaces and Ceremonial Hall, it reflects the continuing use of Urduja House for selected government functions."
-show_takeaway = false
 
 [sub_resource type="Resource" id="Concept2"]
 script = ExtResource("entry")
@@ -28,13 +23,25 @@ show_takeaway = true
 
 [resource]
 script = ExtResource("content")
-illustration = ExtResource("image")
-narration_stream = ExtResource("audio")
 hotspot_id = "UH-INT-04"
 title = "Conference Room"
 prompt = "Discover its continuing function"
+illustration = ExtResource("image")
 illustration_alt_text = "Pixel-art illustration of the Conference Room inside Urduja House, showing a long central conference table surrounded by chairs, wood-paneled interior surfaces, curtained windows, ceiling lighting, and a display screen at the far end of the room."
+narration_stream = ExtResource("audio")
 narration_transcript = "This conference room forms part of the publicly accessible interior of Urduja House. Together with its reception and ceremonial spaces, it reflects the continuing official function of the residence."
 learning_takeaway = "Urduja House remains a functioning government residence rather than only a historical display."
-source_credit = "Historical / Educational Content\nValidated AKAR Urduja House Conference Room hotspot content.\n\nVisitor-Facing Illustration\nPixel-art illustrative representation created for the AKAR Capstone Project.\n\nVisual Reference\nBased on a Conference Room photograph published by the Province of Pangasinan in connection with:\n\n\"PPC Interim Governing Board approves curricula of four academic programs\"\n\nReference Status\nUsed as a visual/layout reference."
+source_credit = "Historical / Educational Content
+Validated AKAR Urduja House Conference Room hotspot content.
+
+Visitor-Facing Illustration
+Pixel-art illustrative representation created for the AKAR Capstone Project.
+
+Visual Reference
+Based on a Conference Room photograph published by the Province of Pangasinan in connection with:
+
+\"PPC Interim Governing Board approves curricula of four academic programs\"
+
+Reference Status
+Used as a visual/layout reference."
 concepts = Array[ExtResource("entry")]([SubResource("Concept0"), SubResource("Concept1"), SubResource("Concept2")])

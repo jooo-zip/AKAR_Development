@@ -1,56 +1,55 @@
-[gd_resource type="Resource" script_class="ConferenceRoomContent" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="ConferenceRoomContent" format=3 uid="uid://cp5j4qhi7bmeo"]
 
-[ext_resource type="Script" path="res://scripts/components/conference_room_content.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/landmarks/pangasinan_provincial_capitol/ppc_ext_01_view.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_capitol_present.JPG" id="3"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_civic_setting.png" id="4"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_government_today.jpeg" id="5"]
-[ext_resource type="AudioStream" path="res://assets/landmarks/pangasinan_provincial_capitol/audio/ppc_ext_01_narration.ogg" id="6"]
+[ext_resource type="Script" uid="uid://qmronjk2nqch" path="res://scripts/components/conference_room_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="1_adum0"]
+[ext_resource type="Script" uid="uid://deimyv8o8wbxa" path="res://scripts/landmarks/pangasinan_provincial_capitol/ppc_ext_01_view.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://bwkcpon7unron" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_capitol_present.JPG" id="3"]
+[ext_resource type="Texture2D" uid="uid://74r4puy6qo6m" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_civic_setting.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://5hknvxjl0cnx" path="res://assets/landmarks/pangasinan_provincial_capitol/exterior/ppc_ext_01/ppc_ext_01_government_today.jpeg" id="5"]
+[ext_resource type="AudioStream" uid="uid://h0ordcr6x7ta" path="res://assets/landmarks/pangasinan_provincial_capitol/audio/ppc_ext_01_narration.ogg" id="6"]
 
 [sub_resource type="Resource" id="Capitol"]
 script = ExtResource("2")
 view_id = &"capitol"
 selector_label = "THE CAPITOL"
 context_label = "SEAT OF PROVINCIAL GOVERNMENT"
-heading = "The Pangasinan Provincial Capitol"
-body = "The Pangasinan Provincial Capitol is the seat of the Provincial Government of Pangasinan. Located in Lingayen, it continues to serve as an active center of provincial governance."
 takeaway = "A historic landmark that remains a working government center."
-focus_region = Rect2(0.08, 0.07, 0.84, 0.88)
 image = ExtResource("3")
 caption = "Present-day view of the Pangasinan Provincial Capitol, Lingayen."
 media_credit = "Photographer/creator: AKAR Team
 Source: AKAR Research Team"
 permission_status = "Research-team-produced documentary photograph."
+focus_region = Rect2(0.08, 0.07, 0.84, 0.88)
+heading = "The Pangasinan Provincial Capitol"
+body = "The Pangasinan Provincial Capitol is the seat of the Provincial Government of Pangasinan. Located in Lingayen, it continues to serve as an active center of provincial governance."
 
 [sub_resource type="Resource" id="CivicSetting"]
 script = ExtResource("2")
 view_id = &"civic_setting"
 selector_label = "CIVIC SETTING"
 context_label = "WITHIN THE GOVERNMENT COMPLEX"
-heading = "A Landmark Framed by Its Setting"
-body = "The Capitol stands within a spacious government complex near Lingayen Gulf. Formal gardens, lawns, paved approaches, and tree-lined avenues frame the building."
 takeaway = "Its setting strengthens its role as a civic landmark."
-observation_labels = PackedStringArray("CAPITOL", "FORMAL APPROACH", "LANDSCAPED GROUNDS")
 image = ExtResource("4")
 caption = "The Capitol within its formal government-complex setting in Lingayen."
 media_credit = "Source: Official Province of Pangasinan website
 Page/context: The Province → History"
 permission_status = "Not separately confirmed / pending documentation."
+heading = "A Landmark Framed by Its Setting"
+body = "The Capitol stands within a spacious government complex near Lingayen Gulf. Formal gardens, lawns, paved approaches, and tree-lined avenues frame the building."
 
 [sub_resource type="Resource" id="GovernmentToday"]
 script = ExtResource("2")
 view_id = &"government_today"
 selector_label = "GOVERNMENT TODAY"
 context_label = "CONTINUING CIVIC ROLE"
-heading = "A Working Seat of Provincial Government"
-body = "The Capitol continues to serve the Provincial Government of Pangasinan while preserving its historical character. It remains both a heritage landmark and an active government building."
 takeaway = "Its history and government function continue today."
-observation_labels = PackedStringArray("ACTIVE GOVERNMENT CENTER")
 image = ExtResource("5")
 caption = "The Pangasinan Provincial Capitol remains an active provincial government center."
 media_credit = "Photographer/creator: AKAR Team
 Source: AKAR Research Team"
 permission_status = "Research-team-produced documentary photograph."
+heading = "A Working Seat of Provincial Government"
+body = "The Capitol continues to serve the Provincial Government of Pangasinan while preserving its historical character. It remains both a heritage landmark and an active government building."
 
 [resource]
 script = ExtResource("1")
@@ -69,7 +68,7 @@ Relevant support: Capitol is the building where executive and legislative functi
 
 2. Historical Profile of Pangasinan Provincial Capitol
 Relevant support: landmark identity, Lingayen location, continuing government role, government-complex setting, formal gardens, lawns, approaches, tree-lined avenues."
-concepts = [SubResource("Capitol"), SubResource("CivicSetting"), SubResource("GovernmentToday")]
+concepts = Array[ExtResource("1_adum0")]([SubResource("Capitol"), SubResource("CivicSetting"), SubResource("GovernmentToday")])
 metadata/audio_credit = "AUDIO
 ppc_ext_01_narration
 Narration production: AKAR Team"

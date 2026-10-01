@@ -1,11 +1,12 @@
-[gd_resource type="Resource" format=3]
+[gd_resource type="Resource" format=3 uid="uid://cpkssmmwd0s7a"]
 
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_ext_03_content.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/tactical_map/lch_ext_03_tactical_map_base.png" id="3"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/tactical_map/lch_ext_03_blockade_marker.png" id="4"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/fortified_settlement.png" id="5"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/route_ship.png" id="6"]
+[ext_resource type="Script" uid="uid://3gb120xscut8" path="res://scripts/landmarks/limahong_channel/lch_ext_03_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://cbpscp8bgfjlr" path="res://assets/landmarks/limahong_channel/tactical_map/lch_ext_03_tactical_map_base.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://vcuotutibglc" path="res://assets/landmarks/limahong_channel/tactical_map/lch_ext_03_blockade_marker.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://dt2wgrxv0vvy8" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/fortified_settlement.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://c2haoeiwdwj8g" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/route_ship.png" id="6"]
+[ext_resource type="AudioStream" uid="uid://udg7oncunbkb" path="res://assets/landmarks/limahong_channel/audio/lch_ext_03_narration.ogg" id="header_narration"]
 
 [sub_resource type="Resource" id="Settlement"]
 script = ExtResource("2")
@@ -29,39 +30,52 @@ body = "Limahong and many of his followers used the water route to move beyond t
 
 [resource]
 script = ExtResource("1")
-hotspot_id = "LCH-EXT-03"
-title = "THE SIEGE AND ESCAPE ROUTE"
 stage_labels = PackedStringArray("01 SETTLEMENT", "02 BLOCKADE", "03 PASSAGE", "04 ESCAPE")
 date_labels = PackedStringArray("1575", "1575", "1575", "AUGUST 1575")
 stage_notices = PackedStringArray("", "Symbolic blockade representation — not exact troop positions.", "Interpretive escape passage — exact historical path not established.", "Interpretive escape passage — exact historical path not established.")
 permanent_disclaimer = "Simplified historical visualization — not to scale. The present Limahong Channel is traditionally associated with the reported escape route; the exact historical path has not been independently established through archaeological evidence."
 compact_disclaimer = "Historical interpretation — not to scale; exact escape path not established."
 settlement_label = "SETTLEMENT"
+fortified_settlement = ExtResource("5")
+blockade_marker = ExtResource("4")
+escape_vessel = ExtResource("6")
+blockade_anchors = null
+passage_points = null
+hotspot_id = "LCH-EXT-03"
+title = "THE SIEGE AND ESCAPE ROUTE"
 illustration = ExtResource("3")
 illustration_alt_text = "Simplified landscape and water context for symbolic settlement, blockade, reported passage and escape layers; not exact historical geography."
-blockade_marker = ExtResource("4")
-fortified_settlement = ExtResource("5")
-escape_vessel = ExtResource("6")
+narration_stream = ExtResource("header_narration")
 narration_transcript = "In 1575, Juan de Salcedo led an expedition that blockaded Limahong's fortified settlement in Pangasinan. During the campaign, Limahong's followers reportedly excavated a passage toward the sea. Limahong and many of his followers later escaped by water. The present Limahong Channel is traditionally associated with this escape, although the exact historical route has not been independently established through archaeological evidence."
-source_credit = "Historical content
-Researcher-supplied LCH-EXT-03 wording.
+source_credit = "HISTORICAL REFERENCES
 
-Researcher-identified source categories
-Francisco de Sande account
-Project Historical Profile / Validation Sheet
-Provincial Government historical material
+Sande, F. de. (1903).
+Relation of the Filipinas Islands.
+In E. H. Blair & J. A. Robertson (Eds. & Trans.),
+The Philippine Islands, 1493–1803, Vol. 4, pp. 21–97.
+Original work dated 1576.
 
-Full titles, editions/publication details, page references, source links and validation-sheet identifier/date await researcher submission. No complete bibliographic citation is claimed.
+Shutz, J. T. (2019).
+Limahong's Pirates, Ming Mariners, and Early Sino-Spanish Relations: The Pangasinan Campaign of 1575 and Global History from Below.
+Philippine Studies: Historical and Ethnographic Viewpoints, 67(3–4), 315–342.
 
-Historical qualification
+Provincial Government of Pangasinan. (n.d.).
+History.
+
+Martindale, W. (2024).
+The Many Names of Limahong: Remembering a Chinese Pirate in the Philippines.
+BYU Asian Studies Student Journal, 9, Article 6.
+
 Simplified historical visualization — not to scale. The present Limahong Channel is traditionally associated with the reported escape route; the exact historical path has not been independently established through archaeological evidence.
 
 Symbolic blockade representation — not exact troop positions.
 Interpretive escape passage — exact historical path not established.
 Four markers symbolize the blockading expedition; they do not indicate four units or troop counts. Settlement and vessel are interpretive symbols, not archaeological or vessel reconstructions.
 
-Media
-Researcher-supplied tactical map and blockade emblem; existing researcher-supplied settlement and vessel art. Creator, original source and usage permissions await researcher confirmation.
+MEDIA CREDITS
 
-Narration recording pending."
+All tactical-map graphics, settlement graphics, expedition markers, route visualization, vessel graphics, icons, diagrams, and interface illustrations used by LCH-EXT-03:
+AKAR Project / AKAR Research Team.
+Original project resources."
 concepts = Array[ExtResource("2")]([SubResource("Settlement"), SubResource("Blockade"), SubResource("Passage"), SubResource("Escape")])
+metadata/historical_source_urls = PackedStringArray("https://www.gutenberg.org/cache/epub/12635/pg12635-images.html", "https://doi.org/10.13185/2244-1638.1019", "https://www.pangasinan.gov.ph/the-province/history/", "https://scholarsarchive.byu.edu/asj/vol9/iss1/6")

@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+
+const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
+var _header_utilities: RefCounted
 ## Free story selection with a local wartime comparison inside the AKAR shell.
 
 signal hotspot_closed
@@ -77,6 +80,8 @@ func _ready() -> void:
 	_build_evidence_path()
 	_build_observations()
 	_build_documentary_card()
+	_header_utilities = HeaderUtilities.new(self, _pending)
+	add_to_group("lingayen_church_narration")
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
@@ -395,7 +400,7 @@ func _sync_focus() -> void:
 	main.append_array(_concepts)
 	main.append_array(_bell_buttons)
 	main.append_array(_comparison_buttons)
-	main.append_array([_speaker, _scroll, _detail_button, _sources_button, _close])
+	main.append_array([_scroll, _detail_button, _sources_button, _speaker, _close])
 	var overlay: Array[Control] = [_source_scroll, _source_close]
 	var active: Array[Control] = []
 	for control in main + overlay + [_documentary_close]:
@@ -493,6 +498,8 @@ func _resize_layout() -> void:
 			_concepts[i].accessibility_name = entry.label
 			_concepts[i].add_theme_font_size_override("font_size", 18)
 	_layout_observations.call_deferred()
+	if _header_utilities != null:
+		_header_utilities.resize()
 
 
 func open_sources() -> void:
@@ -503,11 +510,11 @@ func open_sources() -> void:
 
 
 func _update_speaker() -> void:
-	super._update_speaker()
-	_speaker.show()
-	_speaker.disabled = _audio.stream == null
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
-	_pending.visible = _audio.stream == null
+	HeaderUtilities.update_speaker(self, _pending)
+
+
+func toggle_narration() -> void:
+	HeaderUtilities.toggle_narration(self)
 
 
 func stop_narration() -> void:

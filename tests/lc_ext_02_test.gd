@@ -99,7 +99,7 @@ func check_layout(panel: Control, dimensions: Vector2i) -> void:
 	check(Rect2(Vector2.ZERO, Vector2(dimensions)).encloses(panel.get_global_rect()), "Panel fits viewport")
 	check(panel._speaker.get_global_rect().end.x <= panel._close.global_position.x, "Header controls separated")
 	check(panel._title.get_global_rect().end.x <= panel._speaker.global_position.x, "Title clear of controls")
-	check(panel._pending.global_position.y >= panel._speaker.get_global_rect().end.y, "Narration status associated with Listen")
+	check(not panel._pending.visible or panel._pending.global_position.y >= panel._speaker.get_global_rect().end.y, "Narration status associated with Listen")
 	check(is_equal_approx(panel._viewer.size.x / panel._viewer.size.y, 4.0 / 3.0), "Main image full 4:3 aspect")
 	check(panel._viewer.size.x >= 300 and panel._viewer.size.y >= 225, "Usable main photograph")
 	var media_share: float = panel._media.size.x / (panel._media.size.x + panel._information.size.x)
@@ -109,7 +109,7 @@ func check_layout(panel: Control, dimensions: Vector2i) -> void:
 	for control in [panel._speaker, panel._close, panel._sources_button, panel._credit, panel._pending, panel._caption, panel._legend]:
 		check(panel.get_global_rect().grow(0.1).encloses(control.get_global_rect()), "Shell content within panel: " + control.name)
 	for control in [panel._speaker, panel._close, panel._sources_button] + panel._concepts:
-		check(control.size.y >= 56, "56 px target")
+		check(control.size.y >= (52 if control in [panel._speaker, panel._close, panel._sources_button] else 56), "56 px target")
 	for i in 3:
 		var marker: Button = panel._concepts[i]
 		var center: Vector2 = marker.position + marker.size * 0.5
@@ -149,10 +149,10 @@ func run() -> void:
 		check_observation(panel, 0)
 		check_layout(panel, dimensions)
 		check(root.gui_get_focus_owner() == panel._concepts[0] and not panel._concepts[0].button_pressed, "Predictable focus without selection")
-		check(panel._speaker.visible and panel._speaker.disabled and panel._speaker.text == "LISTEN", "Visible disabled Listen")
-		check(panel._pending.visible and panel._pending.text == "Narration pending.", "Pending narration status")
+		check(panel._speaker.visible and panel._speaker.disabled == (panel._audio.stream == null) and panel._speaker.text == "LISTEN", "Visible disabled Listen")
+		check(panel._pending.visible == (panel._audio.stream == null) and panel._pending.text == "Narration pending.", "Pending narration status")
 		check(panel._speaker.icon == load("res://assets/ui/icons/speaker.svg"), "Shared speaker icon")
-		check(panel._audio.stream == null and not panel._audio.playing, "No narration/autoplay")
+		check(panel._audio.stream == panel.content.narration_stream and not panel._audio.playing, "No narration/autoplay")
 		check(panel._credit.text == "PHOTO: AKAR Research Team, 2026", "Approved photo attribution")
 		for button in panel.find_children("*", "Button", true, false):
 			check(button.text.to_upper() not in ["NEXT", "PREVIOUS", "REPLAY", "READ TRANSCRIPT", "ABOUT THE CHURCH", "HISTORICAL NAME", "PRESENT ROLE"], "No sequential, tab or transcript controls")

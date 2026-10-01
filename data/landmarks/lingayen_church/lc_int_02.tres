@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="LCINT02Content" format=3]
+[gd_resource type="Resource" script_class="LCINT02Content" format=3 uid="uid://bo5pslnx48xls"]
 
-[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_int_02_content.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/landmarks/lingayen_church/lc_int_02_milestone_content.gd" id="2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_01/images/lc_ext_01_exterior_current.jpg" id="3"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_guerrero_portrait.png" id="4"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_sheehan_portrait.png" id="5"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_ext_03/images/lc_ext_03_church_postwar_damage.jpg" id="6"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_madriaga_portrait.png" id="7"]
+[ext_resource type="Script" uid="uid://bjhru2nur75ri" path="res://scripts/landmarks/lingayen_church/lc_int_02_content.gd" id="1"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="1_je77o"]
+[ext_resource type="Script" uid="uid://bbpfbq0lmcq8q" path="res://scripts/landmarks/lingayen_church/lc_int_02_milestone_content.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://r7barnf8ekrh" path="res://assets/landmarks/lingayen_church/lc_ext_01/images/lc_ext_01_exterior_current.jpg" id="3"]
+[ext_resource type="Texture2D" uid="uid://1p4k8vqdfe4j" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_guerrero_portrait.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://26f2k5363pgy" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_sheehan_portrait.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://ftb7v1w8sfu6" path="res://assets/landmarks/lingayen_church/lc_ext_03/images/lc_ext_03_church_postwar_damage.jpg" id="6"]
+[ext_resource type="Texture2D" uid="uid://dsbpymo7jbdc3" path="res://assets/landmarks/lingayen_church/lc_int_01/images/lc_int_01_madriaga_portrait.png" id="7"]
+[ext_resource type="AudioStream" uid="uid://cvdn1h8260se8" path="res://assets/landmarks/lingayen_church/audio/lc_int_02_narration.ogg" id="church_narration"]
 
 [sub_resource type="Resource" id="Early"]
 script = ExtResource("2")
@@ -68,7 +70,8 @@ era_id = &"cathedral_development"
 era_display = "Cathedral Development"
 title = "Columban Missionary Service Begins"
 context_label = "PARISH ADMINISTRATION"
-change_label = "COLUMBAN MISSIONARY\nSERVICE BEGINS"
+change_label = "COLUMBAN MISSIONARY
+SERVICE BEGINS"
 explanation = "Columban missionaries began serving the cathedral parish in 1933, supporting pastoral, educational, and community work."
 media_mode = &"CONTEXTUAL_PORTRAIT"
 media = ExtResource("5")
@@ -102,9 +105,12 @@ date_display = "1954"
 era_id = &"war_and_change"
 era_display = "War & Institutional Change"
 title = "Co-Cathedral Transition"
-context_label = "EPISCOPAL SEAT\nIN LINGAYEN"
-change_label = "SEAT TRANSFERRED\nTO DAGUPAN"
-result_label = "LINGAYEN REMAINS\nCO-CATHEDRAL"
+context_label = "EPISCOPAL SEAT
+IN LINGAYEN"
+change_label = "SEAT TRANSFERRED
+TO DAGUPAN"
+result_label = "LINGAYEN REMAINS
+CO-CATHEDRAL"
 result_connector = "none"
 explanation = "In 1954, the episcopal seat was transferred to Dagupan, while Lingayen retained its historical role as a co-cathedral."
 source_basis = "Archdiocese of Lingayen-Dagupan — historical materials; Epiphany of Our Lord Parish historical account"
@@ -117,8 +123,10 @@ date_display = "1963"
 era_id = &"continuing_leadership"
 era_display = "Continuing Leadership"
 title = "Metropolitan Archdiocese"
-context_label = "DIOCESE OF\nLINGAYEN-DAGUPAN"
-change_label = "METROPOLITAN\nARCHDIOCESE"
+context_label = "DIOCESE OF
+LINGAYEN-DAGUPAN"
+change_label = "METROPOLITAN
+ARCHDIOCESE"
 explanation = "On February 16, 1963, Lingayen-Dagupan became a metropolitan archdiocese."
 media_mode = &"CONTEXTUAL_PORTRAIT"
 media = ExtResource("7")
@@ -135,20 +143,39 @@ era_id = &"continuing_leadership"
 era_display = "Continuing Leadership"
 title = "Filipino Diocesan Leadership Continues"
 context_label = "COLUMBAN ADMINISTRATION"
-change_label = "FILIPINO DIOCESAN\nLEADERSHIP CONTINUES"
+change_label = "FILIPINO DIOCESAN
+LEADERSHIP CONTINUES"
 explanation = "In 1981, the Columban Fathers concluded their parish administration, and Filipino diocesan priests continued the ministry."
 source_basis = "Epiphany of Our Lord Parish historical account"
 
 [resource]
 script = ExtResource("1")
-hotspot_id = "LC-INT-02"
-title = "Lingayen Church Through Time"
 subtitle = "Lingayen Church"
-prompt = "Select a point in time to see how Lingayen Church changed."
 overview_heading = "A Church Across Changing Times"
 overview_body = "From its missionary beginnings to its role as a co-cathedral, Lingayen Church passed through major periods of religious, institutional, and wartime change."
 overview_media = ExtResource("3")
 overview_media_credit = "PHOTO: AKAR Research Team, 2026"
 takeaway = "Lingayen Church developed across missionary, cathedral, wartime, and co-cathedral periods while continuing to serve the religious community of Lingayen."
 milestones = Array[ExtResource("2")]([SubResource("Early"), SubResource("Transition"), SubResource("Cathedral"), SubResource("Columban"), SubResource("Wartime"), SubResource("CoCathedral"), SubResource("Archdiocese"), SubResource("Leadership")])
-sources_text = "Archdiocese of Lingayen-Dagupan\nHistorical and evangelization/history materials\nThe Archbishops\n\nEpiphany of Our Lord Parish, Lingayen\nA Brief History of the Epiphany of Our Lord Parish\n\nLingayen: Memories of Times Past (2021)\nGuerrero portrait: p. 16\nMadriaga portrait: p. 17\nWartime/postwar church photograph: p. 20\n\nMissionary Society of St. Columban — Philippines\nSamuel Sheehan portrait/image source\n\nPresent-day exterior photograph: AKAR Research Team, 2026\n\nFull bibliographic details for historical/evangelization materials remain pending researcher documentation."
+sources_text = "Archdiocese of Lingayen-Dagupan
+Historical and evangelization/history materials
+The Archbishops
+
+Epiphany of Our Lord Parish, Lingayen
+A Brief History of the Epiphany of Our Lord Parish
+
+Lingayen: Memories of Times Past (2021)
+Guerrero portrait: p. 16
+Madriaga portrait: p. 17
+Wartime/postwar church photograph: p. 20
+
+Missionary Society of St. Columban — Philippines
+Samuel Sheehan portrait/image source
+
+Present-day exterior photograph: AKAR Research Team, 2026
+
+Full bibliographic details for historical/evangelization materials remain pending researcher documentation."
+hotspot_id = "LC-INT-02"
+title = "Lingayen Church Through Time"
+prompt = "Select a point in time to see how Lingayen Church changed."
+narration_stream = ExtResource("church_narration")

@@ -1,4 +1,7 @@
 extends ConferenceRoomInteraction
+
+const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
+var _header_utilities: RefCounted
 ## Standalone orientation panel. The future host owns landmark navigation.
 
 signal hotspot_closed
@@ -76,9 +79,6 @@ func _ready() -> void:
 	_takeaway.add_theme_color_override("font_color", Color(0.76, 0.75, 0.67, 1))
 	_body.get_parent().add_child(_key_label)
 	_body.get_parent().move_child(_key_label, 2)
-	# Sources stays in its shared information-column position, below the scroll.
-	_sources_button.text = "Sources"
-	_sources_button.custom_minimum_size = Vector2(48, 56)
 	_information.add_child(_credit)
 	$Main/Margin/Layout/Controls.hide()
 	_credit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -90,6 +90,8 @@ func _ready() -> void:
 	for i in _concepts.size():
 		_concepts[i].custom_minimum_size = Vector2(48, 56)
 		_concepts[i].gui_input.connect(_tab_input.bind(i))
+	_header_utilities = HeaderUtilities.new(self, _pending)
+	add_to_group("lingayen_church_narration")
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
@@ -186,11 +188,11 @@ func open_sources() -> void:
 
 
 func _update_speaker() -> void:
-	super._update_speaker()
-	_speaker.show()
-	_speaker.disabled = _audio.stream == null
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
-	_pending.visible = _audio.stream == null
+	HeaderUtilities.update_speaker(self, _pending)
+
+
+func toggle_narration() -> void:
+	HeaderUtilities.toggle_narration(self)
 
 
 func stop_narration() -> void:
@@ -239,6 +241,8 @@ func _resize_layout() -> void:
 			_concepts[i].add_theme_font_size_override("font_size", 16 if compact else 18)
 	if _open:
 		_sync_focus()
+	if _header_utilities != null:
+		_header_utilities.resize()
 
 
 func close_hotspot() -> void:
@@ -280,3 +284,6 @@ func _visibility_changed() -> void:
 func _exit_tree() -> void:
 	_cancel_panel_tween()
 	super._exit_tree()
+
+func _sync_focus() -> void:
+	HeaderUtilities.sync_focus(self)

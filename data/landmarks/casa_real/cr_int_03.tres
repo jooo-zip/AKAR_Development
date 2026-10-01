@@ -1,17 +1,18 @@
-[gd_resource type="Resource" format=3]
+[gd_resource type="Resource" format=3 uid="uid://djqap8i88u05m"]
 
-[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_int_03_content.gd" id="content"]
-[ext_resource type="Script" path="res://scripts/landmarks/casa_real/cr_int_03_personality.gd" id="person"]
-[ext_resource type="AudioStream" path="res://assets/landmarks/casa_real/audio/cr_int_03_narration.ogg" id="audio"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p01_taft.png" id="portrait0"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p02_sison.jpg" id="portrait1"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p03_espino_jr.png" id="portrait2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p04_espino_iii.png" id="portrait3"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p05_guico.png" id="portrait4"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_government_center.jpg.jpg" id="context0"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_cosme_damage.JPG" id="context1"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_heritage_museum.jpg" id="context2"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_banaan_identity.jpg" id="context3"]
+[ext_resource type="Script" uid="uid://bt3gkrjmd1jxt" path="res://scripts/components/conference_room_concept_entry.gd" id="1_uo07p"]
+[ext_resource type="AudioStream" uid="uid://cetcrqeqibciw" path="res://assets/landmarks/casa_real/audio/cr_int_03_narration.ogg" id="audio"]
+[ext_resource type="Script" uid="uid://b6ao02l71bc2e" path="res://scripts/landmarks/casa_real/cr_int_03_content.gd" id="content"]
+[ext_resource type="Texture2D" uid="uid://bohvirvrfftnm" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_government_center.jpg.jpg" id="context0"]
+[ext_resource type="Texture2D" uid="uid://cnsrgig8fdksw" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_cosme_damage.JPG" id="context1"]
+[ext_resource type="Texture2D" uid="uid://ft3bm03i2s24" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_heritage_museum.jpg" id="context2"]
+[ext_resource type="Texture2D" uid="uid://drxj2a7cptlnp" path="res://assets/landmarks/casa_real/exterior/changing_roles/cr_ext_03_banaan_identity.jpg" id="context3"]
+[ext_resource type="Script" uid="uid://1gcm2kudtwje" path="res://scripts/landmarks/casa_real/cr_int_03_personality.gd" id="person"]
+[ext_resource type="Texture2D" uid="uid://cxgn0evucbhx7" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p01_taft.png" id="portrait0"]
+[ext_resource type="Texture2D" uid="uid://7kj2c5fkdrl4" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p02_sison.jpg" id="portrait1"]
+[ext_resource type="Texture2D" uid="uid://daky3dje05yn4" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p03_espino_jr.png" id="portrait2"]
+[ext_resource type="Texture2D" uid="uid://cnga8idq7ofc" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p04_espino_iii.png" id="portrait3"]
+[ext_resource type="Texture2D" uid="uid://fnq8pri7vq7g" path="res://assets/landmarks/casa_real/interior/people/portraits/cr_int_03_p05_guico.png" id="portrait4"]
 
 [sub_resource type="Resource" id="P0"]
 script = ExtResource("person")
@@ -24,6 +25,8 @@ period_label = "CIVIL GOVERNMENT"
 date_label = "1901"
 compact_date = "1901"
 contribution = "Led the Second Philippine Commission and visited Casa Real during the establishment of civil government in Pangasinan in 1901."
+portrait = ExtResource("portrait0")
+context_image = ExtResource("context0")
 context_label = "EARLY CASA REAL · BUILDING CONTEXT"
 portrait_source_name = "Encyclopaedia Britannica"
 portrait_source_reference = "William Howard Taft biography"
@@ -32,8 +35,6 @@ historical_source_name = "AKAR Research Team"
 historical_source_reference = "Researcher-approved CR-INT-03 Phase 5 copy; claim-to-page references not supplied."
 context_source = "Arabela Ventenilla Arcinue. Lingayen: Memories of Times Past (2021), p. 99."
 context_permission_status = "Existing approved project asset; reuse permission unspecified in inherited metadata."
-portrait = ExtResource("portrait0")
-context_image = ExtResource("context0")
 
 [sub_resource type="Resource" id="P1"]
 script = ExtResource("person")
@@ -46,6 +47,8 @@ period_label = "CIVIL GOVERNMENT"
 date_label = "1901"
 compact_date = "1901"
 contribution = "Served as the first Civil Governor of Pangasinan and welcomed Taft and the Philippine Commission during their visit to the province."
+portrait = ExtResource("portrait1")
+context_image = ExtResource("context0")
 context_label = "EARLY CASA REAL · BUILDING CONTEXT"
 portrait_source_name = "Arabela Ventenilla Arcinue"
 portrait_source_reference = "Lingayen: Memories of Times Past, p. 63"
@@ -54,8 +57,6 @@ historical_source_name = "AKAR Research Team"
 historical_source_reference = "Researcher-approved CR-INT-03 Phase 5 copy; claim-to-page references not supplied."
 context_source = "Arabela Ventenilla Arcinue. Lingayen: Memories of Times Past (2021), p. 99."
 context_permission_status = "Existing approved project asset; reuse permission unspecified in inherited metadata."
-portrait = ExtResource("portrait1")
-context_image = ExtResource("context0")
 
 [sub_resource type="Resource" id="P2"]
 script = ExtResource("person")
@@ -68,16 +69,17 @@ period_label = "RESTORATION & PRESERVATION"
 date_label = "RESTORATION INITIATIVE"
 compact_date = "RESTORATION"
 contribution = "The restoration and preservation initiative for Casa Real began during his administration."
+portrait = ExtResource("portrait2")
+context_image = ExtResource("context1")
 context_label = "CASA REAL · RESTORATION CONTEXT"
 portrait_source_name = "Inquirer.net"
 portrait_source_reference = "Researcher-supplied portrait reference"
 portrait_permission_status = "SOURCE_DOCUMENTED; reuse permission not supplied"
 historical_source_name = "AKAR Research Team"
 historical_source_reference = "Researcher-approved CR-INT-03 Phase 5 copy; claim-to-page references not supplied."
-context_source = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
+context_source = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen
+https://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
 context_permission_status = "Existing approved project asset; reuse permission unspecified in inherited metadata."
-portrait = ExtResource("portrait2")
-context_image = ExtResource("context1")
 
 [sub_resource type="Resource" id="P3"]
 script = ExtResource("person")
@@ -90,16 +92,17 @@ period_label = "RESTORATION & PRESERVATION"
 date_label = "2021"
 compact_date = "2021"
 contribution = "Continued the completion of Casa Real's restoration. The restored building was formally turned over to the Provincial Government of Pangasinan during his term in 2021."
+portrait = ExtResource("portrait3")
+context_image = ExtResource("context2")
 context_label = "RESTORED CASA REAL · BUILDING CONTEXT"
 portrait_source_name = "Philstar / Pilipino Star Ngayon"
 portrait_source_reference = "Researcher-supplied portrait reference"
 portrait_permission_status = "SOURCE_DOCUMENTED; reuse permission not supplied"
 historical_source_name = "AKAR Research Team"
 historical_source_reference = "Researcher-approved CR-INT-03 Phase 5 copy; claim-to-page references not supplied."
-context_source = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen\nhttps://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
+context_source = "National Historical Commission of the Philippines — National Registry of Historic Sites and Structures, Casa Real ng Lingayen
+https://nhcphistoricsites.blogspot.com/2011/10/old-casa-real-and-provincial-capitol.html"
 context_permission_status = "Existing approved project asset; reuse permission unspecified in inherited metadata."
-portrait = ExtResource("portrait3")
-context_image = ExtResource("context2")
 
 [sub_resource type="Resource" id="P4"]
 script = ExtResource("person")
@@ -112,32 +115,38 @@ period_label = "BANÁAN MUSEUM"
 date_label = "2023"
 compact_date = "2023"
 contribution = "Led the opening and continued development of Casa Real as the Banáan Pangasinan Provincial Museum."
+portrait = ExtResource("portrait4")
+context_image = ExtResource("context3")
 context_label = "BANÁAN PANGASINAN PROVINCIAL MUSEUM"
 portrait_source_name = "Ramon Mon-Mon Guico III official Facebook page"
 portrait_source_reference = "Researcher-supplied official page/post reference"
 portrait_permission_status = "SOURCE_DOCUMENTED; reuse permission not supplied"
 historical_source_name = "AKAR Research Team"
 historical_source_reference = "Researcher-approved CR-INT-03 Phase 5 copy; claim-to-page references not supplied."
-context_source = "Banáan Pangasinan Provincial Museum official website\nhttps://banaan.seepangasinan.com/"
+context_source = "Banáan Pangasinan Provincial Museum official website
+https://banaan.seepangasinan.com/"
 context_permission_status = "Existing approved project asset; reuse permission unspecified in inherited metadata."
-portrait = ExtResource("portrait4")
-context_image = ExtResource("context3")
 
 [resource]
 script = ExtResource("content")
-hotspot_id = "CR-INT-03"
-title = "PEOPLE BEHIND CASA REAL"
-prompt = "MEET THE PEOPLE CONNECTED WITH CASA REAL"
-narration_stream = ExtResource("audio")
-narration_transcript = "Casa Real's history was shaped by personalities connected with civil government, restoration, and museum development. Their contributions reflect the building's transformation from a colonial government center into a preserved cultural institution."
 people = Array[ExtResource("person")]([SubResource("P0"), SubResource("P1"), SubResource("P2"), SubResource("P3"), SubResource("P4")])
 period_ids = Array[StringName]([&"PERIOD_CIVIL_GOVERNMENT", &"PERIOD_RESTORATION", &"PERIOD_BANAAN"])
 period_labels = PackedStringArray("CIVIL GOVERNMENT", "RESTORATION & PRESERVATION", "BANÁAN MUSEUM")
 compact_period_labels = PackedStringArray("1901", "RESTORATION", "2023")
 overview_heading = "WHO HELPED SHAPE CASA REAL'S PUBLIC STORY?"
-overview_body = "Meet the people connected with Casa Real\nacross different periods of its history."
+overview_body = "Meet the people connected with Casa Real
+across different periods of its history."
 overview_helper = "TAP A PERIOD OR PORTRAIT TO EXPLORE"
 period_helper = "SELECT A PERSON FROM THIS PERIOD"
 anchor_title = "CASA REAL"
 anchor_location = "LINGAYEN, PANGASINAN"
-source_credit = "HISTORICAL CONTENT\nAKAR Research Team — researcher-approved Casa Real connections.\n\nNARRATION\nAKAR Research Team — project-owned narration."
+hotspot_id = "CR-INT-03"
+title = "PEOPLE BEHIND CASA REAL"
+prompt = "MEET THE PEOPLE CONNECTED WITH CASA REAL"
+narration_stream = ExtResource("audio")
+narration_transcript = "Casa Real's history was shaped by personalities connected with civil government, restoration, and museum development. Their contributions reflect the building's transformation from a colonial government center into a preserved cultural institution."
+source_credit = "HISTORICAL CONTENT
+AKAR Research Team — researcher-approved Casa Real connections.
+
+NARRATION
+AKAR Research Team — project-owned narration."
