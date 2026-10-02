@@ -1,4 +1,10 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
 ## Three parallel orientation views. The host owns navigation outside this panel.
 
 const ViewRecord = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_ext_01_view.gd")
@@ -6,23 +12,23 @@ const VIEW_IDS: Array[StringName] = [&"capitol", &"civic_setting", &"government_
 const TRANSITION_SECONDS: float = 0.2
 
 var current_view: StringName = &"capitol"
-var _subtitle := Label.new()
-var _context := Label.new()
-var _caption := Label.new()
-var _pending := Label.new()
-var _media := VBoxContainer.new()
-var _photo_frame := Control.new()
-var _previous_image := TextureRect.new()
+var _subtitle: Label
+var _context: Label
+var _caption: Label
+var _pending: Label
+var _media: VBoxContainer
+var _photo_frame: Control
+var _previous_image: TextureRect
 var _transition: Tween
-var _photo_button := Button.new()
-var _focus_frame := Panel.new()
-var _observations := HBoxContainer.new()
+var _photo_button: Button
+var _focus_frame: Panel
+var _observations: HBoxContainer
 var _observation_tags: Array[PanelContainer] = []
 var _observation_labels: Array[Label] = []
-var _explore := PanelContainer.new()
-var _explore_image := TextureRect.new()
-var _explore_caption := Label.new()
-var _explore_close := Button.new()
+var _explore: PanelContainer
+var _explore_image: TextureRect
+var _explore_caption: Label
+var _explore_close: Button
 var _explore_tween: Tween
 var _explore_closing: bool = false
 
@@ -33,8 +39,36 @@ func is_explore_open() -> bool:
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var header := $Main/Margin/Layout/Header
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(_visibility_changed)
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+
+func _build_presentation() -> void:
+	_subtitle = Label.new()
+	_context = Label.new()
+	_caption = Label.new()
+	_pending = Label.new()
+	_media = VBoxContainer.new()
+	_photo_frame = Control.new()
+	_previous_image = TextureRect.new()
+	_photo_button = Button.new()
+	_focus_frame = Panel.new()
+	_observations = HBoxContainer.new()
+	_explore = PanelContainer.new()
+	_explore_image = TextureRect.new()
+	_explore_caption = Label.new()
+	_explore_close = Button.new()
+	_observation_tags.clear()
+	_observation_labels.clear()
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -59,15 +93,16 @@ func _ready() -> void:
 	_close.text = "CLOSE"
 	_speaker.expand_icon = true
 	_speaker.add_theme_constant_override("icon_max_width", 24)
-	$Main/Margin/Layout/Controls.hide()
-	$Main/Margin/Layout.move_child($Main/Margin/Layout/Sections, 1)
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
+	_presentation_root.get_node("Main/Margin/Layout").move_child(_presentation_root.get_node("Main/Margin/Layout/Sections"), 1)
 	for i in _concepts.size():
 		_concepts[i].custom_minimum_size = Vector2(48, 56)
-		_concepts[i].gui_input.connect(_selector_input.bind(i))
+		if not Engine.is_editor_hint():
+			_concepts[i].gui_input.connect(_selector_input.bind(i))
 	_media.name = "DocumentaryMedia"
 	_media.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	%Columns.add_child(_media)
-	%Columns.move_child(_media, 0)
+	_presentation_root.find_child("Columns", true, false).add_child(_media)
+	_presentation_root.find_child("Columns", true, false).move_child(_media, 0)
 	_photo_frame.name = "PhotoFrame"
 	_photo_frame.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_photo_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -93,26 +128,28 @@ func _ready() -> void:
 	_context.add_theme_color_override("font_color", Color("d8c58b"))
 	for label in [_subtitle, _caption]:
 		label.add_theme_color_override("font_color", Color("c2bfae"))
-	$Main/Margin/Layout/Columns/Information/Meta.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Columns/Information/Meta").hide()
 	_source_close.custom_minimum_size.y = 56
 	_build_explore_view()
 	_photo_frame.resized.connect(_layout_focus_frame)
-	resized.connect(_resize_layout)
-	visibility_changed.connect(_visibility_changed)
-	_resize_layout()
-	_open_standalone.call_deferred()
 
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or content == null or content.concepts.size() != 3:
 		return false
 	for i in VIEW_IDS.size():
@@ -131,11 +168,15 @@ func open_interaction() -> bool:
 
 
 func select_concept(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if index >= 0 and index < VIEW_IDS.size():
 		select_view(VIEW_IDS[index])
 
 
 func select_view(view_id: StringName, animate: bool = true) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or content == null or _sources.visible or is_explore_open() or not view_id in VIEW_IDS:
 		return
 	var old_texture := _image.texture
@@ -157,7 +198,8 @@ func select_view(view_id: StringName, animate: bool = true) -> void:
 
 
 func _render() -> void:
-	var entry := content.concepts[_selected] as ViewRecord
+	var records: Array = content.get("concepts")
+	var entry: Resource = records[_selected]
 	_title.text = content.title
 	_subtitle.text = content.prompt
 	_context.text = entry.context_label
@@ -169,12 +211,14 @@ func _render() -> void:
 	_caption.text = entry.caption
 	_render_observations(entry)
 	for i in _concepts.size():
-		_concepts[i].text = content.concepts[i].selector_label
+		_concepts[i].text = records[i].get("selector_label")
 		_concepts[i].set_pressed_no_signal(i == _selected)
 	_scroll.scroll_vertical = 0
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or is_explore_open():
 		return
 	_cancel_transition()
@@ -188,17 +232,23 @@ func open_sources() -> void:
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _sources.visible or is_explore_open():
 		return
 	super.toggle_narration()
 
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	super._update_speaker()
 	_speaker.show()
 	_speaker.disabled = _audio.stream == null
@@ -207,6 +257,8 @@ func _update_speaker() -> void:
 
 
 func _selector_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or is_explore_open():
 		return
 	var step := 0
@@ -222,6 +274,8 @@ func _selector_input(event: InputEvent, index: int) -> void:
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var previous := get_viewport().gui_get_focus_owner()
 	var main: Array[Control] = []
 	main.append_array(_concepts)
@@ -247,14 +301,18 @@ func _sync_focus() -> void:
 
 
 func _resize_layout() -> void:
+	if not is_instance_valid(_presentation_root):
+		return
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	var compact := size.x < 1000 or size.y < 550
 	var margin := 10 if compact else 16
 	for side in ["left", "right", "top", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, margin)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 8 if compact else 12)
-	%Columns.add_theme_constant_override("separation", 14 if compact else 24)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, margin)
+	_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 8 if compact else 12)
+	_presentation_root.find_child("Columns", true, false).add_theme_constant_override("separation", 14 if compact else 24)
 	_media.size_flags_stretch_ratio = 0.55 if compact else 0.59
 	_information.size_flags_stretch_ratio = 0.45 if compact else 0.41
 	_title.add_theme_font_size_override("font_size", 22 if compact else 28)
@@ -273,6 +331,8 @@ func _resize_layout() -> void:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_reset_explore()
 	_cancel_transition()
 	_cancel_fade()
@@ -291,10 +351,14 @@ func reset_hotspot() -> void:
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open:
 		return
 	reset_hotspot()
@@ -302,6 +366,8 @@ func close_interaction() -> void:
 
 
 func _clear_previous_image() -> void:
+	if Engine.is_editor_hint():
+		return
 	_previous_image.hide()
 	_previous_image.texture = null
 	_previous_image.modulate = Color.WHITE
@@ -309,17 +375,23 @@ func _clear_previous_image() -> void:
 
 
 func _cancel_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _transition != null and _transition.is_valid():
 		_transition.kill()
 	_clear_previous_image()
 
 
 func _visibility_changed() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and not is_visible_in_tree():
 		close_interaction()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_explore_tween()
 	_cancel_transition()
 	super._exit_tree()
@@ -341,7 +413,8 @@ func _build_photo_controls() -> void:
 	_photo_button.add_theme_stylebox_override("hover", hover_outline)
 	_photo_frame.add_child(_photo_button)
 	_photo_button.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_photo_button.pressed.connect(open_explore_view)
+	if not Engine.is_editor_hint():
+		_photo_button.pressed.connect(open_explore_view)
 	_focus_frame.name = "LandmarkFocusFrame"
 	_focus_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var outline := StyleBoxFlat.new()
@@ -380,18 +453,20 @@ func _build_photo_controls() -> void:
 	_media.add_child(_caption)
 
 
-func _render_observations(entry: ViewRecord) -> void:
-	_observations.visible = not entry.observation_labels.is_empty()
+func _render_observations(entry: Resource) -> void:
+	var labels: PackedStringArray = entry.get("observation_labels")
+	_observations.visible = not labels.is_empty()
 	for i in _observation_tags.size():
-		_observation_tags[i].visible = i < entry.observation_labels.size()
-		_observation_labels[i].text = entry.observation_labels[i] if i < entry.observation_labels.size() else ""
+		_observation_tags[i].visible = i < labels.size()
+		_observation_labels[i].text = labels[i] if i < labels.size() else ""
 	_layout_focus_frame()
 
 
 func _layout_focus_frame() -> void:
 	if not is_node_ready() or content == null or _image.texture == null:
 		return
-	var entry := content.concepts[_selected] as ViewRecord
+	var records: Array = content.get("concepts")
+	var entry: Resource = records[_selected]
 	_focus_frame.visible = entry.focus_region.has_area()
 	if not _focus_frame.visible:
 		return
@@ -405,7 +480,7 @@ func _layout_focus_frame() -> void:
 
 func _build_explore_view() -> void:
 	_explore.name = "ExploreView"
-	add_child(_explore)
+	_presentation_root.add_child(_explore)
 	_explore.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var backdrop := StyleBoxFlat.new()
 	backdrop.bg_color = Color(0.025, 0.045, 0.04, 0.98)
@@ -430,7 +505,8 @@ func _build_explore_view() -> void:
 	_explore_close.custom_minimum_size = Vector2(152, 56)
 	_explore_close.add_theme_font_size_override("font_size", 18)
 	header.add_child(_explore_close)
-	_explore_close.pressed.connect(close_explore_view)
+	if not Engine.is_editor_hint():
+		_explore_close.pressed.connect(close_explore_view)
 	_explore_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_explore_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_explore_image.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -445,6 +521,8 @@ func _build_explore_view() -> void:
 
 
 func open_explore_view() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or is_explore_open():
 		return
 	_cancel_transition()
@@ -463,6 +541,8 @@ func open_explore_view() -> void:
 
 
 func close_explore_view() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_explore_open() or _explore_closing:
 		return
 	_cancel_explore_tween()
@@ -473,6 +553,8 @@ func close_explore_view() -> void:
 
 
 func _finish_explore_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_explore_tween = null
 	_reset_explore()
 	if _open and is_visible_in_tree():
@@ -481,12 +563,16 @@ func _finish_explore_close() -> void:
 
 
 func _cancel_explore_tween() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _explore_tween != null and _explore_tween.is_valid():
 		_explore_tween.kill()
 	_explore_tween = null
 
 
 func _reset_explore() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_explore_tween()
 	_explore.hide()
 	_explore.modulate = Color.WHITE
@@ -496,6 +582,8 @@ func _reset_explore() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or not event.is_action_pressed(&"go_back"):
 		return
 	var viewport := get_viewport()
@@ -509,3 +597,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		close_explore_view()
 	else:
 		close_interaction()
+
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	_title.text = content.get("title")
+	_subtitle.text = content.get("prompt")
+	current_view = &"capitol"
+	_selected = 0
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

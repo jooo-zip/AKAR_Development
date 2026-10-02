@@ -1,4 +1,10 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
 ## Always-available synthesis with optional, local interpretive reflection.
 const MeaningCanvas = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_end_01_canvas.gd")
 const THEMES := [&"origins", &"architecture", &"resilience", &"public_service", &"heritage"]
@@ -8,30 +14,30 @@ var selected_theme: StringName = &"overview"
 var reflection_view_open: bool = false
 var reflection_choice: StringName = &""
 var reflection_origin_theme: StringName = &"overview"
-var _workspace := Control.new()
-var _visual := VBoxContainer.new()
-var _canvas := MeaningCanvas.new()
-var _caption := Label.new()
-var _cue := Label.new()
-var _subtitle := Label.new()
-var _pending := Label.new()
-var _rail := ScrollContainer.new()
-var _themes := HBoxContainer.new()
+var _workspace: Control
+var _visual: VBoxContainer
+var _canvas: MeaningCanvas
+var _caption: Label
+var _cue: Label
+var _subtitle: Label
+var _pending: Label
+var _rail: ScrollContainer
+var _themes: HBoxContainer
 var _theme_buttons: Array[Button] = []
-var _reflect := Button.new()
-var _reflection := Control.new()
-var _reflection_background := MeaningCanvas.new()
-var _reflection_margin := MarginContainer.new()
-var _reflection_layout := VBoxContainer.new()
-var _reflection_heading := Label.new()
-var _question := Label.new()
-var _choice_grid := GridContainer.new()
+var _reflect: Button
+var _reflection: Control
+var _reflection_background: MeaningCanvas
+var _reflection_margin: MarginContainer
+var _reflection_layout: VBoxContainer
+var _reflection_heading: Label
+var _question: Label
+var _choice_grid: GridContainer
 var _choice_buttons: Array[Button] = []
-var _response_scroll := ScrollContainer.new()
-var _response_copy := VBoxContainer.new()
-var _response := Label.new()
-var _closing_synthesis := Label.new()
-var _back := Button.new()
+var _response_scroll: ScrollContainer
+var _response_copy: VBoxContainer
+var _response: Label
+var _closing_synthesis: Label
+var _back: Button
 var _transition: Tween
 var _reflection_tween: Tween
 var _response_tween: Tween
@@ -44,15 +50,54 @@ var _scroll_dragging: bool = false
 
 
 func entry(id: StringName) -> ConferenceRoomConceptEntry:
-	for record in content.concepts:
+	for record: Resource in content.get("concepts"):
 		if record.get_meta(&"id", &"") == id:
 			return record
 	return null
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var header := $Main/Margin/Layout/Header
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(func() -> void:
+		if _open and not is_visible_in_tree():
+			close_interaction()
+	)
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+
+func _build_presentation() -> void:
+	_workspace = Control.new()
+	_visual = VBoxContainer.new()
+	_canvas = MeaningCanvas.new()
+	_caption = Label.new()
+	_cue = Label.new()
+	_subtitle = Label.new()
+	_pending = Label.new()
+	_rail = ScrollContainer.new()
+	_themes = HBoxContainer.new()
+	_reflect = Button.new()
+	_reflection = Control.new()
+	_reflection_background = MeaningCanvas.new()
+	_reflection_margin = MarginContainer.new()
+	_reflection_layout = VBoxContainer.new()
+	_reflection_heading = Label.new()
+	_question = Label.new()
+	_choice_grid = GridContainer.new()
+	_response_scroll = ScrollContainer.new()
+	_response_copy = VBoxContainer.new()
+	_response = Label.new()
+	_closing_synthesis = Label.new()
+	_back = Button.new()
+	_theme_buttons.clear()
+	_choice_buttons.clear()
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -71,11 +116,11 @@ func _ready() -> void:
 	for button in [_sources_button, _speaker, _close, _source_close]:
 		_prepare_button(button)
 		button.size_flags_vertical = SIZE_SHRINK_BEGIN
-	%Columns.hide()
-	$Main/Margin/Layout/Controls.hide()
-	$Main/Margin/Layout/Sections.hide()
+	_presentation_root.find_child("Columns", true, false).hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Sections").hide()
 	_workspace.size_flags_vertical = SIZE_EXPAND_FILL
-	$Main/Margin/Layout.add_child(_workspace)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_workspace)
 	_workspace.add_child(_visual)
 	_visual.add_theme_constant_override("separation", 6)
 	_visual.add_child(_canvas)
@@ -98,7 +143,7 @@ func _ready() -> void:
 	_rail.custom_minimum_size.y = 64
 	_rail.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_rail.follow_focus = true
-	$Main/Margin/Layout.add_child(_rail)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_rail)
 	_themes.size_flags_horizontal = SIZE_EXPAND_FILL
 	_themes.add_theme_constant_override("separation", 8)
 	_rail.add_child(_themes)
@@ -110,30 +155,27 @@ func _ready() -> void:
 		_prepare_button(button)
 		button.custom_minimum_size.x = 168
 		button.mouse_filter = MOUSE_FILTER_PASS
-		button.pressed.connect(select_meaning_theme.bind(id))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(select_meaning_theme.bind(id))
 		_themes.add_child(button)
 		_theme_buttons.append(button)
 	_reflect.text = "YOUR REFLECTION"
 	_prepare_button(_reflect)
 	_reflect.custom_minimum_size.x = 250
 	_reflect.size_flags_horizontal = SIZE_SHRINK_CENTER
-	_reflect.pressed.connect(open_reflection)
-	$Main/Margin/Layout.add_child(_reflect)
+	if not Engine.is_editor_hint():
+		_reflect.pressed.connect(open_reflection)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_reflect)
 	_build_reflection()
 	for scroller in [_rail, _scroll, _source_scroll, _response_scroll]:
-		scroller.gui_input.connect(_scroll_input.bind(scroller))
-		scroller.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
+		if not Engine.is_editor_hint():
+			scroller.gui_input.connect(_scroll_input.bind(scroller))
+		if not Engine.is_editor_hint():
+			scroller.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
 		scroller.add_theme_stylebox_override("focus", _close.get_theme_stylebox("focus"))
 	_workspace.resized.connect(_layout_workspace)
 	_visual.minimum_size_changed.connect(_layout_workspace.call_deferred)
 	_visual.resized.connect(_layout_workspace.call_deferred)
-	resized.connect(_resize_layout)
-	visibility_changed.connect(func() -> void:
-		if _open and not is_visible_in_tree():
-			close_interaction()
-	)
-	_resize_layout()
-	_open_standalone.call_deferred()
 
 
 func _build_reflection() -> void:
@@ -166,7 +208,8 @@ func _build_reflection() -> void:
 		_prepare_button(button)
 		button.custom_minimum_size.y = 52
 		button.size_flags_horizontal = SIZE_EXPAND_FILL
-		button.pressed.connect(select_reflection.bind(id))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(select_reflection.bind(id))
 		_choice_grid.add_child(button)
 		_choice_buttons.append(button)
 	_response_scroll.size_flags_vertical = SIZE_EXPAND_FILL
@@ -187,21 +230,28 @@ func _build_reflection() -> void:
 	_prepare_button(_back)
 	_back.custom_minimum_size.x = 250
 	_back.size_flags_horizontal = SIZE_SHRINK_CENTER
-	_back.pressed.connect(close_reflection)
+	if not Engine.is_editor_hint():
+		_back.pressed.connect(close_reflection)
 	_reflection_layout.add_child(_back)
 	_reflection.hide()
 
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or content == null:
 		return false
 	if _open:
@@ -223,6 +273,8 @@ func _blocked() -> bool:
 
 
 func select_meaning_theme(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or reflection_view_open or (id != &"overview" and id not in THEMES):
 		return
 	_cancel_theme_transition()
@@ -239,10 +291,11 @@ func select_meaning_theme(id: StringName) -> void:
 	_transition = create_tween().set_parallel(true)
 	_transition.tween_property(_canvas, "blend", 1.0, 0.2)
 	_transition.tween_property(_information, "modulate:a", 1.0, 0.18)
-	_transition.finished.connect(func() -> void:
-		_transition = null
-		_canvas.clear_transition()
-	)
+	if not Engine.is_editor_hint():
+		_transition.finished.connect(func() -> void:
+			_transition = null
+			_canvas.clear_transition()
+		)
 	_sync_focus()
 	if id == &"overview":
 		_rail.scroll_horizontal = 0
@@ -266,6 +319,8 @@ func _render_summary() -> void:
 
 
 func open_reflection() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or reflection_view_open:
 		return
 	_cancel_theme_transition()
@@ -290,6 +345,8 @@ func open_reflection() -> void:
 
 
 func select_reflection(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or not reflection_view_open or _reflection_closing or id not in CHOICES:
 		return
 	_kill(_response_tween)
@@ -303,6 +360,8 @@ func select_reflection(id: StringName) -> void:
 
 
 func _render_reflection() -> void:
+	if Engine.is_editor_hint():
+		return
 	_response.visible = reflection_choice != &""
 	_closing_synthesis.visible = _response.visible
 	_response.text = entry(StringName("reflection_" + reflection_choice)).body if _response.visible else ""
@@ -311,6 +370,8 @@ func _render_reflection() -> void:
 
 
 func close_reflection() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or not reflection_view_open:
 		return
 	_end_scroll_drag()
@@ -322,6 +383,8 @@ func close_reflection() -> void:
 
 
 func _finish_reflection_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_reflection_tween = null
 	_kill(_response_tween)
 	_response_tween = null
@@ -342,6 +405,8 @@ func _finish_reflection_close() -> void:
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked():
 		return
 	_cancel_theme_transition()
@@ -361,16 +426,22 @@ func open_sources() -> void:
 
 
 func close_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	_end_scroll_drag()
 	super.close_sources()
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _blocked():
 		super.toggle_narration()
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	super._update_speaker()
 	_speaker.text = "STOP" if _audio.playing else "LISTEN"
 	_speaker.disabled = _audio.stream == null
@@ -402,6 +473,8 @@ func focus_order() -> Array[Control]:
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or not _open:
 		return
 	var previous := get_viewport().gui_get_focus_owner()
@@ -422,13 +495,17 @@ func _sync_focus() -> void:
 
 
 func _resize_layout() -> void:
+	if not is_instance_valid(_presentation_root):
+		return
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	var compact := size.x < 1000
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 16)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 16)
 		_reflection_margin.add_theme_constant_override("margin_" + side, 8 if compact else 24)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 6 if compact else 10)
+	_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 6 if compact else 10)
 	_title.add_theme_font_size_override("font_size", 18 if size.x < 900 else (20 if compact else 25))
 	_subtitle.add_theme_font_size_override("font_size", 14)
 	_pending.add_theme_font_size_override("font_size", 14)
@@ -468,6 +545,8 @@ func _layout_workspace() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or not event.is_action_pressed(&"go_back"):
 		return
 	var viewport := get_viewport()
@@ -486,6 +565,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _cancel_theme_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	_kill(_transition)
 	_transition = null
 	_canvas.clear_transition()
@@ -493,6 +574,8 @@ func _cancel_theme_transition() -> void:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_theme_transition()
 	_cancel_fade()
 	_kill(_reflection_tween)
@@ -525,10 +608,14 @@ func reset_hotspot() -> void:
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open:
 		return
 	reset_hotspot()
@@ -536,11 +623,15 @@ func close_interaction() -> void:
 
 
 func _kill(tween: Tween) -> void:
+	if Engine.is_editor_hint():
+		return
 	if tween != null and tween.is_valid():
 		tween.kill()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_kill(_transition)
 	_kill(_reflection_tween)
 	_kill(_response_tween)
@@ -550,10 +641,13 @@ func _exit_tree() -> void:
 func _prepare_button(button: Button) -> void:
 	button.custom_minimum_size = Vector2(56, 48)
 	button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
-	button.gui_input.connect(_button_input.bind(button))
+	if not Engine.is_editor_hint():
+		button.gui_input.connect(_button_input.bind(button))
 
 
 func _button_input(event: InputEvent, button: Button) -> void:
+	if Engine.is_editor_hint():
+		return
 	# Native BaseButton handles touch; explicit keyboard parity includes Enter.
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_SPACE]:
 		button.accept_event()
@@ -561,6 +655,8 @@ func _button_input(event: InputEvent, button: Button) -> void:
 
 
 func _scroll_input(event: InputEvent, scroller: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or (scroller != _source_scroll and _sources.visible) or ((scroller == _rail or scroller == _scroll) and reflection_view_open):
 		return
 	# Native touch drag also works on desktop/web hosts without touchscreen flags.
@@ -590,8 +686,37 @@ func _scroll_input(event: InputEvent, scroller: ScrollContainer) -> void:
 
 
 func _end_scroll_drag() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _scroll_dragging and is_instance_valid(_touch_scroll):
 		_touch_scroll.propagate_notification(NOTIFICATION_SCROLL_END)
 	_scroll_dragging = false
 	_scroll_touch_index = -1
 	_touch_scroll = null
+
+
+func stop_narration() -> void:
+	if not Engine.is_editor_hint():
+		super.stop_narration()
+
+
+func select_concept(index: int) -> void:
+	if not Engine.is_editor_hint():
+		super.select_concept(index)
+
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	_title.text = content.get("title")
+	_subtitle.text = content.get("prompt")
+	selected_theme = &"overview"
+	reflection_view_open = false
+	reflection_choice = &""
+	_render_summary()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

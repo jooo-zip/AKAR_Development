@@ -1,3 +1,4 @@
+@tool
 extends Control
 ## Different viewpoints remain intact in independently fitted documentary frames.
 signal comparison_changed(value: float)
@@ -78,6 +79,8 @@ func _draw() -> void:
 
 
 func _choose(value: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	amount = clampf(value, 0, 1)
 	accept_event()
 	queue_redraw()
@@ -89,6 +92,8 @@ func _at(x: float) -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not enabled or not comparing:
 		return
 	if event is InputEventScreenTouch:

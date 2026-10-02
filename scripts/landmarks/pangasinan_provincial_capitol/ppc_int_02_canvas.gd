@@ -1,16 +1,17 @@
+@tool
 extends Control
 ## Conceptual civic relationships, never a physical route or floor plan.
 signal branch_selected(id: StringName)
 
 var mode: StringName = &"overview"
-var photo := TextureRect.new()
-var previous_photo := TextureRect.new()
-var diagram := Control.new()
-var lobby_label := Label.new()
-var schematic := Label.new()
+var photo: TextureRect
+var previous_photo: TextureRect
+var diagram: Control
+var lobby_label: Label
+var schematic: Label
 var branches: Array[Button] = []
 var branch_labels: Array[Label] = []
-var comparison := HBoxContainer.new()
+var comparison: HBoxContainer
 var compare_photos: Array[TextureRect] = []
 var compare_actions: Array[Button] = []
 var compare_summaries: Array[Label] = []
@@ -23,6 +24,12 @@ var highlight_strength: float = 0.0:
 
 
 func _ready() -> void:
+	photo = TextureRect.new()
+	previous_photo = TextureRect.new()
+	diagram = Control.new()
+	lobby_label = Label.new()
+	schematic = Label.new()
+	comparison = HBoxContainer.new()
 	mouse_filter = MOUSE_FILTER_IGNORE
 	add_child(previous_photo)
 	_fit_photo(previous_photo)
@@ -43,7 +50,8 @@ func _ready() -> void:
 		var id: StringName = &"executive" if i == 0 else &"legislative"
 		var branch := Button.new()
 		branch.text = "EXECUTIVE" if i == 0 else "LEGISLATIVE"
-		branch.pressed.connect(func() -> void: branch_selected.emit(id))
+		if not Engine.is_editor_hint():
+			branch.pressed.connect(func() -> void: branch_selected.emit(id))
 		diagram.add_child(branch)
 		branches.append(branch)
 		var label := Label.new()
@@ -77,10 +85,12 @@ func _ready() -> void:
 		compare_summaries.append(summary)
 		var action := Button.new()
 		action.text = "EXPLORE " + branch.text
-		action.pressed.connect(func() -> void: branch_selected.emit(id))
+		if not Engine.is_editor_hint():
+			action.pressed.connect(func() -> void: branch_selected.emit(id))
 		card.add_child(action)
 		compare_actions.append(action)
-	resized.connect(arrange)
+	if not Engine.is_editor_hint():
+		resized.connect(arrange)
 	comparison.minimum_size_changed.connect(arrange.call_deferred)
 	comparison.resized.connect(arrange.call_deferred)
 

@@ -1,4 +1,10 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
 ## Direct-access chronology with truthful, independently fitted historical images.
 
 const HistoryCanvas = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_int_01_canvas.gd")
@@ -10,31 +16,31 @@ var comparison_amount: float = 0.5
 var media_view_open: bool = false
 var media_id: StringName = &"none"
 var media_origin_period: StringName = &"none"
-var _canvas := HistoryCanvas.new()
-var _workspace := Control.new()
-var _visual := VBoxContainer.new()
-var _comparison_labels := HBoxContainer.new()
-var _left_label := Label.new()
-var _right_label := Label.new()
-var _caption := Label.new()
-var _hint := Label.new()
-var _subtitle := Label.new()
-var _pending := Label.new()
-var _actions := VBoxContainer.new()
-var _overview := Button.new()
-var _enlarge := Button.new()
-var _rail := ScrollContainer.new()
-var _dates := HBoxContainer.new()
+var _canvas: HistoryCanvas
+var _workspace: Control
+var _visual: VBoxContainer
+var _comparison_labels: HBoxContainer
+var _left_label: Label
+var _right_label: Label
+var _caption: Label
+var _hint: Label
+var _subtitle: Label
+var _pending: Label
+var _actions: VBoxContainer
+var _overview: Button
+var _enlarge: Button
+var _rail: ScrollContainer
+var _dates: HBoxContainer
 var _period_buttons: Array[Button] = []
-var _media := PanelContainer.new()
-var _media_close := Button.new()
-var _media_zoom := Button.new()
-var _media_scroll := ScrollContainer.new()
-var _media_image := TextureRect.new()
-var _media_heading := Label.new()
-var _media_caption := Label.new()
-var _media_credit := Label.new()
-var _media_text_scroll := ScrollContainer.new()
+var _media: PanelContainer
+var _media_close: Button
+var _media_zoom: Button
+var _media_scroll: ScrollContainer
+var _media_image: TextureRect
+var _media_heading: Label
+var _media_caption: Label
+var _media_credit: Label
+var _media_text_scroll: ScrollContainer
 var _media_scale: float = 1.0
 var _transition: Tween
 var _media_tween: Tween
@@ -46,16 +52,56 @@ var _scroll_dragging: bool = false
 
 
 func entry(id: StringName) -> ConferenceRoomConceptEntry:
-	for record in content.concepts:
+	for record: Resource in content.get("concepts"):
 		if record.get_meta(&"id", &"") == id:
 			return record
 	return null
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var layout := $Main/Margin/Layout
-	var header := $Main/Margin/Layout/Header
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(func() -> void:
+		if _open and not is_visible_in_tree():
+			close_interaction()
+	)
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+
+func _build_presentation() -> void:
+	_canvas = HistoryCanvas.new()
+	_workspace = Control.new()
+	_visual = VBoxContainer.new()
+	_comparison_labels = HBoxContainer.new()
+	_left_label = Label.new()
+	_right_label = Label.new()
+	_caption = Label.new()
+	_hint = Label.new()
+	_subtitle = Label.new()
+	_pending = Label.new()
+	_actions = VBoxContainer.new()
+	_overview = Button.new()
+	_enlarge = Button.new()
+	_rail = ScrollContainer.new()
+	_dates = HBoxContainer.new()
+	_media = PanelContainer.new()
+	_media_close = Button.new()
+	_media_zoom = Button.new()
+	_media_scroll = ScrollContainer.new()
+	_media_image = TextureRect.new()
+	_media_heading = Label.new()
+	_media_caption = Label.new()
+	_media_credit = Label.new()
+	_media_text_scroll = ScrollContainer.new()
+	_period_buttons.clear()
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -76,9 +122,9 @@ func _ready() -> void:
 	for button in [_sources_button, _speaker, _close, _source_close]:
 		_prepare_button(button)
 		button.size_flags_vertical = SIZE_SHRINK_BEGIN
-	%Columns.hide()
-	$Main/Margin/Layout/Controls.hide()
-	$Main/Margin/Layout/Sections.hide()
+	_presentation_root.find_child("Columns", true, false).hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Sections").hide()
 	_workspace.name = "HistoricalWorkspace"
 	_workspace.size_flags_vertical = SIZE_EXPAND_FILL
 	layout.add_child(_workspace)
@@ -93,7 +139,8 @@ func _ready() -> void:
 	_visual.add_child(_canvas)
 	_canvas.name = "HistoricalCanvas"
 	_canvas.size_flags_vertical = SIZE_EXPAND_FILL
-	_canvas.comparison_changed.connect(set_comparison_amount)
+	if not Engine.is_editor_hint():
+		_canvas.comparison_changed.connect(set_comparison_amount)
 	_visual.add_child(_hint)
 	_hint.text = "DRAG TO COMPARE"
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -112,8 +159,10 @@ func _ready() -> void:
 	for button in [_overview, _enlarge]:
 		_prepare_button(button)
 		_actions.add_child(button)
-	_overview.pressed.connect(select_history_period.bind(&"overview"))
-	_enlarge.pressed.connect(func() -> void: open_historical_media(selected_period))
+	if not Engine.is_editor_hint():
+		_overview.pressed.connect(select_history_period.bind(&"overview"))
+	if not Engine.is_editor_hint():
+		_enlarge.pressed.connect(func() -> void: open_historical_media(selected_period))
 	var line := ColorRect.new()
 	line.custom_minimum_size.y = 1
 	line.color = Color("897952")
@@ -139,34 +188,34 @@ func _ready() -> void:
 		button.custom_minimum_size = Vector2(188, 64)
 		# Let native touch gestures reach the surrounding ScrollContainer.
 		button.mouse_filter = MOUSE_FILTER_PASS
-		button.pressed.connect(select_history_period.bind(id))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(select_history_period.bind(id))
 		_dates.add_child(button)
 		_period_buttons.append(button)
 	_build_media()
 	for scroller in [_rail, _scroll, _source_scroll, _media_scroll, _media_text_scroll]:
-		scroller.gui_input.connect(_scroll_input.bind(scroller))
-	_scroll.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
-	_media_text_scroll.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
+		if not Engine.is_editor_hint():
+			scroller.gui_input.connect(_scroll_input.bind(scroller))
+	if not Engine.is_editor_hint():
+		_scroll.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
+	if not Engine.is_editor_hint():
+		_media_text_scroll.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
 	_workspace.resized.connect(_layout_workspace)
 	_visual.minimum_size_changed.connect(_layout_workspace.call_deferred)
 	_visual.resized.connect(_layout_workspace.call_deferred)
 	_media_scroll.resized.connect(_layout_media_image)
-	resized.connect(_resize_layout)
-	visibility_changed.connect(func() -> void:
-		if _open and not is_visible_in_tree():
-			close_interaction()
-	)
-	_resize_layout()
-	_open_standalone.call_deferred()
 
 
 func _prepare_button(button: Button) -> void:
 	button.custom_minimum_size = Vector2(56, 48)
 	button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
-	button.gui_input.connect(_button_input.bind(button))
+	if not Engine.is_editor_hint():
+		button.gui_input.connect(_button_input.bind(button))
 
 
 func _button_input(event: InputEvent, button: Button) -> void:
+	if Engine.is_editor_hint():
+		return
 	# Native BaseButton handles touch; explicit keyboard parity includes Enter.
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_SPACE]:
 		button.accept_event()
@@ -174,6 +223,8 @@ func _button_input(event: InputEvent, button: Button) -> void:
 
 
 func _scroll_input(event: InputEvent, scroller: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or ((scroller == _rail or scroller == _scroll) and _blocked()):
 		return
 	# Native touch drag also works on desktop/web hosts without touchscreen flags.
@@ -203,6 +254,8 @@ func _scroll_input(event: InputEvent, scroller: ScrollContainer) -> void:
 
 
 func _end_scroll_drag() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _scroll_dragging and is_instance_valid(_touch_scroll):
 		_touch_scroll.propagate_notification(NOTIFICATION_SCROLL_END)
 	_scroll_dragging = false
@@ -211,15 +264,21 @@ func _end_scroll_drag() -> void:
 
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or content == null:
 		return false
 	if _open:
@@ -244,6 +303,8 @@ func _blocked() -> bool:
 
 
 func select_history_period(period_id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or (period_id != &"overview" and not period_id in PERIODS):
 		return
 	if period_id == selected_period:
@@ -267,6 +328,8 @@ func select_history_period(period_id: StringName) -> void:
 
 
 func set_comparison_amount(value: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or selected_period != &"refurbishment_2008":
 		return
 	# Direct manipulation ends any period crossfade immediately.
@@ -302,6 +365,8 @@ func _render() -> void:
 
 
 func _finish_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	_transition = null
 	_canvas.previous_image = null
 	_canvas.transition_alpha = 1.0
@@ -309,14 +374,16 @@ func _finish_transition() -> void:
 
 
 func _cancel_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	_kill(_transition)
 	_finish_transition()
 
 
 func _build_media() -> void:
 	_media.name = "HistoricalSource"
-	_media.add_theme_stylebox_override("panel", $Main.get_theme_stylebox("panel"))
-	add_child(_media)
+	_media.add_theme_stylebox_override("panel", _presentation_root.get_node("Main").get_theme_stylebox("panel"))
+	_presentation_root.add_child(_media)
 	_media.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 6)
@@ -332,8 +399,10 @@ func _build_media() -> void:
 	for button in [_media_zoom, _media_close]:
 		_prepare_button(button)
 		header.add_child(button)
-	_media_close.pressed.connect(close_historical_media)
-	_media_zoom.pressed.connect(_toggle_media_zoom)
+	if not Engine.is_editor_hint():
+		_media_close.pressed.connect(close_historical_media)
+	if not Engine.is_editor_hint():
+		_media_zoom.pressed.connect(_toggle_media_zoom)
 	_media_scroll.size_flags_vertical = SIZE_EXPAND_FILL
 	box.add_child(_media_scroll)
 	_media_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -356,6 +425,8 @@ func _build_media() -> void:
 
 
 func open_historical_media(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or id != selected_period or not id in MEDIA_PERIODS:
 		return
 	_canvas.end_drag()
@@ -385,6 +456,8 @@ func open_historical_media(id: StringName) -> void:
 
 
 func _toggle_media_zoom() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not media_view_open:
 		return
 	_end_scroll_drag()
@@ -410,6 +483,8 @@ func _layout_media_image() -> void:
 
 
 func close_historical_media() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not media_view_open:
 		return
 	_kill(_media_tween)
@@ -419,6 +494,8 @@ func close_historical_media() -> void:
 
 
 func _finish_media_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_media_tween = null
 	_clear_media()
 	_sync_focus()
@@ -427,6 +504,8 @@ func _finish_media_close() -> void:
 
 
 func _clear_media() -> void:
+	if Engine.is_editor_hint():
+		return
 	_end_scroll_drag()
 	media_view_open = false
 	media_id = &"none"
@@ -441,6 +520,8 @@ func _clear_media() -> void:
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked():
 		return
 	_canvas.end_drag()
@@ -455,17 +536,23 @@ func open_sources() -> void:
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _blocked():
 		super.toggle_narration()
 
 
 func close_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _sources.visible:
 		_end_scroll_drag()
 	super.close_sources()
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	super._update_speaker()
 	_speaker.text = "STOP" if _audio.playing else "LISTEN"
 	_speaker.show()
@@ -502,6 +589,8 @@ func focus_order() -> Array[Control]:
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var previous := get_viewport().gui_get_focus_owner()
 	for control in _all_controls():
 		control.focus_mode = FOCUS_NONE
@@ -521,12 +610,16 @@ func _sync_focus() -> void:
 
 
 func _resize_layout() -> void:
+	if not is_instance_valid(_presentation_root):
+		return
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	var compact := size.x < 1000 or size.y < 570
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 14)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 6 if compact else 10)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 14)
+	_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 6 if compact else 10)
 	_title.add_theme_font_size_override("font_size", 18 if compact else 24)
 	_subtitle.add_theme_font_size_override("font_size", 14)
 	_heading.add_theme_font_size_override("font_size", 19 if compact else 23)
@@ -572,6 +665,8 @@ func _layout_workspace() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or not event.is_action_pressed(&"go_back"):
 		return
 	var viewport := get_viewport()
@@ -590,6 +685,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transition()
 	_cancel_fade()
 	_kill(_media_tween)
@@ -612,15 +709,21 @@ func reset_hotspot() -> void:
 
 
 func _reset_rail() -> void:
+	if Engine.is_editor_hint():
+		return
 	if selected_period == &"overview":
 		_rail.scroll_horizontal = 0
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open:
 		return
 	reset_hotspot()
@@ -628,11 +731,41 @@ func close_interaction() -> void:
 
 
 func _kill(tween: Tween) -> void:
+	if Engine.is_editor_hint():
+		return
 	if tween != null and tween.is_valid():
 		tween.kill()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_kill(_transition)
 	_kill(_media_tween)
 	super._exit_tree()
+
+
+func stop_narration() -> void:
+	if not Engine.is_editor_hint():
+		super.stop_narration()
+
+
+func select_concept(index: int) -> void:
+	if not Engine.is_editor_hint():
+		super.select_concept(index)
+
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	_title.text = content.get("title")
+	_subtitle.text = content.get("prompt")
+	selected_period = &"overview"
+	comparison_amount = 0.5
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

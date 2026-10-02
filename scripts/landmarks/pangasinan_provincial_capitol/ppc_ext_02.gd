@@ -1,4 +1,10 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
 ## Parallel architectural modes. Historical interpretation lives in the Resource.
 
 const ArchitectureCanvas = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_ext_02_canvas.gd")
@@ -15,25 +21,25 @@ var detail_view_open: bool = false
 var detail_id: StringName = &"none"
 var detail_origin_view: StringName = &"none"
 var _detail_return: Button
-var _canvas := ArchitectureCanvas.new()
-var _subtitle := Label.new()
-var _hint := Label.new()
-var _pending := Label.new()
-var _full := Button.new()
-var _bottom := Control.new()
-var _features := HBoxContainer.new()
-var _layers := HBoxContainer.new()
-var _details := VBoxContainer.new()
+var _canvas: ArchitectureCanvas
+var _subtitle: Label
+var _hint: Label
+var _pending: Label
+var _full: Button
+var _bottom: Control
+var _features: HBoxContainer
+var _layers: HBoxContainer
+var _details: VBoxContainer
 var _feature_buttons: Array[Button] = []
 var _layer_buttons: Array[Button] = []
 var _detail_buttons: Dictionary[StringName, Button] = {}
-var _detail := PanelContainer.new()
-var _detail_photo := TextureRect.new()
-var _detail_close := Button.new()
-var _detail_scroll := ScrollContainer.new()
-var _detail_heading := Label.new()
-var _detail_body := Label.new()
-var _detail_caption := Label.new()
+var _detail: PanelContainer
+var _detail_photo: TextureRect
+var _detail_close: Button
+var _detail_scroll: ScrollContainer
+var _detail_heading: Label
+var _detail_body: Label
+var _detail_caption: Label
 var _transition: Tween
 var _zoom_tween: Tween
 var _highlight_tween: Tween
@@ -41,16 +47,50 @@ var _detail_tween: Tween
 
 
 func entry(id: StringName) -> ConferenceRoomConceptEntry:
-	for record in content.concepts:
+	for record: Resource in content.get("concepts"):
 		if record.get_meta(&"id", &"") == id:
 			return record
 	return null
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var layout := $Main/Margin/Layout
-	var header := $Main/Margin/Layout/Header
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(func() -> void:
+		if _open and not is_visible_in_tree():
+			close_interaction()
+	)
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+
+func _build_presentation() -> void:
+	_canvas = ArchitectureCanvas.new()
+	_subtitle = Label.new()
+	_hint = Label.new()
+	_pending = Label.new()
+	_full = Button.new()
+	_bottom = Control.new()
+	_features = HBoxContainer.new()
+	_layers = HBoxContainer.new()
+	_details = VBoxContainer.new()
+	_detail = PanelContainer.new()
+	_detail_photo = TextureRect.new()
+	_detail_close = Button.new()
+	_detail_scroll = ScrollContainer.new()
+	_detail_heading = Label.new()
+	_detail_body = Label.new()
+	_detail_caption = Label.new()
+	_feature_buttons.clear()
+	_layer_buttons.clear()
+	_detail_buttons.clear()
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -70,14 +110,15 @@ func _ready() -> void:
 	for button in [_sources_button, _speaker, _close, _source_close]:
 		_prepare_button(button)
 		button.size_flags_vertical = SIZE_SHRINK_BEGIN
-	$Main/Margin/Layout/Controls.hide()
-	%Columns.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
+	_presentation_root.find_child("Columns", true, false).hide()
 	_canvas.name = "ArchitectureCanvas"
 	_canvas.texture_filter = TEXTURE_FILTER_LINEAR
 	_canvas.size_flags_vertical = SIZE_EXPAND_FILL
 	layout.add_child(_canvas)
 	layout.move_child(_canvas, 1)
-	_canvas.reveal_changed.connect(_reveal_changed)
+	if not Engine.is_editor_hint():
+		_canvas.reveal_changed.connect(_reveal_changed)
 	_canvas.add_child(_hint)
 	_hint.mouse_filter = MOUSE_FILTER_IGNORE
 	_hint.position = Vector2(12, 6)
@@ -88,9 +129,10 @@ func _ready() -> void:
 	_hint.add_theme_constant_override("shadow_offset_y", 1)
 	_full.text = "FULL FAÇADE"
 	_prepare_button(_full)
-	_full.pressed.connect(select_architecture_view.bind(&"overview"))
-	$Main/Margin/Layout/Sections.add_child(_full)
-	$Main/Margin/Layout/Sections.move_child(_full, 0)
+	if not Engine.is_editor_hint():
+		_full.pressed.connect(select_architecture_view.bind(&"overview"))
+	_presentation_root.get_node("Main/Margin/Layout/Sections").add_child(_full)
+	_presentation_root.get_node("Main/Margin/Layout/Sections").move_child(_full, 0)
 	for i in VIEWS.size():
 		_prepare_button(_concepts[i])
 		_concepts[i].text = ["BALANCE", "MONUMENTAL ENTRANCE", "Ventilation & Protection"][i]
@@ -112,39 +154,38 @@ func _ready() -> void:
 	for id in FEATURES:
 		var button := _make_button(entry(id).get_meta(&"label"), _features)
 		button.toggle_mode = true
-		button.pressed.connect(select_entrance_feature.bind(id))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(select_entrance_feature.bind(id))
 		_feature_buttons.append(button)
 	for id in LAYERS:
 		var button := _make_button(entry(id).get_meta(&"label"), _layers)
 		button.toggle_mode = true
-		button.pressed.connect(select_climate_layer.bind(id))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(select_climate_layer.bind(id))
 		_layer_buttons.append(button)
 	for id in DETAILS:
 		var button := _make_button(entry(id).get_meta(&"label"), _details)
 		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		button.pressed.connect(open_architectural_detail.bind(id))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(open_architectural_detail.bind(id))
 		_detail_buttons[id] = button
 	_pending.text = "Narration pending."
 	_pending.add_theme_font_size_override("font_size", 14)
 	titles.add_child(_pending)
 	_build_detail()
 	# Text wrapping can change the scrollable focus target after container layout.
-	_scroll.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
-	_detail_scroll.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
-	resized.connect(_resize_layout)
+	if not Engine.is_editor_hint():
+		_scroll.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
+	if not Engine.is_editor_hint():
+		_detail_scroll.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
 	_bottom.resized.connect(_layout_bottom)
-	visibility_changed.connect(func() -> void:
-		if _open and not is_visible_in_tree():
-			close_interaction()
-	)
-	_resize_layout()
-	_open_standalone.call_deferred()
 
 
 func _prepare_button(button: Button) -> void:
 	button.custom_minimum_size = Vector2(48, 48)
 	button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
-	button.gui_input.connect(_button_input.bind(button))
+	if not Engine.is_editor_hint():
+		button.gui_input.connect(_button_input.bind(button))
 
 
 func _make_button(label: String, parent: Node) -> Button:
@@ -157,6 +198,8 @@ func _make_button(label: String, parent: Node) -> Button:
 
 
 func _button_input(event: InputEvent, button: Button) -> void:
+	if Engine.is_editor_hint():
+		return
 	# BaseButton already handles touch. Do not also emit on its emulated mouse event.
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_SPACE]:
 		button.accept_event()
@@ -164,15 +207,21 @@ func _button_input(event: InputEvent, button: Button) -> void:
 
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or content == null:
 		return false
 	if _open:
@@ -198,11 +247,15 @@ func _blocked() -> bool:
 
 
 func select_concept(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if index >= 0 and index < VIEWS.size():
 		select_architecture_view(VIEWS[index])
 
 
 func select_architecture_view(view_id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or (view_id != &"overview" and not view_id in VIEWS):
 		return
 	architecture_view = view_id
@@ -222,6 +275,8 @@ func select_architecture_view(view_id: StringName) -> void:
 
 
 func select_entrance_feature(feature_id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or architecture_view != &"entrance" or not feature_id in FEATURES:
 		return
 	entrance_feature = feature_id
@@ -230,6 +285,8 @@ func select_entrance_feature(feature_id: StringName) -> void:
 
 
 func select_climate_layer(layer_id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or architecture_view != &"climate" or not layer_id in LAYERS:
 		return
 	climate_layer = layer_id
@@ -239,6 +296,8 @@ func select_climate_layer(layer_id: StringName) -> void:
 
 
 func _fade_highlight(seconds: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	_kill(_highlight_tween)
 	_canvas.highlight_alpha = 0.3
 	_highlight_tween = create_tween()
@@ -247,6 +306,8 @@ func _fade_highlight(seconds: float) -> void:
 
 
 func _reveal_changed(value: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _blocked() and architecture_view == &"balance":
 		balance_reveal = value
 
@@ -301,8 +362,8 @@ func _render() -> void:
 
 func _build_detail() -> void:
 	_detail.name = "ArchitecturalDetail"
-	_detail.add_theme_stylebox_override("panel", $Main.get_theme_stylebox("panel"))
-	add_child(_detail)
+	_detail.add_theme_stylebox_override("panel", _presentation_root.get_node("Main").get_theme_stylebox("panel"))
+	_presentation_root.add_child(_detail)
 	_detail.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 8)
@@ -316,7 +377,8 @@ func _build_detail() -> void:
 	_detail_close.text = "CLOSE DETAIL"
 	_prepare_button(_detail_close)
 	header.add_child(_detail_close)
-	_detail_close.pressed.connect(close_architectural_detail)
+	if not Engine.is_editor_hint():
+		_detail_close.pressed.connect(close_architectural_detail)
 	box.add_child(_detail_photo)
 	_detail_photo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_detail_photo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -336,6 +398,8 @@ func _build_detail() -> void:
 
 
 func open_architectural_detail(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or not id in relevant_details():
 		return
 	var record := entry(id)
@@ -360,6 +424,8 @@ func open_architectural_detail(id: StringName) -> void:
 
 
 func close_architectural_detail() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not detail_view_open:
 		return
 	# Keep the modal authoritative until its closing fade ends.
@@ -370,6 +436,8 @@ func close_architectural_detail() -> void:
 
 
 func _finish_detail_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_detail_tween = null
 	_clear_detail()
 	_sync_focus()
@@ -379,6 +447,8 @@ func _finish_detail_close() -> void:
 
 
 func _clear_detail() -> void:
+	if Engine.is_editor_hint():
+		return
 	detail_view_open = false
 	detail_id = &"none"
 	detail_origin_view = &"none"
@@ -389,6 +459,8 @@ func _clear_detail() -> void:
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked():
 		return
 	_canvas.cancel_drag()
@@ -402,11 +474,15 @@ func open_sources() -> void:
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _blocked():
 		super.toggle_narration()
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	super._update_speaker()
 	_speaker.text = "STOP" if _audio.playing else "LISTEN"
 
@@ -448,6 +524,8 @@ func focus_order() -> Array[Control]:
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var previous := get_viewport().gui_get_focus_owner()
 	for control in _all_controls():
 		control.focus_mode = FOCUS_NONE
@@ -467,12 +545,16 @@ func _sync_focus() -> void:
 
 
 func _resize_layout() -> void:
+	if not is_instance_valid(_presentation_root):
+		return
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	var compact := size.y < 570 or size.x < 1000
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 14)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 6 if compact else 10)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 14)
+	_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 6 if compact else 10)
 	_title.add_theme_font_size_override("font_size", 19 if compact else 25)
 	for control in _all_controls():
 		if control is Button:
@@ -507,6 +589,8 @@ func _layout_bottom() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or not event.is_action_pressed(&"go_back"):
 		return
 	var viewport := get_viewport()
@@ -525,6 +609,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	for tween in [_transition, _zoom_tween, _highlight_tween, _detail_tween]:
 		_kill(tween)
 	_transition = null
@@ -553,10 +639,14 @@ func reset_hotspot() -> void:
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open:
 		return
 	reset_hotspot()
@@ -564,11 +654,44 @@ func close_interaction() -> void:
 
 
 func _kill(tween: Tween) -> void:
+	if Engine.is_editor_hint():
+		return
 	if tween != null and tween.is_valid():
 		tween.kill()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	for tween in [_transition, _zoom_tween, _highlight_tween, _detail_tween]:
 		_kill(tween)
 	super._exit_tree()
+
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+
+func stop_narration() -> void:
+	if not Engine.is_editor_hint():
+		super.stop_narration()
+
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	_title.text = content.get("title")
+	_subtitle.text = content.get("prompt")
+	architecture_view = &"overview"
+	balance_reveal = 0.0
+	entrance_feature = &"none"
+	climate_layer = &"airflow"
+	_canvas.texture = content.get("illustration")
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

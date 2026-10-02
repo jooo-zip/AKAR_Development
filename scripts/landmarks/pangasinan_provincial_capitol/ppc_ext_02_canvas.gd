@@ -1,3 +1,4 @@
+@tool
 extends Control
 ## All annotation geometry shares the fitted photograph's transform.
 
@@ -106,12 +107,16 @@ func _draw() -> void:
 
 
 func set_reveal(value: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	reveal = clampf(value, 0.0, 1.0)
 	queue_redraw()
 	reveal_changed.emit(reveal)
 
 
 func _gui_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not enabled or mode != &"balance":
 		return
 	if event is InputEventKey and event.pressed and event.keycode in [KEY_LEFT, KEY_RIGHT]:

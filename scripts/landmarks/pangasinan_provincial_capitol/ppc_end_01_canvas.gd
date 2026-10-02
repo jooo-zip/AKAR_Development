@@ -1,3 +1,4 @@
+@tool
 extends Control
 ## Passive, aspect-fitted documentary compositions. No image interaction or viewer.
 var primary: Texture2D

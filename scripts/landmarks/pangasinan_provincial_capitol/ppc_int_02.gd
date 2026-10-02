@@ -1,4 +1,10 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
 ## Parallel civic exploration. All interpretation and media provenance live in the Resource.
 const CivicCanvas = preload("res://scripts/landmarks/pangasinan_provincial_capitol/ppc_int_02_canvas.gd")
 const VIEWS := [&"overview", &"lobby", &"executive", &"legislative", &"comparison"]
@@ -12,25 +18,25 @@ var legislative_topic: StringName = &"ordinances"
 var space_view_open: bool = false
 var space_media_id: StringName = &"none"
 var space_origin_view: StringName = &"none"
-var _canvas := CivicCanvas.new()
-var _workspace := Control.new()
-var _subtitle := Label.new()
-var _context := Label.new()
-var _topic_heading := Label.new()
-var _topic_body := Label.new()
-var _caption := Label.new()
-var _rail := ScrollContainer.new()
-var _controls := HBoxContainer.new()
+var _canvas: CivicCanvas
+var _workspace: Control
+var _subtitle: Label
+var _context: Label
+var _topic_heading: Label
+var _topic_body: Label
+var _caption: Label
+var _rail: ScrollContainer
+var _controls: HBoxContainer
 var _view_buttons: Array[Button] = []
 var _topic_buttons: Array[Button] = []
-var _view_space := Button.new()
-var _public_spaces := Button.new()
-var _media := PanelContainer.new()
-var _media_close := Button.new()
-var _media_image := TextureRect.new()
-var _media_caption := Label.new()
-var _media_credit := Label.new()
-var _media_text_scroll := ScrollContainer.new()
+var _view_space: Button
+var _public_spaces: Button
+var _media: PanelContainer
+var _media_close: Button
+var _media_image: TextureRect
+var _media_caption: Label
+var _media_credit: Label
+var _media_text_scroll: ScrollContainer
 var _transition: Tween
 var _media_tween: Tween
 var _branch_tween: Tween
@@ -43,15 +49,49 @@ var _scroll_dragging: bool = false
 
 
 func entry(id: StringName) -> ConferenceRoomConceptEntry:
-	for record in content.concepts:
+	for record: Resource in content.get("concepts"):
 		if record.get_meta(&"id", &"") == id:
 			return record
 	return null
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var header := $Main/Margin/Layout/Header
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(func() -> void:
+		if _open and not is_visible_in_tree():
+			close_interaction()
+	)
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+
+func _build_presentation() -> void:
+	_canvas = CivicCanvas.new()
+	_workspace = Control.new()
+	_subtitle = Label.new()
+	_context = Label.new()
+	_topic_heading = Label.new()
+	_topic_body = Label.new()
+	_caption = Label.new()
+	_rail = ScrollContainer.new()
+	_controls = HBoxContainer.new()
+	_view_space = Button.new()
+	_public_spaces = Button.new()
+	_media = PanelContainer.new()
+	_media_close = Button.new()
+	_media_image = TextureRect.new()
+	_media_caption = Label.new()
+	_media_credit = Label.new()
+	_media_text_scroll = ScrollContainer.new()
+	_view_buttons.clear()
+	_topic_buttons.clear()
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -68,13 +108,14 @@ func _ready() -> void:
 	for button in [_sources_button, _speaker, _close, _source_close]:
 		_prepare_button(button)
 		button.size_flags_vertical = SIZE_SHRINK_BEGIN
-	%Columns.hide()
-	$Main/Margin/Layout/Controls.hide()
-	$Main/Margin/Layout/Sections.hide()
+	_presentation_root.find_child("Columns", true, false).hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Sections").hide()
 	_workspace.size_flags_vertical = SIZE_EXPAND_FILL
-	$Main/Margin/Layout.add_child(_workspace)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_workspace)
 	_workspace.add_child(_canvas)
-	_canvas.branch_selected.connect(_branch_selected)
+	if not Engine.is_editor_hint():
+		_canvas.branch_selected.connect(_branch_selected)
 	for button in _canvas.branches + _canvas.compare_actions:
 		_prepare_button(button)
 	_information.reparent(_workspace)
@@ -96,41 +137,40 @@ func _ready() -> void:
 	_rail.custom_minimum_size.y = 68
 	_rail.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_rail.follow_focus = true
-	$Main/Margin/Layout.add_child(_rail)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_rail)
 	_controls.add_theme_constant_override("separation", 8)
 	_controls.size_flags_horizontal = SIZE_EXPAND_FILL
 	_rail.add_child(_controls)
 	for i in 4:
 		var button := Button.new()
 		button.text = ["PUBLIC LOBBY", "EXECUTIVE FUNCTION", "LEGISLATIVE FUNCTION", "COMPARE FUNCTIONS"][i]
-		button.pressed.connect(select_civic_view.bind(VIEWS[i + 1]))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(select_civic_view.bind(VIEWS[i + 1]))
 		_add_control(button)
 		_view_buttons.append(button)
 	for i in 3:
 		var button := Button.new()
 		button.toggle_mode = true
-		button.pressed.connect(_select_topic_index.bind(i))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(_select_topic_index.bind(i))
 		_add_control(button)
 		_topic_buttons.append(button)
 	_view_space.text = "VIEW SPACE"
-	_view_space.pressed.connect(func() -> void: open_space_view(_current_media()))
+	if not Engine.is_editor_hint():
+		_view_space.pressed.connect(func() -> void: open_space_view(_current_media()))
 	_public_spaces.text = "← PUBLIC SPACES"
-	_public_spaces.pressed.connect(select_civic_view.bind(&"overview"))
+	if not Engine.is_editor_hint():
+		_public_spaces.pressed.connect(select_civic_view.bind(&"overview"))
 	_add_control(_view_space)
 	_add_control(_public_spaces)
 	_build_media()
 	for scroller in [_rail, _scroll, _source_scroll, _media_text_scroll]:
-		scroller.gui_input.connect(_scroll_input.bind(scroller))
-		scroller.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
+		if not Engine.is_editor_hint():
+			scroller.gui_input.connect(_scroll_input.bind(scroller))
+		if not Engine.is_editor_hint():
+			scroller.get_v_scroll_bar().changed.connect(_sync_focus.call_deferred)
 	_workspace.resized.connect(_layout_workspace)
 	_information.minimum_size_changed.connect(_layout_workspace.call_deferred)
-	resized.connect(_resize_layout)
-	visibility_changed.connect(func() -> void:
-		if _open and not is_visible_in_tree():
-			close_interaction()
-	)
-	_resize_layout()
-	_open_standalone.call_deferred()
 
 
 func _add_control(button: Button) -> void:
@@ -142,15 +182,21 @@ func _add_control(button: Button) -> void:
 
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or content == null:
 		return false
 	if _open:
@@ -172,6 +218,8 @@ func _blocked() -> bool:
 
 
 func select_civic_view(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or id not in VIEWS:
 		return
 	_cancel_transitions()
@@ -191,13 +239,16 @@ func select_civic_view(id: StringName) -> void:
 		_canvas.photo.modulate.a = 0
 		_transition.tween_property(_canvas.photo, "modulate:a", 1.0, 0.2)
 		_transition.tween_property(_canvas.previous_photo, "modulate:a", 0.0, 0.2)
-	_transition.finished.connect(func() -> void:
-		_canvas.previous_photo.texture = null
-		_transition = null
-	)
+	if not Engine.is_editor_hint():
+		_transition.finished.connect(func() -> void:
+			_canvas.previous_photo.texture = null
+			_transition = null
+		)
 
 
 func _branch_selected(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked():
 		return
 	if civic_view != &"lobby":
@@ -213,6 +264,8 @@ func _branch_selected(id: StringName) -> void:
 
 
 func _select_topic_index(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if civic_view == &"executive":
 		select_executive_topic(EXECUTIVE[index])
 	elif civic_view == &"legislative":
@@ -220,6 +273,8 @@ func _select_topic_index(index: int) -> void:
 
 
 func select_executive_topic(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or civic_view != &"executive" or id not in EXECUTIVE:
 		return
 	executive_topic = id
@@ -227,6 +282,8 @@ func select_executive_topic(id: StringName) -> void:
 
 
 func select_legislative_topic(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or civic_view != &"legislative" or id not in LEGISLATIVE:
 		return
 	legislative_topic = id
@@ -234,6 +291,8 @@ func select_legislative_topic(id: StringName) -> void:
 
 
 func _animate_topic() -> void:
+	if Engine.is_editor_hint():
+		return
 	_kill(_topic_tween)
 	_render_topic()
 	_topic_body.modulate.a = 0.5
@@ -287,8 +346,8 @@ func _current_media() -> StringName:
 
 func _build_media() -> void:
 	_media.name = "DocumentaryView"
-	_media.add_theme_stylebox_override("panel", $Main.get_theme_stylebox("panel"))
-	add_child(_media)
+	_media.add_theme_stylebox_override("panel", _presentation_root.get_node("Main").get_theme_stylebox("panel"))
+	_presentation_root.add_child(_media)
 	_media.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 8)
@@ -302,7 +361,8 @@ func _build_media() -> void:
 	_media_close.text = "CLOSE"
 	_prepare_button(_media_close)
 	header.add_child(_media_close)
-	_media_close.pressed.connect(close_space_view)
+	if not Engine.is_editor_hint():
+		_media_close.pressed.connect(close_space_view)
 	_media_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_media_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_media_image.texture_filter = TEXTURE_FILTER_LINEAR
@@ -321,6 +381,8 @@ func _build_media() -> void:
 
 
 func open_space_view(id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked() or not MEDIA.has(id) or MEDIA[id] != civic_view:
 		return
 	_cancel_transitions()
@@ -344,6 +406,8 @@ func open_space_view(id: StringName) -> void:
 
 
 func close_space_view() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not space_view_open:
 		return
 	_kill(_media_tween)
@@ -353,6 +417,8 @@ func close_space_view() -> void:
 
 
 func _finish_media_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_media_tween = null
 	_clear_media()
 	_sync_focus()
@@ -361,6 +427,8 @@ func _finish_media_close() -> void:
 
 
 func _clear_media() -> void:
+	if Engine.is_editor_hint():
+		return
 	_end_scroll_drag()
 	space_view_open = false
 	space_media_id = &"none"
@@ -372,6 +440,8 @@ func _clear_media() -> void:
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _blocked():
 		return
 	_cancel_transitions()
@@ -386,16 +456,22 @@ func open_sources() -> void:
 
 
 func close_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	_end_scroll_drag()
 	super.close_sources()
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _blocked():
 		super.toggle_narration()
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	super._update_speaker()
 	_speaker.text = "STOP" if _audio.playing else "LISTEN"
 	_speaker.disabled = _audio.stream == null
@@ -435,6 +511,8 @@ func focus_order() -> Array[Control]:
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or not _open:
 		return
 	var previous := get_viewport().gui_get_focus_owner()
@@ -455,11 +533,15 @@ func _sync_focus() -> void:
 
 
 func _resize_layout() -> void:
+	if not is_instance_valid(_presentation_root):
+		return
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	var compact := size.x < 1000
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 14)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 14)
 	_title.add_theme_font_size_override("font_size", 19 if compact else 26)
 	_subtitle.add_theme_font_size_override("font_size", 14)
 	_heading.add_theme_font_size_override("font_size", 20 if compact else 25)
@@ -514,6 +596,8 @@ func _layout_workspace() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or not event.is_action_pressed(&"go_back"):
 		return
 	var viewport := get_viewport()
@@ -532,6 +616,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _cancel_transitions() -> void:
+	if Engine.is_editor_hint():
+		return
 	for tween in [_transition, _branch_tween, _topic_tween]:
 		_kill(tween)
 	_transition = null
@@ -548,6 +634,8 @@ func _cancel_transitions() -> void:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transitions()
 	_cancel_fade()
 	_kill(_media_tween)
@@ -569,10 +657,14 @@ func reset_hotspot() -> void:
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open:
 		return
 	reset_hotspot()
@@ -580,11 +672,15 @@ func close_interaction() -> void:
 
 
 func _kill(tween: Tween) -> void:
+	if Engine.is_editor_hint():
+		return
 	if tween != null and tween.is_valid():
 		tween.kill()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transitions()
 	_kill(_media_tween)
 	super._exit_tree()
@@ -593,10 +689,13 @@ func _exit_tree() -> void:
 func _prepare_button(button: Button) -> void:
 	button.custom_minimum_size = Vector2(56, 48)
 	button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
-	button.gui_input.connect(_button_input.bind(button))
+	if not Engine.is_editor_hint():
+		button.gui_input.connect(_button_input.bind(button))
 
 
 func _button_input(event: InputEvent, button: Button) -> void:
+	if Engine.is_editor_hint():
+		return
 	# Native BaseButton handles touch; explicit keyboard parity includes Enter.
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_SPACE]:
 		button.accept_event()
@@ -604,6 +703,8 @@ func _button_input(event: InputEvent, button: Button) -> void:
 
 
 func _scroll_input(event: InputEvent, scroller: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or ((scroller == _rail or scroller == _scroll) and _blocked()):
 		return
 	# Native touch drag also works on desktop/web hosts without touchscreen flags.
@@ -633,8 +734,37 @@ func _scroll_input(event: InputEvent, scroller: ScrollContainer) -> void:
 
 
 func _end_scroll_drag() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _scroll_dragging and is_instance_valid(_touch_scroll):
 		_touch_scroll.propagate_notification(NOTIFICATION_SCROLL_END)
 	_scroll_dragging = false
 	_scroll_touch_index = -1
 	_touch_scroll = null
+
+
+func stop_narration() -> void:
+	if not Engine.is_editor_hint():
+		super.stop_narration()
+
+
+func select_concept(index: int) -> void:
+	if not Engine.is_editor_hint():
+		super.select_concept(index)
+
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	_title.text = content.get("title")
+	_subtitle.text = content.get("prompt")
+	civic_view = &"overview"
+	executive_topic = &"executive_role"
+	legislative_topic = &"ordinances"
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()
