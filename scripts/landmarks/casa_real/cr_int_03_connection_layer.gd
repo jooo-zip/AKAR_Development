@@ -1,3 +1,4 @@
+@tool
 extends Control
 ## Geometry is supplied in local coordinates after layout; no historical state here.
 var paths: Array[PackedVector2Array] = []

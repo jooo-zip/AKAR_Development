@@ -1,4 +1,11 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/casa_real/cr_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
+
 ## Three historical chapters. The inherited legacy _selected field is unused.
 enum RoleState { OVERVIEW, GOVERNMENT_CENTER, PUBLIC_SERVICE, HERITAGE_MUSEUM }
 const RoleEntry = preload("res://scripts/landmarks/casa_real/cr_ext_03_role.gd")
@@ -9,28 +16,55 @@ var current_photo_index: int = 0
 var active_role_transition: Tween
 var active_photo_transition: Tween
 var _reveal: Tween
-var _subtitle := Label.new()
-var _period := Label.new()
-var _tagline := Label.new()
-var _caption := Label.new()
-var _hint := Label.new()
-var _counter := Label.new()
-var _read_hint := Label.new()
-var _overview := Button.new()
-var _viewer := VBoxContainer.new()
-var _photo_frame := Button.new()
-var _photo_visual := VBoxContainer.new()
-var _photo_details := VBoxContainer.new()
-var _interpretation := VBoxContainer.new()
-var _milestones := HBoxContainer.new()
-var _ribbon := HBoxContainer.new()
-var _titles := VBoxContainer.new()
+var _subtitle: Label
+var _period: Label
+var _tagline: Label
+var _caption: Label
+var _hint: Label
+var _counter: Label
+var _read_hint: Label
+var _overview: Button
+var _viewer: VBoxContainer
+var _photo_frame: Button
+var _photo_visual: VBoxContainer
+var _photo_details: VBoxContainer
+var _interpretation: VBoxContainer
+var _milestones: HBoxContainer
+var _ribbon: HBoxContainer
+var _titles: VBoxContainer
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var header := $Main/Margin/Layout/Header
-	var layout := $Main/Margin/Layout
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(_visibility_changed)
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+func _build_presentation() -> void:
+	_subtitle = Label.new()
+	_period = Label.new()
+	_tagline = Label.new()
+	_caption = Label.new()
+	_hint = Label.new()
+	_counter = Label.new()
+	_read_hint = Label.new()
+	_overview = Button.new()
+	_viewer = VBoxContainer.new()
+	_photo_frame = Button.new()
+	_photo_visual = VBoxContainer.new()
+	_photo_details = VBoxContainer.new()
+	_interpretation = VBoxContainer.new()
+	_milestones = HBoxContainer.new()
+	_ribbon = HBoxContainer.new()
+	_titles = VBoxContainer.new()
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
 	header.add_child(_titles)
 	header.move_child(_titles, 0)
 	_titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -46,9 +80,9 @@ func _ready() -> void:
 	_close.text = "CLOSE"
 	_speaker.expand_icon = true
 	_speaker.add_theme_constant_override("icon_max_width", 24)
-	$Main/Margin/Layout/Controls.hide()
-	$Main/Margin/Layout/Sections.hide()
-	$Main/Margin/Layout/Columns/Information/Meta.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Sections").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Columns/Information/Meta").hide()
 	_takeaway.hide()
 	# Keep only the interpretation scrollable; the image and controls stay visible.
 	var old_text := _scroll.get_child(0)
@@ -60,8 +94,10 @@ func _ready() -> void:
 	_interpretation.add_child(_tagline)
 	_body.reparent(_interpretation)
 	old_text.queue_free()
-	_scroll.gui_input.connect(_reading_input.bind(_scroll))
-	_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+	if not Engine.is_editor_hint():
+		_scroll.gui_input.connect(_reading_input.bind(_scroll))
+	if not Engine.is_editor_hint():
+		_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
 	_scroll.add_theme_stylebox_override("focus", _close.get_theme_stylebox("focus"))
 	_scroll.get_v_scroll_bar().changed.connect(_update_read_hint)
 	_information.add_child(_read_hint)
@@ -70,18 +106,21 @@ func _ready() -> void:
 	_overview.flat = true
 	_overview.custom_minimum_size = Vector2(120, 56)
 	_overview.add_theme_font_size_override("font_size", 16)
-	_overview.pressed.connect(select_role.bind(RoleState.OVERVIEW))
+	if not Engine.is_editor_hint():
+		_overview.pressed.connect(select_role.bind(RoleState.OVERVIEW))
 	_viewer.name = "DocumentaryViewer"
 	_viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_viewer.size_flags_stretch_ratio = 0.64
-	%Columns.add_child(_viewer)
-	%Columns.move_child(_viewer, 0)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_child(_viewer)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").move_child(_viewer, 0)
 	_information.size_flags_stretch_ratio = 0.36
 	_viewer.add_child(_photo_frame)
 	_photo_frame.name = "PhotoFrame"
 	_photo_frame.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_photo_frame.pressed.connect(show_next_photo)
-	_photo_frame.gui_input.connect(_photo_input)
+	if not Engine.is_editor_hint():
+		_photo_frame.pressed.connect(show_next_photo)
+	if not Engine.is_editor_hint():
+		_photo_frame.gui_input.connect(_photo_input)
 	_photo_frame.add_child(_photo_visual)
 	_photo_visual.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_photo_visual.offset_left = 8
@@ -109,7 +148,8 @@ func _ready() -> void:
 	layout.add_child(_ribbon)
 	for i in _concepts.size():
 		_concepts[i].reparent(_ribbon)
-		_concepts[i].gui_input.connect(_selector_input.bind(i))
+		if not Engine.is_editor_hint():
+			_concepts[i].gui_input.connect(_selector_input.bind(i))
 	for label in [_title, _subtitle, _heading, _tagline, _caption]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for label in [_period, _tagline, _counter]:
@@ -118,22 +158,23 @@ func _ready() -> void:
 		label.add_theme_color_override("font_color", Color("c2bfae"))
 	_source_close.custom_minimum_size.y = 56
 	_source_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	resized.connect(_resize_layout)
-	visibility_changed.connect(_visibility_changed)
-	_resize_layout()
-	_open_standalone.call_deferred()
-
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is RoleContent or content.concepts.size() != 3:
 		return false
 	for entry in [content.overview] + content.concepts:
@@ -159,6 +200,8 @@ func open_interaction() -> bool:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_animations()
 	_sources.hide()
 	_source_scroll.scroll_vertical = 0
@@ -171,6 +214,8 @@ func reset_hotspot() -> void:
 
 
 func select_concept(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if index >= 0 and index < 3:
 		select_role((index + 1) as RoleState)
 
@@ -180,6 +225,8 @@ func get_selected_concept() -> int:
 
 
 func select_role(new_role: RoleState) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or new_role < 0 or new_role > RoleState.HERITAGE_MUSEUM:
 		return
 	_cancel_transitions()
@@ -231,16 +278,19 @@ func _render_milestones() -> void:
 		_milestones.remove_child(child)
 		child.queue_free()
 	var entry := _entry()
-	_milestones.visible = not entry.milestone_dates.is_empty()
-	for i in entry.milestone_dates.size():
+	# Read packed arrays through Resource properties; safe for editor placeholders too.
+	var dates: PackedStringArray = entry.get("milestone_dates")
+	var labels: PackedStringArray = entry.get("milestone_labels")
+	_milestones.visible = not dates.is_empty()
+	for i in dates.size():
 		var label := Label.new()
 		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		label.text = entry.milestone_dates[i]
+		label.text = dates[i]
 		if size.x >= 1100:
-			label.text += "\n" + entry.milestone_labels[i]
-		label.accessibility_name = entry.milestone_dates[i] + ": " + entry.milestone_labels[i]
+			label.text += "\n" + labels[i]
+		label.accessibility_name = dates[i] + ": " + labels[i]
 		label.add_theme_font_size_override("font_size", 16)
 		label.add_theme_color_override("font_color", Color("d8c58b"))
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -248,6 +298,8 @@ func _render_milestones() -> void:
 
 
 func show_photo(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or _entry().photos.size() <= 1:
 		return
 	# A photo tap can arrive during a role fade; settle that role before cycling.
@@ -266,10 +318,14 @@ func show_photo(index: int) -> void:
 
 
 func show_next_photo() -> void:
+	if Engine.is_editor_hint():
+		return
 	show_photo(current_photo_index + 1)
 
 
 func show_previous_photo() -> void:
+	if Engine.is_editor_hint():
+		return
 	show_photo(current_photo_index - 1)
 
 
@@ -289,6 +345,8 @@ func _render_photo() -> void:
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible:
 		return
 	var role_pending := active_role_transition != null
@@ -308,6 +366,8 @@ func open_sources() -> void:
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var previous := get_viewport().gui_get_focus_owner()
 	var main: Array[Control] = []
 	main.append_array(_concepts)
@@ -328,6 +388,8 @@ func _sync_focus() -> void:
 
 
 func _selector_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or not event is InputEventKey or not event.pressed:
 		return
 	if event.keycode in [KEY_LEFT, KEY_RIGHT]:
@@ -340,6 +402,8 @@ func _selector_input(event: InputEvent, index: int) -> void:
 
 
 func _photo_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or not event is InputEventKey or not event.pressed:
 		return
 	if event.keycode in [KEY_LEFT, KEY_RIGHT, KEY_ENTER, KEY_SPACE]:
@@ -349,6 +413,8 @@ func _photo_input(event: InputEvent) -> void:
 
 
 func _reading_input(event: InputEvent, scroller: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	# Handle native touch drags independently of desktop mouse emulation.
 	# Accepting the event prevents the container from applying the motion twice.
 	if event is InputEventScreenDrag:
@@ -369,6 +435,8 @@ func _update_read_hint() -> void:
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or _audio.stream == null:
 		return
 	if _audio.stream_paused:
@@ -382,6 +450,8 @@ func toggle_narration() -> void:
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	super._update_speaker()
 	_speaker.text = "RESUME" if _audio.stream_paused else ("PAUSE" if _audio.playing else "LISTEN")
 	_speaker.set_pressed_no_signal(_audio.playing and not _audio.stream_paused)
@@ -390,29 +460,33 @@ func _update_speaker() -> void:
 
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 
 func _resize_layout() -> void:
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	var compact := size.x < 1100
 	var inset := 0.02 if compact else 0.05
-	var main: PanelContainer = $Main
+	var main: PanelContainer = _presentation_root.get_node("Main")
 	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
 		main.set_anchor(side, inset if side in [SIDE_LEFT, SIDE_TOP] else 1.0 - inset, true)
 		main.set_offset(side, 0.0)
-	var layout := $Main/Margin/Layout
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
 	var subtitle_parent: Node = layout if compact else _titles
 	if _subtitle.get_parent() != subtitle_parent:
 		_subtitle.reparent(subtitle_parent)
 		if compact:
 			layout.move_child(_subtitle, 1)
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 16)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 16)
 	layout.add_theme_constant_override("separation", 8 if compact else 12)
-	%Columns.add_theme_constant_override("separation", 16 if compact else 24)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_theme_constant_override("separation", 16 if compact else 24)
 	_interpretation.add_theme_constant_override("separation", 10 if compact else 14)
 	_ribbon.add_theme_constant_override("separation", 8)
 	_milestones.add_theme_constant_override("separation", 10)
@@ -435,6 +509,8 @@ func _resize_layout() -> void:
 
 
 func _cancel_transitions() -> void:
+	if Engine.is_editor_hint():
+		return
 	for tween in [active_role_transition, active_photo_transition]:
 		if tween != null and tween.is_valid():
 			tween.kill()
@@ -445,6 +521,8 @@ func _cancel_transitions() -> void:
 
 
 func _cancel_animations() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transitions()
 	_cancel_fade()
 	if _reveal != null and _reveal.is_valid():
@@ -458,20 +536,49 @@ func _cancel_animations() -> void:
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_animations()
 	# Shared lifecycle stops audio, hides Sources, restores focus, then emits closed.
 	super.close_interaction()
 
 
 func _visibility_changed() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and not is_visible_in_tree():
 		close_interaction()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_animations()
 	super._exit_tree()
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint():
+		super._unhandled_input(event)
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	current_role = RoleState.OVERVIEW
+	current_photo_index = 0
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

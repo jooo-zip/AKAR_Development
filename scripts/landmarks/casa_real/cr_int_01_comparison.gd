@@ -1,3 +1,4 @@
+@tool
 extends Control
 ## Visibility comparison only: deliberately no completion percentage.
 signal value_changed(value: float)
@@ -29,6 +30,7 @@ func _at(position_x: float) -> void:
 	_choose((position_x - 28.0) / maxf(size.x - 56.0, 1.0))
 
 func _gui_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
 	if event is InputEventScreenTouch:
 		if event.pressed and _touch_index == -1:
 			_touch_index = event.index

@@ -1,4 +1,11 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/casa_real/cr_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
+
 ## Transformation stages share only the established Casa Real shell/lifecycle.
 ## The inherited legacy _selected field is unused.
 enum StageState { OVERVIEW, DAMAGE, RESTORATION, MUSEUM_REBIRTH }
@@ -14,35 +21,69 @@ var storm_active: bool = false
 var active_stage_transition: Tween
 var active_storm_tween: Tween
 var _reveal: Tween
-var _subtitle := Label.new()
-var _period := Label.new()
-var _prompt := Label.new()
-var _identity := Label.new()
-var _caption := Label.new()
-var _hint := Label.new()
-var _read_hint := Label.new()
-var _overview := Button.new()
-var _viewer := VBoxContainer.new()
-var _visual := Button.new()
-var _after := TextureRect.new()
-var _storm := StormVisual.new()
-var _storm_audio := AudioStreamPlayer.new()
-var _comparison := ComparisonControl.new()
-var _comparison_row := HBoxContainer.new()
-var _comparison_labels := HBoxContainer.new()
-var _footer := HBoxContainer.new()
-var _before_label := Label.new()
-var _after_label := Label.new()
-var _details := VBoxContainer.new()
-var _interpretation := VBoxContainer.new()
-var _ribbon := HBoxContainer.new()
-var _titles := VBoxContainer.new()
+var _subtitle: Label
+var _period: Label
+var _prompt: Label
+var _identity: Label
+var _caption: Label
+var _hint: Label
+var _read_hint: Label
+var _overview: Button
+var _viewer: VBoxContainer
+var _visual: Button
+var _after: TextureRect
+var _storm: StormVisual
+var _storm_audio: AudioStreamPlayer
+var _comparison: ComparisonControl
+var _comparison_row: HBoxContainer
+var _comparison_labels: HBoxContainer
+var _footer: HBoxContainer
+var _before_label: Label
+var _after_label: Label
+var _details: VBoxContainer
+var _interpretation: VBoxContainer
+var _ribbon: HBoxContainer
+var _titles: VBoxContainer
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var header := $Main/Margin/Layout/Header
-	var layout := $Main/Margin/Layout
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(_visibility_changed)
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+func _build_presentation() -> void:
+	_subtitle = Label.new()
+	_period = Label.new()
+	_prompt = Label.new()
+	_identity = Label.new()
+	_caption = Label.new()
+	_hint = Label.new()
+	_read_hint = Label.new()
+	_overview = Button.new()
+	_viewer = VBoxContainer.new()
+	_visual = Button.new()
+	_after = TextureRect.new()
+	_storm = StormVisual.new()
+	_storm_audio = AudioStreamPlayer.new()
+	_comparison = ComparisonControl.new()
+	_comparison_row = HBoxContainer.new()
+	_comparison_labels = HBoxContainer.new()
+	_footer = HBoxContainer.new()
+	_before_label = Label.new()
+	_after_label = Label.new()
+	_details = VBoxContainer.new()
+	_interpretation = VBoxContainer.new()
+	_ribbon = HBoxContainer.new()
+	_titles = VBoxContainer.new()
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
 	header.add_child(_titles)
 	header.move_child(_titles, 0)
 	_titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -58,9 +99,9 @@ func _ready() -> void:
 	_close.text = "CLOSE"
 	_speaker.expand_icon = true
 	_speaker.add_theme_constant_override("icon_max_width", 24)
-	$Main/Margin/Layout/Controls.hide()
-	$Main/Margin/Layout/Sections.hide()
-	$Main/Margin/Layout/Columns/Information/Meta.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Sections").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Columns/Information/Meta").hide()
 	_takeaway.hide()
 	var old_text := _scroll.get_child(0)
 	_scroll.remove_child(old_text)
@@ -72,8 +113,10 @@ func _ready() -> void:
 	_body.reparent(_interpretation)
 	_interpretation.add_child(_identity)
 	old_text.queue_free()
-	_scroll.gui_input.connect(_reading_input.bind(_scroll))
-	_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+	if not Engine.is_editor_hint():
+		_scroll.gui_input.connect(_reading_input.bind(_scroll))
+	if not Engine.is_editor_hint():
+		_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
 	_scroll.add_theme_stylebox_override("focus", _close.get_theme_stylebox("focus"))
 	_scroll.get_v_scroll_bar().changed.connect(_update_read_hint)
 	_information.add_child(_read_hint)
@@ -82,14 +125,16 @@ func _ready() -> void:
 	_viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_viewer.size_flags_stretch_ratio = 0.65
 	_information.size_flags_stretch_ratio = 0.35
-	%Columns.add_child(_viewer)
-	%Columns.move_child(_viewer, 0)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_child(_viewer)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").move_child(_viewer, 0)
 	_viewer.add_child(_visual)
 	_visual.name = "ActiveVisual"
 	_visual.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_visual.clip_contents = true
-	_visual.pressed.connect(_activate_visual)
-	_visual.gui_input.connect(_visual_input)
+	if not Engine.is_editor_hint():
+		_visual.pressed.connect(_activate_visual)
+	if not Engine.is_editor_hint():
+		_visual.gui_input.connect(_visual_input)
 	_image.reparent(_visual)
 	_visual.add_child(_after)
 	_visual.add_child(_storm)
@@ -112,7 +157,8 @@ func _ready() -> void:
 	_viewer.add_child(_comparison_row)
 	_comparison_row.add_child(_comparison)
 	_comparison.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_comparison.value_changed.connect(set_comparison_position)
+	if not Engine.is_editor_hint():
+		_comparison.value_changed.connect(set_comparison_position)
 	_viewer.add_child(_footer)
 	_footer.add_child(_details)
 	_details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -123,11 +169,13 @@ func _ready() -> void:
 	_overview.flat = true
 	_overview.custom_minimum_size = Vector2(112, 56)
 	_overview.add_theme_font_size_override("font_size", 16)
-	_overview.pressed.connect(select_stage.bind(StageState.OVERVIEW))
+	if not Engine.is_editor_hint():
+		_overview.pressed.connect(select_stage.bind(StageState.OVERVIEW))
 	layout.add_child(_ribbon)
 	for i in _concepts.size():
 		_concepts[i].reparent(_ribbon)
-		_concepts[i].gui_input.connect(_selector_input.bind(i))
+		if not Engine.is_editor_hint():
+			_concepts[i].gui_input.connect(_selector_input.bind(i))
 	for label in [_title, _subtitle, _heading, _prompt, _identity, _caption, _hint]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for label in [_period, _prompt, _identity, _before_label, _after_label]:
@@ -136,16 +184,13 @@ func _ready() -> void:
 		label.add_theme_color_override("font_color", Color("c2bfae"))
 	_source_close.custom_minimum_size.y = 56
 	_source_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_child(_storm_audio)
+	_presentation_root.add_child(_storm_audio)
 	_storm_audio.name = "StormAmbience"
 	_storm_audio.volume_db = -18.0
-	resized.connect(_resize_layout)
-	visibility_changed.connect(_visibility_changed)
-	_resize_layout()
-	_open_standalone.call_deferred()
-
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is TransformationContent or content.concepts.size() != 3:
 		return false
 	for entry in [content.overview] + content.concepts:
@@ -175,6 +220,8 @@ func open_interaction() -> bool:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_animations()
 	_sources.hide()
 	_source_scroll.scroll_vertical = 0
@@ -189,6 +236,8 @@ func reset_hotspot() -> void:
 
 
 func select_concept(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if index >= 0 and index < 3:
 		select_stage((index + 1) as StageState)
 
@@ -202,6 +251,8 @@ func _entry() -> StageEntry:
 
 
 func select_stage(new_stage: StageState) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or new_stage < 0 or new_stage > StageState.MUSEUM_REBIRTH:
 		return
 	_cancel_stage_transition()
@@ -308,6 +359,8 @@ func _apply_visual() -> void:
 
 
 func _start_storm() -> void:
+	if Engine.is_editor_hint():
+		return
 	storm_active = true
 	_storm.start()
 	_body.hide()
@@ -329,6 +382,8 @@ func _start_storm() -> void:
 
 
 func _cancel_storm() -> void:
+	if Engine.is_editor_hint():
+		return
 	if active_storm_tween != null and active_storm_tween.is_valid():
 		active_storm_tween.kill()
 	active_storm_tween = null
@@ -339,6 +394,8 @@ func _cancel_storm() -> void:
 
 
 func _finish_storm() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_storm()
 	if _open and current_stage == StageState.DAMAGE:
 		_body.show()
@@ -346,6 +403,8 @@ func _finish_storm() -> void:
 
 
 func _activate_visual() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible:
 		return
 	if storm_active:
@@ -364,6 +423,8 @@ func _activate_visual() -> void:
 
 
 func set_comparison_position(value: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or current_stage != StageState.RESTORATION:
 		return
 	if active_stage_transition != null:
@@ -376,6 +437,8 @@ func set_comparison_position(value: float) -> void:
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible:
 		return
 	_cancel_stage_transition()
@@ -392,6 +455,8 @@ func open_sources() -> void:
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var previous := get_viewport().gui_get_focus_owner()
 	var main: Array[Control] = []
 	main.append_array(_concepts)
@@ -415,6 +480,8 @@ func _sync_focus() -> void:
 
 
 func _visual_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if event is InputEventKey and event.pressed and event.keycode in [KEY_ENTER, KEY_SPACE]:
 		get_viewport().set_input_as_handled()
 		if not event.echo:
@@ -422,6 +489,8 @@ func _visual_input(event: InputEvent) -> void:
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or _audio.stream == null:
 		return
 	if _audio.stream_paused:
@@ -437,24 +506,26 @@ func toggle_narration() -> void:
 
 
 func _resize_layout() -> void:
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	var compact := size.x < 1100
 	var inset := 0.02 if compact else 0.05
-	var main: PanelContainer = $Main
+	var main: PanelContainer = _presentation_root.get_node("Main")
 	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
 		main.set_anchor(side, inset if side in [SIDE_LEFT, SIDE_TOP] else 1.0 - inset, true)
 		main.set_offset(side, 0.0)
-	var layout := $Main/Margin/Layout
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
 	var subtitle_parent: Node = layout if compact else _titles
 	if _subtitle.get_parent() != subtitle_parent:
 		_subtitle.reparent(subtitle_parent)
 		if compact:
 			layout.move_child(_subtitle, 1)
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 16)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 16)
 	layout.add_theme_constant_override("separation", 8 if compact else 12)
-	%Columns.add_theme_constant_override("separation", 16 if compact else 24)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_theme_constant_override("separation", 16 if compact else 24)
 	_interpretation.add_theme_constant_override("separation", 10 if compact else 14)
 	_ribbon.add_theme_constant_override("separation", 8)
 	_title.add_theme_font_size_override("font_size", 20 if compact else 26)
@@ -475,6 +546,8 @@ func _resize_layout() -> void:
 
 
 func _cancel_stage_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	if active_stage_transition != null and active_stage_transition.is_valid():
 		active_stage_transition.kill()
 	active_stage_transition = null
@@ -483,6 +556,8 @@ func _cancel_stage_transition() -> void:
 
 
 func _cancel_animations() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_stage_transition()
 	_cancel_storm()
 	_comparison.end_drag()
@@ -500,15 +575,21 @@ func _cancel_animations() -> void:
 
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func _selector_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or not event is InputEventKey or not event.pressed:
 		return
 	if event.keycode in [KEY_LEFT, KEY_RIGHT]:
@@ -521,6 +602,8 @@ func _selector_input(event: InputEvent, index: int) -> void:
 
 
 func _reading_input(event: InputEvent, scroller: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	# Handle native touch drags independently of desktop mouse emulation.
 	# Accepting the event prevents the container from applying the motion twice.
 	if event is InputEventScreenDrag:
@@ -541,6 +624,8 @@ func _update_read_hint() -> void:
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	super._update_speaker()
 	_speaker.text = "RESUME" if _audio.stream_paused else ("PAUSE" if _audio.playing else "LISTEN")
 	_speaker.set_pressed_no_signal(_audio.playing and not _audio.stream_paused)
@@ -549,25 +634,59 @@ func _update_speaker() -> void:
 
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_animations()
 	# Shared lifecycle stops audio, hides Sources, restores focus, then emits closed.
 	super.close_interaction()
 
 
 func _visibility_changed() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and not is_visible_in_tree():
 		close_interaction()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_animations()
 	super._exit_tree()
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint():
+		super._unhandled_input(event)
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	current_stage = StageState.OVERVIEW
+	comparison_position = 0.5
+	museum_photo_index = 0
+	storm_active = false
+	_storm.hide()
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

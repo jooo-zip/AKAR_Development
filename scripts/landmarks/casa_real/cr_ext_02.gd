@@ -1,4 +1,11 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/casa_real/cr_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
+
 ## Standalone architectural detail viewer: overview plus three approved features.
 ## The inherited legacy _selected field is unused; current_state is authoritative.
 
@@ -7,21 +14,39 @@ const DetailEntry = preload("res://scripts/landmarks/casa_real/cr_ext_02_detail.
 const ArchitectureContent = preload("res://scripts/landmarks/casa_real/cr_ext_02_content.gd")
 
 var current_state: ArchitectureState = ArchitectureState.OVERVIEW
-var _subtitle := Label.new()
-var _key := Label.new()
-var _selectors := BoxContainer.new()
-var _interpretation := VBoxContainer.new()
-var _viewer := VBoxContainer.new()
-var _caption := Label.new()
-var _full_view := Button.new()
+var _subtitle: Label
+var _key: Label
+var _selectors: BoxContainer
+var _interpretation: VBoxContainer
+var _viewer: VBoxContainer
+var _caption: Label
+var _full_view: Button
 var _titles: VBoxContainer
 var _transition: Tween
 var _reveal: Tween
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var header := $Main/Margin/Layout/Header
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(_visibility_changed)
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+func _build_presentation() -> void:
+	_subtitle = Label.new()
+	_key = Label.new()
+	_selectors = BoxContainer.new()
+	_interpretation = VBoxContainer.new()
+	_viewer = VBoxContainer.new()
+	_caption = Label.new()
+	_full_view = Button.new()
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	_titles = titles
 	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -42,9 +67,9 @@ func _ready() -> void:
 	_close.text = "CLOSE"
 	_speaker.expand_icon = true
 	_speaker.add_theme_constant_override("icon_max_width", 24)
-	$Main/Margin/Layout/Controls.hide()
-	$Main/Margin/Layout/Sections.hide()
-	$Main/Margin/Layout/Columns/Information/Meta.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Sections").hide()
+	_presentation_root.get_node("Main/Margin/Layout/Columns/Information/Meta").hide()
 	_scroll.hide()
 	_selectors.name = "FeatureSelectors"
 	_selectors.vertical = true
@@ -54,7 +79,8 @@ func _ready() -> void:
 		var button := _concepts[i]
 		button.reparent(_selectors)
 		button.custom_minimum_size = Vector2(48, 60)
-		button.gui_input.connect(_selector_input.bind(i))
+		if not Engine.is_editor_hint():
+			button.gui_input.connect(_selector_input.bind(i))
 	_interpretation.name = "Interpretation"
 	_interpretation.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_information.add_child(_interpretation)
@@ -64,12 +90,12 @@ func _ready() -> void:
 	_heading.reparent(_interpretation)
 	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_body.reparent(_interpretation)
-	_takeaway.reparent($Main/Margin/Layout)
+	_takeaway.reparent(_presentation_root.get_node("Main/Margin/Layout"))
 	_viewer.name = "DocumentaryViewer"
 	_viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_viewer.size_flags_stretch_ratio = 0.59
-	%Columns.add_child(_viewer)
-	%Columns.move_child(_viewer, 0)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_child(_viewer)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").move_child(_viewer, 0)
 	_image.reparent(_viewer)
 	_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_viewer.add_child(_caption)
@@ -83,29 +109,31 @@ func _ready() -> void:
 	_full_view.text = "FULL VIEW"
 	_full_view.custom_minimum_size = Vector2(120, 56)
 	_full_view.add_theme_font_size_override("font_size", 16)
-	_full_view.pressed.connect(select_state.bind(ArchitectureState.OVERVIEW))
+	if not Engine.is_editor_hint():
+		_full_view.pressed.connect(select_state.bind(ArchitectureState.OVERVIEW))
 	# Context navigation stays smaller and never receives feature-selected styling.
 	_information.size_flags_stretch_ratio = 0.41
 	_image.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_source_close.custom_minimum_size.y = 56
 	_source_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	resized.connect(_resize_layout)
-	visibility_changed.connect(_visibility_changed)
-	_resize_layout()
-	_open_standalone.call_deferred()
-
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is ArchitectureContent or content.concepts.size() != 3:
 		return false
 	for entry in [content.overview] + content.concepts:
@@ -127,6 +155,8 @@ func open_interaction() -> bool:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready():
 		return
 	_cancel_animations()
@@ -141,6 +171,8 @@ func reset_hotspot() -> void:
 
 
 func select_concept(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if index >= 0 and index < 3:
 		select_state((index + 1) as ArchitectureState)
 
@@ -150,6 +182,8 @@ func get_selected_concept() -> int:
 
 
 func select_state(new_state: ArchitectureState) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or new_state < 0 or new_state > ArchitectureState.PIEDRA_CHINA:
 		return
 	_cancel_transition()
@@ -198,6 +232,8 @@ func _render() -> void:
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible:
 		return
 	_cancel_transition()
@@ -213,6 +249,8 @@ func open_sources() -> void:
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var main: Array[Control] = []
 	main.append_array(_concepts)
 	main.append_array([_full_view, _sources_button, _speaker, _close])
@@ -227,6 +265,8 @@ func _sync_focus() -> void:
 
 
 func _selector_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible:
 		return
 	var step := 0
@@ -245,6 +285,8 @@ func _selector_input(event: InputEvent, index: int) -> void:
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or _audio.stream == null:
 		return
 	if _audio.stream_paused:
@@ -258,6 +300,8 @@ func toggle_narration() -> void:
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	super._update_speaker()
 	_speaker.text = "RESUME" if _audio.stream_paused else ("PAUSE" if _audio.playing else "LISTEN")
 	_speaker.set_pressed_no_signal(_audio.playing and not _audio.stream_paused)
@@ -266,16 +310,20 @@ func _update_speaker() -> void:
 
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 
 func _resize_layout() -> void:
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	# The root remains a host-sized overlay; only its visible panel is inset.
 	var inset := 0.02 if size.x < 900 else 0.05
-	var main: PanelContainer = $Main
+	var main: PanelContainer = _presentation_root.get_node("Main")
 	main.set_anchor(SIDE_LEFT, inset, true)
 	main.set_anchor(SIDE_TOP, inset, true)
 	main.set_anchor(SIDE_RIGHT, 1.0 - inset, true)
@@ -284,7 +332,7 @@ func _resize_layout() -> void:
 		main.set_offset(side, 0.0)
 	var available := size * (1.0 - 2.0 * inset)
 	var compact := available.x < 1000 or available.y < 600
-	var layout := $Main/Margin/Layout
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
 	# Compact headers give the long approved subtitle its own full-width row.
 	var subtitle_parent: Node = layout if compact else _titles
 	if _subtitle.get_parent() != subtitle_parent:
@@ -299,9 +347,9 @@ func _resize_layout() -> void:
 		_sync_focus()
 	_selectors.vertical = not compact
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 16)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 16)
 	layout.add_theme_constant_override("separation", 8 if compact else 12)
-	%Columns.add_theme_constant_override("separation", 18 if compact else 28)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_theme_constant_override("separation", 18 if compact else 28)
 	_information.add_theme_constant_override("separation", 8 if compact else 12)
 	_interpretation.add_theme_constant_override("separation", 8)
 	_selectors.add_theme_constant_override("separation", 8)
@@ -320,6 +368,8 @@ func _resize_layout() -> void:
 
 
 func _cancel_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _transition != null and _transition.is_valid():
 		_transition.kill()
 	_transition = null
@@ -330,6 +380,8 @@ func _cancel_transition() -> void:
 
 
 func _cancel_animations() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transition()
 	_cancel_fade()
 	if _reveal != null and _reveal.is_valid():
@@ -342,19 +394,47 @@ func _cancel_animations() -> void:
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_animations()
 	super.close_interaction()
 
 
 func _visibility_changed() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and not is_visible_in_tree():
 		close_interaction()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_animations()
 	super._exit_tree()
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint():
+		super._unhandled_input(event)
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	current_state = ArchitectureState.OVERVIEW
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

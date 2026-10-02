@@ -1,4 +1,11 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/casa_real/cr_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
+
 ## Optional summary and reflection; no dependency on earlier hotspot visits.
 signal close_requested
 signal summary_theme_changed(theme_id: StringName)
@@ -8,33 +15,33 @@ const THEME_IDS: Array[StringName] = [&"government", &"architecture", &"history"
 var current_view: ViewState = ViewState.SUMMARY
 var selected_theme: StringName = &"government"
 var _transition: Tween
-var _subtitle := Label.new()
-var _audio_status := Label.new()
-var _summary := VBoxContainer.new()
-var _mosaic := GridContainer.new()
+var _subtitle: Label
+var _audio_status: Label
+var _summary: VBoxContainer
+var _mosaic: GridContainer
 var _theme_cards: Array[Button] = []
-var _columns := HBoxContainer.new()
-var _visual := Control.new()
-var _previous_image := TextureRect.new()
-var _caption := Label.new()
-var _detail_scroll := ScrollContainer.new()
-var _detail_copy := VBoxContainer.new()
-var _anchor_label := Label.new()
-var _why := Label.new()
-var _reflect := Button.new()
-var _reflection := Control.new()
-var _background := TextureRect.new()
-var _shade := ColorRect.new()
-var _reflection_margin := MarginContainer.new()
-var _reflection_layout := VBoxContainer.new()
-var _reflection_scroll := ScrollContainer.new()
-var _reflection_copy := VBoxContainer.new()
-var _eyebrow := Label.new()
-var _reflection_heading := Label.new()
-var _question := Label.new()
-var _prompt := Label.new()
-var _reflection_takeaway := Label.new()
-var _back := Button.new()
+var _columns: HBoxContainer
+var _visual: Control
+var _previous_image: TextureRect
+var _caption: Label
+var _detail_scroll: ScrollContainer
+var _detail_copy: VBoxContainer
+var _anchor_label: Label
+var _why: Label
+var _reflect: Button
+var _reflection: Control
+var _background: TextureRect
+var _shade: ColorRect
+var _reflection_margin: MarginContainer
+var _reflection_layout: VBoxContainer
+var _reflection_scroll: ScrollContainer
+var _reflection_copy: VBoxContainer
+var _eyebrow: Label
+var _reflection_heading: Label
+var _question: Label
+var _prompt: Label
+var _reflection_takeaway: Label
+var _back: Button
 var _touch_index: int = -1
 var _touch_target: Button
 var _touch_scroll: ScrollContainer
@@ -43,9 +50,48 @@ var _touch_last := Vector2.ZERO
 var _touch_dragged: bool = false
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var layout := $Main/Margin/Layout
-	var header := $Main/Margin/Layout/Header
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(func() -> void:
+		if _open and not is_visible_in_tree(): close_interaction())
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+func _build_presentation() -> void:
+	_subtitle = Label.new()
+	_audio_status = Label.new()
+	_summary = VBoxContainer.new()
+	_mosaic = GridContainer.new()
+	_columns = HBoxContainer.new()
+	_visual = Control.new()
+	_previous_image = TextureRect.new()
+	_caption = Label.new()
+	_detail_scroll = ScrollContainer.new()
+	_detail_copy = VBoxContainer.new()
+	_anchor_label = Label.new()
+	_why = Label.new()
+	_reflect = Button.new()
+	_reflection = Control.new()
+	_background = TextureRect.new()
+	_shade = ColorRect.new()
+	_reflection_margin = MarginContainer.new()
+	_reflection_layout = VBoxContainer.new()
+	_reflection_scroll = ScrollContainer.new()
+	_reflection_copy = VBoxContainer.new()
+	_eyebrow = Label.new()
+	_reflection_heading = Label.new()
+	_question = Label.new()
+	_prompt = Label.new()
+	_reflection_takeaway = Label.new()
+	_back = Button.new()
+	_theme_cards.clear()
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	_sources_button.reparent(header)
 	_speaker.reparent(header)
 	header.move_child(_close, header.get_child_count() - 1)
@@ -55,7 +101,7 @@ func _ready() -> void:
 	_close.text = "CLOSE"
 	_speaker.expand_icon = true
 	_speaker.add_theme_constant_override("icon_max_width", 22)
-	for old in [$Main/Margin/Layout/Controls, $Main/Margin/Layout/Sections, $Main/Margin/Layout/Columns]: old.hide()
+	for old in [_presentation_root.get_node("Main/Margin/Layout/Controls"), _presentation_root.get_node("Main/Margin/Layout/Sections"), _presentation_root.get_node("Main/Margin/Layout/Columns")]: old.hide()
 	layout.add_child(_subtitle)
 	_subtitle.text = content.subtitle
 	layout.add_child(_audio_status)
@@ -74,7 +120,8 @@ func _ready() -> void:
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.custom_minimum_size.y = 64
 		card.accessibility_name = entry.card_label.replace("\n", " ")
-		card.pressed.connect(select_theme.bind(entry.id))
+		if not Engine.is_editor_hint():
+			card.pressed.connect(select_theme.bind(entry.id))
 		_mosaic.add_child(card)
 		_theme_cards.append(card)
 	_summary.add_child(_columns)
@@ -110,23 +157,21 @@ func _ready() -> void:
 	_summary.add_child(_reflect)
 	_reflect.text = content.reflect_label
 	_reflect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	_reflect.pressed.connect(open_reflection)
+	if not Engine.is_editor_hint():
+		_reflect.pressed.connect(open_reflection)
 	_build_reflection()
 	for label in [_subtitle, _audio_status, _caption, _anchor_label, _heading, _body, _why, _takeaway, _eyebrow, _reflection_heading, _question, _prompt, _reflection_takeaway]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for button in _buttons():
 		if button not in _theme_cards: button.custom_minimum_size.y = 52
-		button.gui_input.connect(_button_key.bind(button))
+		if not Engine.is_editor_hint():
+			button.gui_input.connect(_button_key.bind(button))
 	for scroller in [_detail_scroll, _reflection_scroll, _source_scroll]:
-		scroller.gui_input.connect(_reading_key.bind(scroller))
+		if not Engine.is_editor_hint():
+			scroller.gui_input.connect(_reading_key.bind(scroller))
 		scroller.add_theme_stylebox_override("focus", _close.get_theme_stylebox("focus"))
 	_visual.resized.connect(_layout_image)
-	resized.connect(_resize_layout)
-	visibility_changed.connect(func() -> void:
-		if _open and not is_visible_in_tree(): close_interaction())
-	_resize_layout()
-	_open_standalone.call_deferred()
 
 func _build_reflection() -> void:
 	_reflection.add_child(_background)
@@ -161,15 +206,22 @@ func _build_reflection() -> void:
 	_reflection_layout.add_child(_back)
 	_back.text = content.back_label
 	_back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	_back.pressed.connect(back_to_summary)
+	if not Engine.is_editor_hint():
+		_back.pressed.connect(back_to_summary)
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self: open_hotspot()
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is SummaryContent or content.themes.size() != 5: return false
 	for i in 5:
 		if content.themes[i] == null or content.themes[i].id != THEME_IDS[i] or content.themes[i].image == null: return false
@@ -193,6 +245,8 @@ func open_interaction() -> bool:
 	return true
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transition()
 	_clear_touch()
 	stop_narration()
@@ -205,6 +259,8 @@ func reset_hotspot() -> void:
 	_render()
 
 func select_theme(theme_id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or current_view != ViewState.SUMMARY or theme_id not in THEME_IDS: return
 	_cancel_transition()
 	var prior: Texture2D = _image.texture
@@ -243,6 +299,8 @@ func _render() -> void:
 	_sync_focus()
 
 func open_reflection() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or current_view != ViewState.SUMMARY: return
 	_cancel_transition()
 	_clear_touch()
@@ -252,6 +310,8 @@ func open_reflection() -> void:
 	_back.grab_focus()
 
 func back_to_summary() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or current_view != ViewState.REFLECTION: return
 	_cancel_transition()
 	current_view = ViewState.SUMMARY
@@ -259,6 +319,8 @@ func back_to_summary() -> void:
 	_reflect.grab_focus()
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible: return
 	_cancel_transition()
 	_clear_touch()
@@ -276,6 +338,8 @@ func open_sources() -> void:
 	sources_opened.emit()
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or _audio.stream == null: return
 	if _audio.stream_paused: _audio.stream_paused = false
 	elif _audio.playing: _audio.stream_paused = true
@@ -285,6 +349,8 @@ func toggle_narration() -> void:
 	_update_speaker()
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	_speaker.text = "LISTEN"
 	if _audio.playing: _speaker.text = "PAUSE"
 	if _audio.stream_paused: _speaker.text = "RESUME"
@@ -293,21 +359,25 @@ func _update_speaker() -> void:
 	_speaker.tooltip_text = "Narration pending." if _audio.stream == null else _speaker.accessibility_name
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 func _resize_layout() -> void:
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready(): return
 	var compact := size.x < 1100
 	var small := size.x < 900
 	var inset := 0.02 if compact else 0.05
-	$Main.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	$Main.anchor_left = inset
-	$Main.anchor_top = inset
-	$Main.anchor_right = 1.0 - inset
-	$Main.anchor_bottom = 1.0 - inset
-	for side in ["left", "right", "top", "bottom"]: $Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 16)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 6 if compact else 10)
+	_presentation_root.get_node("Main").set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_presentation_root.get_node("Main").anchor_left = inset
+	_presentation_root.get_node("Main").anchor_top = inset
+	_presentation_root.get_node("Main").anchor_right = 1.0 - inset
+	_presentation_root.get_node("Main").anchor_bottom = 1.0 - inset
+	for side in ["left", "right", "top", "bottom"]: _presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 16)
+	_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 6 if compact else 10)
 	_summary.add_theme_constant_override("separation", 8 if compact else 12)
 	_mosaic.columns = 3 if small else 5
 	for i in _theme_cards.size(): _theme_cards[i].text = content.themes[i].compact_label if small else content.themes[i].card_label
@@ -342,6 +412,8 @@ func _buttons() -> Array[Button]:
 	return result
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var previous := get_viewport().gui_get_focus_owner()
 	var all: Array[Control] = [_detail_scroll, _reflection_scroll, _source_scroll]
 	all.append_array(_buttons())
@@ -365,11 +437,15 @@ func _sync_focus() -> void:
 	if previous in enabled: previous.grab_focus()
 
 func _button_key(event: InputEvent, button: Button) -> void:
+	if Engine.is_editor_hint():
+		return
 	if event is InputEventKey and event.pressed and event.keycode in [KEY_ENTER, KEY_SPACE]:
 		button.accept_event()
 		if not event.echo: button.pressed.emit()
 
 func _reading_key(event: InputEvent, scroller: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not event is InputEventKey or not event.pressed: return
 	if event.keycode not in [KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN, KEY_HOME, KEY_END]: return
 	scroller.accept_event()
@@ -379,6 +455,8 @@ func _reading_key(event: InputEvent, scroller: ScrollContainer) -> void:
 		_: scroller.scroll_vertical += -80 if event.keycode in [KEY_UP, KEY_PAGEUP] else 80
 
 func _input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open: return
 	# Native touch owns activation; suppress its synthetic mouse duplicate.
 	if event is InputEventMouse and event.device == -1:
@@ -414,12 +492,16 @@ func _input(event: InputEvent) -> void:
 		_touch_last = event.position
 
 func _clear_touch() -> void:
+	if Engine.is_editor_hint():
+		return
 	_touch_index = -1
 	_touch_target = null
 	_touch_scroll = null
 	_touch_dragged = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or not event.is_action_pressed(&"go_back"): return
 	get_viewport().set_input_as_handled()
 	if event.is_echo(): return
@@ -428,6 +510,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	else: close_interaction()
 
 func _cancel_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _transition != null and _transition.is_valid(): _transition.kill()
 	_transition = null
 	_previous_image.texture = null
@@ -437,11 +521,33 @@ func _cancel_transition() -> void:
 	_detail_copy.modulate.a = 1.0
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open: return
 	reset_hotspot()
 	super.close_interaction()
 	close_requested.emit()
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transition()
 	super._exit_tree()
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	current_view = ViewState.SUMMARY
+	selected_theme = &"government"
+	_audio_status.visible = not ResourceLoader.exists(content.narration_path, "AudioStream")
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

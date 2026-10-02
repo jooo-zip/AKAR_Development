@@ -1,3 +1,4 @@
+@tool
 extends Control
 ## Bounded directory gestures. A drag selects; only a deliberate tap opens.
 signal selection_requested(index: int, open_preview: bool)
@@ -21,6 +22,10 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	focus_mode = Control.FOCUS_ALL
 	resized.connect(_layout_plaques)
+	if Engine.is_editor_hint():
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		focus_mode = Control.FOCUS_NONE
+		return
 	focus_entered.connect(queue_redraw)
 	focus_exited.connect(queue_redraw)
 	visibility_changed.connect(func() -> void:
@@ -57,6 +62,7 @@ func _group_text(group: int) -> String:
 	return "BANÁAN GALLERY DIRECTORY"
 
 func center_on(index: int, animate: bool = true) -> void:
+	if Engine.is_editor_hint(): animate = false
 	cancel_tween()
 	end_drag()
 	selected = index
@@ -97,6 +103,7 @@ func _draw() -> void:
 		draw_rect(Rect2(Vector2(3, 3), size - Vector2(6, 6)), Color("fff299"), false, 3)
 
 func _gui_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
 	if event is InputEventKey and event.pressed:
 		var index := selected
 		match event.keycode:
@@ -130,6 +137,7 @@ func _begin(at: Vector2, touch_id: int) -> void:
 	dragging_changed.emit(true)
 
 func _input(event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
 	if not _held: return
 	var released := false
 	var at := _start + _motion
@@ -165,7 +173,7 @@ func end_drag() -> void:
 	_held = false
 	_touch_id = -1
 	_drag_offset = 0
-	dragging_changed.emit(false)
+	if not Engine.is_editor_hint(): dragging_changed.emit(false)
 	_layout_plaques()
 
 func cancel_tween() -> void:

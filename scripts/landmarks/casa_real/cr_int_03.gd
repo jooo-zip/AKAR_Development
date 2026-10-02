@@ -1,4 +1,11 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/casa_real/cr_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
+
 ## Standalone portrait network; one authoritative selection drives every view.
 signal close_requested
 enum ViewState { OVERVIEW, PERSON_FOCUS }
@@ -10,35 +17,35 @@ var visual_mode: VisualMode = VisualMode.PORTRAIT
 var selected_person_index: int = -1
 var selected_period_id: StringName = &""
 var _transition: Tween
-var _network := Control.new()
-var _connections := ConnectionLayer.new()
-var _intro := Label.new()
-var _intro_body := Label.new()
-var _anchor := Label.new()
-var _helper := Label.new()
+var _network: Control
+var _connections: ConnectionLayer
+var _intro: Label
+var _intro_body: Label
+var _anchor: Label
+var _helper: Label
 var _periods: Array[Button] = []
 var _portraits: Array[Button] = []
 var _photos: Array[TextureRect] = []
 var _names: Array[Label] = []
 var _dates: Array[Label] = []
-var _rail := ScrollContainer.new()
-var _rail_contents := Control.new()
-var _focus_view := HBoxContainer.new()
-var _visual := Control.new()
-var _old_image := TextureRect.new()
-var _caption := Label.new()
-var _details := VBoxContainer.new()
-var _reading := ScrollContainer.new()
-var _copy := VBoxContainer.new()
-var _metadata := HBoxContainer.new()
-var _date := Label.new()
-var _period_label := Label.new()
-var _person_name := Label.new()
-var _role := Label.new()
-var _contribution := Label.new()
-var _actions := MarginContainer.new()
-var _context := Button.new()
-var _view_all := Button.new()
+var _rail: ScrollContainer
+var _rail_contents: Control
+var _focus_view: HBoxContainer
+var _visual: Control
+var _old_image: TextureRect
+var _caption: Label
+var _details: VBoxContainer
+var _reading: ScrollContainer
+var _copy: VBoxContainer
+var _metadata: HBoxContainer
+var _date: Label
+var _period_label: Label
+var _person_name: Label
+var _role: Label
+var _contribution: Label
+var _actions: MarginContainer
+var _context: Button
+var _view_all: Button
 var _gesture_target: Control
 var _gesture_origin := Vector2.ZERO
 var _gesture_last := Vector2.ZERO
@@ -47,9 +54,50 @@ var _dragging: bool = false
 var _touch_index: int = -1
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	var layout := $Main/Margin/Layout
-	var header := $Main/Margin/Layout/Header
+	_build_presentation()
+	resized.connect(_resize_layout)
+	visibility_changed.connect(func() -> void:
+		if _open and not is_visible_in_tree(): close_interaction())
+	_resize_layout()
+	_open_standalone.call_deferred()
+
+func _build_presentation() -> void:
+	_network = Control.new()
+	_connections = ConnectionLayer.new()
+	_intro = Label.new()
+	_intro_body = Label.new()
+	_anchor = Label.new()
+	_helper = Label.new()
+	_rail = ScrollContainer.new()
+	_rail_contents = Control.new()
+	_focus_view = HBoxContainer.new()
+	_visual = Control.new()
+	_old_image = TextureRect.new()
+	_caption = Label.new()
+	_details = VBoxContainer.new()
+	_reading = ScrollContainer.new()
+	_copy = VBoxContainer.new()
+	_metadata = HBoxContainer.new()
+	_date = Label.new()
+	_period_label = Label.new()
+	_person_name = Label.new()
+	_role = Label.new()
+	_contribution = Label.new()
+	_actions = MarginContainer.new()
+	_context = Button.new()
+	_view_all = Button.new()
+	_periods.clear()
+	_portraits.clear()
+	_photos.clear()
+	_names.clear()
+	_dates.clear()
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	_sources_button.reparent(header)
 	_speaker.reparent(header)
 	header.move_child(_close, header.get_child_count() - 1)
@@ -59,7 +107,7 @@ func _ready() -> void:
 	_close.text = "CLOSE"
 	_speaker.expand_icon = true
 	_speaker.add_theme_constant_override("icon_max_width", 22)
-	for old in [$Main/Margin/Layout/Columns, $Main/Margin/Layout/Controls, $Main/Margin/Layout/Sections]: old.hide()
+	for old in [_presentation_root.get_node("Main/Margin/Layout/Columns"), _presentation_root.get_node("Main/Margin/Layout/Controls"), _presentation_root.get_node("Main/Margin/Layout/Sections")]: old.hide()
 	layout.add_child(_network)
 	_network.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_network.add_child(_connections)
@@ -79,7 +127,8 @@ func _ready() -> void:
 		button.toggle_mode = true
 		button.accessibility_name = content.period_labels[i]
 		button.tooltip_text = content.period_labels[i]
-		button.pressed.connect(select_period.bind(content.period_ids[i]))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(select_period.bind(content.period_ids[i]))
 		_periods.append(button)
 	_network.add_child(_focus_view)
 	_focus_view.add_theme_constant_override("separation", 20)
@@ -120,10 +169,12 @@ func _ready() -> void:
 	_details.add_child(_actions)
 	_actions.add_child(_context)
 	_context.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_context.pressed.connect(toggle_context)
+	if not Engine.is_editor_hint():
+		_context.pressed.connect(toggle_context)
 	_network.add_child(_view_all)
 	_view_all.text = "VIEW ALL CONNECTIONS"
-	_view_all.pressed.connect(view_all_connections)
+	if not Engine.is_editor_hint():
+		_view_all.pressed.connect(view_all_connections)
 	var secondary_style := _view_all.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
 	secondary_style.bg_color = Color("14201b")
 	secondary_style.border_color = Color("647363")
@@ -141,9 +192,12 @@ func _ready() -> void:
 		_rail_contents.add_child(button)
 		button.toggle_mode = true
 		button.accessibility_name = entry.display_name + ", " + entry.date_label
-		button.pressed.connect(select_person.bind(i))
-		button.gui_input.connect(_portrait_key.bind(i))
-		button.focus_entered.connect(_reveal_portrait.bind(i))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(select_person.bind(i))
+		if not Engine.is_editor_hint():
+			button.gui_input.connect(_portrait_key.bind(i))
+		if not Engine.is_editor_hint():
+			button.focus_entered.connect(_reveal_portrait.bind(i))
 		var mount := StyleBoxFlat.new()
 		mount.bg_color = Color("192b25")
 		mount.border_color = Color("77806a")
@@ -177,26 +231,30 @@ func _ready() -> void:
 		_dates.append(date_label)
 	for button in _buttons():
 		button.custom_minimum_size.y = 52
-		button.gui_input.connect(_button_key.bind(button))
+		if not Engine.is_editor_hint():
+			button.gui_input.connect(_button_key.bind(button))
 	for scroll in [_reading, _source_scroll]:
-		scroll.gui_input.connect(_reading_key.bind(scroll))
+		if not Engine.is_editor_hint():
+			scroll.gui_input.connect(_reading_key.bind(scroll))
 		scroll.add_theme_stylebox_override("focus", _close.get_theme_stylebox("focus"))
 	_network.resized.connect(_layout_network)
 	_visual.resized.connect(_layout_image)
-	_rail.get_h_scroll_bar().value_changed.connect(func(_value: float) -> void: _update_connections())
-	resized.connect(_resize_layout)
-	visibility_changed.connect(func() -> void:
-		if _open and not is_visible_in_tree(): close_interaction())
-	_resize_layout()
-	_open_standalone.call_deferred()
+	if not Engine.is_editor_hint():
+		_rail.get_h_scroll_bar().value_changed.connect(func(_value: float) -> void: _update_connections())
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self: open_hotspot()
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is PeopleContent: return false
 	if content.people.size() != 5 or content.period_ids.size() != 3 or content.narration_stream == null: return false
 	for entry in content.people:
@@ -214,6 +272,8 @@ func open_interaction() -> bool:
 	return true
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transition()
 	_end_gesture()
 	stop_narration()
@@ -223,6 +283,8 @@ func reset_hotspot() -> void:
 	_render()
 
 func _clear_selection() -> void:
+	if Engine.is_editor_hint():
+		return
 	current_view = ViewState.OVERVIEW
 	visual_mode = VisualMode.PORTRAIT
 	selected_person_index = -1
@@ -233,6 +295,8 @@ func _clear_selection() -> void:
 	_reading.scroll_vertical = 0
 
 func select_person(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or index < 0 or index >= content.people.size(): return
 	_cancel_transition()
 	selected_person_index = index
@@ -247,6 +311,8 @@ func select_person(index: int) -> void:
 	_reveal_portrait.call_deferred(index)
 
 func select_period(period_id: StringName) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or period_id not in content.period_ids: return
 	_cancel_transition()
 	_clear_selection()
@@ -254,6 +320,8 @@ func select_period(period_id: StringName) -> void:
 	_render()
 
 func view_all_connections() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible: return
 	_cancel_transition()
 	_clear_selection()
@@ -261,6 +329,8 @@ func view_all_connections() -> void:
 	_periods[0].grab_focus()
 
 func toggle_context() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or current_view != ViewState.PERSON_FOCUS: return
 	_cancel_transition()
 	var previous: Texture2D = _image.texture
@@ -305,14 +375,16 @@ func _render() -> void:
 	_sync_focus()
 
 func _resize_layout() -> void:
+	if Engine.is_editor_hint():
+		EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready(): return
 	var compact := size.x < 1100
 	var inset := 0.02 if compact else 0.05
-	$Main.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	$Main.anchor_left = inset
-	$Main.anchor_top = inset
-	$Main.anchor_right = 1.0 - inset
-	$Main.anchor_bottom = 1.0 - inset
+	_presentation_root.get_node("Main").set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_presentation_root.get_node("Main").anchor_left = inset
+	_presentation_root.get_node("Main").anchor_top = inset
+	_presentation_root.get_node("Main").anchor_right = 1.0 - inset
+	_presentation_root.get_node("Main").anchor_bottom = 1.0 - inset
 	_title.add_theme_font_size_override("font_size", 22 if compact else 28)
 	for button in _buttons(): button.add_theme_font_size_override("font_size", 16 if compact else 18)
 	_view_all.add_theme_font_size_override("font_size", 16)
@@ -419,6 +491,8 @@ func _add_connection(points: PackedVector2Array, active: bool) -> void:
 	_connections.highlighted.append(active)
 
 func _reveal_portrait(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible or current_view == ViewState.OVERVIEW: return
 	var card := _portraits[index]
 	if card.position.x < _rail.scroll_horizontal: _rail.scroll_horizontal = int(card.position.x)
@@ -427,6 +501,8 @@ func _reveal_portrait(index: int) -> void:
 	_update_connections()
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible: return
 	_cancel_transition()
 	_end_gesture()
@@ -446,6 +522,8 @@ func open_sources() -> void:
 	sources_opened.emit()
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _sources.visible: return
 	if _audio.stream_paused: _audio.stream_paused = false
 	elif _audio.playing: _audio.stream_paused = true
@@ -455,6 +533,8 @@ func toggle_narration() -> void:
 	_update_speaker()
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	_speaker.text = "LISTEN"
 	if _audio.playing: _speaker.text = "PAUSE"
 	if _audio.stream_paused: _speaker.text = "RESUME"
@@ -462,6 +542,8 @@ func _update_speaker() -> void:
 	_speaker.accessibility_name = _speaker.text.capitalize() + " narration"
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
@@ -472,6 +554,8 @@ func _buttons() -> Array[Button]:
 	return result
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var previous := get_viewport().gui_get_focus_owner()
 	var all: Array[Control] = [_reading, _source_scroll]
 	all.append_array(_buttons())
@@ -493,6 +577,8 @@ func _sync_focus() -> void:
 	if previous in active: previous.grab_focus()
 
 func _portrait_key(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _sources.visible or not event is InputEventKey or not event.pressed: return
 	if event.keycode in [KEY_LEFT, KEY_RIGHT]:
 		_portraits[index].accept_event()
@@ -501,11 +587,15 @@ func _portrait_key(event: InputEvent, index: int) -> void:
 		_reveal_portrait(next)
 
 func _button_key(event: InputEvent, button: Button) -> void:
+	if Engine.is_editor_hint():
+		return
 	if event is InputEventKey and event.pressed and event.keycode in [KEY_ENTER, KEY_SPACE]:
 		button.accept_event()
 		if not event.echo: button.pressed.emit()
 
 func _reading_key(event: InputEvent, scroller: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not event is InputEventKey or not event.pressed: return
 	var direction := 0
 	if event.keycode in [KEY_DOWN, KEY_PAGEDOWN]: direction = 1
@@ -515,6 +605,8 @@ func _reading_key(event: InputEvent, scroller: ScrollContainer) -> void:
 		scroller.scroll_vertical += direction * (120 if event.keycode in [KEY_PAGEUP, KEY_PAGEDOWN] else 36)
 
 func _input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open: return
 	# Native touch is handled below; suppress its synthetic mouse duplicate (device -1).
 	if event is InputEventMouse and event.device == -1:
@@ -546,6 +638,8 @@ func _input(event: InputEvent) -> void:
 		_move_gesture(event.position)
 
 func _begin_gesture(at: Vector2) -> void:
+	if Engine.is_editor_hint():
+		return
 	_gesture_origin = at
 	_gesture_last = at
 	_dragging = false
@@ -561,6 +655,8 @@ func _begin_gesture(at: Vector2) -> void:
 			_gesture_scroll = scroll
 
 func _move_gesture(at: Vector2) -> void:
+	if Engine.is_editor_hint():
+		return
 	if at.distance_to(_gesture_origin) > 12: _dragging = true
 	if _dragging and _gesture_scroll != null:
 		var delta := at - _gesture_last
@@ -569,6 +665,8 @@ func _move_gesture(at: Vector2) -> void:
 	_gesture_last = at
 
 func _finish_gesture(at: Vector2) -> void:
+	if Engine.is_editor_hint():
+		return
 	var target := _gesture_target
 	var activate := not _dragging and target != null and target.get_global_rect().has_point(at)
 	_end_gesture()
@@ -577,12 +675,16 @@ func _finish_gesture(at: Vector2) -> void:
 		(target as Button).pressed.emit()
 
 func _end_gesture() -> void:
+	if Engine.is_editor_hint():
+		return
 	_gesture_target = null
 	_gesture_scroll = null
 	_dragging = false
 	_touch_index = -1
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or not event.is_action_pressed(&"go_back"): return
 	get_viewport().set_input_as_handled()
 	if event.is_echo(): return
@@ -591,6 +693,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	else: close_interaction()
 
 func _cancel_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _transition != null and _transition.is_valid(): _transition.kill()
 	_transition = null
 	_focus_view.modulate.a = 1.0
@@ -600,11 +704,34 @@ func _cancel_transition() -> void:
 	_old_image.hide()
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open: return
 	reset_hotspot()
 	super.close_interaction()
 	close_requested.emit()
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_transition()
 	super._exit_tree()
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	current_view = ViewState.OVERVIEW
+	visual_mode = VisualMode.PORTRAIT
+	selected_person_index = -1
+	selected_period_id = &""
+	_render()
+	EditorPresentation.finish(self, _presentation_root)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()
