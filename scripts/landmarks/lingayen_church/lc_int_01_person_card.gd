@@ -1,3 +1,4 @@
+@tool
 class_name LCINT01PersonCard
 extends Button
 ## Presentation only. The owning hotspot supplies selection and spatial focus.

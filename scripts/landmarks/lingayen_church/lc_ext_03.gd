@@ -1,4 +1,11 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/lingayen_church/lc_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
+
 
 const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
 var _header_utilities: RefCounted
@@ -22,64 +29,58 @@ const StoryPoint = preload("res://scripts/landmarks/lingayen_church/lc_ext_03_st
 const SECONDARY := Color(0.76, 0.75, 0.67, 1)
 
 var _wartime_view: WartimeView = WartimeView.POSTWAR_DAMAGE
-var _subtitle := Label.new()
-var _pending := Label.new()
-var _media := VBoxContainer.new()
-var _media_frame := Control.new()
-var _incoming := VBoxContainer.new()
-var _outgoing := VBoxContainer.new()
-var _outgoing_image := TextureRect.new()
-var _caption := Label.new()
-var _credit := Label.new()
-var _outgoing_caption := Label.new()
-var _outgoing_credit := Label.new()
-var _comparison := HBoxContainer.new()
+var _subtitle: Label
+var _pending: Label
+var _media: VBoxContainer
+var _media_frame: Control
+var _incoming: VBoxContainer
+var _outgoing: VBoxContainer
+var _outgoing_image: TextureRect
+var _caption: Label
+var _credit: Label
+var _outgoing_caption: Label
+var _outgoing_credit: Label
+var _comparison: HBoxContainer
 var _comparison_buttons: Array[Button] = []
 var _story_row: HBoxContainer
-var _prompt := Label.new()
-var _key_label := Label.new()
-var _support := VBoxContainer.new()
-var _support_image := TextureRect.new()
-var _support_caption := Label.new()
-var _support_credit := Label.new()
-var _note := PanelContainer.new()
-var _note_text := Label.new()
+var _prompt: Label
+var _key_label: Label
+var _support: VBoxContainer
+var _support_image: TextureRect
+var _support_caption: Label
+var _support_credit: Label
+var _note: PanelContainer
+var _note_text: Label
 var _panel_tween: Tween
 var _closing: bool = false
 var _bell_observation: BellObservation = BellObservation.NONE
 var _bell_crop: AtlasTexture
-var _bell_overlay := Control.new()
-var _bell_focus := Panel.new()
+var _bell_overlay: Control
+var _bell_focus: Panel
 var _bell_buttons: Array[Button] = []
 var _bell_badges: Array[Panel] = []
 var _bell_symbols: Array[Label] = []
-var _bell_legend := Label.new()
+var _bell_legend: Label
 var _story_dots: Array[Panel] = []
 var _story_labels: Array[Label] = []
-var _takeaway_row := HBoxContainer.new()
-var _support_card := PanelContainer.new()
-var _detail_button := Button.new()
-var _documentary := PanelContainer.new()
-var _documentary_image := TextureRect.new()
-var _documentary_caption := Label.new()
-var _documentary_credit := Label.new()
-var _documentary_close := Button.new()
+var _takeaway_row: HBoxContainer
+var _support_card: PanelContainer
+var _detail_button: Button
+var _documentary: PanelContainer
+var _documentary_image: TextureRect
+var _documentary_caption: Label
+var _documentary_credit: Label
+var _documentary_close: Button
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
 	closed.connect(func() -> void: hotspot_closed.emit())
-	_build_header()
-	_build_media()
-	_build_interpretation()
-	_story_row = $Main/Margin/Layout/Sections
-	_story_row.name = "StoryPoints"
-	for i in _concepts.size():
-		_concepts[i].custom_minimum_size = Vector2(56, 56)
-		_concepts[i].gui_input.connect(_story_input.bind(i))
-	_build_evidence_path()
-	_build_observations()
-	_build_documentary_card()
+	_build_presentation()
 	_header_utilities = HeaderUtilities.new(self, _pending)
 	add_to_group("lingayen_church_narration")
 	resized.connect(_resize_layout)
@@ -96,7 +97,7 @@ func _style_label(label: Label, font_size: int, secondary: bool = false) -> void
 
 
 func _build_header() -> void:
-	var header := $Main/Margin/Layout/Header
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -120,7 +121,7 @@ func _build_header() -> void:
 	_close.custom_minimum_size = Vector2(80, 56)
 	_close.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	header.add_theme_constant_override("separation", 12)
-	$Main/Margin/Layout/Controls.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
 
 
 func _build_media() -> void:
@@ -128,8 +129,8 @@ func _build_media() -> void:
 	_media.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_media.size_flags_stretch_ratio = 0.58
 	_information.size_flags_stretch_ratio = 0.42
-	%Columns.add_child(_media)
-	%Columns.move_child(_media, 0)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_child(_media)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").move_child(_media, 0)
 	_media_frame.name = "MainMediaFrame"
 	_media_frame.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_media_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -170,7 +171,8 @@ func _build_media() -> void:
 		button.custom_minimum_size = Vector2(56, 52)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.add_theme_font_size_override("font_size", 16)
-		button.pressed.connect(set_wartime_view.bind(i))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(set_wartime_view.bind(i))
 		_comparison.add_child(button)
 		_comparison_buttons.append(button)
 	_comparison.hide()
@@ -225,20 +227,27 @@ func _build_interpretation() -> void:
 	_style_label(_takeaway, 18, true)
 	_sources_button.custom_minimum_size.y = 56
 	_source_close.custom_minimum_size.y = 56
-	_scroll.gui_input.connect(_reading_input.bind(_scroll))
-	_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+	if not Engine.is_editor_hint():
+		_scroll.gui_input.connect(_reading_input.bind(_scroll))
+		_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
 
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is BellsContent or content.concepts.size() != 4:
 		return false
 	for entry in content.concepts:
@@ -264,6 +273,8 @@ func open_interaction() -> bool:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or not content is BellsContent:
 		return
 	_cancel_panel_tween()
@@ -287,10 +298,14 @@ func get_wartime_view() -> WartimeView:
 
 
 func select_concept(index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	set_story_state(index + 1)
 
 
 func set_story_state(state: int, animate: bool = true) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or content == null or _sources.visible or _documentary.visible or _closing:
 		return
 	var previous := _capture_media()
@@ -308,6 +323,8 @@ func set_story_state(state: int, animate: bool = true) -> void:
 
 
 func set_wartime_view(view: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing or _sources.visible or _documentary.visible or _selected != StoryState.WARTIME_1945:
 		return
 	if view < WartimeView.POSTWAR_DAMAGE or view > WartimeView.PRESENT_DAY:
@@ -368,6 +385,8 @@ func _capture_media() -> Dictionary:
 
 
 func _transition_media(previous: Dictionary) -> void:
+	if Engine.is_editor_hint():
+		return
 	# Image, caption and credit fade together, retaining each image's provenance.
 	_outgoing_image.texture = previous.image
 	_outgoing_caption.text = previous.caption
@@ -389,12 +408,16 @@ func _clear_outgoing() -> void:
 
 
 func _cancel_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_fade()
 	_incoming.modulate.a = 1.0
 	_clear_outgoing()
 
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	var previous := get_viewport().gui_get_focus_owner()
 	var main: Array[Control] = []
 	main.append_array(_concepts)
@@ -424,6 +447,8 @@ func _sync_focus() -> void:
 
 
 func _story_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _sources.visible or _documentary.visible or _closing:
 		return
 	var step := 0
@@ -437,6 +462,8 @@ func _story_input(event: InputEvent, index: int) -> void:
 
 
 func _reading_input(event: InputEvent, scroll: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not event is InputEventKey or not event.pressed:
 		return
 	var target := scroll.scroll_vertical
@@ -460,14 +487,17 @@ func _reading_input(event: InputEvent, scroll: ScrollContainer) -> void:
 
 
 func _resize_layout() -> void:
+	if not is_instance_valid(_presentation_root):
+		return
+	EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready() or _story_row == null:
 		return
-	var compact := size.x < 1000 or size.y < 550
-	var small := size.y < 460
+	var compact := _presentation_root.size.x < 1000 or _presentation_root.size.y < 550
+	var small := _presentation_root.size.y < 460
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 16)
-	%Columns.add_theme_constant_override("separation", 12 if compact else 24)
-	for container in [$Main/Margin/Layout, _information, _media, _incoming, _outgoing, _comparison, _story_row]:
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 16)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_theme_constant_override("separation", 12 if compact else 24)
+	for container in [_presentation_root.get_node("Main/Margin/Layout"), _information, _media, _incoming, _outgoing, _comparison, _story_row]:
 		container.add_theme_constant_override("separation", 4 if compact else 8)
 	_body.get_parent().add_theme_constant_override("separation", 8 if compact else 12)
 	_title.add_theme_font_size_override("font_size", 22 if compact else 28)
@@ -488,7 +518,7 @@ func _resize_layout() -> void:
 	_key_label.custom_minimum_size.x = 0 if compact else 110
 	_body.get_parent().add_theme_constant_override("separation", 8 if compact else 6)
 	if not compact:
-		$Main/Margin/Layout.add_theme_constant_override("separation", 6)
+		_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 6)
 		_information.add_theme_constant_override("separation", 6)
 	if content is BellsContent and content.concepts.size() == 4:
 		for i in _concepts.size():
@@ -498,11 +528,15 @@ func _resize_layout() -> void:
 			_concepts[i].accessibility_name = entry.label
 			_concepts[i].add_theme_font_size_override("font_size", 18)
 	_layout_observations.call_deferred()
-	if _header_utilities != null:
+	if Engine.is_editor_hint():
+		HeaderUtilities.resize_presentation(self, _pending, _presentation_root.size.x)
+	elif _header_utilities != null:
 		_header_utilities.resize()
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing or _sources.visible or _documentary.visible:
 		return
 	_cancel_transition()
@@ -510,23 +544,33 @@ func open_sources() -> void:
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.update_speaker(self, _pending)
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.toggle_narration(self)
 
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 
 func close_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	close_interaction()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing:
 		return
 	_cancel_transition()
@@ -540,6 +584,8 @@ func close_interaction() -> void:
 
 
 func _finish_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_panel_tween = null
 	_closing = false
 	_documentary.hide()
@@ -549,6 +595,8 @@ func _finish_close() -> void:
 
 
 func _cancel_panel_tween() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _panel_tween != null and _panel_tween.is_valid():
 		_panel_tween.kill()
 	_panel_tween = null
@@ -556,6 +604,8 @@ func _cancel_panel_tween() -> void:
 
 
 func _visibility_changed() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and not is_visible_in_tree():
 		_cancel_transition()
 		_cancel_panel_tween()
@@ -563,6 +613,8 @@ func _visibility_changed() -> void:
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_panel_tween()
 	super._exit_tree()
 
@@ -620,7 +672,7 @@ func _build_evidence_path() -> void:
 			_story_row.move_child(connector, i * 2 + 1)
 	_takeaway_row.name = "TakeawayFooter"
 	_takeaway_row.add_theme_constant_override("separation", 12)
-	var layout := $Main/Margin/Layout
+	var layout := _presentation_root.get_node("Main/Margin/Layout")
 	layout.add_child(_takeaway_row)
 	layout.move_child(_takeaway_row, _story_row.get_index())
 
@@ -663,8 +715,9 @@ func _build_observations() -> void:
 		symbol.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		badge.add_child(symbol)
 		symbol.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		button.pressed.connect(set_bell_observation.bind(i + 1))
-		button.gui_input.connect(_observation_input.bind(i))
+		if not Engine.is_editor_hint():
+			button.pressed.connect(set_bell_observation.bind(i + 1))
+			button.gui_input.connect(_observation_input.bind(i))
 		_bell_buttons.append(button)
 		_bell_badges.append(badge)
 		_bell_symbols.append(symbol)
@@ -682,6 +735,8 @@ func get_bell_observation() -> BellObservation:
 
 
 func set_bell_observation(observation: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing or _sources.visible or _documentary.visible or _selected != StoryState.HISTORIC_BELLS:
 		return
 	_cancel_transition()
@@ -714,6 +769,8 @@ func _layout_observations() -> void:
 
 
 func _observation_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _sources.visible or _documentary.visible or _closing:
 		return
 	var step := int(event.is_action_pressed(&"ui_right")) - int(event.is_action_pressed(&"ui_left"))
@@ -744,12 +801,13 @@ func _build_documentary_card() -> void:
 	_detail_button.custom_minimum_size.y = 52
 	_detail_button.add_theme_font_size_override("font_size", 16)
 	metadata.add_child(_detail_button)
-	_detail_button.pressed.connect(open_documentary_detail)
-	_detail_button.focus_entered.connect(func() -> void:
-		if _scroll.is_ancestor_of(_detail_button):
-			_scroll.ensure_control_visible(_detail_button))
+	if not Engine.is_editor_hint():
+		_detail_button.pressed.connect(open_documentary_detail)
+		_detail_button.focus_entered.connect(func() -> void:
+			if _scroll.is_ancestor_of(_detail_button):
+				_scroll.ensure_control_visible(_detail_button))
 	_documentary.name = "DocumentaryDetail"
-	add_child(_documentary)
+	_presentation_root.add_child(_documentary)
 	_documentary.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_documentary.add_theme_stylebox_override("panel", _sources.get_theme_stylebox("panel"))
 	var margin := MarginContainer.new()
@@ -769,7 +827,8 @@ func _build_documentary_card() -> void:
 	_documentary_close.text = "Close Detail"
 	_documentary_close.custom_minimum_size = Vector2(140, 56)
 	header.add_child(_documentary_close)
-	_documentary_close.pressed.connect(close_documentary_detail)
+	if not Engine.is_editor_hint():
+		_documentary_close.pressed.connect(close_documentary_detail)
 	column.add_child(_documentary_image)
 	_documentary_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_documentary_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -783,6 +842,8 @@ func _build_documentary_card() -> void:
 
 
 func open_documentary_detail() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing or _sources.visible or _documentary.visible or not _support.visible:
 		return
 	_cancel_transition()
@@ -796,6 +857,8 @@ func open_documentary_detail() -> void:
 
 
 func close_documentary_detail() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _documentary.visible:
 		return
 	_documentary.hide()
@@ -805,6 +868,8 @@ func close_documentary_detail() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and _documentary.visible and event.is_action_pressed(&"go_back"):
 		var viewport := get_viewport()
 		if viewport != null:
@@ -813,3 +878,78 @@ func _unhandled_input(event: InputEvent) -> void:
 			close_documentary_detail()
 		return
 	super._unhandled_input(event)
+
+
+func _build_presentation() -> void:
+	_subtitle = Label.new()
+	_pending = Label.new()
+	_media = VBoxContainer.new()
+	_media_frame = Control.new()
+	_incoming = VBoxContainer.new()
+	_outgoing = VBoxContainer.new()
+	_outgoing_image = TextureRect.new()
+	_caption = Label.new()
+	_credit = Label.new()
+	_outgoing_caption = Label.new()
+	_outgoing_credit = Label.new()
+	_comparison = HBoxContainer.new()
+	_prompt = Label.new()
+	_key_label = Label.new()
+	_support = VBoxContainer.new()
+	_support_image = TextureRect.new()
+	_support_caption = Label.new()
+	_support_credit = Label.new()
+	_note = PanelContainer.new()
+	_note_text = Label.new()
+	_bell_overlay = Control.new()
+	_bell_focus = Panel.new()
+	_bell_legend = Label.new()
+	_takeaway_row = HBoxContainer.new()
+	_support_card = PanelContainer.new()
+	_detail_button = Button.new()
+	_documentary = PanelContainer.new()
+	_documentary_image = TextureRect.new()
+	_documentary_caption = Label.new()
+	_documentary_credit = Label.new()
+	_documentary_close = Button.new()
+	_comparison_buttons.clear()
+	_bell_buttons.clear()
+	_bell_badges.clear()
+	_bell_symbols.clear()
+	_story_dots.clear()
+	_story_labels.clear()
+
+	_build_header()
+	_build_media()
+	_build_interpretation()
+	_story_row = _presentation_root.get_node("Main/Margin/Layout/Sections")
+	_story_row.name = "StoryPoints"
+	for i in _concepts.size():
+		_concepts[i].custom_minimum_size = Vector2(56, 56)
+		if not Engine.is_editor_hint():
+			_concepts[i].gui_input.connect(_story_input.bind(i))
+	_build_evidence_path()
+	_build_observations()
+	_build_documentary_card()
+
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	_selected = StoryState.OVERVIEW
+	_wartime_view = WartimeView.POSTWAR_DAMAGE
+	_bell_observation = BellObservation.NONE
+	_title.text = content.title
+	_subtitle.text = content.subtitle
+	_render()
+	EditorPresentation.finish(self, _presentation_root, _pending, content.narration_stream)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

@@ -1,4 +1,11 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/lingayen_church/lc_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
+
 
 const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
 var _header_utilities: RefCounted
@@ -17,40 +24,33 @@ var selected_theme: ThemeSelection = ThemeSelection.NONE
 var _transition: Tween
 var _panel_tween: Tween
 var _closing: bool = false
-var _subtitle := Label.new()
-var _pending := Label.new()
-var _prompt := Label.new()
-var _map := Control.new()
+var _subtitle: Label
+var _pending: Label
+var _prompt: Label
+var _map: Control
 var _cards: Array[LCEND01ThemeCard] = []
 var _connectors: Array[Line2D] = []
-var _center := Button.new()
-var _center_title := Label.new()
-var _context := VBoxContainer.new()
-var _primary := Label.new()
-var _secondary := Label.new()
-var _fallback := Label.new()
-var _credit := Label.new()
-var _theme_label := Label.new()
-var _meaning_label := Label.new()
-var _meaning := Label.new()
-var _source_basis := Label.new()
-var _synthesis := Label.new()
-var _outgoing_detail := Control.new()
+var _center: Button
+var _center_title: Label
+var _context: VBoxContainer
+var _primary: Label
+var _secondary: Label
+var _fallback: Label
+var _credit: Label
+var _theme_label: Label
+var _meaning_label: Label
+var _meaning: Label
+var _source_basis: Label
+var _synthesis: Label
+var _outgoing_detail: Control
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	_build_header()
-	_build_map()
-	_build_interpretation()
-	_build_footer()
-	# A clipped, noninteractive outgoing copy enables a real detail crossfade.
-	add_child(_outgoing_detail)
-	move_child(_outgoing_detail, _sources.get_index())
-	_outgoing_detail.clip_contents = true
-	_outgoing_detail.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_outgoing_detail.hide()
-	_scroll.gui_input.connect(_reading_input.bind(_scroll))
-	_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+	_build_presentation()
 	_header_utilities = HeaderUtilities.new(self, _pending)
 	add_to_group("lingayen_church_narration")
 	resized.connect(_on_resized)
@@ -68,7 +68,7 @@ func _style_label(label: Label, font_size: int, secondary: bool = false) -> void
 		label.add_theme_color_override("font_color", SECONDARY)
 
 func _build_header() -> void:
-	var header := $Main/Margin/Layout/Header
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -88,13 +88,13 @@ func _build_header() -> void:
 	_close.custom_minimum_size = Vector2(80, 56)
 	_close.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	header.add_theme_constant_override("separation", 12)
-	$Main/Margin/Layout/Controls.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
 	_style_label(_prompt, 18, true)
-	$Main/Margin/Layout.add_child(_prompt)
-	$Main/Margin/Layout.move_child(_prompt, 1)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_prompt)
+	_presentation_root.get_node("Main/Margin/Layout").move_child(_prompt, 1)
 
 func _build_map() -> void:
-	var old_sections := $Main/Margin/Layout/Sections
+	var old_sections := _presentation_root.get_node("Main/Margin/Layout/Sections")
 	old_sections.get_parent().remove_child(old_sections)
 	old_sections.queue_free()
 	_concepts.clear()
@@ -103,8 +103,8 @@ func _build_map() -> void:
 	_map.size_flags_stretch_ratio = 0.6
 	_map.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_information.size_flags_stretch_ratio = 0.4
-	%Columns.add_child(_map)
-	%Columns.move_child(_map, 0)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_child(_map)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").move_child(_map, 0)
 	for i in 4:
 		var line := Line2D.new()
 		line.default_color = NEUTRAL
@@ -115,12 +115,14 @@ func _build_map() -> void:
 		_map.add_child(card)
 		_cards.append(card)
 		_concepts.append(card)
-		card.pressed.connect(set_selected_theme.bind(i + 1))
-		card.gui_input.connect(_card_input.bind(i))
+		if not Engine.is_editor_hint():
+			card.pressed.connect(set_selected_theme.bind(i + 1))
+			card.gui_input.connect(_card_input.bind(i))
 	_map.add_child(_center)
 	_concepts.append(_center)
 	_center.custom_minimum_size = Vector2(160, 56)
-	_center.pressed.connect(set_selected_theme.bind(ThemeSelection.NONE))
+	if not Engine.is_editor_hint():
+		_center.pressed.connect(set_selected_theme.bind(ThemeSelection.NONE))
 	var frame := StyleBoxFlat.new()
 	frame.bg_color = Color("12231e")
 	frame.border_color = Color("887c55")
@@ -159,7 +161,7 @@ func _build_interpretation() -> void:
 	text.move_child(_heading, 0)
 	text.add_child(_theme_label)
 	text.move_child(_theme_label, 0)
-	$Main/Margin/Layout/Columns/Information/Meta.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Columns/Information/Meta").hide()
 	_style_label(_theme_label, 15, true)
 	_style_label(_heading, 24)
 	_style_label(_body, 19)
@@ -176,7 +178,7 @@ func _build_interpretation() -> void:
 	_source_close.custom_minimum_size.y = 56
 
 func _build_footer() -> void:
-	_takeaway.reparent($Main/Margin/Layout)
+	_takeaway.reparent(_presentation_root.get_node("Main/Margin/Layout"))
 	_takeaway.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_style_label(_takeaway, 17, true)
 
@@ -184,13 +186,19 @@ func _entry() -> LCEND01ThemeContent:
 	return null if selected_theme == ThemeSelection.NONE else (content as LCEND01Content).themes[selected_theme - 1]
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is LCEND01Content:
 		return false
 	var summary := content as LCEND01Content
@@ -208,6 +216,8 @@ func open_interaction() -> bool:
 	return true
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_panel_tween()
 	_closing = false
 	_sources.hide()
@@ -219,6 +229,8 @@ func reset_hotspot() -> void:
 		_cards[0].grab_focus()
 
 func set_selected_theme(theme: ThemeSelection) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or not content is LCEND01Content or _closing or _sources.visible:
 		return
 	var summary := content as LCEND01Content
@@ -228,27 +240,7 @@ func set_selected_theme(theme: ThemeSelection) -> void:
 	if _open and animate_transitions:
 		_capture_outgoing_detail()
 	selected_theme = theme if theme >= ThemeSelection.NONE and theme <= ThemeSelection.LIVING_HERITAGE else ThemeSelection.NONE
-	_title.text = summary.title.to_upper()
-	_subtitle.text = summary.subtitle
-	_prompt.text = summary.prompt
-	_takeaway.text = summary.reflection_prompt
-	_image.texture = summary.center_media
-	_image.visible = summary.center_media != null
-	_image.accessibility_name = summary.center_media_caption
-	_fallback.text = summary.center_fallback
-	_fallback.visible = summary.center_media == null
-	_center_title.text = summary.center_media_caption
-	_center.accessibility_name = summary.center_accessible_name
-	_center.tooltip_text = summary.center_accessible_name
-	_credit.text = summary.center_media_credit if summary.center_media != null else ""
-	_credit.visible = summary.center_media != null
-	if selected_theme == ThemeSelection.NONE:
-		render_overview()
-	else:
-		render_theme()
-	update_theme_cards()
-	update_connectors()
-	update_center_context()
+	_apply_presentation()
 	update_narration_state()
 	_scroll.scroll_vertical = 0
 	_resize_layout()
@@ -319,11 +311,15 @@ func _capture_outgoing_detail() -> void:
 	_outgoing_detail.show()
 
 func update_narration_state() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.bind_narration(self, (content as LCEND01Content).narration)
 	_pending.text = (content as LCEND01Content).narration_pending
 	_update_speaker()
 
 func _play_transition() -> void:
+	if Engine.is_editor_hint():
+		return
 	_transition = create_tween().set_parallel(true)
 	if selected_theme != ThemeSelection.NONE:
 		var card := _cards[selected_theme - 1]
@@ -341,6 +337,8 @@ func _play_transition() -> void:
 	_transition.chain().tween_callback(_settle_transition)
 
 func cancel_active_tweens() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _transition != null and _transition.is_valid():
 		_transition.kill()
 	_transition = null
@@ -361,21 +359,26 @@ func _settle_transition() -> void:
 		line.modulate.a = 1.0
 
 func _is_compact() -> bool:
-	return size.x < 1000 or size.y < 550
+	return _presentation_root.size.x < 1000 or _presentation_root.size.y < 550
 
 func _on_resized() -> void:
+	if Engine.is_editor_hint():
+		return
 	# A resize settles the outgoing copy before its old geometry becomes stale.
 	cancel_active_tweens()
 	_resize_layout()
 
 func _resize_layout() -> void:
+	if not is_instance_valid(_presentation_root):
+		return
+	EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
 	var compact := _is_compact()
 	for side in ["left", "top", "right", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 16)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 6 if compact else 12)
-	%Columns.add_theme_constant_override("separation", 12 if compact else 24)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 16)
+	_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 6 if compact else 12)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_theme_constant_override("separation", 12 if compact else 24)
 	_title.add_theme_font_size_override("font_size", 22 if compact else 28)
 	_prompt.add_theme_font_size_override("font_size", 16 if compact else 18)
 	_heading.add_theme_font_size_override("font_size", 20 if compact else 24)
@@ -395,7 +398,9 @@ func _resize_layout() -> void:
 		update_theme_cards()
 		update_center_context()
 	_layout_map()
-	if _header_utilities != null:
+	if Engine.is_editor_hint():
+		HeaderUtilities.resize_presentation(self, _pending, _presentation_root.size.x)
+	elif _header_utilities != null:
 		_header_utilities.resize()
 
 
@@ -431,6 +436,8 @@ func _layout_map() -> void:
 		_connectors[i].points = PackedVector2Array([from, to])
 
 func _card_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _sources.visible or _closing or not event.is_pressed():
 		return
 	var next := index
@@ -443,6 +450,8 @@ func _card_input(event: InputEvent, index: int) -> void:
 	_cards[next].grab_focus()
 
 func _reading_input(event: InputEvent, scroll: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not event is InputEventKey or not event.is_pressed():
 		return
 	var movement := 0
@@ -457,6 +466,8 @@ func _reading_input(event: InputEvent, scroll: ScrollContainer) -> void:
 	scroll.scroll_vertical += movement
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing or _sources.visible:
 		return
 	cancel_active_tweens()
@@ -469,18 +480,26 @@ func open_sources() -> void:
 	sources_opened.emit()
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.update_speaker(self, _pending)
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.toggle_narration(self)
 
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing:
 		return
 	cancel_active_tweens()
@@ -492,6 +511,8 @@ func close_interaction() -> void:
 	_panel_tween.tween_callback(_finish_close)
 
 func _finish_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_panel_tween()
 	_closing = false
 	super.close_interaction()
@@ -499,20 +520,113 @@ func _finish_close() -> void:
 	close_requested.emit()
 
 func _cancel_panel_tween() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _panel_tween != null and _panel_tween.is_valid():
 		_panel_tween.kill()
 	_panel_tween = null
 	modulate.a = 1.0
 
 func _visibility_changed() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and not is_visible_in_tree():
 		cancel_active_tweens()
 		_finish_close()
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	cancel_active_tweens()
 	_cancel_panel_tween()
 	super._exit_tree()
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.sync_focus(self)
+
+
+func _build_presentation() -> void:
+	_subtitle = Label.new()
+	_pending = Label.new()
+	_prompt = Label.new()
+	_map = Control.new()
+	_center = Button.new()
+	_center_title = Label.new()
+	_context = VBoxContainer.new()
+	_primary = Label.new()
+	_secondary = Label.new()
+	_fallback = Label.new()
+	_credit = Label.new()
+	_theme_label = Label.new()
+	_meaning_label = Label.new()
+	_meaning = Label.new()
+	_source_basis = Label.new()
+	_synthesis = Label.new()
+	_outgoing_detail = Control.new()
+	_cards.clear()
+	_connectors.clear()
+
+	_build_header()
+	_build_map()
+	_build_interpretation()
+	_build_footer()
+	# A clipped, noninteractive outgoing copy enables a real detail crossfade.
+	_presentation_root.add_child(_outgoing_detail)
+	_presentation_root.move_child(_outgoing_detail, _sources.get_index())
+	_outgoing_detail.clip_contents = true
+	_outgoing_detail.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_outgoing_detail.hide()
+	if not Engine.is_editor_hint():
+		_scroll.gui_input.connect(_reading_input.bind(_scroll))
+		_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+
+
+func _apply_presentation() -> void:
+	var summary := content as LCEND01Content
+	_title.text = summary.title.to_upper()
+	_subtitle.text = summary.subtitle
+	_prompt.text = summary.prompt
+	_takeaway.text = summary.reflection_prompt
+	_image.texture = summary.center_media
+	_image.visible = summary.center_media != null
+	_image.accessibility_name = summary.center_media_caption
+	_fallback.text = summary.center_fallback
+	_fallback.visible = summary.center_media == null
+	_center_title.text = summary.center_media_caption
+	_center.accessibility_name = summary.center_accessible_name
+	_center.tooltip_text = summary.center_accessible_name
+	_credit.text = summary.center_media_credit if summary.center_media != null else ""
+	_credit.visible = summary.center_media != null
+	if selected_theme == ThemeSelection.NONE:
+		render_overview()
+	else:
+		render_theme()
+	update_theme_cards()
+	update_connectors()
+	update_center_context()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint():
+		super._unhandled_input(event)
+
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	selected_theme = ThemeSelection.NONE
+	_apply_presentation()
+	_map.resized.connect(_layout_map)
+	EditorPresentation.finish(self, _presentation_root, _pending, content.narration)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()

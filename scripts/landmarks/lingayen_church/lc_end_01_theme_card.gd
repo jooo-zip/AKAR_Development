@@ -1,3 +1,4 @@
+@tool
 class_name LCEND01ThemeCard
 extends Button
 ## Presentation only: the owner supplies state and spatial focus behavior.

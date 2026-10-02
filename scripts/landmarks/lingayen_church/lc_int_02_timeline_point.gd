@@ -1,3 +1,4 @@
+@tool
 class_name LCINT02TimelinePoint
 extends Button
 ## A date's hit region and visual state only; chronology belongs to the owner.

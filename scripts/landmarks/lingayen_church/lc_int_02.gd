@@ -1,4 +1,11 @@
+@tool
 extends ConferenceRoomInteraction
+
+const EditorPresentation = preload("res://scripts/landmarks/lingayen_church/lc_editor_presentation.gd")
+const EDITOR_VIEW_NAME := EditorPresentation.VIEW_NAME
+var _presentation_root: Control
+@export_tool_button("Refresh Editor Preview", "Reload") var refresh_editor_preview: Callable = _refresh_editor_preview
+
 
 const HeaderUtilities = preload("res://scripts/landmarks/lingayen_church/lc_header_utilities.gd")
 var _header_utilities: RefCounted
@@ -23,42 +30,41 @@ var selected_timeline_state: TimelineState = TimelineState.NONE
 var _reveal: Tween
 var _panel_tween: Tween
 var _closing: bool = false
-var _subtitle := Label.new()
-var _pending := Label.new()
-var _prompt := Label.new()
-var _time_window := VBoxContainer.new()
-var _stage := Control.new()
-var _stage_background := Panel.new()
-var _outgoing := TextureRect.new()
-var _missing := Label.new()
-var _diagram := VBoxContainer.new()
+var _subtitle: Label
+var _pending: Label
+var _prompt: Label
+var _time_window: VBoxContainer
+var _stage: Control
+var _stage_background: Panel
+var _outgoing: TextureRect
+var _missing: Label
+var _diagram: VBoxContainer
 var _transform_labels: Array[Label] = []
 var _connectors: Array[Control] = []
-var _caption := Label.new()
-var _credit := Label.new()
-var _date := Label.new()
-var _era := Label.new()
-var _source_basis := Label.new()
-var _note := VBoxContainer.new()
-var _note_title := Label.new()
-var _note_body := Label.new()
-var _era_strip := HBoxContainer.new()
+var _caption: Label
+var _credit: Label
+var _date: Label
+var _era: Label
+var _source_basis: Label
+var _note: VBoxContainer
+var _note_title: Label
+var _note_body: Label
+var _era_strip: HBoxContainer
 var _era_panels: Array[PanelContainer] = []
 var _era_labels: Array[Label] = []
-var _ribbon := Control.new()
-var _ribbon_line := Line2D.new()
-var _points_row := HBoxContainer.new()
+var _ribbon: Control
+var _ribbon_line: Line2D
+var _points_row: HBoxContainer
 var _points: Array[LCINT02TimelinePoint] = []
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_refresh_editor_preview.call_deferred()
+		return
+	_presentation_root = self
 	super._ready()
-	_build_header()
-	_build_time_window()
-	_build_interpretation()
-	_build_chronology()
-	_scroll.gui_input.connect(_reading_input.bind(_scroll))
-	_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+	_build_presentation()
 	_header_utilities = HeaderUtilities.new(self, _pending)
 	add_to_group("lingayen_church_narration")
 	resized.connect(_resize_layout)
@@ -79,7 +85,7 @@ func _style_label(label: Label, font_size: int, secondary: bool = false) -> void
 
 
 func _build_header() -> void:
-	var header := $Main/Margin/Layout/Header
+	var header := _presentation_root.get_node("Main/Margin/Layout/Header")
 	var titles := VBoxContainer.new()
 	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(titles)
@@ -100,10 +106,10 @@ func _build_header() -> void:
 	_close.custom_minimum_size = Vector2(80, 56)
 	_close.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	header.add_theme_constant_override("separation", 12)
-	$Main/Margin/Layout/Controls.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
 	_style_label(_prompt, 18, true)
-	$Main/Margin/Layout.add_child(_prompt)
-	$Main/Margin/Layout.move_child(_prompt, 1)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_prompt)
+	_presentation_root.get_node("Main/Margin/Layout").move_child(_prompt, 1)
 
 
 func _build_time_window() -> void:
@@ -111,8 +117,8 @@ func _build_time_window() -> void:
 	_time_window.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_time_window.size_flags_stretch_ratio = 0.6
 	_information.size_flags_stretch_ratio = 0.4
-	%Columns.add_child(_time_window)
-	%Columns.move_child(_time_window, 0)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_child(_time_window)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").move_child(_time_window, 0)
 	_stage.name = "VisualStage"
 	_stage.clip_contents = true
 	_stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -180,7 +186,7 @@ func _build_interpretation() -> void:
 	date_era.add_child(_era)
 	_era.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_era.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	$Main/Margin/Layout/Columns/Information/Meta.hide()
+	_presentation_root.get_node("Main/Margin/Layout/Columns/Information/Meta").hide()
 	_style_label(_era, 15, true)
 	_style_label(_date, 28)
 	_date.autowrap_mode = TextServer.AUTOWRAP_OFF
@@ -200,14 +206,14 @@ func _build_interpretation() -> void:
 
 
 func _build_chronology() -> void:
-	var old_sections := $Main/Margin/Layout/Sections
+	var old_sections := _presentation_root.get_node("Main/Margin/Layout/Sections")
 	old_sections.get_parent().remove_child(old_sections)
 	old_sections.queue_free()
 	_concepts.clear()
 	_era_strip.name = "HistoricalEras"
 	_era_strip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_era_strip.add_theme_constant_override("separation", 4)
-	$Main/Margin/Layout.add_child(_era_strip)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_era_strip)
 	for era_name in ERA_NAMES:
 		var panel := PanelContainer.new()
 		panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -223,7 +229,7 @@ func _build_chronology() -> void:
 		_era_labels.append(label)
 	_ribbon.custom_minimum_size.y = 56
 	_ribbon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	$Main/Margin/Layout.add_child(_ribbon)
+	_presentation_root.get_node("Main/Margin/Layout").add_child(_ribbon)
 	_ribbon.add_child(_ribbon_line)
 	_ribbon_line.width = 1
 	_ribbon_line.default_color = Color("646a58")
@@ -235,9 +241,10 @@ func _build_chronology() -> void:
 		_points_row.add_child(point)
 		_points.append(point)
 		_concepts.append(point)
-		point.pressed.connect(set_timeline_state.bind(i + 1))
-		point.gui_input.connect(_point_input.bind(i))
-	_takeaway.reparent($Main/Margin/Layout)
+		if not Engine.is_editor_hint():
+			point.pressed.connect(set_timeline_state.bind(i + 1))
+			point.gui_input.connect(_point_input.bind(i))
+	_takeaway.reparent(_presentation_root.get_node("Main/Margin/Layout"))
 	_takeaway.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_style_label(_takeaway, 16, true)
 
@@ -259,15 +266,21 @@ func get_media_mode() -> MediaMode:
 
 
 func _open_standalone() -> void:
+	if Engine.is_editor_hint():
+		return
 	if get_tree().current_scene == self:
 		open_hotspot()
 
 
 func open_hotspot() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	return open_interaction()
 
 
 func open_interaction() -> bool:
+	if Engine.is_editor_hint():
+		return false
 	if not is_node_ready() or not content is LCINT02Content:
 		return false
 	var history := content as LCINT02Content
@@ -286,6 +299,8 @@ func open_interaction() -> bool:
 
 
 func reset_hotspot() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_panel_tween()
 	_closing = false
 	_sources.hide()
@@ -298,6 +313,8 @@ func reset_hotspot() -> void:
 
 
 func set_timeline_state(state: TimelineState) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not is_node_ready() or not content is LCINT02Content or _closing or _sources.visible:
 		return
 	var history := content as LCINT02Content
@@ -307,53 +324,8 @@ func set_timeline_state(state: TimelineState) -> void:
 	var previous_texture := _image.texture
 	var previous_rect := Rect2(_image.position, _image.size)
 	selected_timeline_state = state if state >= TimelineState.NONE and state <= TimelineState.LEADERSHIP_1981 else TimelineState.NONE
+	_apply_presentation()
 	var entry := _entry()
-	_title.text = history.title.to_upper()
-	_subtitle.text = history.subtitle
-	_prompt.text = history.prompt
-	_takeaway.text = history.takeaway
-	_era.text = entry.era_display if entry != null else ""
-	_date.text = entry.date_display if entry != null else ""
-	_heading.text = entry.title if entry != null else history.overview_heading
-	_body.text = entry.explanation if entry != null else history.overview_body
-	_source_basis.text = "Source: " + entry.source_basis if entry != null else ""
-	_note.visible = entry != null and entry.show_historical_note
-	_note_title.text = entry.historical_note_title if _note.visible else ""
-	_note_body.text = entry.historical_note_body if _note.visible else ""
-	for label in [_date, _era, _source_basis]:
-		label.visible = not label.text.is_empty()
-	_diagram.visible = entry != null
-	for i in 3:
-		_transform_labels[i].text = [entry.context_label, entry.change_label, entry.result_label][i] if entry != null else ""
-		_transform_labels[i].visible = not _transform_labels[i].text.is_empty()
-	_connectors[0].visible = entry != null
-	_connectors[1].visible = entry != null and not entry.result_label.is_empty()
-	for connector in _connectors:
-		connector.get_parent().visible = connector.visible
-		connector.queue_redraw()
-	var media_mode := get_media_mode()
-	_image.texture = history.overview_media if entry == null else (entry.media if media_mode != MediaMode.TRANSFORMATION_ONLY else null)
-	_image.visible = media_mode != MediaMode.TRANSFORMATION_ONLY and _image.texture != null
-	_image.accessibility_name = history.overview_heading if entry == null else entry.media_caption
-	_missing.visible = media_mode != MediaMode.TRANSFORMATION_ONLY and _image.texture == null
-	_caption.text = entry.media_caption if entry != null and media_mode != MediaMode.TRANSFORMATION_ONLY else ""
-	_credit.text = history.overview_media_credit if entry == null else (entry.media_credit if media_mode != MediaMode.TRANSFORMATION_ONLY else "")
-	_caption.visible = not _caption.text.is_empty()
-	_credit.visible = not _credit.text.is_empty()
-	for i in 8:
-		_points[i].configure(history.milestones[i].year_short, history.milestones[i].title)
-		_points[i].apply_selection(selected_timeline_state == i + 1)
-	for i in 4:
-		var active := get_active_era() == i + 1
-		var style := StyleBoxFlat.new()
-		style.bg_color = Color("303626") if active else Color("14211c")
-		style.border_color = GOLD if active else Color("414b3e")
-		style.set_border_width_all(1)
-		style.content_margin_top = 3
-		style.content_margin_bottom = 3
-		_era_panels[i].add_theme_stylebox_override("panel", style)
-		_era_labels[i].add_theme_color_override("font_color", GOLD if active else SECONDARY)
-		_era_labels[i].accessibility_name = ERA_NAMES[i] + (", active era" if active else "")
 	HeaderUtilities.bind_narration(self, content.narration_stream)
 	_update_speaker()
 	_scroll.scroll_vertical = 0
@@ -373,6 +345,8 @@ func set_timeline_state(state: TimelineState) -> void:
 
 
 func play_transformation_reveal() -> void:
+	if Engine.is_editor_hint():
+		return
 	# All text/visibility/state is already final. Only presentation values animate.
 	_reveal = create_tween().set_parallel(true)
 	var point := _points[selected_timeline_state - 1]
@@ -409,6 +383,8 @@ func _reveal_connector(connector: Control, delay: float, duration: float) -> voi
 
 
 func cancel_active_reveal() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _reveal != null and _reveal.is_valid():
 		_reveal.kill()
 	_reveal = null
@@ -472,13 +448,16 @@ func _layout_ribbon() -> void:
 
 
 func _resize_layout() -> void:
+	if not is_instance_valid(_presentation_root):
+		return
+	EditorPresentation.resize(self, _presentation_root)
 	if not is_node_ready():
 		return
-	var compact := size.x < 1000 or size.y < 550
+	var compact := _presentation_root.size.x < 1000 or _presentation_root.size.y < 550
 	for side in ["left", "right", "top", "bottom"]:
-		$Main/Margin.add_theme_constant_override("margin_" + side, 8 if compact else 16)
-	$Main/Margin/Layout.add_theme_constant_override("separation", 4 if compact else 8)
-	%Columns.add_theme_constant_override("separation", 12 if compact else 24)
+		_presentation_root.get_node("Main/Margin").add_theme_constant_override("margin_" + side, 8 if compact else 16)
+	_presentation_root.get_node("Main/Margin/Layout").add_theme_constant_override("separation", 4 if compact else 8)
+	_presentation_root.get_node("Main/Margin/Layout/Columns").add_theme_constant_override("separation", 12 if compact else 24)
 	_title.add_theme_font_size_override("font_size", 22 if compact else 28)
 	_prompt.add_theme_font_size_override("font_size", 16 if compact else 18)
 	_date.add_theme_font_size_override("font_size", 22 if compact else 28)
@@ -507,11 +486,15 @@ func _resize_layout() -> void:
 		label.add_theme_font_size_override("font_size", 11 if compact else 14)
 	_layout_visual()
 	_layout_ribbon()
-	if _header_utilities != null:
+	if Engine.is_editor_hint():
+		HeaderUtilities.resize_presentation(self, _pending, _presentation_root.size.x)
+	elif _header_utilities != null:
 		_header_utilities.resize()
 
 
 func _point_input(event: InputEvent, index: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if _sources.visible or _closing:
 		return
 	var step := -1 if event.is_action_pressed(&"ui_left") else (1 if event.is_action_pressed(&"ui_right") else 0)
@@ -521,6 +504,8 @@ func _point_input(event: InputEvent, index: int) -> void:
 
 
 func _reading_input(event: InputEvent, scroll: ScrollContainer) -> void:
+	if Engine.is_editor_hint():
+		return
 	var movement := 0
 	if event.is_action_pressed(&"ui_down"): movement = 40
 	elif event.is_action_pressed(&"ui_up"): movement = -40
@@ -534,6 +519,8 @@ func _reading_input(event: InputEvent, scroll: ScrollContainer) -> void:
 
 
 func open_sources() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing or _sources.visible:
 		return
 	cancel_active_reveal()
@@ -547,19 +534,27 @@ func open_sources() -> void:
 
 
 func _update_speaker() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.update_speaker(self, _pending)
 
 
 func toggle_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.toggle_narration(self)
 
 
 func stop_narration() -> void:
+	if Engine.is_editor_hint():
+		return
 	_audio.stream_paused = false
 	super.stop_narration()
 
 
 func close_interaction() -> void:
+	if Engine.is_editor_hint():
+		return
 	if not _open or _closing:
 		return
 	cancel_active_reveal()
@@ -572,6 +567,8 @@ func close_interaction() -> void:
 
 
 func _finish_close() -> void:
+	if Engine.is_editor_hint():
+		return
 	_cancel_panel_tween()
 	_closing = false
 	super.close_interaction()
@@ -579,6 +576,8 @@ func _finish_close() -> void:
 
 
 func _cancel_panel_tween() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _panel_tween != null and _panel_tween.is_valid():
 		_panel_tween.kill()
 	_panel_tween = null
@@ -586,15 +585,134 @@ func _cancel_panel_tween() -> void:
 
 
 func _visibility_changed() -> void:
+	if Engine.is_editor_hint():
+		return
 	if _open and not is_visible_in_tree():
 		cancel_active_reveal()
 		_finish_close()
 
 
 func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	cancel_active_reveal()
 	_cancel_panel_tween()
 	super._exit_tree()
 
 func _sync_focus() -> void:
+	if Engine.is_editor_hint():
+		return
 	HeaderUtilities.sync_focus(self)
+
+
+func _build_presentation() -> void:
+	_subtitle = Label.new()
+	_pending = Label.new()
+	_prompt = Label.new()
+	_time_window = VBoxContainer.new()
+	_stage = Control.new()
+	_stage_background = Panel.new()
+	_outgoing = TextureRect.new()
+	_missing = Label.new()
+	_diagram = VBoxContainer.new()
+	_caption = Label.new()
+	_credit = Label.new()
+	_date = Label.new()
+	_era = Label.new()
+	_source_basis = Label.new()
+	_note = VBoxContainer.new()
+	_note_title = Label.new()
+	_note_body = Label.new()
+	_era_strip = HBoxContainer.new()
+	_ribbon = Control.new()
+	_ribbon_line = Line2D.new()
+	_points_row = HBoxContainer.new()
+	_transform_labels.clear()
+	_connectors.clear()
+	_era_panels.clear()
+	_era_labels.clear()
+	_points.clear()
+
+	_build_header()
+	_build_time_window()
+	_build_interpretation()
+	_build_chronology()
+	if not Engine.is_editor_hint():
+		_scroll.gui_input.connect(_reading_input.bind(_scroll))
+		_source_scroll.gui_input.connect(_reading_input.bind(_source_scroll))
+
+
+func _apply_presentation() -> void:
+	var history := content as LCINT02Content
+	var entry := _entry()
+	_title.text = history.title.to_upper()
+	_subtitle.text = history.subtitle
+	_prompt.text = history.prompt
+	_takeaway.text = history.takeaway
+	_era.text = entry.era_display if entry != null else ""
+	_date.text = entry.date_display if entry != null else ""
+	_heading.text = entry.title if entry != null else history.overview_heading
+	_body.text = entry.explanation if entry != null else history.overview_body
+	_source_basis.text = "Source: " + entry.source_basis if entry != null else ""
+	_note.visible = entry != null and entry.show_historical_note
+	_note_title.text = entry.historical_note_title if _note.visible else ""
+	_note_body.text = entry.historical_note_body if _note.visible else ""
+	for label in [_date, _era, _source_basis]:
+		label.visible = not label.text.is_empty()
+	_diagram.visible = entry != null
+	for i in 3:
+		_transform_labels[i].text = [entry.context_label, entry.change_label, entry.result_label][i] if entry != null else ""
+		_transform_labels[i].visible = not _transform_labels[i].text.is_empty()
+	_connectors[0].visible = entry != null
+	_connectors[1].visible = entry != null and not entry.result_label.is_empty()
+	for connector in _connectors:
+		connector.get_parent().visible = connector.visible
+		connector.queue_redraw()
+	var media_mode := get_media_mode()
+	_image.texture = history.overview_media if entry == null else (entry.media if media_mode != MediaMode.TRANSFORMATION_ONLY else null)
+	_image.visible = media_mode != MediaMode.TRANSFORMATION_ONLY and _image.texture != null
+	_image.accessibility_name = history.overview_heading if entry == null else entry.media_caption
+	_missing.visible = media_mode != MediaMode.TRANSFORMATION_ONLY and _image.texture == null
+	_caption.text = entry.media_caption if entry != null and media_mode != MediaMode.TRANSFORMATION_ONLY else ""
+	_credit.text = history.overview_media_credit if entry == null else (entry.media_credit if media_mode != MediaMode.TRANSFORMATION_ONLY else "")
+	_caption.visible = not _caption.text.is_empty()
+	_credit.visible = not _credit.text.is_empty()
+	for i in 8:
+		_points[i].configure(history.milestones[i].year_short, history.milestones[i].title)
+		_points[i].apply_selection(selected_timeline_state == i + 1)
+	for i in 4:
+		var active := get_active_era() == i + 1
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color("303626") if active else Color("14211c")
+		style.border_color = GOLD if active else Color("414b3e")
+		style.set_border_width_all(1)
+		style.content_margin_top = 3
+		style.content_margin_bottom = 3
+		_era_panels[i].add_theme_stylebox_override("panel", style)
+		_era_labels[i].add_theme_color_override("font_color", GOLD if active else SECONDARY)
+		_era_labels[i].accessibility_name = ERA_NAMES[i] + (", active era" if active else "")
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint():
+		super._unhandled_input(event)
+
+
+func close_sources() -> void:
+	if not Engine.is_editor_hint():
+		super.close_sources()
+
+
+func _refresh_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready() or content == null:
+		return
+	_presentation_root = EditorPresentation.begin(self)
+	_build_presentation()
+	selected_timeline_state = TimelineState.NONE
+	_apply_presentation()
+	_stage.resized.connect(_layout_visual)
+	_ribbon.resized.connect(_layout_ribbon)
+	EditorPresentation.finish(self, _presentation_root, _pending, content.narration_stream)
+	if not resized.is_connected(_resize_layout):
+		resized.connect(_resize_layout)
+	_resize_layout()
