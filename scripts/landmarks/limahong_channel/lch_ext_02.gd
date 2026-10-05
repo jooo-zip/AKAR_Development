@@ -1,4 +1,5 @@
 extends ConferenceRoomInteraction
+const Lifecycle = preload("res://scripts/landmarks/limahong_channel/lch_lifecycle.gd")
 const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
 const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
 var _header_utilities: HeaderUtilities
@@ -9,111 +10,32 @@ var current_stage: HistoricalStage = HistoricalStage.MANILA
 var route_progress: float = 0.0
 var _route_tween: Tween
 var _stage_tween: Tween
-var _map_region := VBoxContainer.new()
-var _map_area := Control.new()
-var _route := Line2D.new()
-var _path := Path2D.new()
-var _follower := PathFollow2D.new()
-var _movement := Sprite2D.new()
-var _markers: Array[Label] = []
-var _location_markers: Array[Sprite2D] = []
-var _settlement := Control.new()
-var _settlement_image := Sprite2D.new()
+@onready var _map_region: VBoxContainer = $"Main/Margin/Layout/Columns/MapRegion"
+@onready var _map_area: Control = $"Main/Margin/Layout/Columns/MapRegion/MapArea"
+@onready var _route: Line2D = $"Main/Margin/Layout/Columns/MapRegion/MapArea/RouteLine"
+@onready var _path: Path2D = $"Main/Margin/Layout/Columns/MapRegion/MapArea/RoutePath"
+@onready var _follower: PathFollow2D = $"Main/Margin/Layout/Columns/MapRegion/MapArea/RoutePath/RouteFollower"
+@onready var _movement: Sprite2D = $"Main/Margin/Layout/Columns/MapRegion/MapArea/RoutePath/RouteFollower/RouteShip"
+@onready var _markers: Array[Label] = [$"Main/Margin/Layout/Columns/MapRegion/MapArea/Markers0", $"Main/Margin/Layout/Columns/MapRegion/MapArea/Markers1"]
+@onready var _location_markers: Array[Sprite2D] = [$"Main/Margin/Layout/Columns/MapRegion/MapArea/LocationMarkers0", $"Main/Margin/Layout/Columns/MapRegion/MapArea/LocationMarkers1"]
+@onready var _settlement: Control = $"Main/Margin/Layout/Columns/MapRegion/MapArea/SettlementIcon"
+@onready var _settlement_image: Sprite2D = $"Main/Margin/Layout/Columns/MapRegion/MapArea/SettlementIcon/SettlementImage"
 var _settlement_base_position := Vector2.ZERO
-var _stage_number := Label.new()
-var _timeline := VBoxContainer.new()
-var _notice := Label.new()
-var _date := Label.new()
-var _pending := Label.new()
-var _placeholder := Label.new()
+@onready var _stage_number: Label = $"Main/Margin/Layout/Columns/Information/StageNumber"
+@onready var _timeline: VBoxContainer = $"Main/Margin/Layout/Columns/Information/Timeline"
+@onready var _notice: Label = $"Main/Margin/Layout/Columns/MapRegion/Notice"
+@onready var _date: Label = $"Main/Margin/Layout/Columns/Information/Date"
+@onready var _pending: Label = $"Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot/Pending"
+@onready var _placeholder: Label = $"Main/Margin/Layout/Columns/MapRegion/MapArea/Placeholder"
 var _fitted := Rect2()
 
 func _ready() -> void:
 	super._ready()
-	_map_region.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_map_region.size_flags_stretch_ratio = 1.78
-	%Columns.add_child(_map_region)
-	%Columns.move_child(_map_region, 0)
-	_map_area.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_map_region.add_child(_map_area)
-	_image.reparent(_map_area)
-	_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_image.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_map_area.add_child(_route)
-	_route.name = "RouteLine"
-	_route.antialiased = false
-	_route.width = 3.0
-	_route.default_color = Color("d8c58b")
-	_path.name = "RoutePath"
-	_follower.name = "RouteFollower"
-	_map_area.add_child(_path)
-	_path.add_child(_follower)
-	_follower.loop = false
-	_follower.rotates = false
-	_follower.cubic_interp = false
-	_follower.add_child(_movement)
-	_movement.name = "RouteShip"
+	_bind_authored_content()
 	_configure_sprite(_movement, content.route_ship, 44)
-	_movement.position = Vector2.ZERO
-	_movement.z_index = 2
-	_movement.modulate.a = 0.0
-	for title in ["MANILA", "PANGASINAN"]:
-		var label := Label.new()
-		label.text = title
-		label.add_theme_font_size_override("font_size", 18)
-		label.add_theme_color_override("font_shadow_color", Color.BLACK)
-		label.add_theme_constant_override("shadow_offset_x", 2)
-		label.add_theme_constant_override("shadow_offset_y", 2)
-		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_map_area.add_child(label)
-		_markers.append(label)
-		var marker := Sprite2D.new()
+	for marker in _location_markers:
 		_configure_sprite(marker, content.location_marker, 28)
-		_map_area.add_child(marker)
-		_location_markers.append(marker)
-	_map_area.add_child(_settlement)
-	_settlement.name = "SettlementIcon"
-	_settlement.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_settlement.add_child(_settlement_image)
 	_configure_sprite(_settlement_image, content.fortified_settlement, 44)
-	_placeholder.text = "DEVELOPMENT PLACEHOLDER\nRegional map pending"
-	_placeholder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_placeholder.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_placeholder.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_placeholder.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_map_area.add_child(_placeholder)
-	_map_region.add_child(_notice)
-	_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_notice.add_theme_font_size_override("font_size", 18)
-	_notice.custom_minimum_size.y = 44
-	_information.add_child(_date)
-	_information.move_child(_date, 0)
-	_information.add_child(_stage_number)
-	_information.move_child(_stage_number, 0)
-	_stage_number.add_theme_font_size_override("font_size", 16)
-	_stage_number.add_theme_color_override("font_color", Color("d8c58b"))
-	_information.add_child(_timeline)
-	_timeline.add_theme_constant_override("separation", 6)
-	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_heading.reparent(_body.get_parent())
-	_body.get_parent().move_child(_heading, 0)
-	$Main/Margin/Layout/Columns/Information/Meta.hide()
-	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var header := $Main/Margin/Layout/Header
-	_speaker.reparent(header)
-	header.move_child(_speaker, 1)
-	_sources_button.reparent(header)
-	header.move_child(_sources_button, 2)
-	_sources_button.add_theme_font_size_override("font_size", 16)
-	$Main/Margin/Layout/Controls.hide()
-	_pending.text = "LCH-EXT-02   ·   Narration pending"
-	_pending.add_theme_font_size_override("font_size", 16)
-	$Main/Margin/Layout.add_child(_pending)
-	$Main/Margin/Layout.move_child(_pending, 1)
-	for button in _concepts:
-		button.custom_minimum_size.y = 56
-	_close.custom_minimum_size.y = 56
-	_sources_button.custom_minimum_size.y = 56
 	if display_font != null:
 		for control in [_title, _heading, _date] + _concepts:
 			control.add_theme_font_override("font", display_font)
@@ -342,3 +264,16 @@ func _exit_tree() -> void:
 	_cancel_route()
 	_cancel_stage_effect()
 	super._exit_tree()
+
+func _bind_authored_content() -> void:
+	# Resources remain the only authority for interpretation copy.
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Body").text = content.concepts[0].body
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Heading").text = content.concepts[0].heading
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Takeaway").text = content.learning_takeaway
+	get_node("Main/Margin/Layout/Columns/MapRegion/Notice").text = content.route_notice
+	get_node("Main/Margin/Layout/Header/TitleArea/Label1").text = content.hotspot_id
+	get_node("Main/Margin/Layout/Header/TitleArea/Title").text = content.title
+
+
+func reset_interaction() -> void:
+	Lifecycle.reset(self)

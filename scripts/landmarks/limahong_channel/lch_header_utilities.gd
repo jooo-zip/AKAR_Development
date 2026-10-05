@@ -2,10 +2,10 @@ extends RefCounted
 ## Limahong-only utility toolbar. Existing buttons retain their signals and audio owner.
 const SPEAKER = preload("res://assets/ui/icons/speaker.svg")
 var panel: ConferenceRoomInteraction
-var actions := HBoxContainer.new()
-var utility_area := VBoxContainer.new()
-var title_area := VBoxContainer.new()
-var status_slot := Control.new()
+var actions: HBoxContainer
+var utility_area: VBoxContainer
+var title_area: VBoxContainer
+var status_slot: Control
 var status: Label
 var _styles: Dictionary = {}
 
@@ -13,6 +13,29 @@ func _init(owner_panel: ConferenceRoomInteraction, narration_status: Label, cont
 	panel = owner_panel
 	status = narration_status
 	var header: HBoxContainer = panel.get_node("Main/Margin/Layout/Header")
+	if header.has_node("HeaderUtilityArea"):
+		title_area = header.get_node("TitleArea")
+		utility_area = header.get_node("HeaderUtilityArea")
+		actions = utility_area.get_node("HeaderActions")
+		status_slot = utility_area.get_node("NarrationStatusSlot")
+	else:
+		_build_legacy_header(header, context)
+	for state in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
+		_styles[state] = panel.get_theme_stylebox(state, "Button").duplicate()
+	var disabled: StyleBoxFlat = _styles.normal.duplicate()
+	disabled.bg_color = Color("1f2621")
+	disabled.border_color = Color("666653")
+	_styles.disabled = disabled
+	panel.resized.connect(resize)
+	resize()
+	refresh()
+
+func _build_legacy_header(header: HBoxContainer, context: Control) -> void:
+	# Accepted EXT-03 exception: preserve its tested runtime shell.
+	actions = HBoxContainer.new()
+	utility_area = VBoxContainer.new()
+	title_area = VBoxContainer.new()
+	status_slot = Control.new()
 	var old_titles := panel._title.get_parent()
 	title_area.name = "TitleArea"
 	title_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -56,15 +79,6 @@ func _init(owner_panel: ConferenceRoomInteraction, narration_status: Label, cont
 	for child in header.get_children():
 		if child != title_area and child != utility_area and child is Control:
 			child.hide()
-	for state in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
-		_styles[state] = panel.get_theme_stylebox(state, "Button").duplicate()
-	var disabled: StyleBoxFlat = _styles.normal.duplicate()
-	disabled.bg_color = Color("1f2621")
-	disabled.border_color = Color("666653")
-	_styles.disabled = disabled
-	panel.resized.connect(resize)
-	resize()
-	refresh()
 
 func resize() -> void:
 	var small := panel.size.x < 1050

@@ -1,4 +1,5 @@
 extends ConferenceRoomInteraction
+const Lifecycle = preload("res://scripts/landmarks/limahong_channel/lch_lifecycle.gd")
 const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
 const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
 var _header_utilities: HeaderUtilities
@@ -17,23 +18,23 @@ const INACTIVE_LINE_WIDTH := 2.0
 
 var current_person: CampaignPerson = CampaignPerson.SALCEDO
 var _data: CampaignContent
-var _diagram := Control.new()
-var _lines: Array[Line2D] = []
-var _portraits: Array[TextureRect] = []
-var _placeholders: Array[Label] = []
-var _media_labels: Array[Label] = []
-var _names: Array[Label] = []
-var _roles: Array[Label] = []
-var _selected_badges: Array[Label] = []
+@onready var _diagram: Control = $"Main/Margin/Layout/Columns/RoleDiagram"
+@onready var _lines: Array[Line2D] = [$"Main/Margin/Layout/Columns/RoleDiagram/Connection0", $"Main/Margin/Layout/Columns/RoleDiagram/Connection1", $"Main/Margin/Layout/Columns/RoleDiagram/Connection2"]
+@onready var _portraits: Array[TextureRect] = [$"Main/Margin/Layout/Columns/RoleDiagram/PublicInterior/Portrait", $"Main/Margin/Layout/Columns/RoleDiagram/OfficialFunction/Portrait", $"Main/Margin/Layout/Columns/RoleDiagram/WhyItMatters/Portrait"]
+@onready var _placeholders: Array[Label] = [$"Main/Margin/Layout/Columns/RoleDiagram/PublicInterior/Portrait/Placeholders0", $"Main/Margin/Layout/Columns/RoleDiagram/OfficialFunction/Portrait/Placeholders1", $"Main/Margin/Layout/Columns/RoleDiagram/WhyItMatters/Portrait/Placeholders2"]
+@onready var _media_labels: Array[Label] = [$"Main/Margin/Layout/Columns/RoleDiagram/PublicInterior/Portrait/MediaLabels0", $"Main/Margin/Layout/Columns/RoleDiagram/OfficialFunction/Portrait/MediaLabels1", $"Main/Margin/Layout/Columns/RoleDiagram/WhyItMatters/Portrait/MediaLabels2"]
+@onready var _names: Array[Label] = [$"Main/Margin/Layout/Columns/RoleDiagram/PublicInterior/Names0", $"Main/Margin/Layout/Columns/RoleDiagram/OfficialFunction/Names1", $"Main/Margin/Layout/Columns/RoleDiagram/WhyItMatters/Names2"]
+@onready var _roles: Array[Label] = [$"Main/Margin/Layout/Columns/RoleDiagram/PublicInterior/Roles0", $"Main/Margin/Layout/Columns/RoleDiagram/OfficialFunction/Roles1", $"Main/Margin/Layout/Columns/RoleDiagram/WhyItMatters/Roles2"]
+@onready var _selected_badges: Array[Label] = [$"Main/Margin/Layout/Columns/RoleDiagram/PublicInterior/Portrait/SelectedBadges0", $"Main/Margin/Layout/Columns/RoleDiagram/OfficialFunction/Portrait/SelectedBadges1", $"Main/Margin/Layout/Columns/RoleDiagram/WhyItMatters/Portrait/SelectedBadges2"]
 var _selected_styles: Array[StyleBoxFlat] = []
-var _event := Panel.new()
-var _event_title := Label.new()
-var _event_subtitle := Label.new()
-var _role := Label.new()
-var _connection_heading := Label.new()
-var _connection_body := Label.new()
-var _hint := Label.new()
-var _pending := Label.new()
+@onready var _event: Panel = $"Main/Margin/Layout/Columns/RoleDiagram/CampaignEvent"
+@onready var _event_title: Label = $"Main/Margin/Layout/Columns/RoleDiagram/CampaignEvent/MarginContainer0/VBoxContainer0/EventTitle"
+@onready var _event_subtitle: Label = $"Main/Margin/Layout/Columns/RoleDiagram/CampaignEvent/MarginContainer0/VBoxContainer0/EventSubtitle"
+@onready var _role: Label = $"Main/Margin/Layout/Columns/Information/Role"
+@onready var _connection_heading: Label = $"Main/Margin/Layout/Columns/Information/Scroll/Text/ConnectionHeading"
+@onready var _connection_body: Label = $"Main/Margin/Layout/Columns/Information/Scroll/Text/ConnectionBody"
+@onready var _hint: Label = $"Main/Margin/Layout/Header/TitleArea/HBoxContainer1/Hint"
+@onready var _pending: Label = $"Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot/Pending"
 var _selection_tween: Tween
 var _hint_tween: Tween
 var _hint_dismissed: bool = false
@@ -45,180 +46,34 @@ var _portrait_width: float = 120
 func _ready() -> void:
 	super._ready()
 	_data = content as CampaignContent
-	_build_header()
-	_image.hide()
-	_image.reparent($Main/Margin/Layout/Controls)
-	$Main/Margin/Layout/Controls.hide()
-	_diagram.name = "RoleDiagram"
-	_diagram.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_diagram.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_bind_authored_content()
 	_diagram.accessibility_name = content.prompt
-	%Columns.add_child(_diagram)
-	%Columns.move_child(_diagram, 0)
 	for i in 3:
-		var line := Line2D.new()
-		line.name = "Connection%d" % i
-		line.antialiased = true
-		_diagram.add_child(line)
-		_lines.append(line)
-	_event.name = "CampaignEvent"
-	_event.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var event_style := _card_style(GOLD, 1)
-	event_style.bg_color = Color(0.12, 0.17, 0.145)
-	_event.add_theme_stylebox_override("panel", event_style)
-	_diagram.add_child(_event)
-	var event_margin := MarginContainer.new()
-	event_margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_event.add_child(event_margin)
-	event_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "top", "right", "bottom"]:
-		event_margin.add_theme_constant_override("margin_" + side, 8)
-	var event_text := VBoxContainer.new()
-	event_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	event_text.alignment = BoxContainer.ALIGNMENT_CENTER
-	event_text.add_theme_constant_override("separation", 4)
-	event_margin.add_child(event_text)
-	event_text.add_child(_event_title)
-	event_text.add_child(_event_subtitle)
-	for label in [_event_title, _event_subtitle]:
-		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		label.add_theme_constant_override("line_spacing", 0)
-	_event_title.text = _data.event_title
-	_event_title.add_theme_color_override("font_color", GOLD)
-	_event_subtitle.text = _data.event_subtitle
-	for i in 3:
-		_build_card(i)
-	$Main/Margin/Layout/Sections.hide()
-	_build_information()
+		var button := _concepts[i]
+		button.text = ""
+		button.gui_input.connect(_card_input.bind(i))
+		button.accessibility_name = _person(i).heading + ". " + _person(i).role_label
+		button.tooltip_text = button.accessibility_name
+		# Selection animation styles belong to this instance, never the PackedScene.
+		var selected: StyleBoxFlat = button.get_theme_stylebox("pressed").duplicate()
+		_selected_styles.append(selected)
+		button.add_theme_stylebox_override("pressed", selected)
+		button.add_theme_stylebox_override("hover_pressed", selected)
 	_diagram.resized.connect(_layout_diagram)
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
-	_header_utilities = HeaderUtilities.new(self, _pending, _pending.get_parent())
+	_header_utilities = HeaderUtilities.new(self, _pending)
 	add_child(SourcesOverlay.new(self))
 
-func _build_header() -> void:
-	var header := $Main/Margin/Layout/Header
-	_speaker.reparent(header)
-	_sources_button.reparent(header)
-	header.move_child(_close, -1)
-	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_speaker.text = "LISTEN"
-	_speaker.custom_minimum_size = Vector2(112, 48)
-	_speaker.expand_icon = true
-	_speaker.add_theme_constant_override("icon_max_width", 24)
-	var subtitle := HBoxContainer.new()
-	subtitle.add_theme_constant_override("separation", 12)
-	$Main/Margin/Layout.add_child(subtitle)
-	$Main/Margin/Layout.move_child(subtitle, 1)
-	var code := Label.new()
-	code.text = content.hotspot_id
-	code.add_theme_font_size_override("font_size", 13)
-	code.add_theme_color_override("font_color", GOLD)
-	subtitle.add_child(code)
-	_hint.text = _data.comparison_hint
-	_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_hint.add_theme_font_size_override("font_size", 12)
-	subtitle.add_child(_hint)
-	_pending.text = "Narration pending"
-	_pending.add_theme_font_size_override("font_size", 13)
-	subtitle.add_child(_pending)
 
 
-func _build_card(index: int) -> void:
-	var person := _person(index)
-	var button := _concepts[index]
-	button.reparent(_diagram)
-	button.text = ""
-	button.custom_minimum_size = Vector2.ZERO
-	button.gui_input.connect(_card_input.bind(index))
-	button.add_theme_stylebox_override("normal", _card_style(NEUTRAL, 1))
-	button.add_theme_stylebox_override("hover", _card_style(Color(0.90, 0.88, 0.76), 2))
-	var selected := _card_style(GOLD, 3)
-	_selected_styles.append(selected)
-	button.add_theme_stylebox_override("pressed", selected)
-	button.add_theme_stylebox_override("hover_pressed", selected)
-	button.accessibility_name = person.heading + ". " + person.role_label
-	button.tooltip_text = button.accessibility_name
-	var portrait := TextureRect.new()
-	portrait.name = "Portrait"
-	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	portrait.clip_contents = true
-	button.add_child(portrait)
-	_portraits.append(portrait)
-	var placeholder := _card_label(portrait)
-	placeholder.text = "IMAGE SOURCE\nPENDING"
-	placeholder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_placeholders.append(placeholder)
-	var media := _card_label(portrait)
-	media.add_theme_font_size_override("font_size", 10)
-	_media_labels.append(media)
-	var badge := _card_label(portrait)
-	badge.text = "SELECTED"
-	badge.add_theme_font_size_override("font_size", 11)
-	badge.add_theme_color_override("font_color", Color(0.05, 0.08, 0.065))
-	var badge_style := StyleBoxFlat.new()
-	badge_style.bg_color = GOLD
-	badge.add_theme_stylebox_override("normal", badge_style)
-	_selected_badges.append(badge)
-	_names.append(_card_label(button))
-	_names[index].text = person.heading
-	_roles.append(_card_label(button))
-	_roles[index].text = person.role_label
-	_roles[index].add_theme_color_override("font_color", GOLD)
 
 
-func _card_label(parent: Control) -> Label:
-	var label := Label.new()
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.add_theme_constant_override("line_spacing", 0)
-	parent.add_child(label)
-	return label
 
 
-func _card_style(color: Color, width: int) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.08, 0.125, 0.11)
-	style.border_color = color
-	style.set_border_width_all(width)
-	style.set_content_margin_all(0)
-	return style
 
 
-func _build_information() -> void:
-	var prompt := Label.new()
-	prompt.text = _data.panel_prompt
-	prompt.tooltip_text = content.prompt
-	prompt.add_theme_font_size_override("font_size", 18)
-	prompt.add_theme_color_override("font_color", GOLD)
-	_information.add_child(prompt)
-	_information.move_child(prompt, 0)
-	_heading.reparent(_information)
-	_information.move_child(_heading, 1)
-	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_information.get_node("Meta").hide()
-	_role.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_role.add_theme_color_override("font_color", GOLD)
-	_information.add_child(_role)
-	_information.move_child(_role, 2)
-	var text_column := _body.get_parent()
-	text_column.add_child(_connection_heading)
-	text_column.add_child(_connection_body)
-	_connection_heading.text = _data.connection_heading
-	_connection_heading.add_theme_color_override("font_color", GOLD)
-	for label in [_connection_heading, _connection_body]:
-		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 
 func _person(index: int) -> PersonContent:
@@ -467,3 +322,27 @@ func _sync_focus() -> void:
 	controls.append_array(_concepts)
 	controls.append(_scroll)
 	HeaderUtilities.sync_focus(self, controls)
+
+func _bind_authored_content() -> void:
+	# Resources remain the only authority for interpretation copy.
+	get_node("Main/Margin/Layout/Columns/Information/Heading").text = content.concepts[1].heading
+	get_node("Main/Margin/Layout/Columns/Information/Label0").text = content.panel_prompt
+	get_node("Main/Margin/Layout/Columns/Information/Role").text = content.concepts[1].role_label
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Body").text = content.concepts[1].body
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/ConnectionBody").text = content.concepts[1].connection_body
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/ConnectionHeading").text = content.connection_heading
+	get_node("Main/Margin/Layout/Columns/RoleDiagram/CampaignEvent/MarginContainer0/VBoxContainer0/EventSubtitle").text = content.event_subtitle
+	get_node("Main/Margin/Layout/Columns/RoleDiagram/CampaignEvent/MarginContainer0/VBoxContainer0/EventTitle").text = content.event_title
+	get_node("Main/Margin/Layout/Columns/RoleDiagram/OfficialFunction/Names1").text = content.concepts[1].heading
+	get_node("Main/Margin/Layout/Columns/RoleDiagram/OfficialFunction/Roles1").text = content.concepts[1].role_label
+	get_node("Main/Margin/Layout/Columns/RoleDiagram/PublicInterior/Names0").text = content.concepts[0].heading
+	get_node("Main/Margin/Layout/Columns/RoleDiagram/PublicInterior/Roles0").text = content.concepts[0].role_label
+	get_node("Main/Margin/Layout/Columns/RoleDiagram/WhyItMatters/Names2").text = content.concepts[2].heading
+	get_node("Main/Margin/Layout/Columns/RoleDiagram/WhyItMatters/Roles2").text = content.concepts[2].role_label
+	get_node("Main/Margin/Layout/Header/TitleArea/HBoxContainer1/Hint").text = content.comparison_hint
+	get_node("Main/Margin/Layout/Header/TitleArea/HBoxContainer1/Label0").text = content.hotspot_id
+	get_node("Main/Margin/Layout/Header/TitleArea/Title").text = content.title
+
+
+func reset_interaction() -> void:
+	Lifecycle.reset(self)

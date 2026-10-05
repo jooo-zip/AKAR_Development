@@ -1,9 +1,747 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/components/conference_room_interaction.tscn" id="1"]
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_03.gd" id="2"]
-[ext_resource type="Resource" path="res://data/landmarks/limahong_channel/lch_int_03.tres" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/landmarks/limahong_channel/interior/lch_int_03_facility_card.tscn" id="FacilityCard"]
 
-[node name="LCH_INT_03" instance=ExtResource("1")]
-script = ExtResource("2")
-content = ExtResource("3")
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_int_03.gd" id="1_cucao"]
+[ext_resource type="Resource" path="res://data/landmarks/limahong_channel/lch_int_03.tres" id="2_d7k6n"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/speaker.svg" id="3_n3r2y"]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+
+[sub_resource type="Theme" id="ArtworkTheme"]
+default_font_size = 20
+Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
+Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Pressed")
+PanelContainer/styles/panel = SubResource("Panel")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qwfip"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cpanl"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0gaj7"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iswcs"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wmkd"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12156863, 0.14901961, 0.12941177, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.4, 0.3254902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s4yuk"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmjau"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.1, 0.15, 0.125, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.58, 0.47, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ijp2"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.1, 0.15, 0.125, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.58, 0.47, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty74i"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.1, 0.15, 0.125, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.58, 0.47, 1)
+
+[node name="LCH_INT_03" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("ArtworkTheme")
+script = ExtResource("1_cucao")
+content = ExtResource("2_d7k6n")
+
+[node name="Main" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Main"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Main/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleArea" type="VBoxContainer" parent="Main/Margin/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Main/Margin/Layout/Header/TitleArea"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 26
+text = "Hotspot title"
+autowrap_mode = 3
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="Main/Margin/Layout/Header/TitleArea"]
+layout_mode = 2
+
+[node name="Label0" type="Label" parent="Main/Margin/Layout/Header/TitleArea/HBoxContainer1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 13
+text = "LCH-INT-03"
+
+[node name="HeaderUtilityArea" type="VBoxContainer" parent="Main/Margin/Layout/Header"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 2
+
+[node name="HeaderActions" type="HBoxContainer" parent="Main/Margin/Layout/Header/HeaderUtilityArea"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SourcesButton" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_qwfip")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cpanl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0gaj7")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_iswcs")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_5wmkd")
+theme_override_styles/focus = SubResource("StyleBoxFlat_s4yuk")
+text = "SOURCES"
+expand_icon = true
+
+[node name="Speaker" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(136, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_pressed_color = Color(0.06, 0.09, 0.07, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_qwfip")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cpanl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0gaj7")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_iswcs")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_5wmkd")
+theme_override_styles/focus = SubResource("StyleBoxFlat_s4yuk")
+toggle_mode = true
+text = "LISTEN"
+icon = ExtResource("3_n3r2y")
+expand_icon = true
+
+[node name="Close" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_qwfip")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cpanl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0gaj7")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_iswcs")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_5wmkd")
+theme_override_styles/focus = SubResource("StyleBoxFlat_s4yuk")
+text = "CLOSE"
+expand_icon = true
+
+[node name="NarrationStatusSlot" type="Control" parent="Main/Margin/Layout/Header/HeaderUtilityArea"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="Pending" type="Label" parent="Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0.7254902, 0.70980394, 0.6431373, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 13
+text = "Narration pending"
+horizontal_alignment = 2
+
+[node name="Sections" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PublicInterior" type="Button" parent="Main/Margin/Layout/Sections"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 56)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 17
+toggle_mode = true
+text = "Select"
+
+[node name="OfficialFunction" type="Button" parent="Main/Margin/Layout/Sections"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 56)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 17
+toggle_mode = true
+text = "Select"
+
+[node name="WhyItMatters" type="Button" parent="Main/Margin/Layout/Sections"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 56)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 17
+toggle_mode = true
+text = "Select"
+
+[node name="Columns" type="HBoxContainer" parent="Main/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="VisualBoard" type="Control" parent="Main/Margin/Layout/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.78
+mouse_filter = 2
+
+[node name="MilestoneView" type="VBoxContainer" parent="Main/Margin/Layout/Columns/VisualBoard"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Photos0" type="TextureRect" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView"]
+texture_filter = 2
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Fallbacks0" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView/Photos0"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 13
+text = "Content label"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Documentary" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 14
+text = "Documentary image caption"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ContributorCard" type="Button" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView"]
+custom_minimum_size = Vector2(0, 92)
+layout_mode = 2
+toggle_mode = true
+
+[node name="MarginContainer0" type="MarginContainer" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer0" type="HBoxContainer" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard/MarginContainer0"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Photos1" type="TextureRect" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard/MarginContainer0/HBoxContainer0"]
+texture_filter = 2
+custom_minimum_size = Vector2(64, 80)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Fallbacks1" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard/MarginContainer0/HBoxContainer0/Photos1"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 10
+text = "PHOTO
+N/A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContributorHeading" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard/MarginContainer0/HBoxContainer0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Contributor"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ContributorDetails" type="VBoxContainer" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="ContributorRole" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorDetails"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Contributor role"
+autowrap_mode = 3
+
+[node name="ContributorBody" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorDetails"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "Contributor context"
+autowrap_mode = 3
+
+[node name="PreservationView" type="Control" parent="Main/Margin/Layout/Columns/VisualBoard"]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="StoryLines0" type="Line2D" parent="Main/Margin/Layout/Columns/VisualBoard/PreservationView"]
+points = PackedVector2Array(393, 154, 110, 386)
+width = 2.5
+default_color = Color(0.88, 0.8, 0.55, 1)
+antialiased = true
+
+[node name="StoryLines1" type="Line2D" parent="Main/Margin/Layout/Columns/VisualBoard/PreservationView"]
+points = PackedVector2Array(393, 154, 676, 386)
+width = 2.5
+default_color = Color(0.88, 0.8, 0.55, 1)
+antialiased = true
+
+[node name="StoryNodes0" type="PanelContainer" parent="Main/Margin/Layout/Columns/VisualBoard/PreservationView"]
+layout_mode = 0
+offset_left = 253.0
+offset_top = 54.0
+offset_right = 533.0
+offset_bottom = 154.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmjau")
+
+[node name="StoryLabels0" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 20
+text = "Story step"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StoryNodes1" type="PanelContainer" parent="Main/Margin/Layout/Columns/VisualBoard/PreservationView"]
+layout_mode = 0
+offset_top = 386.0
+offset_right = 220.0
+offset_bottom = 486.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ijp2")
+
+[node name="StoryLabels1" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 20
+text = "Story step"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StoryNodes2" type="PanelContainer" parent="Main/Margin/Layout/Columns/VisualBoard/PreservationView"]
+layout_mode = 0
+offset_left = 566.0
+offset_top = 386.0
+offset_right = 786.0
+offset_bottom = 486.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ty74i")
+
+[node name="StoryLabels2" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 20
+text = "Story step"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DevelopmentView" type="VBoxContainer" parent="Main/Margin/Layout/Columns/VisualBoard"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Photos2" type="TextureRect" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView"]
+texture_filter = 2
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Fallbacks2" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/Photos2"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 13
+text = "Content label"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="PresentCaption" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 13
+text = "Photo caption"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PlanHeading" type="Label" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 18
+text = "Facility plans"
+autowrap_mode = 3
+
+[node name="FacilityScroll" type="ScrollContainer" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+horizontal_scroll_mode = 0
+
+[node name="FacilityGrid" type="GridContainer" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="park_marker" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="pavilion" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="artifacts" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="river_cruise" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="sunset_garden" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="mini_forest" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="eco_park" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="activity" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="roads" parent="Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid" instance=ExtResource("FacilityCard")]
+layout_mode = 2
+
+[node name="Information" type="VBoxContainer" parent="Main/Margin/Layout/Columns"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Prompt" type="Label" parent="Main/Margin/Layout/Columns/Information"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Interaction prompt"
+autowrap_mode = 3
+
+[node name="Heading" type="Label" parent="Main/Margin/Layout/Columns/Information"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Interpretation heading"
+autowrap_mode = 3
+
+[node name="Meta" type="HBoxContainer" parent="Main/Margin/Layout/Columns/Information"]
+visible = false
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="Main/Margin/Layout/Columns/Information"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Text" type="VBoxContainer" parent="Main/Margin/Layout/Columns/Information/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Body" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Interpretation text"
+autowrap_mode = 3
+
+[node name="Why" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "WHY IT MATTERS"
+autowrap_mode = 3
+
+[node name="Takeaway" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
+theme_override_font_sizes/font_size = 20
+text = "Takeaway text"
+autowrap_mode = 3
+
+[node name="Notice" type="VBoxContainer" parent="Main/Margin/Layout/Columns/Information"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Controls" type="HBoxContainer" parent="Main/Margin/Layout"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Image" type="TextureRect" parent="Main/Margin/Layout/Controls"]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Sources" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Sources"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Layout" type="VBoxContainer" parent="Sources/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SourceTitle" type="Label" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+
+[node name="SourceScroll" type="ScrollContainer" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="SourceText" type="Label" parent="Sources/Margin/Layout/SourceScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="SourceClose" type="Button" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+focus_mode = 0
+text = "Close Sources"
+
+[node name="NarrationPlayer" type="AudioStreamPlayer" parent="."]

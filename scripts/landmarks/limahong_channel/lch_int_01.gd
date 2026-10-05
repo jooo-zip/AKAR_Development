@@ -1,4 +1,5 @@
 extends ConferenceRoomInteraction
+const Lifecycle = preload("res://scripts/landmarks/limahong_channel/lch_lifecycle.gd")
 const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
 const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
 var _header_utilities: HeaderUtilities
@@ -13,96 +14,23 @@ const StatueContent = preload("res://scripts/landmarks/limahong_channel/lch_int_
 const GOLD := Color(0.88, 0.80, 0.55)
 
 var current_section: int = InfoSection.WHO_WAS_LIMAHONG
-var _explorer: Control
-var _magnifier: Control
-var _section_buttons: Array[Button] = []
-var _prompt: Label
-var _status: Label
-var _placeholder: Label
+@onready var _explorer: Control = $"Main/Margin/Layout/Columns/StatueExplorer"
+@onready var _magnifier: Control = $"Main/Margin/Layout/Columns/StatueExplorer/InspectionLayer"
+@onready var _section_buttons: Array[Button] = [$"Main/Margin/Layout/Columns/Information/SectionButtons/PublicInterior", $"Main/Margin/Layout/Columns/Information/SectionButtons/OfficialFunction"]
+@onready var _prompt: Label = $"Main/Margin/Layout/Columns/Information/Prompt"
+@onready var _status: Label = $"Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot/Status"
+@onready var _placeholder: Label = $"Main/Margin/Layout/Columns/StatueExplorer/Placeholder"
 
 
 func _ready() -> void:
+	_concepts = _section_buttons
 	super._ready()
-	var header := $Main/Margin/Layout/Header
-	_speaker.reparent(header)
-	_sources_button.reparent(header)
-	header.move_child(_close, -1)
-	_speaker.text = "LISTEN"
-	_speaker.custom_minimum_size = Vector2(116, 48)
-	_speaker.add_theme_constant_override("icon_max_width", 24)
-	_speaker.expand_icon = true
-	var subtitle := HBoxContainer.new()
-	subtitle.name = "Subtitle"
-	$Main/Margin/Layout.add_child(subtitle)
-	$Main/Margin/Layout.move_child(subtitle, 1)
-	var code := Label.new()
-	code.text = content.hotspot_id
-	code.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	code.add_theme_font_size_override("font_size", 14)
-	code.add_theme_color_override("font_color", GOLD)
-	subtitle.add_child(code)
-	_status = Label.new()
-	_status.text = "Narration pending"
-	_status.add_theme_font_size_override("font_size", 14)
-	subtitle.add_child(_status)
-	$Main/Margin/Layout/Controls.hide()
-	# Remove the shell's original selector buttons, not just their photo visuals.
-	# Historical navigation now belongs entirely to the two information buttons.
-	var old_sections := $Main/Margin/Layout/Sections
-	old_sections.get_parent().remove_child(old_sections)
-	old_sections.queue_free()
-	_concepts.clear()
-
-	_explorer = Control.new()
-	_explorer.name = "StatueExplorer"
-	_explorer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_explorer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	%Columns.add_child(_explorer)
-	%Columns.move_child(_explorer, 0)
-	_image.reparent(_explorer)
-	_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_image.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_placeholder = Label.new()
-	_placeholder.text = "STATUE PHOTO PENDING"
-	_placeholder.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_placeholder.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_placeholder.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_placeholder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_explorer.add_child(_placeholder)
-	_placeholder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_magnifier = Magnifier.new()
-	_magnifier.name = "InspectionLayer"
-	_explorer.add_child(_magnifier)
+	_bind_authored_content()
 	_magnifier.configure(_image)
-
-	_prompt = Label.new()
-	_prompt.text = content.prompt
-	_prompt.add_theme_font_size_override("font_size", 18)
-	_prompt.add_theme_color_override("font_color", GOLD)
-	_information.add_child(_prompt)
-	_information.move_child(_prompt, 0)
-	var sections := VBoxContainer.new()
-	sections.name = "SectionButtons"
-	sections.add_theme_constant_override("separation", 6)
-	_information.add_child(sections)
-	_information.move_child(sections, 1)
-	for i in 2:
-		var button := Button.new()
-		button.custom_minimum_size.y = 48
-		button.toggle_mode = true
-		button.pressed.connect(select_section.bind(i))
-		sections.add_child(button)
-		_section_buttons.append(button)
-		_concepts.append(button)
-	var text_column := _body.get_parent()
-	_heading.reparent(text_column)
-	text_column.move_child(_heading, 0)
-	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_information.get_node("Meta").hide()
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
-	_header_utilities = HeaderUtilities.new(self, _status, _status.get_parent())
+	_header_utilities = HeaderUtilities.new(self, _status)
 	add_child(SourcesOverlay.new(self))
 
 func open_interaction() -> bool:
@@ -210,3 +138,16 @@ func close_interaction() -> void:
 func _visibility_changed() -> void:
 	if _open and not is_visible_in_tree():
 		close_interaction()
+
+func _bind_authored_content() -> void:
+	# Resources remain the only authority for interpretation copy.
+	get_node("Main/Margin/Layout/Columns/Information/Prompt").text = content.prompt
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Body").text = content.concepts[0].body
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Heading").text = content.concepts[0].heading
+	get_node("Main/Margin/Layout/Columns/Information/SectionButtons/OfficialFunction").text = content.concepts[1].heading
+	get_node("Main/Margin/Layout/Header/TitleArea/Subtitle/Label0").text = content.hotspot_id
+	get_node("Main/Margin/Layout/Header/TitleArea/Title").text = content.title
+
+
+func reset_interaction() -> void:
+	Lifecycle.reset(self)

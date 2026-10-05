@@ -1,9 +1,547 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/components/conference_room_interaction.tscn" id="1"]
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_ext_02.gd" id="2"]
-[ext_resource type="Resource" path="res://data/landmarks/limahong_channel/lch_ext_02.tres" id="3"]
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_ext_02.gd" id="1_n05gf"]
+[ext_resource type="Resource" path="res://data/landmarks/limahong_channel/lch_ext_02.tres" id="2_n45py"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/speaker.svg" id="3_vo1x5"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/route_ship.png" id="5_4aexs"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/location_marker.png" id="6_ef7bp"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/limahong_channel/lch_ext_01/maps/route_map/fortified_settlement.png" id="7_uxs5i"]
 
-[node name="LCH_EXT_02" instance=ExtResource("1")]
-script = ExtResource("2")
-content = ExtResource("3")
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+
+[sub_resource type="Theme" id="ArtworkTheme"]
+default_font_size = 20
+Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
+Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Pressed")
+PanelContainer/styles/panel = SubResource("Panel")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cb67u"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ond3"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lmc8"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yb5xq"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s4bd1"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12156863, 0.14901961, 0.12941177, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.4, 0.3254902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uhw0t"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="Curve2D" id="Curve2D_2tp3y"]
+bake_interval = 2.0
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 377.76666, 427.12, 0, 0, 0, 0, 239.14, 404.64, 0, 0, 0, 0, 239.14, 281, 0, 0, 0, 0, 321.56668, 281)
+}
+point_count = 4
+
+[node name="LCH_EXT_02" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("ArtworkTheme")
+script = ExtResource("1_n05gf")
+content = ExtResource("2_n45py")
+
+[node name="Main" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Main"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Layout" type="VBoxContainer" parent="Main/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleArea" type="VBoxContainer" parent="Main/Margin/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Main/Margin/Layout/Header/TitleArea"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 26
+text = "Hotspot title"
+autowrap_mode = 3
+
+[node name="Label1" type="Label" parent="Main/Margin/Layout/Header/TitleArea"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.84705883, 0.77254903, 0.54509807, 1)
+theme_override_font_sizes/font_size = 12
+text = "LCH-EXT-02"
+
+[node name="HeaderUtilityArea" type="VBoxContainer" parent="Main/Margin/Layout/Header"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 2
+
+[node name="HeaderActions" type="HBoxContainer" parent="Main/Margin/Layout/Header/HeaderUtilityArea"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SourcesButton" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_cb67u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3ond3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6lmc8")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_yb5xq")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_s4bd1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_uhw0t")
+text = "SOURCES"
+expand_icon = true
+
+[node name="Speaker" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(136, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_pressed_color = Color(0.06, 0.09, 0.07, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_cb67u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3ond3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6lmc8")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_yb5xq")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_s4bd1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_uhw0t")
+toggle_mode = true
+text = "LISTEN"
+icon = ExtResource("3_vo1x5")
+expand_icon = true
+
+[node name="Close" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_cb67u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3ond3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6lmc8")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_yb5xq")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_s4bd1")
+theme_override_styles/focus = SubResource("StyleBoxFlat_uhw0t")
+text = "CLOSE"
+expand_icon = true
+
+[node name="NarrationStatusSlot" type="Control" parent="Main/Margin/Layout/Header/HeaderUtilityArea"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="Pending" type="Label" parent="Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0.7254902, 0.70980394, 0.6431373, 1)
+theme_override_font_sizes/font_size = 13
+text = "Narration pending"
+horizontal_alignment = 2
+
+[node name="Columns" type="HBoxContainer" parent="Main/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="MapRegion" type="VBoxContainer" parent="Main/Margin/Layout/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.78
+
+[node name="MapArea" type="Control" parent="Main/Margin/Layout/Columns/MapRegion"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Image" type="TextureRect" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RouteLine" type="Line2D" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+visible = false
+points = PackedVector2Array(377.76666, 427.12, 377.76666, 427.12)
+width = 3.0
+default_color = Color(0.84705883, 0.77254903, 0.54509807, 1)
+
+[node name="RoutePath" type="Path2D" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+curve = SubResource("Curve2D_2tp3y")
+
+[node name="RouteFollower" type="PathFollow2D" parent="Main/Margin/Layout/Columns/MapRegion/MapArea/RoutePath"]
+position = Vector2(377.76666, 427.12)
+rotates = false
+cubic_interp = false
+loop = false
+
+[node name="RouteShip" type="Sprite2D" parent="Main/Margin/Layout/Columns/MapRegion/MapArea/RoutePath/RouteFollower"]
+z_index = 2
+texture_filter = 1
+scale = Vector2(0.05282113, 0.05282113)
+texture = ExtResource("5_4aexs")
+region_enabled = true
+region_rect = Rect2(260, 102, 705, 833)
+
+[node name="Markers0" type="Label" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+modulate = Color(0.9529412, 0.8745098, 0.6666667, 1)
+layout_mode = 0
+offset_left = 395.76666
+offset_top = 415.12
+offset_right = 465.76666
+offset_bottom = 441.12
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "MANILA"
+
+[node name="LocationMarkers0" type="Sprite2D" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+modulate = Color(0.9529412, 0.8745098, 0.6666667, 1)
+texture_filter = 1
+position = Vector2(377.76666, 427.12)
+scale = Vector2(0.03207331, 0.03207331)
+texture = ExtResource("6_ef7bp")
+region_enabled = true
+region_rect = Rect2(260, 102, 761, 873)
+
+[node name="Markers1" type="Label" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+modulate = Color(0.6666667, 0.6666667, 0.6666667, 1)
+layout_mode = 0
+offset_left = 339.56668
+offset_top = 269.0
+offset_right = 457.56668
+offset_bottom = 295.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "PANGASINAN"
+
+[node name="LocationMarkers1" type="Sprite2D" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+modulate = Color(0.6666667, 0.6666667, 0.6666667, 1)
+texture_filter = 1
+position = Vector2(321.56668, 281)
+scale = Vector2(0.03207331, 0.03207331)
+texture = ExtResource("6_ef7bp")
+region_enabled = true
+region_rect = Rect2(260, 102, 761, 873)
+
+[node name="SettlementIcon" type="Control" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+visible = false
+anchors_preset = 0
+offset_left = 321.56668
+offset_top = 281.0
+offset_right = 321.56668
+offset_bottom = 281.0
+mouse_filter = 2
+
+[node name="SettlementImage" type="Sprite2D" parent="Main/Margin/Layout/Columns/MapRegion/MapArea/SettlementIcon"]
+texture_filter = 1
+scale = Vector2(0.050113894, 0.050113894)
+texture = ExtResource("7_uxs5i")
+region_enabled = true
+region_rect = Rect2(87, 102, 878, 833)
+
+[node name="Placeholder" type="Label" parent="Main/Margin/Layout/Columns/MapRegion/MapArea"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "DEVELOPMENT PLACEHOLDER
+Regional map pending"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Notice" type="Label" parent="Main/Margin/Layout/Columns/MapRegion"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Context notice"
+autowrap_mode = 3
+
+[node name="Information" type="VBoxContainer" parent="Main/Margin/Layout/Columns"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="StageNumber" type="Label" parent="Main/Margin/Layout/Columns/Information"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.84705883, 0.77254903, 0.54509807, 1)
+theme_override_font_sizes/font_size = 16
+text = "Stage"
+
+[node name="Date" type="Label" parent="Main/Margin/Layout/Columns/Information"]
+layout_mode = 2
+text = "Date"
+
+[node name="Meta" type="HBoxContainer" parent="Main/Margin/Layout/Columns/Information"]
+visible = false
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="Main/Margin/Layout/Columns/Information"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Text" type="VBoxContainer" parent="Main/Margin/Layout/Columns/Information/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Interpretation heading"
+autowrap_mode = 3
+
+[node name="Body" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "Interpretation text"
+autowrap_mode = 3
+
+[node name="Takeaway" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
+theme_override_font_sizes/font_size = 20
+text = "Takeaway text"
+autowrap_mode = 3
+
+[node name="Timeline" type="VBoxContainer" parent="Main/Margin/Layout/Columns/Information"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PublicInterior" type="Button" parent="Main/Margin/Layout/Columns/Information/Timeline"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 52)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+toggle_mode = true
+text = "Select"
+alignment = 0
+
+[node name="OfficialFunction" type="Button" parent="Main/Margin/Layout/Columns/Information/Timeline"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 52)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+toggle_mode = true
+text = "Select"
+alignment = 0
+
+[node name="WhyItMatters" type="Button" parent="Main/Margin/Layout/Columns/Information/Timeline"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 52)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+toggle_mode = true
+text = "Select"
+alignment = 0
+
+[node name="Controls" type="HBoxContainer" parent="Main/Margin/Layout"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Sections" type="HBoxContainer" parent="Main/Margin/Layout"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Sources" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Sources"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Layout" type="VBoxContainer" parent="Sources/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SourceTitle" type="Label" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+
+[node name="SourceScroll" type="ScrollContainer" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="SourceText" type="Label" parent="Sources/Margin/Layout/SourceScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="SourceClose" type="Button" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+focus_mode = 0
+text = "Close Sources"
+
+[node name="NarrationPlayer" type="AudioStreamPlayer" parent="."]

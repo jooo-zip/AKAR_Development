@@ -1,4 +1,5 @@
 extends ConferenceRoomInteraction
+const Lifecycle = preload("res://scripts/landmarks/limahong_channel/lch_lifecycle.gd")
 const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
 const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
 var _header_utilities: HeaderUtilities
@@ -13,28 +14,45 @@ var passage_progress: float = 0.0
 var escape_progress: float = 0.0
 var _data: SiegeContent
 var _stage_tween: Tween
-var _map_area := Control.new()
-var _settlement := Node2D.new()
-var _settlement_image := Sprite2D.new()
-var _settlement_label := Label.new()
-var _blockade := Node2D.new()
+var _map_area: Control
+var _settlement: Node2D
+var _settlement_image: Sprite2D
+var _settlement_label: Label
+var _blockade: Node2D
 var _blockade_markers: Array[Node2D] = []
 var _blockade_images: Array[Sprite2D] = []
-var _passage := Line2D.new()
-var _path := Path2D.new()
-var _follower := PathFollow2D.new()
-var _vessel := Sprite2D.new()
-var _timeline := VBoxContainer.new()
-var _stage_number := Label.new()
-var _date := Label.new()
-var _notice := Label.new()
-var _disclaimer := Label.new()
-var _pending := Label.new()
-var _placeholder := Label.new()
+var _passage: Line2D
+var _path: Path2D
+var _follower: PathFollow2D
+var _vessel: Sprite2D
+var _timeline: VBoxContainer
+var _stage_number: Label
+var _date: Label
+var _notice: Label
+var _disclaimer: Label
+var _pending: Label
+var _placeholder: Label
 var _fitted := Rect2()
 
 
 func _ready() -> void:
+	# Allocate the accepted legacy shell only at runtime, never during editor loading.
+	_map_area = Control.new()
+	_settlement = Node2D.new()
+	_settlement_image = Sprite2D.new()
+	_settlement_label = Label.new()
+	_blockade = Node2D.new()
+	_passage = Line2D.new()
+	_path = Path2D.new()
+	_follower = PathFollow2D.new()
+	_vessel = Sprite2D.new()
+	_timeline = VBoxContainer.new()
+	_stage_number = Label.new()
+	_date = Label.new()
+	_notice = Label.new()
+	_disclaimer = Label.new()
+	_pending = Label.new()
+	_placeholder = Label.new()
 	# The shared shell wires all buttons in _concepts, including our fourth stage.
 	var escape_button := Button.new()
 	escape_button.name = "EscapeStage"
@@ -407,3 +425,7 @@ func _sync_focus() -> void:
 	controls.append_array(_concepts)
 	controls.append(_scroll)
 	HeaderUtilities.sync_focus(self, controls)
+
+
+func reset_interaction() -> void:
+	Lifecycle.reset(self)

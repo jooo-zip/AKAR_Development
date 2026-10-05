@@ -11,12 +11,12 @@ var detail_view_side: int = 1 # 0 left, 1 right; hysteresis retains the middle b
 var hint_has_been_dismissed: bool = false
 var displayed_image_rect := Rect2()
 var source_region := Rect2()
-var lens: Control
-var detail: PanelContainer
-var hint: Label
+@onready var lens: Control = $"MagnifierLens"
+@onready var detail: PanelContainer = $"DetailView"
+@onready var hint: Label = $"Label2"
 var _photo: TextureRect
-var _detail_texture: TextureRect
-var _pending: Label
+@onready var _detail_texture: TextureRect = $"DetailView/VBoxContainer0/TextureRect1"
+@onready var _pending: Label = $"DetailView/VBoxContainer0/TextureRect1/Label0"
 var _atlas := AtlasTexture.new()
 var _hint_tween: Tween
 var _enabled: bool = false
@@ -27,68 +27,14 @@ var _drag_start := Vector2.ZERO
 
 func configure(photo: TextureRect) -> void:
 	_photo = photo
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	detail = PanelContainer.new()
-	detail.name = "DetailView"
-	detail.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var frame := StyleBoxFlat.new()
-	frame.bg_color = Color(0.09, 0.14, 0.12)
-	frame.border_color = GOLD
-	frame.set_border_width_all(1)
-	frame.set_content_margin_all(8)
-	detail.add_theme_stylebox_override("panel", frame)
-	add_child(detail)
-	var column := VBoxContainer.new()
-	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	detail.add_child(column)
-	var label := Label.new()
-	label.text = "DETAIL VIEW"
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.add_theme_font_size_override("font_size", 14)
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	column.add_child(label)
-	_detail_texture = TextureRect.new()
-	_detail_texture.custom_minimum_size = Vector2.ONE * DETAIL_SIZE
-	_detail_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_detail_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_detail_texture.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_detail_texture.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	column.add_child(_detail_texture)
-	_pending = Label.new()
-	_pending.text = "PHOTO\nPENDING"
-	_pending.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_pending.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_pending.add_theme_font_size_override("font_size", 14)
-	_pending.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_detail_texture.add_child(_pending)
-	_pending.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_atlas.filter_clip = true
-
-	lens = Control.new()
-	lens.name = "MagnifierLens"
-	lens.size = Vector2.ONE * HIT_SIZE
-	lens.mouse_filter = Control.MOUSE_FILTER_STOP
-	lens.mouse_default_cursor_shape = Control.CURSOR_DRAG
 	lens.accessibility_name = "Magnifying lens. Drag to inspect, or use arrow keys. Shift moves faster."
-	lens.focus_mode = Control.FOCUS_ALL
-	add_child(lens)
 	lens.draw.connect(_draw_magnifying_glass)
 	lens.focus_entered.connect(lens.queue_redraw)
 	lens.focus_exited.connect(lens.queue_redraw)
 	lens.gui_input.connect(_lens_input)
-	hint = Label.new()
-	hint.text = "DRAG TO INSPECT"
-	hint.add_theme_font_size_override("font_size", 16)
-	hint.add_theme_color_override("font_color", GOLD)
-	hint.add_theme_color_override("font_shadow_color", Color.BLACK)
-	hint.add_theme_constant_override("shadow_offset_x", 1)
-	hint.add_theme_constant_override("shadow_offset_y", 1)
-	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(hint)
 	resized.connect(refresh_layout)
 	detail.resized.connect(_position_detail)
-
 
 func _draw_magnifying_glass() -> void:
 	# Circle and handle stay inside the generous hit area. The optical center stays

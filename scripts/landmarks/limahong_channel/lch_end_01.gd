@@ -1,4 +1,5 @@
 extends ConferenceRoomInteraction
+const Lifecycle = preload("res://scripts/landmarks/limahong_channel/lch_lifecycle.gd")
 const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
 const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
 var _header_utilities: HeaderUtilities
@@ -12,21 +13,21 @@ const GOLD := Color(0.88, 0.80, 0.55)
 const NEUTRAL := Color(0.40, 0.48, 0.42)
 var current_topic: SummaryTopic = SummaryTopic.NONE
 var _data: SummaryContent
-var _board := Control.new()
-var _intro := HBoxContainer.new()
-var _intro_heading: Label
-var _intro_body: Label
-var _reflection := VBoxContainer.new()
-var _reflection_heading: Label
-var _reflection_body: Label
-var _takeaway_heading: Label
-var _pending: Label
-var _card_titles: Array[Label] = []
-var _card_bodies: Array[Label] = []
-var _card_qualifiers: Array[Label] = []
-var _card_numbers: Array[Label] = []
-var _card_margins: Array[MarginContainer] = []
-var _symbols: Array[Control] = []
+@onready var _board: Control = $"Main/Margin/Layout/SummaryStoryline"
+@onready var _intro: HBoxContainer = $"Main/Margin/Layout/Intro"
+@onready var _intro_heading: Label = $"Main/Margin/Layout/Intro/IntroHeading"
+@onready var _intro_body: Label = $"Main/Margin/Layout/Intro/IntroBody"
+@onready var _reflection: VBoxContainer = $"Main/Margin/Layout/Columns/Reflection"
+@onready var _reflection_heading: Label = $"Main/Margin/Layout/Columns/Reflection/ReflectionHeading"
+@onready var _reflection_body: Label = $"Main/Margin/Layout/Columns/Reflection/ReflectionBody"
+@onready var _takeaway_heading: Label = $"Main/Margin/Layout/Columns/Reflection/TakeawayHeading"
+@onready var _pending: Label = $"Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot/Pending"
+@onready var _card_titles: Array[Label] = [$"Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0/CardTitles0", $"Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0/CardTitles1", $"Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0/CardTitles2", $"Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0/CardTitles3", $"Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0/CardTitles4"]
+@onready var _card_bodies: Array[Label] = [$"Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/CardBodies0", $"Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/CardBodies1", $"Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/CardBodies2", $"Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/CardBodies3", $"Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/CardBodies4"]
+@onready var _card_qualifiers: Array[Label] = [$"Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/CardQualifiers0", $"Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/CardQualifiers1", $"Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/CardQualifiers2", $"Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/CardQualifiers3", $"Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/CardQualifiers4"]
+@onready var _card_numbers: Array[Label] = [$"Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0/CardNumbers0", $"Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0/CardNumbers1", $"Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0/CardNumbers2", $"Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0/CardNumbers3", $"Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0/CardNumbers4"]
+@onready var _card_margins: Array[MarginContainer] = [$"Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0", $"Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1", $"Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2", $"Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3", $"Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4"]
+@onready var _symbols: Array[Control] = [$"Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0/Symbols0", $"Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0/Symbols1", $"Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0/Symbols2", $"Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0/Symbols3", $"Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0/Symbols4"]
 var _selected_styles: Array[StyleBoxFlat] = []
 var _emphasis: Array[float] = [0, 0, 0, 0, 0]
 var _compact: bool = false
@@ -34,11 +35,22 @@ var _entrance: Tween
 var _selection: Tween
 
 func _ready() -> void:
+	_concepts = [$"Main/Margin/Layout/SummaryStoryline/PublicInterior", $"Main/Margin/Layout/SummaryStoryline/OfficialFunction", $"Main/Margin/Layout/SummaryStoryline/WhyItMatters", $"Main/Margin/Layout/SummaryStoryline/TraditionCard", $"Main/Margin/Layout/SummaryStoryline/HeritageCard"]
 	super._ready()
 	_data = content as SummaryContent
-	_build_shell()
-	_build_cards()
-	_build_lower()
+	_bind_authored_content()
+	for i in 5:
+		var card := _concepts[i]
+		card.text = ""
+		card.accessibility_name = _data.topics[i].full_title + ". " + _data.topics[i].short_body
+		card.gui_input.connect(_card_input.bind(i))
+		var selected: StyleBoxFlat = card.get_theme_stylebox("pressed").duplicate()
+		_selected_styles.append(selected)
+		card.add_theme_stylebox_override("pressed", selected)
+		card.add_theme_stylebox_override("hover_pressed", selected)
+		_symbols[i].draw.connect(_draw_symbol.bind(i))
+	_scroll.gui_input.connect(_scroll_key.bind(_scroll))
+	_source_scroll.gui_input.connect(_scroll_key.bind(_source_scroll))
 	_board.draw.connect(_draw_storyline)
 	_board.resized.connect(_layout_cards)
 	resized.connect(_resize_layout)
@@ -48,124 +60,13 @@ func _ready() -> void:
 	_header_utilities = HeaderUtilities.new(self, _pending)
 	add_child(SourcesOverlay.new(self))
 
-func _label(parent: Node, value: String, font: int, color: Color = Color(0.97, 0.96, 0.92)) -> Label:
-	var label := Label.new()
-	label.text = value
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", font)
-	label.add_theme_color_override("font_color", color)
-	label.add_theme_constant_override("line_spacing", 0)
-	parent.add_child(label)
-	return label
 
-func _build_shell() -> void:
-	var header := $Main/Margin/Layout/Header
-	var titles := VBoxContainer.new()
-	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	titles.add_theme_constant_override("separation", 0)
-	header.add_child(titles)
-	header.move_child(titles, 0)
-	var code_row := HBoxContainer.new()
-	titles.add_child(code_row)
-	var code := _label(code_row, content.hotspot_id, 12, GOLD)
-	code.autowrap_mode = TextServer.AUTOWRAP_OFF
-	code.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_pending = _label(code_row, "Narration pending", 12)
-	_pending.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_title.reparent(titles)
-	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_speaker.reparent(header)
-	_sources_button.reparent(header)
-	header.move_child(_close, -1)
-	_speaker.text = "LISTEN"
-	_speaker.custom_minimum_size = Vector2(108, 48)
-	_speaker.expand_icon = true
-	_speaker.add_theme_constant_override("icon_max_width", 22)
-	var layout := $Main/Margin/Layout
-	layout.add_child(_intro)
-	layout.move_child(_intro, 1)
-	_intro.add_theme_constant_override("separation", 12)
-	_intro_heading = _label(_intro, _data.intro_heading, 15, GOLD)
-	_intro_heading.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_intro_body = _label(_intro, _data.intro_body, 18)
-	_intro_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_board.name = "SummaryStoryline"
-	_board.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	layout.add_child(_board)
-	layout.move_child(_board, 2)
-	_image.hide()
-	_image.reparent($Main/Margin/Layout/Controls)
-	$Main/Margin/Layout/Controls.hide()
-	$Main/Margin/Layout/Sections.hide()
 
-func _build_cards() -> void:
-	for i in 5:
-		var card: Button
-		if i < 3:
-			card = _concepts[i]
-			card.reparent(_board)
-		else:
-			card = Button.new()
-			_board.add_child(card)
-			_concepts.append(card)
-			card.pressed.connect(select_concept.bind(i))
-		card.name = _data.topics[i].compact_label.capitalize() + "Card"
-		card.text = ""
-		card.toggle_mode = true
-		card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		card.accessibility_name = _data.topics[i].full_title + ". " + _data.topics[i].short_body
-		card.gui_input.connect(_card_input.bind(i))
-		var selected: StyleBoxFlat = card.get_theme_stylebox("normal").duplicate()
-		selected.set_border_width_all(2)
-		selected.bg_color = Color(0.13, 0.20, 0.16)
-		card.add_theme_stylebox_override("pressed", selected)
-		card.add_theme_stylebox_override("hover_pressed", selected)
-		_selected_styles.append(selected)
-		var margin := MarginContainer.new()
-		margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		card.add_child(margin)
-		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		_card_margins.append(margin)
-		var column := VBoxContainer.new()
-		column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		column.add_theme_constant_override("separation", 3)
-		margin.add_child(column)
-		var top := HBoxContainer.new()
-		top.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		top.add_theme_constant_override("separation", 4)
-		column.add_child(top)
-		var number := _label(top, _data.topics[i].card_number, 14, GOLD)
-		number.autowrap_mode = TextServer.AUTOWRAP_OFF
-		_card_numbers.append(number)
-		var symbol := Control.new()
-		symbol.custom_minimum_size = Vector2(20, 20)
-		symbol.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		top.add_child(symbol)
-		symbol.draw.connect(_draw_symbol.bind(i))
-		_symbols.append(symbol)
-		var title := _label(top, _data.topics[i].full_title, 15, GOLD)
-		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_card_titles.append(title)
-		_card_bodies.append(_label(column, _data.topics[i].short_body, 15))
-		var qualifier := _label(column, _data.topics[i].qualifier_label, 12, GOLD)
-		qualifier.visible = not qualifier.text.is_empty()
-		_card_qualifiers.append(qualifier)
 
-func _build_lower() -> void:
-	_heading.reparent(_information)
-	_information.move_child(_heading, 0)
-	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_information.get_node("Meta").hide()
-	%Columns.add_child(_reflection)
-	_reflection.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_reflection_heading = _label(_reflection, _data.reflection_heading, 16, GOLD)
-	_reflection_body = _label(_reflection, _data.reflection_prompt, 18)
-	_takeaway_heading = _label(_reflection, _data.takeaway_heading, 16, GOLD)
-	_takeaway.reparent(_reflection)
-	_takeaway.text = content.learning_takeaway
-	_scroll.gui_input.connect(_scroll_key.bind(_scroll))
-	_source_scroll.gui_input.connect(_scroll_key.bind(_source_scroll))
+
+
+
+
 
 func open_interaction() -> bool:
 	if not is_node_ready() or _data == null or _data.topics.size() != 5:
@@ -380,3 +281,36 @@ func _exit_tree() -> void:
 	for tween in [_entrance, _selection]:
 		if tween != null and tween.is_valid(): tween.kill()
 	super._exit_tree()
+
+func _bind_authored_content() -> void:
+	# Resources remain the only authority for interpretation copy.
+	get_node("Main/Margin/Layout/Columns/Information/Heading").text = content.default_detail_heading
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Body").text = content.default_detail_body
+	get_node("Main/Margin/Layout/Columns/Reflection/ReflectionBody").text = content.reflection_prompt
+	get_node("Main/Margin/Layout/Columns/Reflection/ReflectionHeading").text = content.reflection_heading
+	get_node("Main/Margin/Layout/Columns/Reflection/Takeaway").text = content.learning_takeaway
+	get_node("Main/Margin/Layout/Columns/Reflection/TakeawayHeading").text = content.takeaway_heading
+	get_node("Main/Margin/Layout/Header/TitleArea/VBoxContainer0/HBoxContainer0/Label0").text = content.hotspot_id
+	get_node("Main/Margin/Layout/Header/TitleArea/VBoxContainer0/Title").text = content.title
+	get_node("Main/Margin/Layout/Intro/IntroBody").text = content.intro_body
+	get_node("Main/Margin/Layout/Intro/IntroHeading").text = content.intro_heading
+	get_node("Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/CardBodies1").text = content.topics[1].short_body
+	get_node("Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0/CardNumbers1").text = content.topics[1].card_number
+	get_node("Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0/CardTitles1").text = content.topics[1].full_title
+	get_node("Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/CardBodies2").text = content.topics[2].short_body
+	get_node("Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0/CardNumbers2").text = content.topics[2].card_number
+	get_node("Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0/CardTitles2").text = content.topics[2].full_title
+	get_node("Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/CardBodies4").text = content.topics[4].short_body
+	get_node("Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0/CardNumbers4").text = content.topics[4].card_number
+	get_node("Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0/CardTitles4").text = content.topics[4].full_title
+	get_node("Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/CardBodies0").text = content.topics[0].short_body
+	get_node("Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0/CardNumbers0").text = content.topics[0].card_number
+	get_node("Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0/CardTitles0").text = content.topics[0].full_title
+	get_node("Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/CardBodies3").text = content.topics[3].short_body
+	get_node("Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/CardQualifiers3").text = content.topics[3].qualifier_label
+	get_node("Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0/CardNumbers3").text = content.topics[3].card_number
+	get_node("Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0/CardTitles3").text = content.topics[3].full_title
+
+
+func reset_interaction() -> void:
+	Lifecycle.reset(self)

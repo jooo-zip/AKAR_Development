@@ -1,4 +1,5 @@
 extends ConferenceRoomInteraction
+const Lifecycle = preload("res://scripts/landmarks/limahong_channel/lch_lifecycle.gd")
 const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
 const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
 var _header_utilities: HeaderUtilities
@@ -30,36 +31,15 @@ signal section_changed(index: int)
 var _locator_index: int = 0
 var _media_index: int = 0
 var _locator_fade: Tween
-var _outgoing_locator: TextureRect
+@onready var _outgoing_locator: TextureRect = $"Main/Margin/Layout/Columns/Visual/ImageArea/LocatorFrame/OutgoingLocator"
 var _locator_direction: int = 0
 
 
 func _ready() -> void:
 	super._ready()
-	# Reparent inherited controls without duplicating their signals or styles.
-	_speaker.reparent(%ListenGroup)
-	%ListenGroup.move_child(_speaker, 0)
-	_subtitle.reparent(%SubtitleRow)
-	%SubtitleRow.move_child(_subtitle, 0)
-	_subtitle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	%NarrationStatus.reparent(%SubtitleRow)
-	$Main/Margin/Layout/Controls.hide()
-	_image.reparent(_locator_frame)
-	_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_image.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-	_outgoing_locator = TextureRect.new()
-	_outgoing_locator.name = "OutgoingLocator"
-	_outgoing_locator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_outgoing_locator.stretch_mode = _image.stretch_mode
-	_outgoing_locator.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_outgoing_locator.texture_filter = _image.texture_filter
-	_locator_frame.add_child(_outgoing_locator)
-	_outgoing_locator.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_outgoing_locator.hide()
+	_bind_authored_content()
 	_image_area.resized.connect(_layout_visual_frame)
 	_note_button.pressed.connect(_toggle_note)
-	_note_button.reparent(_information)
-	_information.move_child(_note_button, 2)
 	for i in _concepts.size():
 		_concepts[i].gui_input.connect(_section_input.bind(i))
 	for i in _locator_buttons.size():
@@ -367,3 +347,23 @@ func _resize_layout() -> void:
 	_opening.add_theme_font_size_override("font_size", 18)
 	for label in [_body, _takeaway, _note_text]:
 		label.add_theme_font_size_override("font_size", 20 if compact else 22)
+
+func _bind_authored_content() -> void:
+	# Resources remain the only authority for interpretation copy.
+	get_node("Main/Margin/Layout/Columns/Information/Meta/Heading").text = content.concepts[0].heading
+	get_node("Main/Margin/Layout/Columns/Information/NoteButton").text = historical_note.title
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Body").text = content.concepts[0].body
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/NoteText").text = historical_note.body
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Opening").text = introduction.body
+	get_node("Main/Margin/Layout/Columns/Visual/LocatorSteps/Channel").text = locator_steps[2].title
+	get_node("Main/Margin/Layout/Columns/Visual/LocatorSteps/Lingayen").text = locator_steps[0].title
+	get_node("Main/Margin/Layout/Columns/Visual/LocatorSteps/Pangapisan").text = locator_steps[1].title
+	get_node("Main/Margin/Layout/Header/TitleArea/SubtitleRow/Subtitle").text = introduction.title
+	get_node("Main/Margin/Layout/Header/TitleArea/Title").text = content.title
+	get_node("Main/Margin/Layout/Sections/OfficialFunction").text = content.concepts[1].heading
+	get_node("Main/Margin/Layout/Sections/PublicInterior").text = content.concepts[0].heading
+	get_node("Main/Margin/Layout/Sections/WhyItMatters").text = content.concepts[2].heading
+
+
+func reset_interaction() -> void:
+	Lifecycle.reset(self)
