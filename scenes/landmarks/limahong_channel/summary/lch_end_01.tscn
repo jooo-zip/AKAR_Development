@@ -1,9 +1,845 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/components/conference_room_interaction.tscn" id="shell"]
-[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_end_01.gd" id="controller"]
-[ext_resource type="Resource" path="res://data/landmarks/limahong_channel/lch_end_01.tres" id="content"]
+[ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_end_01.gd" id="1_5df41"]
+[ext_resource type="Resource" path="res://data/landmarks/limahong_channel/lch_end_01.tres" id="2_y7qqc"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/speaker.svg" id="3_smaek"]
 
-[node name="LCH_END_01" instance=ExtResource("shell")]
-script = ExtResource("controller")
-content = ExtResource("content")
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+
+[sub_resource type="Theme" id="ArtworkTheme"]
+default_font_size = 20
+Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
+Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Pressed")
+PanelContainer/styles/panel = SubResource("Panel")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ahksw"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60di4"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n0jqc"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6hhr"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2r6i"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12156863, 0.14901961, 0.12941177, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.4, 0.3254902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1w0yq"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fcbpm"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.13, 0.2, 0.16, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.48, 0.42, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jrk58"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.13, 0.2, 0.16, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.48, 0.42, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6qm4c"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.13, 0.2, 0.16, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.48, 0.42, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bdm5j"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.13, 0.2, 0.16, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.48, 0.42, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcrkr"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.13, 0.2, 0.16, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.48, 0.42, 1)
+
+[node name="LCH_END_01" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("ArtworkTheme")
+script = ExtResource("1_5df41")
+content = ExtResource("2_y7qqc")
+
+[node name="Main" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Main"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="Main/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleArea" type="VBoxContainer" parent="Main/Margin/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="VBoxContainer0" type="VBoxContainer" parent="Main/Margin/Layout/Header/TitleArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer0" type="HBoxContainer" parent="Main/Margin/Layout/Header/TitleArea/VBoxContainer0"]
+layout_mode = 2
+
+[node name="Label0" type="Label" parent="Main/Margin/Layout/Header/TitleArea/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+text = "LCH-END-01"
+
+[node name="Title" type="Label" parent="Main/Margin/Layout/Header/TitleArea/VBoxContainer0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 26
+text = "Hotspot title"
+autowrap_mode = 3
+
+[node name="HeaderUtilityArea" type="VBoxContainer" parent="Main/Margin/Layout/Header"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 2
+
+[node name="HeaderActions" type="HBoxContainer" parent="Main/Margin/Layout/Header/HeaderUtilityArea"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SourcesButton" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_ahksw")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_60di4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_n0jqc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_v6hhr")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_f2r6i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1w0yq")
+text = "SOURCES"
+expand_icon = true
+
+[node name="Speaker" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(136, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_pressed_color = Color(0.06, 0.09, 0.07, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_ahksw")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_60di4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_n0jqc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_v6hhr")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_f2r6i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1w0yq")
+toggle_mode = true
+text = "LISTEN"
+icon = ExtResource("3_smaek")
+expand_icon = true
+
+[node name="Close" type="Button" parent="Main/Margin/Layout/Header/HeaderUtilityArea/HeaderActions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 56)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
+theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_ahksw")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_60di4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_n0jqc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_v6hhr")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_f2r6i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1w0yq")
+text = "CLOSE"
+expand_icon = true
+
+[node name="NarrationStatusSlot" type="Control" parent="Main/Margin/Layout/Header/HeaderUtilityArea"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="Pending" type="Label" parent="Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_color = Color(0.7254902, 0.70980394, 0.6431373, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 13
+text = "Narration pending"
+horizontal_alignment = 2
+
+[node name="Intro" type="HBoxContainer" parent="Main/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="IntroHeading" type="Label" parent="Main/Margin/Layout/Intro"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Overview"
+
+[node name="IntroBody" type="Label" parent="Main/Margin/Layout/Intro"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 18
+text = "Overview text"
+autowrap_mode = 3
+
+[node name="SummaryStoryline" type="Control" parent="Main/Margin/Layout"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PublicInterior" type="Button" parent="Main/Margin/Layout/SummaryStoryline"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_top = 12.0
+offset_right = 240.0
+offset_bottom = 180.0
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fcbpm")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_fcbpm")
+toggle_mode = true
+
+[node name="CardMargins0" type="MarginContainer" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer0" type="VBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="HBoxContainer0" type="HBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="CardNumbers0" type="Label" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 14
+text = "01"
+
+[node name="Symbols0" type="Control" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CardTitles0" type="Label" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic"
+autowrap_mode = 3
+
+[node name="CardBodies0" type="Label" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic summary"
+autowrap_mode = 3
+
+[node name="CardQualifiers0" type="Label" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[node name="OfficialFunction" type="Button" parent="Main/Margin/Layout/SummaryStoryline"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_left = 252.0
+offset_top = 12.0
+offset_right = 492.0
+offset_bottom = 180.0
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jrk58")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_jrk58")
+toggle_mode = true
+
+[node name="CardMargins1" type="MarginContainer" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer0" type="VBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="HBoxContainer0" type="HBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="CardNumbers1" type="Label" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 14
+text = "02"
+
+[node name="Symbols1" type="Control" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CardTitles1" type="Label" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic"
+autowrap_mode = 3
+
+[node name="CardBodies1" type="Label" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic summary"
+autowrap_mode = 3
+
+[node name="CardQualifiers1" type="Label" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[node name="WhyItMatters" type="Button" parent="Main/Margin/Layout/SummaryStoryline"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_left = 504.0
+offset_top = 12.0
+offset_right = 744.0
+offset_bottom = 180.0
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6qm4c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_6qm4c")
+toggle_mode = true
+
+[node name="CardMargins2" type="MarginContainer" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer0" type="VBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="HBoxContainer0" type="HBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="CardNumbers2" type="Label" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 14
+text = "03"
+
+[node name="Symbols2" type="Control" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CardTitles2" type="Label" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic"
+autowrap_mode = 3
+
+[node name="CardBodies2" type="Label" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic summary"
+autowrap_mode = 3
+
+[node name="CardQualifiers2" type="Label" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[node name="TraditionCard" type="Button" parent="Main/Margin/Layout/SummaryStoryline"]
+layout_mode = 0
+offset_left = 756.0
+offset_top = 12.0
+offset_right = 996.0
+offset_bottom = 180.0
+mouse_default_cursor_shape = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_bdm5j")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_bdm5j")
+toggle_mode = true
+
+[node name="CardMargins3" type="MarginContainer" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer0" type="VBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="HBoxContainer0" type="HBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="CardNumbers3" type="Label" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 14
+text = "04"
+
+[node name="Symbols3" type="Control" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CardTitles3" type="Label" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic"
+autowrap_mode = 3
+
+[node name="CardBodies3" type="Label" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic summary"
+autowrap_mode = 3
+
+[node name="CardQualifiers3" type="Label" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+text = "Qualification"
+autowrap_mode = 3
+
+[node name="HeritageCard" type="Button" parent="Main/Margin/Layout/SummaryStoryline"]
+layout_mode = 0
+offset_left = 1008.0
+offset_top = 12.0
+offset_right = 1248.0
+offset_bottom = 180.0
+mouse_default_cursor_shape = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_qcrkr")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_qcrkr")
+toggle_mode = true
+
+[node name="CardMargins4" type="MarginContainer" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer0" type="VBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="HBoxContainer0" type="HBoxContainer" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="CardNumbers4" type="Label" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 14
+text = "05"
+
+[node name="Symbols4" type="Control" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CardTitles4" type="Label" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic"
+autowrap_mode = 3
+
+[node name="CardBodies4" type="Label" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "Topic summary"
+autowrap_mode = 3
+
+[node name="CardQualifiers4" type="Label" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[node name="Columns" type="HBoxContainer" parent="Main/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="Information" type="VBoxContainer" parent="Main/Margin/Layout/Columns"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Heading" type="Label" parent="Main/Margin/Layout/Columns/Information"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Interpretation heading"
+autowrap_mode = 3
+
+[node name="Meta" type="HBoxContainer" parent="Main/Margin/Layout/Columns/Information"]
+visible = false
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="Main/Margin/Layout/Columns/Information"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Text" type="VBoxContainer" parent="Main/Margin/Layout/Columns/Information/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Body" type="Label" parent="Main/Margin/Layout/Columns/Information/Scroll/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Interpretation text"
+autowrap_mode = 3
+
+[node name="Reflection" type="VBoxContainer" parent="Main/Margin/Layout/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="ReflectionHeading" type="Label" parent="Main/Margin/Layout/Columns/Reflection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "Reflection"
+autowrap_mode = 3
+
+[node name="ReflectionBody" type="Label" parent="Main/Margin/Layout/Columns/Reflection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 18
+text = "Reflection prompt"
+autowrap_mode = 3
+
+[node name="TakeawayHeading" type="Label" parent="Main/Margin/Layout/Columns/Reflection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "Takeaway"
+autowrap_mode = 3
+
+[node name="Takeaway" type="Label" parent="Main/Margin/Layout/Columns/Reflection"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 18
+text = "Takeaway text"
+autowrap_mode = 3
+
+[node name="Controls" type="HBoxContainer" parent="Main/Margin/Layout"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Image" type="TextureRect" parent="Main/Margin/Layout/Controls"]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Sections" type="HBoxContainer" parent="Main/Margin/Layout"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Sources" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Sources"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Layout" type="VBoxContainer" parent="Sources/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SourceTitle" type="Label" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+
+[node name="SourceScroll" type="ScrollContainer" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="SourceText" type="Label" parent="Sources/Margin/Layout/SourceScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="SourceClose" type="Button" parent="Sources/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+focus_mode = 0
+text = "Close Sources"
+
+[node name="NarrationPlayer" type="AudioStreamPlayer" parent="."]

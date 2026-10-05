@@ -1,4 +1,5 @@
 extends ConferenceRoomInteraction
+const Lifecycle = preload("res://scripts/landmarks/limahong_channel/lch_lifecycle.gd")
 const SourcesOverlay = preload("res://scripts/landmarks/limahong_channel/lch_sources_overlay.gd")
 const HeaderUtilities = preload("res://scripts/landmarks/limahong_channel/lch_header_utilities.gd")
 var _header_utilities: HeaderUtilities
@@ -9,37 +10,38 @@ signal stage_changed(stage_index: int)
 enum HeritageStage { MILESTONE_2019, PRESERVATION, DEVELOPMENT }
 const HeritageContent = preload("res://scripts/landmarks/limahong_channel/lch_int_03_content.gd")
 const StageContent = preload("res://scripts/landmarks/limahong_channel/lch_int_03_stage.gd")
+const FacilityCard = preload("res://scenes/landmarks/limahong_channel/interior/lch_int_03_facility_card.tscn")
 const GOLD := Color(0.88, 0.80, 0.55)
 
 var current_stage: HeritageStage = HeritageStage.MILESTONE_2019
 var contributor_expanded: bool = false
 var _data: HeritageContent
-var _board := Control.new()
-var _views: Array[Control] = []
-var _photos: Array[TextureRect] = []
-var _fallbacks: Array[Label] = []
-var _documentary: Label
-var _present_caption: Label
-var _contributor := Button.new()
-var _contributor_heading: Label
-var _contributor_details := VBoxContainer.new()
-var _contributor_role: Label
-var _contributor_body: Label
-var _story_nodes: Array[PanelContainer] = []
-var _story_labels: Array[Label] = []
-var _story_lines: Array[Line2D] = []
+@onready var _board: Control = $"Main/Margin/Layout/Columns/VisualBoard"
+@onready var _views: Array[Control] = [$"Main/Margin/Layout/Columns/VisualBoard/MilestoneView", $"Main/Margin/Layout/Columns/VisualBoard/PreservationView", $"Main/Margin/Layout/Columns/VisualBoard/DevelopmentView"]
+@onready var _photos: Array[TextureRect] = [$"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/Photos0", $"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard/MarginContainer0/HBoxContainer0/Photos1", $"Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/Photos2"]
+@onready var _fallbacks: Array[Label] = [$"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/Photos0/Fallbacks0", $"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard/MarginContainer0/HBoxContainer0/Photos1/Fallbacks1", $"Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/Photos2/Fallbacks2"]
+@onready var _documentary: Label = $"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/Documentary"
+@onready var _present_caption: Label = $"Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/PresentCaption"
+@onready var _contributor: Button = $"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard"
+@onready var _contributor_heading: Label = $"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorCard/MarginContainer0/HBoxContainer0/ContributorHeading"
+@onready var _contributor_details: VBoxContainer = $"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorDetails"
+@onready var _contributor_role: Label = $"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorDetails/ContributorRole"
+@onready var _contributor_body: Label = $"Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorDetails/ContributorBody"
+@onready var _story_nodes: Array[PanelContainer] = [$"Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes0", $"Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes1", $"Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes2"]
+@onready var _story_labels: Array[Label] = [$"Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes0/StoryLabels0", $"Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes1/StoryLabels1", $"Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryNodes2/StoryLabels2"]
+@onready var _story_lines: Array[Line2D] = [$"Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryLines0", $"Main/Margin/Layout/Columns/VisualBoard/PreservationView/StoryLines1"]
 var _story_ends: Array[Vector2] = []
 var _story_progress: float = 1.0
-var _plan_heading: Label
-var _facility_scroll := ScrollContainer.new()
-var _facility_grid := GridContainer.new()
+@onready var _plan_heading: Label = $"Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/PlanHeading"
+@onready var _facility_scroll: ScrollContainer = $"Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll"
+@onready var _facility_grid: GridContainer = $"Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/FacilityScroll/FacilityGrid"
 var _facility_cards: Array[PanelContainer] = []
 var _facility_names: Array[Label] = []
 var _facility_statuses: Array[Label] = []
-var _prompt: Label
-var _why: Label
-var _notice := VBoxContainer.new()
-var _pending: Label
+@onready var _prompt: Label = $"Main/Margin/Layout/Columns/Information/Prompt"
+@onready var _why: Label = $"Main/Margin/Layout/Columns/Information/Scroll/Text/Why"
+@onready var _notice: VBoxContainer = $"Main/Margin/Layout/Columns/Information/Notice"
+@onready var _pending: Label = $"Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot/Pending"
 var _transition: Tween
 var _story_tween: Tween
 var _compact: bool = false
@@ -51,191 +53,38 @@ var _drag_value: int
 func _ready() -> void:
 	super._ready()
 	_data = content as HeritageContent
-	_build_shell()
-	_build_milestone()
-	_build_preservation()
-	_build_development()
-	_build_information()
+	_bind_authored_content()
+	for i in 3:
+		_concepts[i].gui_input.connect(_stage_input.bind(i))
+		_story_labels[i].text = _data.preservation_nodes[i].replace(" ", "
+")
+	_bind_facilities()
+	_contributor.pressed.connect(toggle_contributor)
+	_update_contributor()
 	for scroll in [_facility_scroll, _scroll, _source_scroll]:
 		scroll.gui_input.connect(_scroll_input.bind(scroll))
 	_board.resized.connect(_layout_story)
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
 	_resize_layout()
-	_header_utilities = HeaderUtilities.new(self, _pending, _pending.get_parent())
+	_header_utilities = HeaderUtilities.new(self, _pending)
 	add_child(SourcesOverlay.new(self))
 
-func _build_shell() -> void:
-	var header := $Main/Margin/Layout/Header
-	_speaker.reparent(header)
-	_sources_button.reparent(header)
-	header.move_child(_close, -1)
-	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_speaker.text = "LISTEN"
-	_speaker.custom_minimum_size = Vector2(112, 48)
-	_speaker.expand_icon = true
-	_speaker.add_theme_constant_override("icon_max_width", 24)
-	var subtitle := HBoxContainer.new()
-	$Main/Margin/Layout.add_child(subtitle)
-	$Main/Margin/Layout.move_child(subtitle, 1)
-	var code := _label(subtitle, content.hotspot_id, 13, GOLD)
-	code.autowrap_mode = TextServer.AUTOWRAP_OFF
-	code.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_pending = _label(subtitle, "Narration pending", 13)
-	_pending.autowrap_mode = TextServer.AUTOWRAP_OFF
-	var bar := $Main/Margin/Layout/Sections
-	$Main/Margin/Layout.move_child(bar, 2)
-	for i in 3:
-		_concepts[i].custom_minimum_size.y = 56
-		_concepts[i].gui_input.connect(_stage_input.bind(i))
-	_image.hide()
-	_image.reparent($Main/Margin/Layout/Controls)
-	$Main/Margin/Layout/Controls.hide()
-	_board.name = "VisualBoard"
-	_board.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_board.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	%Columns.add_child(_board)
-	%Columns.move_child(_board, 0)
-	for i in 3:
-		var view: Control = Control.new() if i == 1 else VBoxContainer.new()
-		view.name = ["MilestoneView", "PreservationView", "DevelopmentView"][i]
-		view.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_board.add_child(view)
-		view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		if view is VBoxContainer:
-			view.add_theme_constant_override("separation", 6)
-		_views.append(view)
 
-func _label(parent: Node, value: String, font_size: int, color: Color = Color(0.97, 0.96, 0.92)) -> Label:
-	var label := Label.new()
-	label.text = value
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", font_size)
-	label.add_theme_color_override("font_color", color)
-	label.add_theme_constant_override("line_spacing", 0)
-	parent.add_child(label)
-	return label
 
-func _photo(parent: Node) -> TextureRect:
-	var photo := TextureRect.new()
-	photo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	photo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	photo.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	photo.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	parent.add_child(photo)
-	var fallback := _label(photo, "DOCUMENTARY IMAGE\nUNAVAILABLE", 13)
-	fallback.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	fallback.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	fallback.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_photos.append(photo)
-	_fallbacks.append(fallback)
-	return photo
 
-func _build_milestone() -> void:
-	var photo := _photo(_views[0])
-	photo.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_documentary = _label(_views[0], _data.documentary_label, 14, GOLD)
-	_documentary.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_contributor.name = "ContributorCard"
-	_contributor.toggle_mode = true
-	_contributor.pressed.connect(toggle_contributor)
-	_views[0].add_child(_contributor)
-	var margin := MarginContainer.new()
-	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_contributor.add_child(margin)
-	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "top", "right", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 6)
-	var row := HBoxContainer.new()
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_theme_constant_override("separation", 12)
-	margin.add_child(row)
-	_photo(row)
-	_fallbacks[1].text = "PHOTO\nN/A"
-	_fallbacks[1].autowrap_mode = TextServer.AUTOWRAP_OFF
-	_fallbacks[1].add_theme_font_size_override("font_size", 10)
-	_contributor_heading = _label(row, "", 15, GOLD)
-	_contributor_heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_contributor_heading.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_views[0].add_child(_contributor_details)
-	_contributor_details.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_contributor_role = _label(_contributor_details, _data.contributor_role, 15, GOLD)
-	_contributor_body = _label(_contributor_details, _data.contributor_body, 16)
-	_update_contributor()
 
-func _panel_style() -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.10, 0.15, 0.125)
-	style.border_color = Color(0.55, 0.58, 0.47)
-	style.set_border_width_all(1)
-	style.set_content_margin_all(8)
-	return style
 
-func _build_preservation() -> void:
-	for i in 2:
-		var line := Line2D.new()
-		line.width = 2.5
-		line.default_color = GOLD
-		line.antialiased = true
-		_views[1].add_child(line)
-		_story_lines.append(line)
-	for caption in _data.preservation_nodes:
-		var node := PanelContainer.new()
-		node.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		node.add_theme_stylebox_override("panel", _panel_style())
-		_views[1].add_child(node)
-		var label := _label(node, caption, 20, GOLD)
-		# Explicit two-line captions avoid zero-width wrapping in the hidden view.
-		label.text = caption.replace(" ", "\n")
-		label.autowrap_mode = TextServer.AUTOWRAP_OFF
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_story_nodes.append(node)
-		_story_labels.append(label)
 
-func _build_development() -> void:
-	_photo(_views[2])
-	_present_caption = _label(_views[2], _data.present_site_label, 13)
-	_present_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_plan_heading = _label(_views[2], _data.plan_heading, 18, GOLD)
-	_facility_scroll.name = "FacilityScroll"
-	_facility_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	_facility_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_views[2].add_child(_facility_scroll)
-	_facility_grid.name = "FacilityGrid"
-	_facility_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_facility_grid.add_theme_constant_override("h_separation", 8)
-	_facility_grid.add_theme_constant_override("v_separation", 8)
-	_facility_scroll.add_child(_facility_grid)
-	for facility in _data.facilities:
-		var card := PanelContainer.new()
-		card.name = facility.facility_id
-		card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		card.add_theme_stylebox_override("panel", _panel_style())
-		_facility_grid.add_child(card)
-		var column := VBoxContainer.new()
-		column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		card.add_child(column)
-		var label := _label(column, facility.display_name, 16)
-		label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		_facility_names.append(label)
-		_facility_statuses.append(_label(column, facility.status_label(), 12, GOLD))
-		_facility_cards.append(card)
 
-func _build_information() -> void:
-	_prompt = _label(_information, content.prompt, 15, GOLD)
-	_information.move_child(_prompt, 0)
-	_heading.reparent(_information)
-	_information.move_child(_heading, 1)
-	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_information.get_node("Meta").hide()
-	_why = _label(_body.get_parent(), "WHY IT MATTERS", 16, GOLD)
-	_body.get_parent().move_child(_why, 1)
-	_information.add_child(_notice)
-	_notice.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_scroll.follow_focus = true
+
+
+
+
+
+
+
+
 
 func _stage(index: int) -> StageContent:
 	return content.concepts[index] as StageContent
@@ -537,3 +386,46 @@ func _exit_tree() -> void:
 		if tween != null and tween.is_valid():
 			tween.kill()
 	super._exit_tree()
+
+func _bind_facilities() -> void:
+	# Reuse authored slots; additional Resource entries use the same item scene.
+	for i in _data.facilities.size():
+		var card: PanelContainer
+		if i < _facility_grid.get_child_count():
+			card = _facility_grid.get_child(i)
+		else:
+			card = FacilityCard.instantiate()
+			_facility_grid.add_child(card)
+		card.name = _data.facilities[i].facility_id
+		var label: Label = card.get_node("Text/Name")
+		var status: Label = card.get_node("Text/Status")
+		label.text = _data.facilities[i].display_name
+		status.text = _data.facilities[i].status_label()
+		_facility_cards.append(card)
+		_facility_names.append(label)
+		_facility_statuses.append(status)
+	while _facility_grid.get_child_count() > _data.facilities.size():
+		var unused := _facility_grid.get_child(_facility_grid.get_child_count() - 1)
+		_facility_grid.remove_child(unused)
+		unused.queue_free()
+
+func _bind_authored_content() -> void:
+	# Resources remain the only authority for interpretation copy.
+	get_node("Main/Margin/Layout/Columns/Information/Heading").text = content.concepts[0].heading
+	get_node("Main/Margin/Layout/Columns/Information/Prompt").text = content.prompt
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Body").text = content.concepts[0].body
+	get_node("Main/Margin/Layout/Columns/Information/Scroll/Text/Takeaway").text = content.concepts[0].takeaway
+	get_node("Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/PlanHeading").text = content.plan_heading
+	get_node("Main/Margin/Layout/Columns/VisualBoard/DevelopmentView/PresentCaption").text = content.present_site_label
+	get_node("Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorDetails/ContributorBody").text = content.contributor_body
+	get_node("Main/Margin/Layout/Columns/VisualBoard/MilestoneView/ContributorDetails/ContributorRole").text = content.contributor_role
+	get_node("Main/Margin/Layout/Columns/VisualBoard/MilestoneView/Documentary").text = content.documentary_label
+	get_node("Main/Margin/Layout/Header/TitleArea/HBoxContainer1/Label0").text = content.hotspot_id
+	get_node("Main/Margin/Layout/Header/TitleArea/Title").text = content.title
+	get_node("Main/Margin/Layout/Sections/OfficialFunction").text = content.concepts[1].short_label
+	get_node("Main/Margin/Layout/Sections/PublicInterior").text = content.concepts[0].short_label
+	get_node("Main/Margin/Layout/Sections/WhyItMatters").text = content.concepts[2].short_label
+
+
+func reset_interaction() -> void:
+	Lifecycle.reset(self)
