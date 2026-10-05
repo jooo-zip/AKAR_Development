@@ -1,154 +1,33 @@
-# UH-EXT-03 — Balinese-Inspired Architecture
+# UH-EXT-03 Phase 5 testing
 
-Standalone, development-only viewing layout. No application integration,
-transitions, progression, completion tracking, or required marker selections.
-The approved specification is `docs/specifications/uh_ext_03.md` and is unchanged.
+Updated 4 October 2026. This guide replaces earlier interaction/media requirements with the researcher's locked Phase 1–4 content.
 
-## Files and structure
+Production and visual editing scene: `res://scenes/landmarks/urduja_house/components/uh_ext_03.tscn`.
+F6 harness: `res://scenes/landmarks/urduja_house/exterior/uh_ext_03.tscn`.
+Content: `res://data/landmarks/urduja_house/revision/uh_ext_03.tres`.
 
-- `scenes/landmarks/urduja_house/exterior/uh_ext_03.tscn`
-- `data/landmarks/urduja_house/uh_ext_03.tres`
-- `scenes/components/architecture_marker.tscn`
-- `scripts/components/architecture_marker_layer.gd` and its Godot-generated `.uid`
-- `docs/uh_ext_03_testing.md`
-- Godot-generated `.import` sidecars for the five icons listed below.
+Instantiate only the production scene under an ordinary Control. Call `open_interaction()`; connect `closed`. `close_interaction()` closes/resets; `reset_interaction()` resets while retaining open/closed status. No avatar, map, master environment or harness is required. Do not use the harness in production.
 
-```text
-UH_EXT_03 (Control)
-  Background (ColorRect)
-  ViewingArea (centered 1280 × 720 Control)
-    Exterior (TextureRect)
-    Heading (Label)
-    ArchitectureInformation (unchanged HistoricalHotspot instance)
-      InformationPopup / NarrationPlayer (inherited)
-    MarkerLayer (Control, architecture_marker_layer.gd)
-      Roofline (ArchitectureMarker instance)
-      MainFacade (ArchitectureMarker instance)
-      Entrance (ArchitectureMarker instance)
-      ExteriorForm (ArchitectureMarker instance)
-      LandscapedSetting (ArchitectureMarker instance)
-    MarkerInformation (one non-modal PanelContainer)
-      Margin / Layout
-        Text / Title, Description
-        Close
-    DevelopmentNote (Label)
-```
+Open production in 2D: select Panel/MainMargin/MainVBox, Content, BodyRow, MediaColumn, MediaFrame, InfoScroll, Navigation and TakeawayMargin. Use margins, separations, stretch ratios and minimum sizes. Content binding fills labels/media only; static layout is scene-authored. Runtime owns selection, crossfade alpha, audio, local scroll and focus. No global/window resizing is performed by production.
 
-The small reusable ArchitectureMarker scene supplies Button styling, icon scaling,
-and a visible focus border. ArchitectureMarkerLayer connects its direct child
-Buttons to one shared panel, adds the existing interact action, and handles
-go_back before closing. Labels use ordinary Button text. Approved descriptions
-are optional scene metadata, outside behavior code. Only Roofline has metadata.
-Other markers hide and clear the description instead of retaining previous text.
+## F6 sequence
 
-Selection keeps focus on the marker, so visitors can continue tabbing. Close,
-Escape, and Backspace hide the panel and restore the selected marker's focus.
-Opening the introduction dismisses the marker panel without stealing popup focus.
-HistoricalHotspot handles its own modal controls and deferred focus restoration.
-No reusable historical component, previous hotspot, or project setting is changed.
+1. Open the harness above and press F6. Expect **ROOFLINE**, enabled LISTEN and no autoplay.
+2. Select each concept: ROOFLINE, FAÇADE, ENTRANCE, EXTERIOR FORM, LANDSCAPED SETTING. Use mouse, touch, Tab/Shift+Tab, Enter/Space and arrow keys. Every choice is optional and directly accessible. Repeated/rapid choices must settle on the latest input.
+3. LISTEN starts at zero, a second activation stops/resets, natural finish returns idle, and replay starts at zero. Selection and Sources must preserve playback. Physical-device listening/touch remain manual checks; automation uses engine input events.
+4. Open Sources: check relevant historical references/media credits. Escape closes Sources only; the next Escape closes the hotspot.
+5. Close mid-transition/playback, use OPEN PREVIEW, and check the default state, full opacity, initial media, reset local scroll and silent idle narration.
+6. Repeat at 1280×720, 960×540, 854×480; full parent and 5% inset. Resize the ordinary parent during use. Ensure targets stay at least 48px tall and all text remains accessible through local scrolling.
 
-## Exact assets
+Assets:
+- `res://assets/landmarks/urduja_house/exterior/uh_ext_03_exterior_highres.jpeg`
 
-Scene context:
-`res://assets/landmarks/urduja_house/exterior/uh_ext_01_pixel_art.png`
+Narration: `res://assets/landmarks/urduja_house/audio/uh_ext_03_narration.ogg`. Supplied recording accepted despite identical hashes. No speech/transcript equivalence is asserted by automated playback checks.
 
-Introductory popup photograph:
-`res://assets/landmarks/urduja_house/exterior/uh_ext_01_exterior_photo.jpeg`
+Credits: Exterior photograph: AKAR Team. Researcher-captured/documentary photograph. Individual photographer and capture date undocumented.
 
-| Marker | Icon |
-| --- | --- |
-| Roofline | `res://assets/landmarks/urduja_house/icons/uh_arch_roofline.png` |
-| Main Façade | `res://assets/landmarks/urduja_house/icons/uh_arch_facade.png` |
-| Entrance | `res://assets/landmarks/urduja_house/icons/uh_arch_entrance.png` |
-| Exterior Form | `res://assets/landmarks/urduja_house/icons/uh_arch_exterior_form.png` |
-| Landscaped Setting | `res://assets/landmarks/urduja_house/icons/uh_arch_landscape.png` |
+Narration: researcher-supplied and approved despite duplicate detection. Individual credit/rights unresolved.
 
-All original images are unchanged. The reconstruction preserves aspect ratio;
-its transparent outer margins extend beyond the clipped viewing area. Markers
-are approximate interaction-design placements, not architectural claims. No
-zoom images or placeholders are generated. Pixel art and icons use nearest
-filtering. The introductory photograph uses the existing bounded popup image area.
+Architecture Photo Explorer: ROOFLINE defaults selected. Five numbered 52px rings have explicit accessible labels and matching textual controls in the interpretation scroll. The scene-authored 4:3 AspectRatioContainer matches the fit/letterbox of the photograph. Normalized anchors are editable interaction placements, not new historical claims. The JPEG has EXIF orientation 3: Media flip_h/flip_v correct display orientation without editing source bytes. No synthetic detail or pixel-art markers.
 
-The introduction and transcript are copied verbatim into the content resource.
-Narration stays unassigned and its button hidden. Source credit stays empty and
-hidden. No architectural interpretation beyond approved content is supplied.
-
-## Exact F6 manual testing
-
-1. Open `project.godot` in Godot 4.7 and wait for importing/scanning to finish.
-   Open `scenes/landmarks/urduja_house/exterior/uh_ext_03.tscn`. Press **F6**
-   (Run Current Scene), without changing the main scene. Test at **1280 × 720**.
-2. Check the complete pixel-art building is visible and proportionally scaled.
-   Confirm five distinct marker icons with readable labels, approximate placement
-   by roof/front/entrance/overall form/landscaping, no excessive obstruction, and
-   the readable **Examine the architecture** prompt. Both information panels
-   start closed. The development-only note is visible.
-3. Click **Examine the architecture**. Compare the title, introductory text, and
-   transcript exactly with the specification. The present-day photograph should
-   preserve its proportions. There must be no narration button, invented credits,
-   or audio. Scroll to read the transcript. Close initially has keyboard focus.
-4. Test introductory popup **Close**, **Escape**, and **Backspace**. Each must
-   return focus to the introductory trigger. Reopen using **E**, **Enter**, and
-   **Space**. Check Tab/Shift+Tab remains within the popup while open; tab to its
-   scroll area and test arrow keys/Page Up/Page Down and the mouse wheel.
-5. Click each marker and compare its icon against the table above:
-   - **Roofline**: label plus exactly “One of the most visually prominent features
-     of the residence’s exterior composition.” (The approved line break is retained.)
-   - **Main Façade**, **Entrance**, **Exterior Form**, **Landscaped Setting**:
-     their exact label only, with no explanatory text or stale Roofline description.
-   The shared panel's Close control is UI, not historical content.
-6. Tab from the introductory trigger through Roofline, Main Façade, Entrance,
-   Exterior Form, and Landscaped Setting. With the panel open, Close is reachable
-   next; with it closed, navigation returns to the introduction. Test Shift+Tab
-   in reverse. Confirm visible focus borders and activate each marker using
-   **E / Enter / Space**. No selection is required to reach any other control.
-7. For each marker, close with **Escape**, **Backspace**, and the **Close** button.
-   Focus must return to the selected marker. Test activating Close with keyboard.
-   Repeated back presses with no panel open must be harmless.
-8. Repeatedly select the same marker and switch between different markers. Hold E
-   briefly. Only one marker panel may appear; no duplicate UI or stuck input.
-   Open the introduction while a marker panel is visible: the marker panel hides,
-   the popup retains focus, and closing returns to the introductory trigger.
-9. Resize the window wider/taller and smaller while preserving the project's
-   reference stretch behavior. Check readable text, accessible controls, sensible
-   image proportions, and popup scrolling. Inspect the Debugger for missing
-   resources or script errors. Visual and browser checks remain necessary even
-   when headless input checks pass.
-10. Press **F8** to stop. **F5** must still open the existing application foundation.
-    UH-EXT-01 and UH-EXT-02 must remain unchanged. Do not integrate this scene yet.
-
-## DEVELOPMENT TEMPLATE — not validated source data
-
-Editable researcher reminder only; none of these placeholders are runtime credits.
-
-```text
-Exterior Photograph
-Source: [Insert verified source]
-Photographer/Owner: [Insert name if known]
-Date: [Insert date if known]
-
-2D Exterior Artwork / Pixel-Art Reconstruction
-Created by: [Insert creator name]
-Reference Source: [Insert verified source if applicable]
-Date Created: [Insert date]
-
-Architecture Marker Icons
-Created by: [Insert creator name]
-Date Created: [Insert date]
-```
-
-## Implementation validation
-
-- Godot 4.7.2 imported the scene, script, and five supplied icons successfully.
-- A temporary headless validation script loaded the standalone scene and content
-  resource, and checked simulated marker mouse clicks, E/Enter/Space activation,
-  Tab order with the shared panel open/closed, Close/Escape/Backspace, selected
-  marker focus restoration, repeated selection, and switching to the introduction.
-- The introductory popup's back event was dispatched through its Window input
-  signal; focus restoration and hidden narration/credit fields passed.
-- The final headless interaction/resource run reported **0 failures**, exit code 0.
-- Exact introductory body, transcript, labels, and the sole Roofline description
-  were checked against the specification. No unsupported explanation was added.
-- Resource paths and whitespace checks passed. Existing tracked files remain
-  unchanged, including `project.godot`; no project serialization was retained.
-- Human visual checks and real desktop/browser input testing remain pending.
+Automated checkpoint: `godot --headless --path . --script res://tests/uh_remaining_phase5_test.gd -- uh_ext_03`. Omit --headless for Compatibility captures; add --editor for actual editor-layout checks. Results in the consolidated remaining-hotspots report.

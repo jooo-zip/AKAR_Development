@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://bno6b4t7taiap"]
+
+[ext_resource type="Resource" path="res://data/landmarks/urduja_house/revision/uh_ext_01.tres" id="content"]
+[ext_resource type="PackedScene" path="res://scenes/landmarks/urduja_house/components/uh_ext_01_discovery.tscn" id="discovery"]
+[ext_resource type="Script" uid="uid://dp6f5xwv7psb3" path="res://scripts/landmarks/urduja_house/uh_ext_01_editor_content.gd" id="preview"]
+[ext_resource type="Script" uid="uid://n5syhe86kh7s" path="res://scripts/landmarks/urduja_house/uh_ext_01_hotspot.gd" id="script"]
+[ext_resource type="Theme" uid="uid://cx8m27cvky1po" path="res://data/landmarks/urduja_house/uh_ext_01_theme.tres" id="theme"]
+
+[sub_resource type="StyleBoxFlat" id="HeritagePanel"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.063, 0.11, 0.094, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.525, 0.475, 0.318, 1)
+
+[node name="Hotspot" type="Control" unique_id=1680649083]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("theme")
+script = ExtResource("script")
+revision = ExtResource("content")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=1260356107]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("HeritagePanel")
+
+[node name="MainMargin" type="MarginContainer" parent="Panel" unique_id=908569187]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MainVBox" type="VBoxContainer" parent="Panel/MainMargin" unique_id=1856326719]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Panel/MainMargin/MainVBox" unique_id=1901636865]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/MainMargin/MainVBox/Header" unique_id=317408921]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 26
+autowrap_mode = 3
+
+[node name="Sources" type="Button" parent="Panel/MainMargin/MainVBox/Header" unique_id=1481038100]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 52)
+layout_mode = 2
+size_flags_vertical = 4
+accessibility_name = "SOURCES"
+text = "SOURCES"
+
+[node name="Listen" type="Button" parent="Panel/MainMargin/MainVBox/Header" unique_id=1125568122]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 52)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Activate to play narration from the beginning."
+accessibility_name = "LISTEN"
+accessibility_description = "Activate to play narration from the beginning."
+toggle_mode = true
+text = "LISTEN"
+
+[node name="Close" type="Button" parent="Panel/MainMargin/MainVBox/Header" unique_id=57792743]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 52)
+layout_mode = 2
+size_flags_vertical = 4
+accessibility_name = "CLOSE"
+text = "CLOSE"
+
+[node name="Subtitle" type="Label" parent="Panel/MainMargin/MainVBox" unique_id=1805309706]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="Content" type="MarginContainer" parent="Panel/MainMargin/MainVBox" unique_id=1749558108]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Discovery" parent="Panel/MainMargin/MainVBox/Content" unique_id=2087211132 instance=ExtResource("discovery")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Rail" parent="Panel/MainMargin/MainVBox/Content/Discovery/Layout/DiscoveryRail" index="0"]
+offset_right = 1138.0
+
+[node name="SourcesOverlay" type="PanelContainer" parent="." unique_id=19353269]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SourcesMargin" type="MarginContainer" parent="SourcesOverlay" unique_id=1521100518]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="SourcesLayout" type="VBoxContainer" parent="SourcesOverlay/SourcesMargin" unique_id=1466983613]
+layout_mode = 2
+
+[node name="SourcesScroll" type="ScrollContainer" parent="SourcesOverlay/SourcesMargin/SourcesLayout" unique_id=1611097850]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="SourcesText" type="Label" parent="SourcesOverlay/SourcesMargin/SourcesLayout/SourcesScroll" unique_id=1710580646]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+autowrap_mode = 3
+
+[node name="CloseSources" type="Button" parent="SourcesOverlay/SourcesMargin/SourcesLayout" unique_id=1172783372]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 52)
+layout_mode = 2
+accessibility_name = "CLOSE SOURCES"
+text = "CLOSE SOURCES"
+
+[node name="Narration" type="AudioStreamPlayer" parent="." unique_id=1125851858]
+unique_name_in_owner = true
+
+[node name="EditorContent" type="Node" parent="." unique_id=129436525]
+script = ExtResource("preview")
+content = ExtResource("content")
+section = "header"
+
+[editable path="Panel/MainMargin/MainVBox/Content/Discovery"]

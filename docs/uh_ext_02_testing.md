@@ -1,126 +1,38 @@
-# UH-EXT-02 — Why It Was Built
+# UH-EXT-02 Phase 5 testing
 
-This development-only standalone front-approach composition uses the UH-EXT-01
-pattern. It has no navigation integration, walking transitions, completion
-requirement, or connection to another hotspot. Information remains optional.
+Updated 4 October 2026. This guide replaces earlier interaction/media requirements with the researcher's locked Phase 1–4 content.
 
-## Files and structure
+Production and visual editing scene: `res://scenes/landmarks/urduja_house/components/uh_ext_02.tscn`.
+F6 harness: `res://scenes/landmarks/urduja_house/exterior/uh_ext_02.tscn`.
+Content: `res://data/landmarks/urduja_house/revision/uh_ext_02.tres`.
 
-- `scenes/landmarks/urduja_house/exterior/uh_ext_02.tscn`
-- `data/landmarks/urduja_house/uh_ext_02.tres`
-- `docs/uh_ext_02_testing.md`
-- `assets/landmarks/urduja_house/icons/uh_origin_hotspot.png.import` (Godot-generated)
-- `assets/landmarks/urduja_house/exterior/uh_ext_02_archival_photo.jpg.import` (Godot-generated)
-- `assets/landmarks/urduja_house/exterior/uh_ext_02_governor_rodriguez_portrait.jpg.import` (Godot-generated)
+Instantiate only the production scene under an ordinary Control. Call `open_interaction()`; connect `closed`. `close_interaction()` closes/resets; `reset_interaction()` resets while retaining open/closed status. No avatar, map, master environment or harness is required. Do not use the harness in production.
 
-```text
-UH_EXT_02 (Control)
-  Background (ColorRect)
-  Exterior (TextureRect)
-  Heading (Label)
-  OriginInformation (HistoricalHotspot instance)
-    InformationPopup (inherited modal popup)
-    NarrationPlayer (inherited, audio unassigned)
-  KeyboardHelp (Label)
-  DevelopmentNote (Label)
-```
+Open production in 2D: select Panel/MainMargin/MainVBox, Content, BodyRow, MediaColumn, MediaFrame, InfoScroll, Navigation and TakeawayMargin. Use margins, separations, stretch ratios and minimum sizes. Content binding fills labels/media only; static layout is scene-authored. Runtime owns selection, crossfade alpha, audio, local scroll and focus. No global/window resizing is performed by production.
 
-HistoricalHotspot is reused unchanged. The scene assigns its separate content
-resource, icon, prompt, and position. The ready signal gives the trigger initial
-focus. The component supplies mouse and keyboard activation, scrolling, Close,
-go_back handling, and deferred focus restoration. No new GDScript is needed.
+## F6 sequence
 
-## Asset discovery and content
+1. Open the harness above and press F6. Expect **GOVERNOR**, enabled LISTEN and no autoplay.
+2. Select each concept: GOVERNOR, OFFICIAL RESIDENCE, 1953. Use mouse, touch, Tab/Shift+Tab, Enter/Space and arrow keys. Every choice is optional and directly accessible. Repeated/rapid choices must settle on the latest input.
+3. LISTEN starts at zero, a second activation stops/resets, natural finish returns idle, and replay starts at zero. Selection and Sources must preserve playback. Physical-device listening/touch remain manual checks; automation uses engine input events.
+4. Open Sources: check relevant historical references/media credits. Escape closes Sources only; the next Escape closes the hotspot.
+5. Close mid-transition/playback, use OPEN PREVIEW, and check the default state, full opacity, initial media, reset local scroll and silent idle narration.
+6. Repeat at 1280×720, 960×540, 854×480; full parent and 5% inset. Resize the ordinary parent during use. Ensure targets stay at least 48px tall and all text remains accessible through local scrolling.
 
-- Scene context: `res://assets/landmarks/urduja_house/exterior/uh_ext_01_pixel_art.png`.
-- Popup image: `res://assets/landmarks/urduja_house/exterior/uh_ext_02_archival_photo.jpg`.
-- History icon: `res://assets/landmarks/urduja_house/icons/uh_origin_hotspot.png`.
-- The researcher-supplied archival/historical photograph is now the popup image.
-  The existing popup preserves aspect ratio in a 220-pixel-high area; no original
-  image was edited. The scene's pixel-art exterior context remains unchanged.
-- Verified Governor Juan de Guzman Rodriguez portrait:
-  `res://assets/landmarks/urduja_house/exterior/uh_ext_02_governor_rodriguez_portrait.jpg`.
-  This researcher-supplied portrait is available for a future supplementary-media
-  enhancement but remains unused and deferred. No component modification or
-  custom multi-image system is added.
-- The audio directory contains no narration. Narration stays unassigned as its
-  intentional development placeholder; the narration button is hidden.
-- Source credit stays empty and hidden because no verified credit was supplied.
-- The approved historical body and narration transcript are copied verbatim,
-  including paragraph and line breaks, from the read-only UH-EXT-02 specification.
-  The transcript remains assigned and displayed even without narration audio.
+Assets:
+- `res://assets/landmarks/urduja_house/exterior/uh_ext_02_rodriguez_portrait.jpeg`
+- `res://assets/landmarks/urduja_house/exterior/uh_ext_01_historical_photo.jpg`
 
-## Exact Godot F6 manual testing
+Narration: `res://assets/landmarks/urduja_house/audio/uh_ext_02_narration.ogg`. Supplied recording accepted despite identical hashes. No speech/transcript equivalence is asserted by automated playback checks.
 
-1. Open this repository's `project.godot` in Godot 4.7 and allow asset import to
-   finish. Open `scenes/landmarks/urduja_house/exterior/uh_ext_02.tscn` and press
-   **F6** (Run Current Scene). Do not change the main scene. Use 1280 × 720.
-2. Verify the exterior reconstruction loads, exactly one origin/history icon is
-   visible, **Discover its beginning** is readable, and the development-only
-   layout note fits the screen. The popup starts closed and remains optional.
-3. Click the hotspot. Verify **Establishing an Official Residence**, the exact
-   approved historical text, archival/historical photograph, and approved transcript
-   against `docs/specifications/urduja_house/uh_ext_02.md`. Scroll as needed.
-   Compare the displayed image with `uh_ext_02_archival_photo.jpg`; the current
-   exterior photograph and governor portrait must not appear in the popup.
-   Check that the archival image preserves its proportions. No narration button
-   or source credit should appear; no sound should play.
-4. Press **Escape** and check that focus returns visibly to the hotspot. Reopen
-   with **E**, then close with **Backspace**. Repeat opening with **Enter** and
-   **Space**, and close using the visible **Close** button. Verify each closing
-   method restores focus appropriately. Close initially receives popup focus.
-5. Test **Tab / Shift+Tab**. Popup focus must stay inside the modal window. Tab
-   to the scroll area, use arrow keys / Page Down / Page Up, and test mouse-wheel
-   scrolling. Close must remain visible. Activate Close with Enter or Space.
-6. Repeatedly open and close using mouse and keyboard, including holding E
-   briefly. There must be no duplicate popup, immediate reopening after closing,
-   stuck input, or missing-resource error. Reopening resets the scroll position.
-   Pressing N without assigned narration must be harmless.
-7. Check readable text and unstretched images at 1280 × 720 and after resizing.
-   The popup must scroll when necessary and the controls must remain reachable.
-   Inspect the Godot Debugger for errors.
-8. Press **F8** to stop. Press **F5** to confirm the existing application foundation
-   remains unchanged. UH-EXT-01 and application navigation must not be altered.
+Credits: Portrait: Painted Portraits of Governors Gallery, Pangasinan Provincial Capitol. Painter, image photographer and permission/license undocumented.
 
-Manual visual, input, and browser checks are required before master-scene
-integration. Headless loading alone does not verify these. For browser testing,
-use a disposable project copy with UH-EXT-02 as its main scene, export for Web,
-serve over HTTP, and repeat the checks without changing the actual project.
+Historical photograph: I Love Pangasinan, “Urduja House in Lingayen Pangasinan”; September 1982. Photographer and permission/license unresolved.
 
-## DEVELOPMENT TEMPLATE — not validated content
+1953: date panel, not a historical photograph.
 
-Editable researcher reminder only. These placeholders are not runtime credits.
+Narration: researcher-supplied and approved despite duplicate-file detection. Individual recording credit/rights unresolved.
 
-```text
-Current Exterior Photo
-Source: [Insert verified source]
-Photographer/Owner: [Insert name if known]
-Date: [Insert date if known]
+Origin Story Explorer: vertical concept relationship, not a chronological timeline. GOVERNOR uses the portrait; OFFICIAL RESIDENCE uses the September 1982 photo; 1953 uses a date panel with no fake photograph. Restrained 220ms crossfade/line emphasis; no completion tracking.
 
-Archival/Historical Photo
-Source/Archive: [Insert verified source]
-Photographer/Creator: [Insert name if known]
-Date: [Insert date/year if known]
-
-Portrait of Gov. Juan de Guzman Rodriguez
-Source/Collection: [Insert verified source]
-Photographer/Creator: [Insert name if known]
-Date: [Insert date/year if known]
-```
-
-## Implementation validation results
-
-- Godot 4.7.2 headless editor import: exit code 0, no reported errors.
-- UH-EXT-02 headless standalone startup: exit code 0, no reported errors.
-- External scene/content resource paths all exist; Godot loaded them successfully.
-- Historical body and transcript match the specification exactly, with line
-  endings normalized for comparison.
-- Narration and source credit retain their unassigned/empty resource defaults.
-- No tracked files changed, including the reusable component, UH-EXT-01,
-  application scenes, and `project.godot`. No project serialization occurred.
-- The specification and origin icon were already untracked researcher-supplied
-  files before this milestone; they were not created or edited by implementation.
-- The archival-photo correction changes only the UH-EXT-02 image reference and
-  this guide, plus Godot-generated import settings for the two supplied images.
-  The supplied portrait remains unreferenced by the scene and content resource.
-- Manual visual, mouse/keyboard, focus, and browser checks remain pending.
+Automated checkpoint: `godot --headless --path . --script res://tests/uh_remaining_phase5_test.gd -- uh_ext_02`. Omit --headless for Compatibility captures; add --editor for actual editor-layout checks. Results in the consolidated remaining-hotspots report.

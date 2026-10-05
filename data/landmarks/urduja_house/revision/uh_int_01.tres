@@ -1,0 +1,24 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_content.gd" id="script"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh-int-01-narration.ogg" id="audio"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_01_princess_urduja_painting.jpg" id="image0"]
+
+[resource]
+script = ExtResource("script")
+narration = ExtResource("audio")
+hotspot_id = "UH-INT-01"
+title = "PRINCESS URDUJA PAINTING"
+subtitle = "Examine the Artwork and Its Cultural Connection"
+takeaway = "The painting connects Urduja House with a legendary cultural figure whose place in Pangasinan identity continues beyond the historical debate."
+introduction = ""
+reflection = ""
+historical_references = "Researcher-approved Phase 1–4 text, 4 October 2026. Princess Urduja is a legendary cultural figure associated with Pangasinan; historical identification remains debated. Ibn Battuta’s Tawalisi account does not conclusively identify Pangasinan."
+media_credits = "Artwork: Romeo C. Mananquil. Digital reproduction image: researcher-supplied repository asset. Photographer, reproduction source and permission/license undocumented.\n\nMagnifier samples the same 364×442 image; it does not create additional detail.\n\nNarration: researcher-supplied and approved despite duplicate detection. Individual recording credit/rights unresolved."
+transcript = "A painting of Princess Urduja by Romeo C. Mananquil is displayed near the entrance of Urduja House. Princess Urduja is remembered as a legendary warrior figure associated with Pangasinan. The historical identification of Princess Urduja remains debated, but she continues to hold cultural significance in Pangasinan."
+labels = PackedStringArray("THE ARTWORK", "THE LEGEND", "CULTURAL MEANING")
+headings = PackedStringArray("Princess Urduja Painting", "A Warrior Figure in Tradition", "An Enduring Cultural Symbol")
+bodies = PackedStringArray("A painting of Princess Urduja by Romeo C. Mananquil is displayed near the entrance of Urduja House.", "Princess Urduja is remembered as a legendary warrior figure associated with Pangasinan.", "The historical identification of Princess Urduja remains debated, but she continues to hold cultural significance in Pangasinan.")
+captions = PackedStringArray("Princess Urduja painting • Romeo C. Mananquil", "Princess Urduja painting • Romeo C. Mananquil", "Princess Urduja painting • Romeo C. Mananquil")
+notes = PackedStringArray("Its presence links the residence with the cultural figure associated with the landmark's name.", "HISTORICAL NOTE\nIbn Battuta's fourteenth-century account describes a warrior princess in Tawalisi, but the account does not conclusively identify Tawalisi as Pangasinan.", "")
+images = Array[Texture2D]([ExtResource("image0"), ExtResource("image0"), ExtResource("image0")])

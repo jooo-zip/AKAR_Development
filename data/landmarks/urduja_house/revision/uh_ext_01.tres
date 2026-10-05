@@ -1,0 +1,32 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_ext_01_discovery_content.gd" id="script"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_locator_map.png" id="map"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_historical_photo_1982.jpg" id="history"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_exterior_photo.JPG" id="today"]
+
+[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh_ext_01_narration.ogg" id="narration"]
+
+[resource]
+script = ExtResource("script")
+narration = ExtResource("narration")
+hotspot_id = "UH-EXT-01"
+title = "MEET URDUJA HOUSE"
+subtitle = "Official Residence of the Governor of Pangasinan"
+transcript = "Urduja House stands within the provincial government complex in Lingayen, Pangasinan. Construction of the governor's official residence began in 1953. A historical photograph from September 1982 provides a view of the residence during an earlier period. Today, Urduja House remains the official residence of the Governor of Pangasinan, connecting this historic landmark with continuing provincial governance."
+historical_references = "Researcher-approved UH-EXT-01 Phase 5 content: location, construction start in 1953 and continuing official-residence function. Published bibliographic details for these claims remain unresolved. Historical photograph/date: I Love Pangasinan — \"Urduja House in Lingayen Pangasinan\"; September 1982, as identified in the researcher-supplied source record. The page identifies Wikipedia as its source."
+media_credits = "Locator map: AKAR Capstone Project; AKAR Development Team. Project-created locator composition, supplied by the researcher. Underlying satellite/base-map source and license require verification.\n\nHistorical photograph: uh_ext_01_historical_photo_1982.jpg. Subject: Urduja House, Lingayen, Pangasinan. Displayed date: September 1982. Retrieved from: I Love Pangasinan — \"Urduja House in Lingayen Pangasinan\". The page identifies Wikipedia as its source. Photographer: unverified. Exact original license: unverified. SOURCE IDENTIFIED — CREATOR/LICENSE VERIFICATION PENDING.\n\nPresent-day photograph: Source: AKAR Capstone Project, per researcher. Individual photographer and capture date are not documented.\n\nNavigation marker: simple UI-drawn diamond."
+labels = PackedStringArray("PLACE", "HISTORY", "TODAY")
+context_labels = PackedStringArray("WHERE IS IT?", "HISTORICAL VIEW", "TODAY")
+headings = PackedStringArray("Within Lingayen's Provincial Government Complex", "The Residence Takes Shape", "Still an Official Residence")
+bodies = PackedStringArray("Urduja House stands within the provincial government complex in Lingayen, Pangasinan.", "Construction of the governor's official residence began in 1953.", "Urduja House remains the official residence of the Governor of Pangasinan.\n\nIts continuing role connects the historic residence with present-day provincial governance.")
+image = ExtResource("map")
+images = Array[Texture2D]([ExtResource("map"), ExtResource("history"), ExtResource("today")])
+captions = PackedStringArray("URDUJA HOUSE • LINGAYEN, PANGASINAN", "Historical view of Urduja House • September 1982", "Present-day view of Urduja House")
+takeaway = "Urduja House is a historic government landmark that continues to serve as the official residence of the Governor of Pangasinan."
+
+history_years = PackedStringArray("1953", "1982")
+history_headings = PackedStringArray("Construction Begins", "An Earlier View")
+history_photo_body = "This September 1982 photograph provides a historical view of Urduja House during an earlier period."
+observation_label = "LOOK CLOSER"
+observation_text = "Compare this historical view with TODAY to see the residence in the present."

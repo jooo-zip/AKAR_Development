@@ -6,15 +6,8 @@
 [resource]
 script = ExtResource("1_content")
 title = "Establishing an Official Residence"
-body = "The concept of establishing an official residence was introduced by
-Governor Juan de Guzman Rodriguez. The residence was intended to
-provide a permanent place in Lingayen for provincial governors who came
-from different municipalities of Pangasinan.
+body = "The concept of establishing an official residence was introduced by Governor Juan de Guzman Rodriguez. The residence was intended to provide a permanent place in Lingayen for provincial governors who came from different municipalities of Pangasinan.
 
-Construction began in 1953, establishing an official executive residence
-within the provincial government complex."
+Construction began in 1953, establishing an official executive residence within the provincial government complex."
 image = ExtResource("2_photo")
-transcript = "Governor Juan de Guzman Rodriguez introduced the concept of
-establishing a permanent official residence for the province’s governors.
-Construction began in 1953, providing the provincial chief executive with a
-residence within the government complex in Lingayen."
+transcript = "Governor Juan de Guzman Rodriguez introduced the idea of establishing a permanent official residence for Pangasinan's provincial governors. Construction began in 1953, providing the provincial chief executive with a residence within the government complex in Lingayen."

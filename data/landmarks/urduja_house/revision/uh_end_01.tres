@@ -1,0 +1,27 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_content.gd" id="script"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh_end_01_narration.ogg" id="audio"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_historical_photo.jpg" id="image0"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_01_princess_urduja_painting.jpg" id="image1"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_03_hall_wide.png" id="image2"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_03_exterior_highres.jpeg" id="image3"]
+
+[resource]
+script = ExtResource("script")
+narration = ExtResource("audio")
+hotspot_id = "UH-END-01"
+title = "WHAT URDUJA HOUSE REPRESENTS"
+subtitle = "Revisit Any Theme"
+takeaway = "Urduja House brings together provincial governance, cultural memory, architectural character, and continuing public service."
+introduction = ""
+reflection = "Which part of Urduja House's story changed how you see the landmark?"
+historical_references = "Researcher-approved Phase 5 five-theme Reflection Gallery, 4 October 2026. Provincial Government of Pangasinan records as identified in researcher content. Exact bibliographic details unresolved."
+media_credits = "Historical photograph: I Love Pangasinan, “Urduja House in Lingayen Pangasinan”; September 1982. Photographer and permission/license unresolved.\n\nPrincess Urduja painting: Romeo C. Mananquil. Photographer, digital reproduction source and permission/license undocumented.\n\nHall photograph: official See Pangasinan / PTCAO tourism website, per researcher. Individual photographer and permission/license undocumented.\n\nPresent-day exterior and architectural-theme thumbnail: AKAR Team; researcher-captured/documentary photographs. Individual photographer and capture date undocumented.\n\nNarration: researcher-supplied and approved despite duplicate detection. Recording credit/rights unresolved."
+transcript = "Urduja House reflects decades of provincial government history. From its establishment in 1953 to its continuing role as the Governor's official residence, the landmark connects government service, architecture, and Pangasinan's cultural identity."
+labels = PackedStringArray("BEGINNING", "CULTURAL CONNECTION", "CHANGING FUNCTION", "CONTINUING ROLE", "ARCHITECTURAL IDENTITY")
+headings = PackedStringArray("Construction Begins — 1953", "Princess Urduja", "Residence and Office", "Still an Official Residence", "Balinese-Inspired Character")
+bodies = PackedStringArray("Construction of the governor's official residence began in 1953.", "The residence is associated by name with Princess Urduja, a legendary cultural figure connected with Pangasinan.", "Before 2007, past governors also held office in Urduja House. The Governor's daily office was transferred to the Provincial Capitol in 2007.", "Urduja House remains the official residence of the Governor of Pangasinan, while its Ceremonial Hall is used for selected official functions.", "Its Balinese-inspired architectural character contributes to the landmark's distinctive visual identity.")
+captions = PackedStringArray("Historical view of Urduja House • September 1982", "Princess Urduja painting • Romeo C. Mananquil", "Historical view of Urduja House • September 1982", "Ceremonial Hall • See Pangasinan / PTCAO", "Present-day exterior of Urduja House")
+notes = PackedStringArray("", "", "", "", "")
+images = Array[Texture2D]([ExtResource("image0"), ExtResource("image1"), ExtResource("image0"), ExtResource("image2"), ExtResource("image3")])

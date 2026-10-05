@@ -1,106 +1,45 @@
-[gd_scene format=3 uid="uid://by62ysp0lmk05"]
+[gd_scene format=3 uid="uid://cceg86pnl1is6"]
 
-[ext_resource type="PackedScene" path="res://scenes/components/historical_hotspot.tscn" id="1_hotspot"]
-[ext_resource type="Resource" path="res://data/landmarks/urduja_house/uh_ext_01.tres" id="2_content"]
-[ext_resource type="Texture2D" uid="uid://b6gxgd6685xjd" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_pixel_art.png" id="3_exterior"]
-[ext_resource type="Texture2D" uid="uid://81olwjx4sbay" path="res://assets/landmarks/urduja_house/icons/uh_information_hotspot.png" id="4_icon"]
+[ext_resource type="PackedScene" path="res://scenes/landmarks/urduja_house/components/uh_ext_01.tscn" id="component"]
+[ext_resource type="Script" uid="uid://ypqv1bfhf3yu" path="res://scripts/landmarks/urduja_house/uh_preview.gd" id="preview"]
 
-[node name="UH_EXT_01" type="Control" unique_id=455286683]
-texture_filter = 1
+[node name="Preview" type="Control" unique_id=183249459]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+script = ExtResource("preview")
 
-[node name="Background" type="ColorRect" parent="." unique_id=1688697190]
+[node name="Backdrop" type="ColorRect" parent="." unique_id=965700646]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.025, 0.045, 0.04, 1)
+
+[node name="Reopen" type="Button" parent="." unique_id=697303470]
+layout_mode = 0
+anchor_left = 0.3
+anchor_top = 0.4
+anchor_right = 0.7
+anchor_bottom = 0.6
+text = "OPEN UH-EXT-01 PREVIEW"
+
+[node name="Frame" type="Control" parent="." unique_id=770508873]
+anchors_preset = 0
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+mouse_filter = 2
+
+[node name="Hotspot" parent="Frame" unique_id=1796832995 instance=ExtResource("component")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.055, 0.09, 0.085, 1)
 
-[node name="Exterior" type="TextureRect" parent="." unique_id=1325422140]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 40.0
-offset_right = -24.0
-offset_bottom = -100.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("3_exterior")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Heading" type="Label" parent="." unique_id=131779559]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 24.0
-offset_top = 24.0
-offset_right = -24.0
-offset_bottom = 68.0
-theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
-theme_override_font_sizes/font_size = 30
-text = "Urduja House"
-horizontal_alignment = 1
-
-[node name="ArrivalInformation" parent="." unique_id=126902569 instance=ExtResource("1_hotspot")]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -190.0
-offset_top = -164.0
-offset_right = 190.0
-offset_bottom = -84.0
-grow_horizontal = 2
-grow_vertical = 0
-tooltip_text = "Discover this landmark"
-theme_override_constants/icon_max_width = 72
-text = "Discover this landmark"
-icon = ExtResource("4_icon")
-expand_icon = true
-content = ExtResource("2_content")
-
-[node name="KeyboardHelp" type="Label" parent="." unique_id=1966296837]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = -76.0
-offset_right = -24.0
-offset_bottom = -44.0
-theme_override_font_sizes/font_size = 20
-text = "Optional information · Click or focus with Tab, then press E / Enter / Space."
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="DevelopmentNote" type="Label" parent="." unique_id=652385730]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = -40.0
-offset_right = -24.0
-offset_bottom = -12.0
-theme_override_colors/font_color = Color(0.88, 0.92, 0.9, 1)
-theme_override_font_sizes/font_size = 18
-text = "Development-only standalone arrival layout · UH-EXT-01"
-horizontal_alignment = 1
-
-[connection signal="ready" from="ArrivalInformation" to="ArrivalInformation" method="grab_focus"]
+[connection signal="pressed" from="Reopen" to="Frame/Hotspot" method="open_interaction"]
+[connection signal="closed" from="Frame/Hotspot" to="Reopen" method="grab_focus"]
+[connection signal="closed" from="Frame/Hotspot" to="Reopen" method="show"]
+[connection signal="opened" from="Frame/Hotspot" to="Reopen" method="hide"]

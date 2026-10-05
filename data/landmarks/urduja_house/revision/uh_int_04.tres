@@ -1,0 +1,33 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_observation_content.gd" id="script"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh_int_04_narration.ogg" id="audio"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_04_conference_room_pixel_art.png" id="image0"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_04_conference_room.png" id="image1"]
+
+[resource]
+script = ExtResource("script")
+narration = ExtResource("audio")
+hotspot_id = "UH-INT-04"
+title = "CONFERENCE ROOM"
+subtitle = "Explore Its Continuing Function"
+takeaway = "Urduja House remains an active government residence rather than only a historical display."
+introduction = ""
+reflection = ""
+historical_references = "Researcher-approved Phase 5 Conference Room content. Province of Pangasinan: “PPC Interim Governing Board approves curricula of four academic programs”."
+media_credits = "Project-created interpretive representation\nSource: AKAR Team. Not documentary evidence. Individual artist, creation date and permission/license unresolved.\n\nDocumentary photograph: Provincial Government of Pangasinan, “PPC Interim Governing Board approves curricula of four academic programs”. Photo courtesy: Pangasinan Polytechnic College; Chona C. Bugayong / PIMRO. Repository source URL: https://www.pangasinan.gov.ph/author/pixelpgsnadmin/page/21/ . Capture date and permission/license unresolved.\n\nNarration: researcher-supplied and approved despite duplicate detection. Recording credit/rights unresolved."
+transcript = "This conference room forms part of the publicly accessible interior of Urduja House. Together with its reception and ceremonial spaces, it reflects the continuing official function of the residence."
+labels = PackedStringArray("EXPLORE THE SPACE", "DOCUMENTED USE", "WHY IT MATTERS")
+headings = PackedStringArray("Explore the Conference Room", "The Conference Room in Use", "A Continuing Government Function")
+bodies = PackedStringArray("Select an area to observe how the room is arranged for meetings and continuing official use.", "An official Provincial Government photograph documents the conference-room space being used during an institutional meeting, providing visual evidence of its continuing administrative function.", "Together with the reception and ceremonial spaces, the conference room helps demonstrate that Urduja House remains connected with continuing provincial government functions.")
+captions = PackedStringArray("", "Documentary photograph • Province of Pangasinan", "Documentary photograph • Province of Pangasinan")
+notes = PackedStringArray("", "", "")
+images = Array[Texture2D]([ExtResource("image0"), ExtResource("image1"), ExtResource("image1")])
+
+observation_labels = PackedStringArray("MEETING TABLE", "SEATING ARRANGEMENT", "OVERALL ROOM SETTING")
+
+observation_headings = PackedStringArray("A Central Space for Discussion", "Clearer Sightlines Around the Table", "A Formal Meeting Environment")
+
+observation_bodies = PackedStringArray("The large central table provides a shared setting for formal discussions and meetings. Its central placement allows participants to gather around a common discussion area.", "The curved arrangement of the table and surrounding seating creates clearer sightlines across the room, allowing participants to face one another more directly with less visual obstruction.", "The conference room combines a large central meeting table, surrounding seating, formal interior finishes, and an organized layout suited to official discussions and administrative meetings.")
+
+observation_notes = PackedStringArray("", "", "Together with the Ceremonial Hall and other reception spaces, the room helps show that Urduja House remains connected with continuing government functions.")

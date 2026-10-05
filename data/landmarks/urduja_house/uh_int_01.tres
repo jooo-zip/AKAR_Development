@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://scripts/components/interactive_artwork_content.gd" id="1_content"]
 [ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_01_princess_urduja_painting.jpg" id="2_artwork"]
-[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh-int-01-narration.ogg" id="3_audio"]
 
 [resource]
 script = ExtResource("1_content")
@@ -11,28 +10,15 @@ prompt = "Discover the story behind the name"
 artwork_texture = ExtResource("2_artwork")
 inspection_labels = PackedStringArray("Central Figure", "Left-side Scene", "Right-side Scene", "Lower Details")
 inspection_regions = Array[Rect2]([Rect2(0.28, 0.08, 0.48, 0.84), Rect2(0, 0.12, 0.36, 0.88), Rect2(0.64, 0.12, 0.36, 0.88), Rect2(0, 0.67, 1, 0.33)])
-narration_stream = ExtResource("3_audio")
-alt_text = "Painting depicting Princess Urduja surrounded by scenes and objects associated
-with Pangasinan."
+alt_text = "Painting depicting Princess Urduja surrounded by scenes and objects associated with Pangasinan."
 section_labels = PackedStringArray("THE ARTWORK", "THE LEGEND", "CULTURAL SIGNIFICANCE")
 section_headings = PackedStringArray("Princess Urduja Painting", "The Legend", "Cultural Significance")
-section_bodies = PackedStringArray("A painting of Princess Urduja by Romeo Mananquil is displayed near the
-entrance of Urduja House. Its placement connects the residence with the
-cultural figure after whom it was named.", "Princess Urduja is described as a legendary warrior figure associated with
-Pangasinan. Accounts connected with the fourteenth-century travels of Ibn
-Battuta describe a warrior princess in the kingdom of Tawalisi.
+section_bodies = PackedStringArray("A painting of Princess Urduja by Romeo Mananquil is displayed near the entrance of Urduja House. Its placement connects the residence with the cultural figure after whom it was named.", "Princess Urduja is described as a legendary warrior figure associated with Pangasinan. Accounts connected with the fourteenth-century travels of Ibn Battuta describe a warrior princess in the kingdom of Tawalisi.
 
-Historians continue to debate whether Princess Urduja was an actual historical
-person or a legendary heroine.", "Despite the continuing historical debate, Princess Urduja remains an important
-cultural symbol associated with courage, wisdom, leadership, and Pangasinan
-identity.")
-narration_transcript = "Urduja House was named after Princess Urduja, a legendary warrior figure
-associated with Pangasinan. Although historians continue to debate her
-historical existence and the location of Tawalisi, she remains an important
-cultural symbol. A painting by Romeo Mananquil near the entrance reflects this
-lasting connection between the residence and Pangasinan’s cultural identity."
-source_credit = "Artist:
-Romeo C. Mananquil
+Historians continue to debate her historical existence and the location of Tawalisi. Tawalisi is not conclusively identified as Pangasinan.", "Despite the continuing historical debate, Princess Urduja remains an important cultural symbol associated with courage, wisdom, leadership, and Pangasinan identity.")
+narration_transcript = "Princess Urduja is remembered as a legendary warrior figure associated with Pangasinan. Although historians continue to debate her historical existence and the location of Tawalisi, she remains an important cultural symbol. A painting by Romeo Mananquil inside Urduja House reflects this continuing cultural association."
+source_credit = "Artist: Romeo C. Mananquil
 
-Historical Content:
-Based on researcher-validated AKAR Urduja House materials."
+Historical Content: Based on researcher-validated AKAR Urduja House materials.
+
+Digital artwork reproduction: Source / credit unresolved."

@@ -1,193 +1,31 @@
-[gd_scene load_steps=11 format=3]
-
-[ext_resource type="PackedScene" path="res://scenes/components/historical_hotspot.tscn" id="1_intro"]
-[ext_resource type="Resource" path="res://data/landmarks/urduja_house/uh_ext_03.tres" id="2_content"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_pixel_art.png" id="3_exterior"]
-[ext_resource type="PackedScene" path="res://scenes/components/architecture_marker.tscn" id="4_marker"]
-[ext_resource type="Script" path="res://scripts/components/architecture_marker_layer.gd" id="5_layer"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_arch_roofline.png" id="6_roof"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_arch_facade.png" id="7_facade"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_arch_entrance.png" id="8_entrance"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_arch_exterior_form.png" id="9_form"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/icons/uh_arch_landscape.png" id="10_landscape"]
-
-[node name="UH_EXT_03" type="Control"]
-layout_mode = 3
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://scenes/landmarks/urduja_house/components/uh_ext_03.tscn" id="component"]
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_preview.gd" id="preview"]
+[node name="Preview" type="Control"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture_filter = 1
-
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
+script = ExtResource("preview")
+[node name="Backdrop" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+color = Color(0.025, 0.045, 0.04, 1)
 mouse_filter = 2
-color = Color(0.055, 0.09, 0.085, 1)
-
-[node name="ViewingArea" type="Control" parent="."]
-layout_mode = 1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -640.0
-offset_top = -360.0
-offset_right = 640.0
-offset_bottom = 360.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Reopen" type="Button" parent="."]
+anchor_left = 0.3
+anchor_top = 0.4
+anchor_right = 0.7
+anchor_bottom = 0.6
+text = "OPEN UH-EXT-03 PREVIEW"
+[node name="Frame" type="Control" parent="."]
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
 mouse_filter = 2
-clip_contents = true
-
-[node name="Exterior" type="TextureRect" parent="ViewingArea"]
-offset_left = 48.0
-offset_top = -125.0
-offset_right = 1232.0
-offset_bottom = 763.0
-mouse_filter = 2
-texture = ExtResource("3_exterior")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Heading" type="Label" parent="ViewingArea"]
-offset_left = 32.0
-offset_top = 28.0
-offset_right = 860.0
-offset_bottom = 68.0
-theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
-theme_override_font_sizes/font_size = 30
-text = "Balinese-Inspired Architecture"
-
-[node name="ArchitectureInformation" parent="ViewingArea" instance=ExtResource("1_intro")]
-offset_left = 916.0
-offset_top = 24.0
-offset_right = 1248.0
-offset_bottom = 80.0
-text = "Examine the architecture"
-content = ExtResource("2_content")
-focus_next = NodePath("../MarkerLayer/Roofline")
-focus_previous = NodePath("../MarkerLayer/LandscapedSetting")
-
-[node name="MarkerLayer" type="Control" parent="ViewingArea" node_paths=PackedStringArray("information_panel", "title_label", "description_label", "close_button")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("5_layer")
-information_panel = NodePath("../MarkerInformation")
-title_label = NodePath("../MarkerInformation/Margin/Layout/Text/Title")
-description_label = NodePath("../MarkerInformation/Margin/Layout/Text/Description")
-close_button = NodePath("../MarkerInformation/Margin/Layout/Close")
-
-[node name="Roofline" parent="ViewingArea/MarkerLayer" instance=ExtResource("4_marker")]
-offset_left = 480.0
-offset_top = 104.0
-offset_right = 670.0
-offset_bottom = 160.0
-text = "Roofline"
-icon = ExtResource("6_roof")
-focus_previous = NodePath("../../ArchitectureInformation")
-focus_next = NodePath("../MainFacade")
-metadata/description = "One of the most visually prominent features of the residence’s exterior
-composition."
-
-[node name="MainFacade" parent="ViewingArea/MarkerLayer" instance=ExtResource("4_marker")]
-offset_left = 462.0
-offset_top = 312.0
-offset_right = 682.0
-offset_bottom = 368.0
-text = "Main Façade"
-icon = ExtResource("7_facade")
-focus_previous = NodePath("../Roofline")
-focus_next = NodePath("../Entrance")
-
-[node name="Entrance" parent="ViewingArea/MarkerLayer" instance=ExtResource("4_marker")]
-offset_left = 772.0
-offset_top = 512.0
-offset_right = 972.0
-offset_bottom = 568.0
-text = "Entrance"
-icon = ExtResource("8_entrance")
-focus_previous = NodePath("../MainFacade")
-focus_next = NodePath("../ExteriorForm")
-
-[node name="ExteriorForm" parent="ViewingArea/MarkerLayer" instance=ExtResource("4_marker")]
-offset_left = 1020.0
-offset_top = 244.0
-offset_right = 1248.0
-offset_bottom = 300.0
-text = "Exterior Form"
-icon = ExtResource("9_form")
-focus_previous = NodePath("../Entrance")
-focus_next = NodePath("../LandscapedSetting")
-
-[node name="LandscapedSetting" parent="ViewingArea/MarkerLayer" instance=ExtResource("4_marker")]
-offset_left = 150.0
-offset_top = 512.0
-offset_right = 420.0
-offset_bottom = 568.0
-text = "Landscaped Setting"
-icon = ExtResource("10_landscape")
-focus_previous = NodePath("../ExteriorForm")
-focus_next = NodePath("../../MarkerInformation/Margin/Layout/Close")
-
-[node name="MarkerInformation" type="PanelContainer" parent="ViewingArea"]
-visible = false
-offset_left = 32.0
-offset_top = 584.0
-offset_right = 1248.0
-offset_bottom = 664.0
-
-[node name="Margin" type="MarginContainer" parent="ViewingArea/MarkerInformation"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 10
-
-[node name="Layout" type="HBoxContainer" parent="ViewingArea/MarkerInformation/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Text" type="VBoxContainer" parent="ViewingArea/MarkerInformation/Margin/Layout"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Title" type="Label" parent="ViewingArea/MarkerInformation/Margin/Layout/Text"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 22
-
-[node name="Description" type="Label" parent="ViewingArea/MarkerInformation/Margin/Layout/Text"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-autowrap_mode = 3
-
-[node name="Close" type="Button" parent="ViewingArea/MarkerInformation/Margin/Layout"]
-custom_minimum_size = Vector2(120, 48)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_font_sizes/font_size = 22
-text = "Close"
-focus_previous = NodePath("../../../../MarkerLayer/LandscapedSetting")
-focus_next = NodePath("../../../../ArchitectureInformation")
-
-[node name="DevelopmentNote" type="Label" parent="ViewingArea"]
-offset_left = 32.0
-offset_top = 682.0
-offset_right = 1248.0
-offset_bottom = 712.0
-theme_override_font_sizes/font_size = 18
-text = "Development-only viewing layout · Optional markers · Tab to focus; E / Enter / Space to select; Esc / Backspace to close."
-horizontal_alignment = 1
-
-[connection signal="ready" from="ViewingArea/ArchitectureInformation" to="ViewingArea/ArchitectureInformation" method="grab_focus"]
-[connection signal="opened" from="ViewingArea/ArchitectureInformation" to="ViewingArea/MarkerLayer" method="dismiss_for_introduction"]
+[node name="Hotspot" parent="Frame" instance=ExtResource("component")]
+[connection signal="pressed" from="Reopen" to="Frame/Hotspot" method="open_interaction"]
+[connection signal="opened" from="Frame/Hotspot" to="Reopen" method="hide"]
+[connection signal="closed" from="Frame/Hotspot" to="Reopen" method="show"]
+[connection signal="closed" from="Frame/Hotspot" to="Reopen" method="grab_focus"]

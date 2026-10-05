@@ -1,0 +1,54 @@
+[gd_resource type="Theme" format=3 uid="uid://cx8m27cvky1po"]
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.2, 0.28, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.94, 0.89, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.88, 0.8, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.95, 0.75, 1)
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.12, 0.18, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.66, 0.7, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.09, 0.085, 1)
+
+[resource]
+default_font_size = 20
+Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
+Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("Hover")
+Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/normal = SubResource("Normal")
+Button/styles/pressed = SubResource("Pressed")
+PanelContainer/styles/panel = SubResource("Panel")

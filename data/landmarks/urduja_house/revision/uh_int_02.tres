@@ -1,0 +1,25 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_content.gd" id="script"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh_int_02_narration.ogg" id="audio"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_historical_photo.jpg" id="image0"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_02_present_exterior.jpeg" id="image1"]
+
+[resource]
+script = ExtResource("script")
+narration = ExtResource("audio")
+hotspot_id = "UH-INT-02"
+title = "URDUJA HOUSE THROUGH TIME"
+subtitle = "Explore the Changing Government Function"
+takeaway = "Its government function has changed over time, but Urduja House continues to serve an official provincial role."
+introduction = ""
+reflection = ""
+historical_references = "Researcher-approved Phase 1–4 chronological account (4 October 2026): construction began in 1953; residence/office before 2007; daily office transferred to the Provincial Capitol in 2007; continuing residence and selected Ceremonial Hall functions. No building-renovation claim."
+media_credits = "Historical photograph: I Love Pangasinan, “Urduja House in Lingayen Pangasinan”; September 1982. Photographer and permission/license unresolved.\n\nPresent-day exterior: AKAR Team; researcher-captured/documentary photograph. Individual photographer and capture date undocumented.\n\n1953 date panel and 2007 transition: Godot UI interpretation, not historical photographs or geographic maps.\n\nNarration: researcher-supplied and approved despite duplicate detection. Recording credit/rights unresolved."
+transcript = "Construction of the governor's official residence began in 1953. Before 2007, past governors also held office in Urduja House while it served as the governor's official residence. In 2007, Governor Amado T. Espino Jr. transferred the Governor's daily office to the Pangasinan Provincial Capitol, while Urduja House remained the official residence. Urduja House remains the official residence of the Governor of Pangasinan. Its Ceremonial Hall continues to be used for selected official provincial functions."
+labels = PackedStringArray("1953", "BEFORE 2007", "2007", "TODAY")
+headings = PackedStringArray("Construction Begins", "Residence and Office", "The Daily Office Moves", "A Continuing Official Role")
+bodies = PackedStringArray("Construction of the governor's official residence began in 1953.", "Before 2007, past governors also held office in Urduja House while it served as the governor's official residence.", "In 2007, Governor Amado T. Espino Jr. transferred the Governor's daily office to the Pangasinan Provincial Capitol, while Urduja House remained the official residence.", "Urduja House remains the official residence of the Governor of Pangasinan. Its Ceremonial Hall continues to be used for selected official provincial functions.")
+captions = PackedStringArray("", "Historical view of Urduja House • September 1982", "Interpretive transition graphic • Not a map or photograph", "Present-day view of Urduja House • AKAR Team")
+notes = PackedStringArray("", "", "", "")
+images = Array[Texture2D]([null, ExtResource("image0"), null, ExtResource("image1")])

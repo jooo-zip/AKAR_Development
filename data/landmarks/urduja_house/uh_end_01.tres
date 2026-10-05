@@ -11,14 +11,14 @@
 [sub_resource type="Resource" id="Entry0"]
 script = ExtResource("entry")
 title = "Established in 1953"
-body = "Urduja House was constructed as the official residence of the Governor of Pangasinan."
+body = "Construction of the governor's official residence began in 1953."
 icon = ExtResource("icon0")
 icon_alt_text = "Pixel-art building icon representing the establishment of Urduja House."
 
 [sub_resource type="Resource" id="Entry1"]
 script = ExtResource("entry")
-title = "Named for Princess Urduja"
-body = "Its original name, Princess Urduja Palace, reflects the cultural importance of the legendary warrior figure associated with Pangasinan."
+title = "Princess Urduja and Cultural Identity"
+body = "The name Urduja House connects the governor's residence with Princess Urduja, a legendary cultural figure associated with Pangasinan."
 icon = ExtResource("icon1")
 icon_alt_text = "Pixel-art cultural icon representing Princess Urduja."
 

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_content.gd" id="script"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh_ext_03_narration.ogg" id="audio"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_03_exterior_highres.jpeg" id="image0"]
+
+[resource]
+script = ExtResource("script")
+narration = ExtResource("audio")
+hotspot_id = "UH-EXT-03"
+title = "BALINESE-INSPIRED ARCHITECTURE"
+subtitle = "Look Closely at the Exterior"
+takeaway = "The Balinese-inspired character of Urduja House is expressed through the overall appearance of its exterior architecture."
+introduction = "Urduja House is recognized for its Balinese-inspired architectural character. Explore the exterior to observe the major visual features that shape the appearance of the residence."
+reflection = ""
+historical_references = "Researcher-approved Phase 1–4 architecture observation text (4 October 2026). Detailed symbolism/material interpretation is not asserted."
+media_credits = "Exterior photograph: AKAR Team. Researcher-captured/documentary photograph. Individual photographer and capture date undocumented.\n\nNarration: researcher-supplied and approved despite duplicate detection. Individual credit/rights unresolved."
+transcript = "Urduja House is recognized for its Balinese-inspired architectural character. As you explore the exterior, observe its roofline, façade, entrance, overall form, and relationship with the surrounding landscape."
+labels = PackedStringArray("ROOFLINE", "FAÇADE", "ENTRANCE", "EXTERIOR FORM", "LANDSCAPED SETTING")
+headings = PackedStringArray("Roofline", "Main Façade", "Entrance", "Overall Exterior Form", "Landscaped Setting")
+bodies = PackedStringArray("Observe the layered roof forms that strongly shape the building's exterior silhouette.", "Look at how the roof, windows, walls, and decorative elements come together across the front of the residence.", "Observe how the covered approach visually marks the transition into the residence.", "Step back and examine how the major parts of the building combine into its overall exterior composition.", "Notice how the residence is visually framed by its surrounding grounds and vegetation.")
+captions = PackedStringArray("Exterior of Urduja House • AKAR Team", "Exterior of Urduja House • AKAR Team", "Exterior of Urduja House • AKAR Team", "Exterior of Urduja House • AKAR Team", "Exterior of Urduja House • AKAR Team")
+notes = PackedStringArray("", "", "", "", "")
+images = Array[Texture2D]([ExtResource("image0"), ExtResource("image0"), ExtResource("image0"), ExtResource("image0"), ExtResource("image0")])
