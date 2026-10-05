@@ -1,0 +1,25 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_content.gd" id="script"]
+[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh_ext_02_narration.ogg" id="audio"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_02_rodriguez_portrait.jpeg" id="image0"]
+[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_historical_photo.jpg" id="image1"]
+
+[resource]
+script = ExtResource("script")
+narration = ExtResource("audio")
+hotspot_id = "UH-EXT-02"
+title = "WHY IT WAS BUILT"
+subtitle = "The Beginning of an Official Residence"
+takeaway = "Urduja House was established as a dedicated official residence for Pangasinan's provincial governor."
+introduction = ""
+reflection = ""
+historical_references = "Provincial Government of Pangasinan record, as identified in the researcher-approved Phase 5 material (4 October 2026). Exact bibliographic details unresolved."
+media_credits = "Portrait: Painted Portraits of Governors Gallery, Pangasinan Provincial Capitol. Painter, image photographer and permission/license undocumented.\n\nHistorical photograph: I Love Pangasinan, “Urduja House in Lingayen Pangasinan”; September 1982. Photographer and permission/license unresolved.\n\n1953: date panel, not a historical photograph.\n\nNarration: researcher-supplied and approved despite duplicate-file detection. Individual recording credit/rights unresolved."
+transcript = "The Provincial Government of Pangasinan records that the residence was constructed for Governor Juan de Guzman Rodriguez. Urduja House was established to serve as the official residence of the Governor of Pangasinan. Construction of the governor's official residence began in 1953."
+labels = PackedStringArray("GOVERNOR", "OFFICIAL RESIDENCE", "1953")
+headings = PackedStringArray("Governor Juan de Guzman Rodriguez", "A Dedicated Official Residence", "Construction Begins")
+bodies = PackedStringArray("The Provincial Government of Pangasinan records that the residence was constructed for Governor Juan de Guzman Rodriguez.", "Urduja House was established to serve as the official residence of the Governor of Pangasinan.", "Construction of the governor's official residence began in 1953.")
+captions = PackedStringArray("Governor Juan de Guzman Rodriguez\nPainted Portraits of Governors Gallery\nPangasinan Provincial Capitol", "Historical view of Urduja House • September 1982", "")
+notes = PackedStringArray("", "", "")
+images = Array[Texture2D]([ExtResource("image0"), ExtResource("image1"), null])

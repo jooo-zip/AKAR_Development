@@ -1,0 +1,12 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_revision_content.gd" id="script"]
+
+[resource]
+script = ExtResource("script")
+hotspot_id = "UH-ENT-01"
+title = "The Story of Urduja House"
+subtitle = "Watching is optional."
+transcript = "Urduja House has been part of Pangasinan's provincial government landscape since 1953. Its history reflects changing government functions while the building continues to serve as the official residence of the Governor of Pangasinan."
+historical_references = "Researcher-approved Urduja House revision, 2 October 2026. Published bibliographic source details unresolved."
+media_credits = "Video and BGM: Source / credit unresolved. Playback withheld pending transcript and historical-content verification."

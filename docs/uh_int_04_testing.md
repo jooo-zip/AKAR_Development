@@ -1,207 +1,70 @@
-# UH-INT-04 — Conference Room testing
+# UH-INT-04 Phase 5 testing
 
-## Scope
-Standalone educational concept interaction and inset development preview only.
-No master interior integration, previous-hotspot changes, event carousel, timeline,
-progression, completion tracking, game mechanics, analytics, or unsupported history.
+Updated 4 October 2026. Supersedes the earlier revision-specific testing steps for this hotspot.
 
-## Files
-Created:
-- scenes/components/conference_room_interaction.tscn
-- scripts/components/conference_room_interaction.gd
-- scripts/components/conference_room_content.gd
-- scripts/components/conference_room_concept_entry.gd
-- data/landmarks/urduja_house/uh_int_04.tres
-- scenes/landmarks/urduja_house/interior/uh_int_04.tscn
-- docs/uh_int_04_testing.md
+Production and visual editing: `res://scenes/landmarks/urduja_house/components/uh_int_04.tscn`.
+F6 harness: `res://scenes/landmarks/urduja_house/interior/uh_int_04.tscn`.
+Approved content: `res://data/landmarks/urduja_house/revision/uh_int_04.tres`.
 
-Godot generates .gd.uid sidecars for the three scripts and .import sidecars for
-the supplied illustration, narration, and reference image. The reference photograph
-is not assigned to the visitor component or content resource. No media was created,
-downloaded, replaced, or renamed.
+## Exact F6 retest
 
-## Architecture
-ConferenceRoomInteraction:
-- Main / Margin / Layout
-  - Header: Title, Close
-  - Columns
-    - Image (stable aspect-fit illustration)
-    - Information: Heading, local Scroll/Text (Body, Takeaway), SourcesButton
-  - Controls: Speaker
-  - Sections: PublicInterior, OfficialFunction, WhyItMatters
-- Sources: parent-sized overlay, title, scrollable source context, Close Sources
-- NarrationPlayer: one AudioStreamPlayer
+1. In Godot 4.7.2, open the F6 harness above from FileSystem. Press **F6 (Run Current Scene)**. Default selection: **EXPLORE THE SPACE**. Narration is enabled but silent until requested.
+2. Select each mode with mouse, touch, Tab/Shift+Tab and Enter/Space; focused mode buttons also support arrow navigation: EXPLORE THE SPACE / DOCUMENTED USE / WHY IT MATTERS. Selection remains optional. Try repeated and rapid input.
+3. EXPLORE THE SPACE starts with “Explore the Conference Room” and “Select an area to observe how the room is arranged for meetings and continuing official use.” There is no prominent artwork disclaimer or image caption in this mode. MEETING TABLE and SEATING ARRANGEMENT show their approved interpretations and restrained spatial outlines; OVERALL ROOM SETTING removes the outline and displays its interpretation/supporting line. Resize with a focus active and check alignment. DOCUMENTED USE switches to the official photograph and supplied article/photographer metadata in Sources. WHY IT MATTERS retains documentary evidence. No historical meaning is assigned to furniture.
+4. Activate LISTEN: it starts at zero. Activate again to stop/reset. Replay starts at zero. Let the recording finish naturally and verify the button returns idle. Change modes and open Sources while listening: playback continues. Closing the hotspot stops/resets it.
+5. Open SOURCES; inspect the relevant historical references and media credits below. Use CLOSE SOURCES, Escape, and Backspace. These close only Sources; they preserve the selected mode. The next back action closes the hotspot.
+6. Close during a transition and narration. Activate **OPEN UH-INT-04 PREVIEW**. Verify default mode, fully visible image/text, initial local scroll, no stale pointer/outline/carousel state, and no autoplay.
+7. Repeat at **1280×720, 960×540, 854×480**, with both a full Control parent and the harness's 5% inset parent. Resize while open. All content remains accessible; compact layouts use local information scrolling. Targets remain at least 48px tall. No whole-page scrolling or cropped controls.
 
-Preview:
-- UH_INT_04_Preview
-  - Background
-  - Margin / Layout: title, development note, opening prompt
-  - HotspotFrame: 5% inset on each side
-    - ConferenceRoomInteraction: fills parent rectangle
+## Production handoff and visual editing
 
-The reusable component uses full-rect anchors, Containers, 12px margins and local
-scrolling. It never positions from viewport dimensions. Viewport access is only
-for focus and safe input handling. Illustration filtering is nearest; TextureRect
-uses aspect-fit with no stretching, cropping, or artificial zoom.
+Instance only the production scene under an ordinary Control; the harness is not a dependency. Call `open_interaction() -> bool`. Connect `closed`; optional `opened`. Call `close_interaction()` to close/reset, or `reset_interaction()` to reset while retaining open status. No avatar, map, master scene, autoload, or environment coordinate is required. The production component never changes the application window or viewport settings.
 
-Public methods:
-open_interaction() -> bool, close_interaction(), select_concept(index),
-get_selected_concept() -> int, open_sources(), close_sources(),
-toggle_narration(), stop_narration().
+Open the production TSCN directly in Godot's 2D editor. Select Panel/MainMargin, MainVBox, Content, BodyRow, MediaColumn, MediaFrame, InfoScroll, Navigation and TakeawayMargin. Adjust margins, separations and column stretch ratios in the Inspector, then run and confirm they persist. Scene-authored Containers determine static geometry. The editor content-binding helper fills approved labels/textures only; it does not create a fake layout. Runtime controls selection, fade alpha, focus/local scroll and audio; hotspot-specific moving media overlays use the fitted image rectangle.
 
-Signals:
-opened, closed, concept_changed(index), narration_started, narration_stopped,
-sources_opened, sources_closed.
+## Assets and attribution
 
-ConferenceRoomContent:
-hotspot_id, title, prompt, illustration, illustration_alt_text, narration_stream,
-narration_transcript, learning_takeaway, source_credit, concepts.
-ConferenceRoomConceptEntry:
-heading, body, show_takeaway.
+- `res://assets/landmarks/urduja_house/interior/uh_int_04_conference_room_pixel_art.png`
+- `res://assets/landmarks/urduja_house/interior/uh_int_04_conference_room.png`
 
-Historical content is stored in the .tres, not generic behavioral GDScript.
-The transcript is preserved in data and is not permanently displayed in the panel.
+Narration: `res://assets/landmarks/urduja_house/audio/uh_int_04_narration.ogg`.
 
-## Exact media and accessibility
-Illustration:
-res://assets/landmarks/urduja_house/interior/uh_int_04_conference_room_pixel_art.png
+Project-created interpretive representation
+Source: AKAR Team. Not documentary evidence. Individual artist, creation date and permission/license unresolved.
 
-Narration:
-res://assets/landmarks/urduja_house/audio/uh_int_04_narration.ogg
+Documentary photograph: Provincial Government of Pangasinan, “PPC Interim Governing Board approves curricula of four academic programs”. Photo courtesy: Pangasinan Polytechnic College; Chona C. Bugayong / PIMRO. Repository source URL: https://www.pangasinan.gov.ph/author/pixelpgsnadmin/page/21/ . Capture date and permission/license unresolved.
 
-Speaker:
-res://assets/ui/icons/speaker.svg
+Narration: researcher-supplied and approved despite duplicate detection. Recording credit/rights unresolved.
 
-Exact accessibility description:
-“Pixel-art illustration of the Conference Room inside Urduja House, showing a long central conference table surrounded by chairs, wood-paneled interior surfaces, curtained windows, ceiling lighting, and a display screen at the far end of the room.”
+The researcher explicitly accepts the duplicate narration files. Automated checks verify playback state, reset and signals; they do not verify spoken words against the transcript. Physical-device listening and touch are manual checks. No new narration or source/permission claim was invented.
 
-## Approved concept content
-PUBLIC INTERIOR / Public Interior:
-“This conference room forms part of the publicly accessible interior of Urduja House.”
+## Automated checks
 
-OFFICIAL FUNCTION / Official Function:
-“Together with the reception spaces and Ceremonial Hall, it reflects the continuing use of Urduja House for selected government functions.”
+Run `godot --headless --max-fps 60 --path . --script res://tests/uh_remaining_phase5_test.gd -- uh_int_04`. Omit `--headless` for Compatibility rendering and PNG captures. Add `--editor` for the actual editor-layout/Inspector check. The suite instantiates production independently, checks every mode across the six size/parent combinations, tests input/audio/Sources/close/reopen, and separately exercises the F6 harness. Final totals and environment diagnostics are in `docs/urduja_house_remaining_hotspots_phase5_report.md`.
 
-WHY IT MATTERS / Why It Matters:
-“Its inclusion helps visitors understand that the building is both historically important and presently active.”
 
-Only Why It Matters displays the supporting takeaway in gold text:
-“Urduja House remains a functioning government residence rather than only a historical display.”
+## Exact corrected interpretation
 
-No reward, completion or required sequence is associated with this emphasis.
-Only one concept button is pressed at a time; selected styling combines gold and a
-stronger border. Keyboard focus has an additional outline. Text changes fade in
-over 180ms, canceling the previous tween; the illustration stays stable.
+**MEETING TABLE — A Central Space for Discussion**
 
-## Exact source-credit wording
-Historical / Educational Content
-Validated AKAR Urduja House Conference Room hotspot content.
+The large central table provides a shared setting for formal discussions and meetings. Its central placement allows participants to gather around a common discussion area.
 
-Visitor-Facing Illustration
-Pixel-art illustrative representation created for the AKAR Capstone Project.
+**SEATING ARRANGEMENT — Clearer Sightlines Around the Table**
 
-Visual Reference
-Based on a Conference Room photograph published by the Province of Pangasinan in connection with:
+The curved arrangement of the table and surrounding seating creates clearer sightlines across the room, allowing participants to face one another more directly with less visual obstruction.
 
-"PPC Interim Governing Board approves curricula of four academic programs"
+**OVERALL ROOM SETTING — A Formal Meeting Environment**
 
-Reference Status
-Used as a visual/layout reference.
+The conference room combines a large central meeting table, surrounding seating, formal interior finishes, and an organized layout suited to official discussions and administrative meetings.
 
-Sources prefixes this shared credit with the selected concept heading.
-This identifies the Province as publisher of the photographic reference, not creator
-of the pixel-art illustration. No photographer, publication date, copyright owner,
-license, permission, archival status, or historical year is asserted.
-The researcher-supplied reference page is recorded in the approved specification:
-https://www.pangasinan.gov.ph/author/pixelpgsnadmin/page/21/
-No additional facts were retrieved from the website or inferred from the image.
+Supporting line: Together with the Ceremonial Hall and other reception spaces, the room helps show that Urduja House remains connected with continuing government functions.
 
-## Narration verification limitation
-The supplied UH-INT-04 OGG is byte-identical to UH-INT-01, UH-INT-02 and UH-INT-03:
-SHA256 5E44ADB87270F4DC7586CF026902718C597544C394376FC0FDEFE1E38FA4BD44.
-Playback success does not verify its spoken content. Manual listening is REQUIRED.
-The requested file was retained unchanged; no speech was generated or transcribed.
+**DOCUMENTED USE — The Conference Room in Use**
 
-Compare the complete recording against this approved transcript:
-“This conference room forms part of the publicly accessible interior of Urduja House. Together with its reception and ceremonial spaces, it reflects the continuing official function of the residence.”
+An official Provincial Government photograph documents the conference-room space being used during an institutional meeting, providing visual evidence of its continuing administrative function.
 
-## Exact F6 instructions
-1. Open this repository's project.godot in Godot 4.7.2; let imports finish.
-2. Open res://scenes/landmarks/urduja_house/interior/uh_int_04.tscn.
-3. Press F6 (Run Current Scene).
-4. Click/tap “Discover its continuing function”, or activate the focused prompt
-   using Enter/Space.
-5. Confirm Conference Room is upper-left, Close upper-right, PUBLIC INTERIOR is
-   selected, illustration appears, and narration is silent.
-6. Repeat the checks below at application sizes 1280×720, 960×540 and 854×480.
-   Use the embedded game sizing controls or a resized run window without saving
-   project-setting changes.
-7. The default parent is inset by 5% on each side. In the Remote scene tree select
-   UH_INT_04_Preview/HotspotFrame. To compare full-size layout, temporarily set
-   anchors Left/Top to 0 and Right/Bottom to 1, keeping offsets 0. Restore anchors
-   to 0.05/0.05/0.95/0.95 for embedded checks. Remote changes are not saved.
-8. The headless tests also used actual logical canvas sizes, not just scaled screenshots.
+**WHY IT MATTERS — A Continuing Government Function**
 
-## Manual checklist
-### Concepts and image
-- Public Interior: exact heading/body above, default on every open, Sources works.
-- Official Function: exact heading/body; illustration remains unchanged.
-- Why It Matters: exact heading/body plus the approved takeaway; no achievement cue.
-- Freely switch in any order; exactly one button selected, no progress tracking.
-- Check illustration aspect ratio and crisp pixels visually at each size.
-- No archival label, room-object markers, reference photograph or extra interpretations.
-- Right text scrolls locally when needed; fonts remain readable.
+Together with the reception and ceremonial spaces, the conference room helps demonstrate that Urduja House remains connected with continuing provincial government functions.
 
-### Narration
-- Listen to the full recording and compare against the approved transcript above.
-- No autoplay; one speaker only, reusing speaker.svg.
-- Tap once: starts at zero, active gold state. Tap again: stops/reset.
-- Natural completion: inactive; next play begins at zero.
-- Switch all concepts during playback: stream, position and playback continue.
-- Open/close Sources during playback: audio continues.
-- Close complete interaction: audio stops/reset; reopen: silent, Public Interior selected.
-- No Pause/Resume/Restart controls.
-
-### Sources and back
-- Sources includes current concept heading and the exact shared source text above.
-- Pixel-art credit and photographic reference are clearly separate.
-- No invented photographer/date/license or bracket placeholder.
-- Escape or Backspace closes Sources first; a second closes the interaction.
-- Close Sources returns focus to Sources; complete close returns focus to the prompt.
-- Close remains at the upper-right; Sources stays in the right content region.
-
-### Keyboard and touch
-- Tab/Shift+Tab traverse concept controls, speaker, scroll area, Sources and Close.
-- Enter/Space activate focused buttons. Focus outline remains visible.
-- Sources confines Tab focus to its scroll and Close Sources.
-- Escape/Backspace consume input before closing signals.
-- Tap every control on an actual museum tablet/phone browser; no hover dependency.
-- Close, Sources, concepts and Close Sources have at least 48px targets; speaker 56×56.
-
-### Layout and reliability
-- Test all concepts and Sources at all three application sizes, full-size and inset.
-- Illustration remains visible, columns do not overlap, controls fit the parent.
-- Headings, body and takeaway remain readable; scroll to see any overflow.
-- Rapidly select concepts: last selection wins, final opacity returns to 1.
-- Repeatedly open/close Sources, play/stop narration, and open/close the hotspot.
-- No duplicate UI, stuck focus, stale content, Godot errors or unintended navigation.
-
-## Validation results
-Godot 4.7.2 headless editor import and runtime tests passed with zero failures.
-- 1280×720: full-size and 1152×648 inset parent passed.
-- 960×540: full-size and 864×486 inset parent passed.
-- 854×480: full-size and 768.6×432 inset parent passed.
-- Exact concept text, transcript, takeaway and alt text checked against specification.
-- Mouse, keyboard and synthetic touch activation passed.
-- Audio continuity, stop/reset, natural completion and silent reopen passed.
-- Parent sizing, control bounds, column non-overlap, local scroll space, 48px targets,
-  56px speaker, focus/back, source context and rapid selection passed.
-
-These checks do not establish audible transcript accuracy, physical touchscreen
-behavior, rendered image quality or Web export performance. Perform the manual checks.
-Resource paths, git diff --check and separate new-file whitespace checks passed.
-All pre-existing files retain their pre-edit hashes, including project.godot,
-previous hotspots and the already modified docs/specifications/uh_ext_03.md.
-No project serialization changes occurred. Git status contains the pre-existing
-exterior-specification change and supplied UH-INT-04 files, plus this milestone's
-new implementation/data/docs and generated import/UID sidecars. No commit or push.
+The takeaway remains unchanged. Check that “AKAR Interpretive View” is absent from the main visitor UI. Sources retains the project-created interpretive representation / AKAR Team disclosure and the official photo credit: Provincial Government of Pangasinan; photo courtesy Pangasinan Polytechnic College; Chona C. Bugayong / PIMRO. No additional participant, event, architect or historical design-intention claim is introduced. Narrow layouts use local text scrolling; verify the complete body, supporting line and all three observation buttons remain reachable. Keyboard Space/Enter and touch must select the same text as mouse activation.

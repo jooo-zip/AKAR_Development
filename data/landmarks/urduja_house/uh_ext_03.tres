@@ -6,13 +6,8 @@
 [resource]
 script = ExtResource("1_content")
 title = "Balinese-Inspired Architecture"
-body = "Urduja House is recognized for its Balinese-inspired architectural design.
-Its overall exterior character combines traditional design influence with
-the practical function of an official government residence.
+body = "Urduja House is recognized for its Balinese-inspired architectural design. Its overall exterior character combines traditional design influence with the practical function of an official government residence.
 
-Observe the roofline, façade, entrance, and relationship of the building
-to its landscaped surroundings."
+Observe the roofline, façade, entrance, and relationship of the building to its landscaped surroundings."
 image = ExtResource("2_photo")
-transcript = "Urduja House is known for its Balinese-inspired architectural character.
-Its exterior combines a distinctive traditional influence with the practical
-requirements of an official government residence."
+transcript = "Urduja House is recognized for its Balinese-inspired architectural character. As you explore the exterior, observe its roofline, façade, entrance, overall form, and relationship with the surrounding landscape."

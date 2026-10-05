@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="CeremonialHallContent" format=3 uid="uid://378be8aiivo"]
 
-[ext_resource type="AudioStream" uid="uid://cyph1gchaet0x" path="res://assets/landmarks/urduja_house/audio/uh_int_03_narration.ogg" id="audio"]
 [ext_resource type="Script" uid="uid://c00x1guq50276" path="res://scripts/components/ceremonial_hall_content.gd" id="content"]
 [ext_resource type="Script" uid="uid://dh1wqutrvb8m0" path="res://scripts/components/ceremonial_event_entry.gd" id="entry"]
 [ext_resource type="Texture2D" uid="uid://du6rbio6ep6vx" path="res://assets/landmarks/urduja_house/interior/uh_int_03_event_01.png" id="event1"]
@@ -18,6 +17,7 @@ participating_institution = "Dagupan City Prosecutor’s Office
 Pangasinan Provincial Prosecutor’s Office"
 image = ExtResource("event1")
 image_alt_text = "Official gathering inside the Ceremonial Hall of Urduja House."
+source_credit = "Source / credit unresolved"
 
 [sub_resource type="Resource" id="Event2"]
 script = ExtResource("entry")
@@ -27,18 +27,20 @@ date_label = "December 1, 2024"
 venue = "Ceremonial Hall, Urduja House"
 image = ExtResource("event2")
 image_alt_text = "Ceremonial scholarship awarding activity held inside Urduja House."
+source_credit = "Source / credit unresolved"
 
 [resource]
 script = ExtResource("content")
 hotspot_id = "UH-INT-03"
 title = "Ceremonial Hall"
 prompt = "Explore the Ceremonial Hall"
-body = "The Ceremonial Hall is used on selected special occasions for official receptions and government functions. Its continuing use demonstrates that Urduja House remains an active part of provincial governance. The hall connects the historical role of the residence with present-day public service and provincial leadership."
+body = "The Ceremonial Hall is used on selected special occasions for official receptions and government functions.
+
+Urduja House continues to participate in provincial governance through ceremonial and official functions."
 hall_image = ExtResource("hall")
 hall_alt_text = "Ceremonial Hall"
 pixel_art_image = ExtResource("pixel")
 pixel_art_alt_text = "Pixel-art illustrative representation of the Ceremonial Hall."
 pixel_art_source_credit = "Pixel-art illustrative representation of the Ceremonial Hall."
-narration_stream = ExtResource("audio")
-narration_transcript = "The Ceremonial Hall continues to serve as a venue for selected official events and government functions. Its use shows that Urduja House is not simply a preserved historical building. It remains an active setting for provincial leadership and public service."
+narration_transcript = "The Ceremonial Hall continues to serve as a venue for selected official events and government functions. Its continuing use shows that Urduja House remains an active setting for provincial leadership and public service."
 events = Array[ExtResource("entry")]([SubResource("Event1"), SubResource("Event2")])

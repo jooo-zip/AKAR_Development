@@ -1,0 +1,499 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_hotspot.gd" id="shell"]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_historical_time_track.gd" id="explorer"]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_content_view.gd" id="view"]
+
+[ext_resource type="Resource" path="res://data/landmarks/urduja_house/revision/uh_int_02.tres" id="data"]
+
+[ext_resource type="Theme" path="res://data/landmarks/urduja_house/uh_ext_01_theme.tres" id="theme"]
+
+[sub_resource type="StyleBoxFlat" id="panel"]
+bg_color = Color(0.063, 0.11, 0.094, 1)
+border_color = Color(0.525, 0.475, 0.318, 1)
+border_width_left = 1
+border_width_right = 1
+border_width_top = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="office_card"]
+bg_color = Color(0.13, 0.19, 0.15, 1)
+border_color = Color(0.75, 0.65, 0.4, 0.9)
+border_width_left = 1
+border_width_right = 1
+border_width_top = 1
+border_width_bottom = 1
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+
+[node name="Hotspot" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("theme")
+script = ExtResource("shell")
+revision = ExtResource("data")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("panel")
+
+[node name="MainMargin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_bottom = 16
+
+
+[node name="MainVBox" type="VBoxContainer" parent="Panel/MainMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Panel/MainMargin/MainVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Panel/MainMargin/MainVBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "URDUJA HOUSE THROUGH TIME"
+theme_override_font_sizes/font_size = 24
+
+
+[node name="Sources" type="Button" parent="Panel/MainMargin/MainVBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "SOURCES"
+accessibility_name = "SOURCES"
+theme_override_font_sizes/font_size = 16
+size_flags_vertical = 4
+
+[node name="Listen" type="Button" parent="Panel/MainMargin/MainVBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "LISTEN"
+accessibility_name = "LISTEN"
+theme_override_font_sizes/font_size = 16
+size_flags_vertical = 4
+toggle_mode = true
+
+[node name="Close" type="Button" parent="Panel/MainMargin/MainVBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "CLOSE"
+accessibility_name = "CLOSE"
+theme_override_font_sizes/font_size = 16
+size_flags_vertical = 4
+
+[node name="Subtitle" type="Label" parent="Panel/MainMargin/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "Explore the Changing Government Function"
+theme_override_font_sizes/font_size = 17
+
+
+[node name="Content" type="VBoxContainer" parent="Panel/MainMargin/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+script = ExtResource("explorer")
+content = ExtResource("data")
+
+[node name="Introduction" type="Label" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = ""
+theme_override_font_sizes/font_size = 17
+visible = false
+
+[node name="BodyRow" type="HBoxContainer" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="MediaColumn" type="VBoxContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.56
+theme_override_constants/separation = 4
+
+[node name="MediaFrame" type="Control" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+clip_contents = true
+
+[node name="Media" type="TextureRect" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DocumentPanel" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "1953\nCONSTRUCTION BEGINS"
+theme_override_font_sizes/font_size = 22
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+visible = false
+
+[node name="Caption" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = ""
+theme_override_font_sizes/font_size = 15
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+
+[node name="InfoScroll" type="ScrollContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.44
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Info" type="VBoxContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "Construction Begins"
+theme_override_font_sizes/font_size = 22
+
+
+[node name="Body" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "Construction of the governor's official residence began in 1953."
+theme_override_font_sizes/font_size = 20
+
+
+[node name="Note" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = ""
+theme_override_font_sizes/font_size = 18
+visible = false
+
+[node name="Navigation" type="HBoxContainer" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Choice0" type="Button" parent="Panel/MainMargin/MainVBox/Content/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "1953"
+accessibility_name = "1953"
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+size_flags_horizontal = 3
+button_pressed = true
+
+[node name="Choice1" type="Button" parent="Panel/MainMargin/MainVBox/Content/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "BEFORE 2007"
+accessibility_name = "BEFORE 2007"
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+size_flags_horizontal = 3
+button_pressed = false
+
+[node name="Choice2" type="Button" parent="Panel/MainMargin/MainVBox/Content/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "2007"
+accessibility_name = "2007"
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+size_flags_horizontal = 3
+button_pressed = false
+
+[node name="Choice3" type="Button" parent="Panel/MainMargin/MainVBox/Content/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "TODAY"
+accessibility_name = "TODAY"
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+size_flags_horizontal = 3
+button_pressed = false
+
+[node name="Connector" type="ColorRect" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 2)
+mouse_filter = 2
+color = Color(0.75, 0.65, 0.4, 0.7)
+
+[node name="TakeawayMargin" type="MarginContainer" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="Takeaway" type="Label" parent="Panel/MainMargin/MainVBox/Content/TakeawayMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "Its government function has changed over time, but Urduja House continues to serve an official provincial role."
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+
+[node name="Reflection" type="Label" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = ""
+theme_override_font_sizes/font_size = 16
+visible = false
+
+[node name="SourcesOverlay" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+theme_override_styles/panel = SubResource("panel")
+
+[node name="Margin" type="MarginContainer" parent="SourcesOverlay"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+
+[node name="Layout" type="VBoxContainer" parent="SourcesOverlay/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SourcesScroll" type="ScrollContainer" parent="SourcesOverlay/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="SourcesText" type="Label" parent="SourcesOverlay/Margin/Layout/SourcesScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = ""
+theme_override_font_sizes/font_size = 20
+
+
+[node name="CloseSources" type="Button" parent="SourcesOverlay/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "CLOSE SOURCES"
+accessibility_name = "CLOSE SOURCES"
+theme_override_font_sizes/font_size = 16
+
+
+[node name="Narration" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+
+[node name="ContentView" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("view")
+content = ExtResource("data")
+
+
+[node name="OfficeTransfer" type="Control" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+visible = false
+
+[node name="ResidenceEndpoint" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0
+anchor_right = 0.46
+anchor_top = 0
+anchor_bottom = 0.32
+custom_minimum_size = Vector2(1, 0)
+text = "URDUJA HOUSE\nOfficial Residence"
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 16
+mouse_filter = 2
+
+[node name="CapitolEndpoint" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.54
+anchor_right = 1
+anchor_top = 0
+anchor_bottom = 0.32
+custom_minimum_size = Vector2(1, 0)
+text = "PANGASINAN\nPROVINCIAL CAPITOL"
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 16
+mouse_filter = 2
+
+[node name="OfficeLine" type="ColorRect" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.08
+anchor_right = 0.92
+anchor_top = 0.51
+anchor_bottom = 0.51
+offset_top = -1
+offset_bottom = 1
+color = Color(0.75, 0.65, 0.4, 0.7)
+mouse_filter = 2
+
+[node name="OfficeArrow" type="Control" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.92
+anchor_right = 0.92
+anchor_top = 0.51
+anchor_bottom = 0.51
+mouse_filter = 2
+
+[node name="Arrowhead" type="Polygon2D" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer/OfficeArrow"]
+unique_name_in_owner = true
+polygon = PackedVector2Array(-9, -5, 0, 0, -9, 5)
+color = Color(0.75, 0.65, 0.4, 0.9)
+
+[node name="OfficeToken" type="PanelContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_right = 0.46
+anchor_top = 0.51
+anchor_bottom = 0.51
+offset_top = -30.0
+offset_bottom = 30.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("office_card")
+
+[node name="OfficeTokenText" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer/OfficeToken"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+text = "GOVERNOR'S\nDAILY OFFICE"
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 16
+mouse_filter = 2
+
+[node name="ResidenceStatus" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0
+anchor_right = 0.46
+anchor_top = 0.73
+anchor_bottom = 1
+custom_minimum_size = Vector2(1, 0)
+text = "OFFICIAL RESIDENCE\nREMAINS"
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 14
+mouse_filter = 2
+
+[node name="CapitolStatus" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.54
+anchor_right = 1
+anchor_top = 0.73
+anchor_bottom = 1
+custom_minimum_size = Vector2(1, 0)
+text = "DAILY OFFICE\nTRANSFERRED"
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 14
+mouse_filter = 2

@@ -1,0 +1,555 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_hotspot.gd" id="shell"]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_ceremonial_media.gd" id="explorer"]
+
+[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_content_view.gd" id="view"]
+
+[ext_resource type="Resource" path="res://data/landmarks/urduja_house/revision/uh_int_03.tres" id="data"]
+
+[ext_resource type="Theme" path="res://data/landmarks/urduja_house/uh_ext_01_theme.tres" id="theme"]
+
+[sub_resource type="StyleBoxFlat" id="panel"]
+bg_color = Color(0.063, 0.11, 0.094, 1)
+border_color = Color(0.525, 0.475, 0.318, 1)
+border_width_left = 1
+border_width_right = 1
+border_width_top = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="ring"]
+bg_color = Color(0.1, 0.14, 0.11, 0.18)
+border_color = Color(0.78, 0.68, 0.42, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_top = 2
+border_width_bottom = 2
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_left = 26
+corner_radius_bottom_right = 26
+
+[sub_resource type="StyleBoxFlat" id="ring_active"]
+bg_color = Color(0.788, 0.682, 0.404, 0.45)
+border_color = Color(0.78, 0.68, 0.42, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_top = 2
+border_width_bottom = 2
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_left = 26
+corner_radius_bottom_right = 26
+
+[sub_resource type="StyleBoxEmpty" id="marker_hit_area"]
+
+[node name="Hotspot" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("theme")
+script = ExtResource("shell")
+revision = ExtResource("data")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("panel")
+
+[node name="MainMargin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_bottom = 16
+
+
+[node name="MainVBox" type="VBoxContainer" parent="Panel/MainMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Panel/MainMargin/MainVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Panel/MainMargin/MainVBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "CEREMONIAL HALL"
+theme_override_font_sizes/font_size = 24
+
+
+[node name="Sources" type="Button" parent="Panel/MainMargin/MainVBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "SOURCES"
+accessibility_name = "SOURCES"
+theme_override_font_sizes/font_size = 16
+size_flags_vertical = 4
+
+[node name="Listen" type="Button" parent="Panel/MainMargin/MainVBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "LISTEN"
+accessibility_name = "LISTEN"
+theme_override_font_sizes/font_size = 16
+size_flags_vertical = 4
+toggle_mode = true
+
+[node name="Close" type="Button" parent="Panel/MainMargin/MainVBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "CLOSE"
+accessibility_name = "CLOSE"
+theme_override_font_sizes/font_size = 16
+size_flags_vertical = 4
+
+[node name="Subtitle" type="Label" parent="Panel/MainMargin/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "Explore Its Continuing Official Use"
+theme_override_font_sizes/font_size = 17
+
+
+[node name="Content" type="VBoxContainer" parent="Panel/MainMargin/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+script = ExtResource("explorer")
+content = ExtResource("data")
+
+[node name="Introduction" type="Label" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = ""
+theme_override_font_sizes/font_size = 17
+visible = false
+
+[node name="BodyRow" type="HBoxContainer" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="MediaColumn" type="VBoxContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.56
+theme_override_constants/separation = 4
+
+[node name="MediaFrame" type="Control" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+clip_contents = true
+
+[node name="Media" type="TextureRect" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DocumentPanel" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "1953\nCONSTRUCTION BEGINS"
+theme_override_font_sizes/font_size = 28
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+visible = false
+
+[node name="Caption" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "Ceremonial Hall • See Pangasinan / PTCAO"
+theme_override_font_sizes/font_size = 15
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+
+[node name="InfoScroll" type="ScrollContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.44
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Info" type="VBoxContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Carousel" type="HBoxContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Previous" type="Button" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info/Carousel"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+size_flags_horizontal = 3
+text = "PREVIOUS"
+accessibility_name = "PREVIOUS event"
+theme_override_font_sizes/font_size = 16
+
+[node name="Next" type="Button" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info/Carousel"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+size_flags_horizontal = 3
+text = "NEXT"
+accessibility_name = "NEXT event"
+theme_override_font_sizes/font_size = 16
+
+[node name="Heading" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "A Space for Official Functions"
+theme_override_font_sizes/font_size = 22
+
+
+[node name="Body" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "The Ceremonial Hall is used on selected occasions for official provincial government functions."
+theme_override_font_sizes/font_size = 20
+
+
+[node name="Note" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "Its continuing use shows that Urduja House remains connected with present-day provincial governance."
+theme_override_font_sizes/font_size = 18
+visible = true
+
+[node name="Navigation" type="HBoxContainer" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Choice0" type="Button" parent="Panel/MainMargin/MainVBox/Content/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "ABOUT"
+accessibility_name = "ABOUT"
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+size_flags_horizontal = 3
+button_pressed = true
+
+[node name="Choice1" type="Button" parent="Panel/MainMargin/MainVBox/Content/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "OFFICIAL EVENTS"
+accessibility_name = "OFFICIAL EVENTS"
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+size_flags_horizontal = 3
+button_pressed = false
+
+[node name="Choice2" type="Button" parent="Panel/MainMargin/MainVBox/Content/Navigation"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "EXPLORE SPACE"
+accessibility_name = "EXPLORE SPACE"
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+size_flags_horizontal = 3
+button_pressed = false
+
+[node name="TakeawayMargin" type="MarginContainer" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="Takeaway" type="Label" parent="Panel/MainMargin/MainVBox/Content/TakeawayMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "The Ceremonial Hall demonstrates the continuing official use of Urduja House."
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+
+[node name="Reflection" type="Label" parent="Panel/MainMargin/MainVBox/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = ""
+theme_override_font_sizes/font_size = 16
+visible = false
+
+[node name="SourcesOverlay" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+theme_override_styles/panel = SubResource("panel")
+
+[node name="Margin" type="MarginContainer" parent="SourcesOverlay"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+
+[node name="Layout" type="VBoxContainer" parent="SourcesOverlay/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SourcesScroll" type="ScrollContainer" parent="SourcesOverlay/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="SourcesText" type="Label" parent="SourcesOverlay/Margin/Layout/SourcesScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 0)
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = ""
+theme_override_font_sizes/font_size = 20
+
+
+[node name="CloseSources" type="Button" parent="SourcesOverlay/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(96, 52)
+text = "CLOSE SOURCES"
+accessibility_name = "CLOSE SOURCES"
+theme_override_font_sizes/font_size = 16
+
+
+[node name="Narration" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+
+[node name="ContentView" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("view")
+content = ExtResource("data")
+
+
+[node name="ObservationAspect" type="AspectRatioContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+ratio = 1.5085227
+mouse_filter = 2
+
+[node name="ObservationPlane" type="Control" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/ObservationAspect"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ObservationMarker0" type="Button" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/ObservationAspect/ObservationPlane"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.53
+anchor_right = 0.53
+anchor_top = 0.8
+anchor_bottom = 0.8
+offset_left = -26.0
+offset_right = 26.0
+offset_top = -26.0
+offset_bottom = 26.0
+custom_minimum_size = Vector2(52, 52)
+accessibility_name = "CENTRAL SPACE"
+tooltip_text = "CENTRAL SPACE"
+toggle_mode = true
+theme_override_styles/normal = SubResource("marker_hit_area")
+theme_override_styles/observation_idle = SubResource("ring")
+theme_override_styles/observation_selected = SubResource("ring_active")
+theme_override_styles/hover = SubResource("marker_hit_area")
+theme_override_styles/pressed = SubResource("marker_hit_area")
+theme_override_styles/hover_pressed = SubResource("marker_hit_area")
+
+[node name="ObservationMarker1" type="Button" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/ObservationAspect/ObservationPlane"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.2
+anchor_right = 0.2
+anchor_top = 0.65
+anchor_bottom = 0.65
+offset_left = -26.0
+offset_right = 26.0
+offset_top = -26.0
+offset_bottom = 26.0
+custom_minimum_size = Vector2(52, 52)
+accessibility_name = "SIDE SEATING"
+tooltip_text = "SIDE SEATING"
+toggle_mode = true
+theme_override_styles/normal = SubResource("marker_hit_area")
+theme_override_styles/observation_idle = SubResource("ring")
+theme_override_styles/observation_selected = SubResource("ring_active")
+theme_override_styles/hover = SubResource("marker_hit_area")
+theme_override_styles/pressed = SubResource("marker_hit_area")
+theme_override_styles/hover_pressed = SubResource("marker_hit_area")
+
+[node name="ObservationMarker2" type="Button" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/ObservationAspect/ObservationPlane"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.53
+anchor_right = 0.53
+anchor_top = 0.45
+anchor_bottom = 0.45
+offset_left = -26.0
+offset_right = 26.0
+offset_top = -26.0
+offset_bottom = 26.0
+custom_minimum_size = Vector2(52, 52)
+accessibility_name = "FRONT FOCAL AREA"
+tooltip_text = "FRONT FOCAL AREA"
+toggle_mode = true
+theme_override_styles/normal = SubResource("marker_hit_area")
+theme_override_styles/observation_idle = SubResource("ring")
+theme_override_styles/observation_selected = SubResource("ring_active")
+theme_override_styles/hover = SubResource("marker_hit_area")
+theme_override_styles/pressed = SubResource("marker_hit_area")
+theme_override_styles/hover_pressed = SubResource("marker_hit_area")
+
+[node name="ObservationChoices" type="VBoxContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ObservationChoice0" type="Button" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info/ObservationChoices"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 52)
+text = "CENTRAL SPACE"
+accessibility_name = "CENTRAL SPACE"
+theme_override_font_sizes/font_size = 15
+toggle_mode = true
+
+[node name="ObservationChoice1" type="Button" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info/ObservationChoices"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 52)
+text = "SIDE SEATING"
+accessibility_name = "SIDE SEATING"
+theme_override_font_sizes/font_size = 15
+toggle_mode = true
+
+[node name="ObservationChoice2" type="Button" parent="Panel/MainMargin/MainVBox/Content/BodyRow/InfoScroll/Info/ObservationChoices"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(1, 52)
+text = "FRONT FOCAL AREA"
+accessibility_name = "FRONT FOCAL AREA"
+theme_override_font_sizes/font_size = 15
+toggle_mode = true
+
+[node name="Ring" type="Panel" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/ObservationAspect/ObservationPlane/ObservationMarker0"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_right = 14.0
+offset_top = -14.0
+offset_bottom = 14.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("ring")
+
+[node name="Ring" type="Panel" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/ObservationAspect/ObservationPlane/ObservationMarker1"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_right = 14.0
+offset_top = -14.0
+offset_bottom = 14.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("ring")
+
+[node name="Ring" type="Panel" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/ObservationAspect/ObservationPlane/ObservationMarker2"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_right = 14.0
+offset_top = -14.0
+offset_bottom = 14.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("ring")
