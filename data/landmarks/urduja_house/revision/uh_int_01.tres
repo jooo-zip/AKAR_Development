@@ -1,8 +1,8 @@
 [gd_resource type="Resource" format=3]
 
-[ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_content.gd" id="script"]
-[ext_resource type="AudioStream" path="res://assets/landmarks/urduja_house/audio/uh-int-01-narration.ogg" id="audio"]
-[ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_01_princess_urduja_painting.jpg" id="image0"]
+[ext_resource type="Script" uid="uid://ds1j3wiwwoe0h" path="res://scripts/landmarks/urduja_house/uh_phase5_content.gd" id="script"]
+[ext_resource type="AudioStream" uid="uid://4iqqyiqidfhl" path="res://assets/landmarks/urduja_house/audio/uh_int_01_narration.ogg" id="audio"]
+[ext_resource type="Texture2D" uid="uid://dhasgfl26q15s" path="res://assets/landmarks/urduja_house/interior/uh_int_01_princess_urduja_painting.jpg" id="image0"]
 
 [resource]
 script = ExtResource("script")
