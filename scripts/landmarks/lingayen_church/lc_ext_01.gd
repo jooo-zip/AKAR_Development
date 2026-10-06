@@ -12,6 +12,18 @@ enum Section { ABOUT, HISTORICAL_NAME, PRESENT_ROLE }
 const SectionEntry = preload("res://scripts/landmarks/lingayen_church/lc_ext_01_section.gd")
 const ChurchContent = preload("res://scripts/landmarks/lingayen_church/lc_ext_01_content.gd")
 
+# LC-EXT-01 visual pilot only. Reference colors are screenshot-derived approximations,
+# not recovered main-menu theme tokens. Cream/border tones adapt them for dark panels.
+const AKAR_PANEL_DARK := Color("101d19")
+const AKAR_BROWN_DARK := Color("6f3317")
+const AKAR_BROWN_PRIMARY := Color("9c4a25")
+const AKAR_ORANGE_ACCENT := Color("d37148")
+const AKAR_CREAM_ACTIVE := Color("e8d5b4")
+const AKAR_CREAM_HOVER := Color("f0dfc3")
+const AKAR_BORDER_MUTED := Color("8e6c51")
+const AKAR_TEXT_PRIMARY := Color("f9f5f0")
+const AKAR_TEXT_SECONDARY := Color("d6c5ab")
+
 var _media: VBoxContainer
 var _caption: Label
 var _formal_name: Label
@@ -119,6 +131,7 @@ func _initialize_runtime() -> void:
 	for i in _concepts.size():
 		_concepts[i].gui_input.connect(_tab_input.bind(i))
 	_header_utilities = HeaderUtilities.new(self, _pending)
+	_apply_pilot_style()
 	add_to_group("lingayen_church_narration")
 	resized.connect(_resize_layout)
 	visibility_changed.connect(_visibility_changed)
@@ -172,6 +185,7 @@ func _refresh_editor_preview() -> void:
 	_presentation_built = false
 	_ensure_presentation()
 	HeaderUtilities.build_presentation(self, _pending, shell.get_node("Main/Margin/Layout/Header"))
+	_apply_pilot_style()
 	# Show idle availability from the resource without touching narration state.
 	_speaker.text = "LISTEN"
 	_speaker.disabled = content == null or content.narration_stream == null
@@ -183,6 +197,43 @@ func _refresh_editor_preview() -> void:
 	_resize_layout()
 	# No visitor controls participate in editor input/focus.
 	_disable_editor_input(shell)
+
+
+func _apply_pilot_style() -> void:
+	# Duplicate all subresources so no shared component or other hotspot is recolored.
+	var pilot_theme := _presentation_root.theme.duplicate(true) as Theme
+	_presentation_root.theme = pilot_theme
+	var fills := {
+		"normal": AKAR_BROWN_PRIMARY, "hover": AKAR_BROWN_DARK,
+		"pressed": AKAR_CREAM_ACTIVE, "hover_pressed": AKAR_CREAM_HOVER,
+		"disabled": AKAR_PANEL_DARK
+	}
+	for state in fills:
+		# Preserve existing margins and border thicknesses, including disabled fallback.
+		var style := _close.get_theme_stylebox(state).duplicate() as StyleBoxFlat
+		style.bg_color = fills[state]
+		style.border_color = AKAR_BORDER_MUTED if state == "disabled" else AKAR_ORANGE_ACCENT
+		pilot_theme.set_stylebox(state, "Button", style)
+	var focus := _close.get_theme_stylebox("focus").duplicate() as StyleBoxFlat
+	focus.border_color = AKAR_TEXT_PRIMARY
+	pilot_theme.set_stylebox("focus", "Button", focus)
+	for state in ["font_color", "font_hover_color", "font_focus_color", "icon_normal_color", "icon_hover_color", "icon_focus_color"]:
+		pilot_theme.set_color(state, "Button", AKAR_TEXT_PRIMARY)
+	for state in ["font_pressed_color", "font_hover_pressed_color", "icon_pressed_color", "icon_hover_pressed_color"]:
+		pilot_theme.set_color(state, "Button", AKAR_PANEL_DARK)
+	for state in ["font_disabled_color", "icon_disabled_color"]:
+		pilot_theme.set_color(state, "Button", AKAR_TEXT_SECONDARY)
+	pilot_theme.set_color("font_color", "Label", AKAR_TEXT_PRIMARY)
+	for path in ["Main", "Sources"]:
+		var panel: PanelContainer = _presentation_root.get_node(path)
+		var style := panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+		style.bg_color = AKAR_PANEL_DARK
+		style.border_color = AKAR_BORDER_MUTED
+		panel.add_theme_stylebox_override("panel", style)
+	for label in [_formal_name, _caption, _credit, _pending, _takeaway]:
+		label.add_theme_color_override("font_color", AKAR_TEXT_SECONDARY)
+	_title.add_theme_color_override("font_color", AKAR_CREAM_ACTIVE)
+	_key_label.add_theme_color_override("font_color", AKAR_ORANGE_ACCENT)
 
 
 func _clear_editor_owners(node: Node) -> void:
