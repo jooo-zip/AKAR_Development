@@ -212,18 +212,23 @@ func close_sources() -> void:
 func toggle_narration() -> void:
 	if not active or audio.stream == null:
 		return
-	if audio.playing:
-		stop_narration()
+	if audio.stream_paused:
+		audio.stream_paused = false
+	elif audio.playing:
+		audio.stream_paused = true
 	else:
 		get_tree().call_group("urduja_hotspot_narration", "stop_narration")
 		audio.play(0)
-		listen.set_pressed_no_signal(true)
-		listen.accessibility_name = "Stop narration"
+	listen.text = "RESUME" if audio.stream_paused else "PAUSE"
+	listen.set_pressed_no_signal(audio.playing and not audio.stream_paused)
+	listen.accessibility_name = listen.text.capitalize() + " narration"
 
 func stop_narration() -> void:
 	if is_instance_valid(audio):
 		audio.stop()
+		audio.stream_paused = false
 	if is_instance_valid(listen):
+		listen.text = "LISTEN"
 		listen.set_pressed_no_signal(false)
 		listen.accessibility_name = "Play narration" if not listen.disabled else "Narration pending."
 

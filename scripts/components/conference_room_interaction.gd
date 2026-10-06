@@ -131,25 +131,28 @@ func close_sources() -> void:
 func toggle_narration() -> void:
 	if not _open or _audio.stream == null:
 		return
-	if _audio.playing:
-		stop_narration()
+	if _audio.stream_paused:
+		_audio.stream_paused = false
+	elif _audio.playing:
+		_audio.stream_paused = true
 	else:
 		_audio.play(0.0)
-		_update_speaker()
 		narration_started.emit()
+	_update_speaker()
 
 
 func stop_narration() -> void:
-	var active := _audio.playing or _speaker.button_pressed
+	var active := _audio.playing or _audio.stream_paused or _speaker.button_pressed
 	_audio.stop()
+	_audio.stream_paused = false
 	_update_speaker()
 	if active:
 		narration_stopped.emit()
 
 
 func _update_speaker() -> void:
-	_speaker.set_pressed_no_signal(_audio.playing)
-	var action := "Stop narration" if _audio.playing else "Play narration"
+	_speaker.set_pressed_no_signal(_audio.playing and not _audio.stream_paused)
+	var action := "Resume narration" if _audio.stream_paused else ("Pause narration" if _audio.playing else "Play narration")
 	if _audio.stream == null:
 		action = "Narration audio pending"
 	_speaker.tooltip_text = action

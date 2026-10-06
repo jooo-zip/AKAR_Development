@@ -101,7 +101,7 @@ func _build_presentation() -> void:
 	_subtitle.add_theme_font_size_override("font_size", 14)
 	_sources_button.reparent(header)
 	_speaker.reparent(header)
-	_speaker.icon = null
+	_speaker.icon = preload("res://assets/ui/icons/speaker.svg")
 	_speaker.text = "LISTEN"
 	_close.text = "CLOSE"
 	_sources_button.text = "SOURCES"
@@ -484,7 +484,7 @@ func _update_speaker() -> void:
 	if Engine.is_editor_hint():
 		return
 	super._update_speaker()
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
+	_speaker.text = "RESUME" if _audio.stream_paused else ("PAUSE" if _audio.playing else "LISTEN")
 
 
 func _all_controls() -> Array[Control]:

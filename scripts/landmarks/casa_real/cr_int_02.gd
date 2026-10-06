@@ -127,7 +127,7 @@ func _build_presentation() -> void:
 		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_sources_button.text = "SOURCES"
 	_close.text = "CLOSE"
-	_speaker.expand_icon = true
+	_speaker.expand_icon = false
 	_speaker.add_theme_constant_override("icon_max_width", 24)
 	for page in [_directory, _preview, _focus_view]:
 		layout.add_child(page)

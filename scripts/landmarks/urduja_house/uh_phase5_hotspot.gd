@@ -62,8 +62,14 @@ func stop_narration() -> void:
 func _update_listen_accessibility() -> void:
 	if not is_instance_valid(listen):
 		return
-	listen.accessibility_name = "LISTEN"
-	listen.accessibility_description = "Narration unavailable" if listen.disabled else ("Activate to stop narration and reset to the beginning." if audio.playing else "Activate to play narration from the beginning.")
+	listen.accessibility_name = listen.text
+	listen.accessibility_description = "Activate to play narration from the beginning."
+	if listen.disabled:
+		listen.accessibility_description = "Narration unavailable"
+	elif audio.stream_paused:
+		listen.accessibility_description = "Activate to resume narration from the paused position."
+	elif audio.playing:
+		listen.accessibility_description = "Activate to pause narration at the current position."
 	listen.tooltip_text = listen.accessibility_description
 
 func reset_interaction() -> void:

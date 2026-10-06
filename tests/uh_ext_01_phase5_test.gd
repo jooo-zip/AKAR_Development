@@ -271,7 +271,7 @@ func narration_check() -> void:
 	await click(panel.listen)
 	check(panel.audio.playing and panel.listen.button_pressed, "mouse starts narration with active styling")
 	check(panel.audio.get_playback_position() < 1.0, "play starts at beginning")
-	check(panel.listen.accessibility_name == "LISTEN" and panel.listen.accessibility_description.contains("stop narration"), "playing accessibility")
+	check(panel.listen.accessibility_name == "PAUSE" and panel.listen.accessibility_description.contains("pause narration"), "playing accessibility")
 	for index in [1, 2, 0]:
 		var before: float = panel.audio.get_playback_position()
 		await click(explorer.selectors[index])
@@ -283,7 +283,8 @@ func narration_check() -> void:
 	await click(panel.source_close)
 	check(panel.audio.playing and panel.audio.get_playback_position() >= before_close, "Sources close preserves audio")
 	await click(panel.listen)
-	check(not panel.audio.playing and not panel.listen.button_pressed and is_zero_approx(panel.audio.get_playback_position()), "mouse stop resets")
+	check(panel.audio.stream_paused and not panel.listen.button_pressed and panel.listen.text == "RESUME", "mouse pauses")
+	var paused_at: float = panel.audio.get_playback_position()
 	panel.sources_button.grab_focus()
 	for i in 12:
 		if root.gui_get_focus_owner() == panel.listen:
@@ -291,9 +292,9 @@ func narration_check() -> void:
 		await key(KEY_TAB)
 	check(root.gui_get_focus_owner() == panel.listen, "Tab reaches Listen")
 	await key(KEY_ENTER)
-	check(panel.audio.playing and panel.audio.get_playback_position() < 1.0, "Enter replays from beginning")
+	check(panel.audio.playing and not panel.audio.stream_paused and panel.audio.get_playback_position() >= paused_at, "Enter resumes from paused position")
 	await key(KEY_SPACE)
-	check(not panel.audio.playing and is_zero_approx(panel.audio.get_playback_position()), "Space stops and resets")
+	check(panel.audio.stream_paused and panel.listen.text == "RESUME", "Space pauses")
 	# Synthetic touch exercises the engine's touch-to-mouse UI path.
 	Input.emulate_mouse_from_touch = true
 	for down in [true, false]:
@@ -305,7 +306,7 @@ func narration_check() -> void:
 		await process_frame
 	await settle()
 	check(panel.audio.playing, "touch starts narration")
-	print("Waiting for supplied narration's natural finish (21 seconds).")
+	print("Waiting for supplied narration's natural finish (", panel.audio.stream.get_length(), " seconds).")
 	await settle(panel.audio.stream.get_length() + 0.5)
 	check(not panel.audio.playing and not panel.listen.button_pressed, "natural finish returns idle")
 	check(is_zero_approx(panel.audio.get_playback_position()), "natural finish resets playback")

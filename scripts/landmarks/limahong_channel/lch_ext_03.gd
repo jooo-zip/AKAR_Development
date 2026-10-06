@@ -391,7 +391,6 @@ func open_sources() -> void:
 func _update_speaker() -> void:
 	super._update_speaker()
 	_speaker.show()
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
 	_pending.text = "LCH-EXT-03   ·   Narration pending" if _audio.stream == null else "LCH-EXT-03"
 	if _header_utilities != null: _header_utilities.refresh()
 

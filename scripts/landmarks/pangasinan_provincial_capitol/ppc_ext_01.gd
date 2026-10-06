@@ -91,7 +91,7 @@ func _build_presentation() -> void:
 		button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_sources_button.text = "SOURCES"
 	_close.text = "CLOSE"
-	_speaker.expand_icon = true
+	_speaker.expand_icon = false
 	_speaker.add_theme_constant_override("icon_max_width", 24)
 	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
 	_presentation_root.get_node("Main/Margin/Layout").move_child(_presentation_root.get_node("Main/Margin/Layout/Sections"), 1)
@@ -252,7 +252,7 @@ func _update_speaker() -> void:
 	super._update_speaker()
 	_speaker.show()
 	_speaker.disabled = _audio.stream == null
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
+	_speaker.text = "RESUME" if _audio.stream_paused else ("PAUSE" if _audio.playing else "LISTEN")
 	_pending.visible = _audio.stream == null
 
 

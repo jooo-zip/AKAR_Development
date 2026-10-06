@@ -111,7 +111,7 @@ func resize() -> void:
 
 func refresh() -> void:
 	panel._sources_button.text = "SOURCES"
-	panel._speaker.text = "LISTEN"
+	panel._speaker.text = "RESUME" if panel._audio.stream_paused else ("PAUSE" if panel._audio.playing else "LISTEN")
 	panel._close.text = "CLOSE"
 	panel._speaker.show()
 	panel._speaker.disabled = panel._audio.stream == null

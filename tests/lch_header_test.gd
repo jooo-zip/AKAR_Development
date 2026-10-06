@@ -64,7 +64,8 @@ func geometry(panel, tag: String, pending: bool) -> Array[Rect2]:
 		var button := buttons[i]
 		rects.append(button.get_global_rect())
 		check(button.get_parent() == header.actions and button.get_index() == i, tag + " utility structure/order")
-		check(button.text == ["SOURCES", "LISTEN", "CLOSE"][i], tag + " exact utility label")
+		var narration_label := "RESUME" if panel._audio.stream_paused else ("PAUSE" if panel._audio.playing else "LISTEN")
+		check(button.text == ["SOURCES", narration_label, "CLOSE"][i], tag + " exact utility label")
 		check(button.size.y >= 48 and button.size.x >= 48, tag + " touch target")
 		check(panel.get_global_rect().grow(1).encloses(rects[i]), tag + " utility within parent " + button.name + str(rects[i]))
 		check(not panel._title.get_global_rect().intersects(rects[i]), tag + " title/action separation")
@@ -128,9 +129,9 @@ func run() -> void:
 			await create_timer(0.06).timeout
 			check(panel._audio.playing and panel._audio.stream == assigned, tag + " supplied OGG plays on request")
 			panel.toggle_narration()
-			check(panel._audio.stream_paused if id == "ext_01" else not panel._audio.playing, tag + " established pause/stop toggle")
+			check(panel._audio.stream_paused and panel._speaker.text == "RESUME", tag + " standard pause state")
 			panel.toggle_narration()
-			check(panel._audio.playing and not panel._audio.stream_paused and panel._audio.stream == assigned, tag + " repeated Listen resumes/restarts same recording")
+			check(panel._audio.playing and not panel._audio.stream_paused and panel._audio.stream == assigned and panel._speaker.text == "PAUSE", tag + " standard resume state")
 			panel.stop_narration()
 			geometry(panel, tag, false)
 			await capture(panel, tag)

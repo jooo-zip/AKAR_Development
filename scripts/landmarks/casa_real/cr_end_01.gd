@@ -99,7 +99,7 @@ func _build_presentation() -> void:
 	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_sources_button.text = "SOURCES"
 	_close.text = "CLOSE"
-	_speaker.expand_icon = true
+	_speaker.expand_icon = false
 	_speaker.add_theme_constant_override("icon_max_width", 22)
 	for old in [_presentation_root.get_node("Main/Margin/Layout/Controls"), _presentation_root.get_node("Main/Margin/Layout/Sections"), _presentation_root.get_node("Main/Margin/Layout/Columns")]: old.hide()
 	layout.add_child(_subtitle)

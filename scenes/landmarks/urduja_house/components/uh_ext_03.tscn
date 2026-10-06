@@ -1,5 +1,7 @@
 [gd_scene format=3]
 
+[ext_resource type="Texture2D" path="res://assets/ui/icons/speaker.svg" id="narration_icon"]
+
 [ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_phase5_hotspot.gd" id="shell"]
 
 [ext_resource type="Script" path="res://scripts/landmarks/urduja_house/uh_architecture_photo.gd" id="explorer"]
@@ -107,6 +109,9 @@ accessibility_name = "LISTEN"
 theme_override_font_sizes/font_size = 16
 size_flags_vertical = 4
 toggle_mode = true
+icon = ExtResource("narration_icon")
+expand_icon = false
+theme_override_constants/icon_max_width = 22
 
 [node name="Close" type="Button" parent="Panel/MainMargin/MainVBox/Header"]
 unique_name_in_owner = true

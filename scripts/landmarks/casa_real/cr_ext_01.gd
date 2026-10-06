@@ -56,7 +56,7 @@ func _build_presentation() -> void:
 		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_sources_button.text = "SOURCES"
 	_close.text = "CLOSE"
-	_speaker.expand_icon = true
+	_speaker.expand_icon = false
 	_speaker.add_theme_constant_override("icon_max_width", 24)
 	_presentation_root.get_node("Main/Margin/Layout/Controls").hide()
 	_presentation_root.get_node("Main/Margin/Layout/Sections").hide()
@@ -243,7 +243,7 @@ func _update_speaker() -> void:
 	if Engine.is_editor_hint():
 		return
 	super._update_speaker()
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
+	_speaker.text = "RESUME" if _audio.stream_paused else ("PAUSE" if _audio.playing else "LISTEN")
 
 
 func stop_narration() -> void:

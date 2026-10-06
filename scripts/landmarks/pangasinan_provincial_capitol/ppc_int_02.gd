@@ -101,7 +101,7 @@ func _build_presentation() -> void:
 	titles.add_child(_subtitle)
 	_sources_button.reparent(header)
 	_speaker.reparent(header)
-	_speaker.icon = null
+	_speaker.icon = preload("res://assets/ui/icons/speaker.svg")
 	_sources_button.text = "SOURCES"
 	_close.text = "CLOSE"
 	header.move_child(_close, header.get_child_count() - 1)
@@ -473,7 +473,7 @@ func _update_speaker() -> void:
 	if Engine.is_editor_hint():
 		return
 	super._update_speaker()
-	_speaker.text = "STOP" if _audio.playing else "LISTEN"
+	_speaker.text = "RESUME" if _audio.stream_paused else ("PAUSE" if _audio.playing else "LISTEN")
 	_speaker.disabled = _audio.stream == null
 
 
