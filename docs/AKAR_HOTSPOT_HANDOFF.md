@@ -4,19 +4,24 @@
 
 **The hotspot developer owns** hotspot UI, researcher-supplied historical/interpretive content, media, interaction behavior, narration/video, local focus/input, local responsive layout, Sources, and hotspot lifecycle.
 
-**The environment developer owns** the exterior/interior 2D environment, avatar/player, movement, collisions, trigger locations, when hotspots open, suspension/resumption of movement, environment transitions, and overlay/host placement.
+**The environment developer owns** the exterior/interior 2D environment, avatar/player, movement, collisions, trigger locations, when hotspots open, suspension/resumption of movement, environment transitions, map navigation, and overlay/host placement.
 
 **The environment developer should NOT edit hotspot internal nodes or depend on internal NodePaths for normal integration.** Treat each production scene as a reusable component with a public root API.
 
 AKAR is an educational historical walkthrough, not a game. Closure means the visitor dismissed the interaction; it does not establish a score, reward, completed requirement, or mandatory visit to every hotspot.
 
-## Handoff baseline
+## Current handoff baseline
 
 - Branch: `integration/akar-landmarks`.
-- Audited production commit: `1afda5a`.
-- Integrated audit decision: **READY FOR HOTSPOT HANDOFF WITH LIMITATIONS**.
+- Approved production commit: `d41c73e` — `style: harmonize hotspot UI and clean script warnings`.
 - Inventory: **34 production hotspots and 34 preview/F6 harnesses**.
-- This document consolidates the completed integrated audit and verified 34-hotspot contract for researcher review. Documentation-only commits may follow the audited production baseline; production changes require appropriate revalidation.
+- **Researcher visual inspection: approved.** All 34 production hotspots use the approved visual standard.
+- Handoff status: approved hotspot implementation, with the documented pre-existing limitations and deployment/integration gates below.
+- This guide preserves the verified 34-hotspot integration contract and records the final visual, narration and warning-cleanup validation. Documentation-only commits may follow this baseline; production changes require appropriate revalidation.
+
+### Git handoff
+
+Integrate hotspot work from **`integration/akar-landmarks`, baseline `d41c73e`**. Do not use outdated `main` as the hotspot source. Confirm that the integration checkout contains the approved baseline; later documentation-only commits do not replace it as the production reference.
 
 Update your checkout using the team's normal Git workflow. With local work safely handled first, the usual commands are:
 
@@ -25,9 +30,55 @@ git fetch origin
 git switch integration/akar-landmarks
 git pull --ff-only origin integration/akar-landmarks
 git rev-parse --short HEAD
+git show -s --format="%h %s" d41c73e
+git merge-base --is-ancestor d41c73e HEAD
 ```
 
+The ancestry check should exit successfully; HEAD may be a later documentation or coordinated integration commit.
+
 Keep the complete project and its asset/Resource dependencies. Copying only one landmark folder can omit shared dependencies; for example, Limahong EXT-01 uses an existing Urduja information icon.
+
+## Visual standard
+
+The shared Inspector-editable hotspot Theme is:
+
+`res://resources/themes/akar_hotspot_theme.tres`
+
+The approved palette is:
+
+| Palette name | Approved value |
+|---|---|
+| `AKAR_PANEL_DARK` | `#101D19` |
+| `AKAR_BROWN_PRIMARY` | `#9C4A25` |
+| `AKAR_BROWN_DARK` | `#6F3317` |
+| `AKAR_ORANGE_ACCENT` | `#D37148` |
+| `AKAR_CREAM_ACTIVE` | `#E8D5B4` |
+| `AKAR_CREAM_HOVER` | `#F0DFC3` |
+| `AKAR_BORDER_MUTED` | `#8E6C51` |
+| `AKAR_TEXT_PRIMARY` | `#F9F5F0` |
+| `AKAR_TEXT_SECONDARY` | `#D6C5AB` |
+
+These are the approved hotspot implementation values. The original menu/location references were screenshots with approximate sampled colors, not exact recovered source theme tokens.
+
+Keep the dark forest/near-black content surface for readability, brown/terracotta primary controls and structural accents, cream/beige selected-state emphasis, muted orange/brown borders, and off-white body text. A **uniform visual system does not mean a uniform hotspot layout**. Portraits, timelines, maps, comparisons, galleries and reflection views retain their interaction-specific layouts and local styling. Contrast-sensitive selected cards, transparent image markers and meaningful visual cues remain intentional exceptions.
+
+The researcher/developer can select the shared `.tres` in Godot's FileSystem dock and edit its Theme colors and StyleBox resources through the Inspector. Changes affect consumers that inherit those values; scene-local themes and overrides remain intentional. The LC-EXT-01 pilot retains its local theme, Urduja retains its authored theme at `res://data/landmarks/urduja_house/uh_ext_01_theme.tres`, and the migrated Limahong scenes retain authored local styles. Do not assume that editing one shared resource replaces every local style or custom-drawn detail. Review affected production scenes and their previews at all three validated sizes after coordinated theme edits.
+
+**The environment developer must not override hotspot internal themes or styles unless coordinated with the hotspot developer/researcher.** Preserve existing scene assignments and local overrides.
+
+### Visual theme integration note
+
+**Do not recolor hotspot scenes to match environment scenes. The current hotspot theme is already researcher-approved.**
+
+The virtual environment may remain brighter and pixel-art oriented while hotspot content uses the dark museum/exhibit surface. They belong to the same AKAR family, with different functional presentation. The environment supplies the host and surrounding walkthrough; the hotspot retains its approved internal visual treatment.
+
+## Narration standard
+
+All ordinary narration-enabled hotspots use **LISTEN → PAUSE → RESUME**, with the approved speaker icon and visible state label. Resuming returns the active control to PAUSE. Natural completion returns to LISTEN; closing resets narration, so reopening starts from the beginning on the next visitor request. **No autoplay.**
+
+Narration remains controlled by the hotspot. Preserve disabled/pending states when narration is unavailable; do not attach substitute audio or start playback from the environment. The environment should use the lifecycle API and exit signals, not manipulate the audio player or narration labels.
+
+**UH-ENT-01 remains a historical-video special case**, with its existing video/media availability rules and separate Skip exit. Do not convert it to ordinary narration controls or enable withheld unverified media. Its API and signals remain as documented in the contract below.
 
 ## Production versus preview — choose the correct scene
 
@@ -203,12 +254,13 @@ Use the production scene and public root API, preserving its accepted legacy edi
 
 | Hotspot | Known finding | Integration consequence |
 |---|---|---|
-| CR-EXT-01 | NEW TEST/HARNESS INCOMPATIBILITY: its old automated tail targets the former Urduja UH-INT-04 hierarchy. | Casa production checks passed before that obsolete assertion. Do not change Casa production to satisfy it. A separate test-only correction was recommended, not applied. |
+| CR-EXT-01 | PRE-EXISTING TEST/HARNESS INCOMPATIBILITY: its old automated tail targets the former Urduja UH-INT-04 hierarchy. | Casa production checks passed before that obsolete assertion. Do not change Casa production to satisfy it. A separate test-only correction was recommended, not applied. |
 | CR-EXT-03 | PRE-EXISTING CONTENT/TEST CONTRACT LIMITATION: milestone Resource values differ from test expectations. | Disclose the missing/mismatched milestone information; refer content reconciliation to the hotspot developer/researcher. |
+| CR-END-01 | PRE-EXISTING NARRATION-DURATION TEST LIMITATION: the old test requires more than 20 seconds, while the supplied narration is approximately 15.882 seconds. | The duration assertion still fails; natural narration completion checks pass. Do not change or replace approved audio to satisfy the obsolete threshold. |
 | CR-EXT-02 | PRE-EXISTING RESPONSIVE LIMITATION at 854×480 with approximately 5% inset. | The reduced 768.6×432 host clips the title and button tops. Use the validated full 854×480 host until a separate fix is approved. |
 | CR-INT-02 | TEST-BOUNDARY FALSE POSITIVE for three inset header bounds. | Buttons extend 4.5 px above the host but stay fully visible and clickable in the viewport under the tested unclipped ordinary Control. Do not impose clipping on that host without rechecking. |
 
-The Casa controllers involved were unchanged by the landmark merges. Do not “repair” test mismatches by inventing or changing historical content. Sources, narration/video cleanup and local interactions stay inside the hotspot.
+The documented Casa test/content limitations predate the final visual harmonization and warning cleanup and were not fixed by those changes. Do not “repair” test mismatches by inventing or changing historical content. Sources, narration/video cleanup and local interactions stay inside the hotspot.
 
 ### Pangasinan Provincial Capitol
 
@@ -244,12 +296,13 @@ The six migrated scenes contain persistent authored hierarchy. Their editor cont
 - Make a hotspot control avatar movement.
 - Rewrite hotspot lifecycle or bypass its public close method.
 - Convert dynamic interactions merely for visual uniformity.
+- Recolor hotspot scenes to match an environment or override their internal theme/styles without coordination.
 
 Route requested hotspot changes to the hotspot developer. Historical corrections require researcher-supplied, validated content; failing tests are not historical sources.
 
 ## Recommended teammate workflow
 
-1. Pull/update the integration branch using the team's normal Git workflow.
+1. Pull/update `integration/akar-landmarks` using the team's normal Git workflow and verify it contains approved baseline `d41c73e`; do not source hotspots from outdated `main`.
 2. Open the intended production `.tscn` from the contract.
 3. Open its listed preview and press F6 to understand the interaction.
 4. Return to your environment scene.
@@ -262,7 +315,7 @@ Route requested hotspot changes to the hotspot developer. Historical corrections
 11. Resume avatar movement on that exit signal. If retaining the instance, reconnect nothing and reuse it after closure; otherwise use `queue_free()`.
 12. Test at 1280×720, 960×540 and 854×480 in landscape, observing Casa's host-size qualification.
 
-For the manual Godot handoff check, exercise mouse and keyboard, Sources then Escape, close/reopen, optional reset where exposed, and media cleanup on close. Check that one trigger cannot open duplicate panels, movement stays suspended during interaction, and it resumes once on ordinary Close and ENT-01 Skip. Do not require the visitor to view every hotspot.
+For the manual Godot handoff check, exercise mouse and keyboard, Sources then Escape, close/reopen, optional reset where exposed, and media cleanup on close. Verify LISTEN → PAUSE → RESUME, natural completion back to LISTEN, no autoplay, and the narration reset on close; keep UH-ENT-01's historical-video exception. Confirm the approved hotspot theme remains intact inside the environment. Check that one trigger cannot open duplicate panels, movement stays suspended during interaction, and it resumes once on ordinary Close and ENT-01 Skip. Do not require the visitor to view every hotspot.
 
 ## Debugging / handoff rule
 
@@ -278,11 +331,36 @@ Do not immediately modify the hotspot internals. Compare the same hotspot and Re
 
 ## Integrated test status
 
-The completed integrated audit found all **34 production hotspots** and **34 preview harnesses**. It found **no new production integration regression** in the exercised coverage. Cross-landmark coexistence passed; all nine revised Urduja suites and all seven Limahong hotspot suites passed, along with Limahong's header/Sources/architecture checks. All five families passed editor verification. No shared-Resource mutation or production global-window resizing was detected.
+### Final quality status
 
-The repository remained clean at `1afda5a` during the audit. That result does **not** mean every older automated test is green: the stale Casa cross-landmark assertion, existing content/test contracts and CR-EXT-02 inset limitation remain as documented above. Initial editor permission/capture problems were verification-environment issues, not failed hotspot behavior.
+The final approved implementation baseline is `d41c73e` on `integration/akar-landmarks`. Researcher visual inspection is approved. Validation covered the 34 production hotspots and their preview harnesses at 1280×720, 960×540 and 854×480, with the host-size qualifications documented above.
 
-Native Godot Compatibility was validated. Browser/Web export was not part of this audit and remains a later deployment gate. Physical touchscreen/tablet testing was not part of this audit and remains a deployment/integration validation gate alongside browser/Web export. This document transfers the hotspot contract; it does not transfer responsibility for building the virtual environments to the hotspot developer.
+| Validation | Final result |
+|---|---|
+| Production hotspots visually harmonized | **34/34** |
+| Visual-standard checks | **7,282 passed; zero failures** |
+| Narration checks | **10,644 passed; zero failures** |
+| Editor suites | **12/12 passed** |
+| Existing runtime suites | **37/41 passed**; four documented pre-existing limitations remain |
+| New visual regressions | **Zero** in exercised coverage |
+| Final GDScript warning audit | **Zero reported warnings/errors** across 135 scanned scripts, including all 118 production hotspot script dependencies |
+| Whitespace/diff validation | **`git diff --check` passed** during validation |
+
+The four runtime suite limitations are **CR-EXT-01** (obsolete cross-landmark harness lookup), **CR-EXT-03** (milestone content/test contract), **PPC-EXT-01** (observation-label content/test contract), and **CR-END-01** (obsolete narration-duration threshold). They reproduced the previously documented failures and **were not fixed**. CR-EXT-02's small inset-host limitation and CR-INT-02's unclipped-host qualification also remain; they are separate from the four failing runtime suites.
+
+The final warning cleanup safely removed three unused script bindings without deleting scene nodes, renamed a shadowed parameter and made three zero-valued ternary branches explicitly floating point. Two intentional cases retain narrow warning annotations: a binding read by a regression test and integer division used to select a grid row. No global warning settings were disabled. The zero GDScript warning result does not claim that every runtime/editor log is empty: the deliberately induced missing-image fallback warning and pre-existing editor teardown diagnostics remain documented qualifications.
+
+The earlier integrated audit found no new production integration regression in its exercised coverage. Cross-landmark coexistence passed; all nine revised Urduja suites and all seven Limahong hotspot suites passed, along with Limahong's header/Sources/architecture checks. All five families passed editor verification. No shared-Resource mutation or production global-window resizing was detected. Initial editor permission/capture problems were verification-environment issues, not failed hotspot behavior.
+
+### Known remaining deployment/integration gates
+
+Native Godot Compatibility was validated. Browser/Web export was not part of this audit and remains a later deployment gate. Physical touchscreen/tablet testing was not part of this audit and remains a deployment/integration validation gate alongside browser/Web export.
+
+- **Browser/Web export validation:** validate the exported project and its media/input behavior in the target browser environment.
+- **Physical touchscreen/tablet validation:** validate real-device input and presentation; synthetic input checks do not replace physical-device testing.
+- **Final integration inside the teammate's virtual environments:** validate host sizing, overlay placement, player/trigger suspension, hotspot input/processing, exit signals and map/environment navigation with the actual environment scenes.
+
+These are **deployment/integration gates, not unresolved hotspot-development failures**. They do not erase the separate pre-existing limitations listed above. This document transfers the approved hotspot contract; responsibility for building and integrating the virtual environments remains with the environment developer.
 
 ## Before reporting a hotspot integration bug
 
