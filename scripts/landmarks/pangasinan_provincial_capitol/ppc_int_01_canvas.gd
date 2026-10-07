@@ -62,20 +62,20 @@ func _visual(texture: Texture2D, dual: bool, value: float, alpha: float) -> void
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("080f0d"))
+	draw_rect(Rect2(Vector2.ZERO, size), Color("101d19"))
 	if previous_image != null and transition_alpha < 1:
 		_visual(previous_image, previous_comparing, previous_amount, 1 - transition_alpha)
 	_visual(image, comparing, amount, transition_alpha)
 	if comparing:
 		var x := clampf(size.x * amount, 1, maxf(1, size.x - 1))
-		draw_line(Vector2(x, 0), Vector2(x, size.y), Color("dec985"), 2)
+		draw_line(Vector2(x, 0), Vector2(x, size.y), Color("d37148"), 2)
 		var center := Vector2(clampf(x, 22, maxf(22, size.x - 22)), size.y * 0.5)
-		draw_rect(Rect2(center - Vector2(20, 24), Vector2(40, 48)), Color("dec985"))
+		draw_rect(Rect2(center - Vector2(20, 24), Vector2(40, 48)), Color("d37148"))
 		for direction in [-1, 1]:
 			var tip := center + Vector2(direction * 12, 0)
-			draw_polyline(PackedVector2Array([tip + Vector2(-direction * 5, -6), tip, tip + Vector2(-direction * 5, 6)]), Color("15251f"), 2)
+			draw_polyline(PackedVector2Array([tip + Vector2(-direction * 5, -6), tip, tip + Vector2(-direction * 5, 6)]), Color("101d19"), 2)
 	if has_focus():
-		draw_rect(Rect2(Vector2(2, 2), size - Vector2(4, 4)), Color("fff299"), false, 3)
+		draw_rect(Rect2(Vector2(2, 2), size - Vector2(4, 4)), Color("f9f5f0"), false, 3)
 
 
 func _choose(value: float) -> void:

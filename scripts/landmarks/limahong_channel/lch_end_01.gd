@@ -9,12 +9,11 @@ signal topic_changed(topic_index: int)
 
 enum SummaryTopic { NONE = -1, RETREAT, BLOCKADE, ESCAPE, TRADITION, HERITAGE }
 const SummaryContent = preload("res://scripts/landmarks/limahong_channel/lch_end_01_content.gd")
-const GOLD := Color(0.88, 0.80, 0.55)
-const NEUTRAL := Color(0.40, 0.48, 0.42)
+const GOLD := Color("e8d5b4")
+const NEUTRAL := Color("8e6c51")
 var current_topic: SummaryTopic = SummaryTopic.NONE
 var _data: SummaryContent
 @onready var _board: Control = $"Main/Margin/Layout/SummaryStoryline"
-@onready var _intro: HBoxContainer = $"Main/Margin/Layout/Intro"
 @onready var _intro_heading: Label = $"Main/Margin/Layout/Intro/IntroHeading"
 @onready var _intro_body: Label = $"Main/Margin/Layout/Intro/IntroBody"
 @onready var _reflection: VBoxContainer = $"Main/Margin/Layout/Columns/Reflection"

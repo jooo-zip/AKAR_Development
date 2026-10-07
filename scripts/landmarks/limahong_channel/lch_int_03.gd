@@ -11,7 +11,7 @@ enum HeritageStage { MILESTONE_2019, PRESERVATION, DEVELOPMENT }
 const HeritageContent = preload("res://scripts/landmarks/limahong_channel/lch_int_03_content.gd")
 const StageContent = preload("res://scripts/landmarks/limahong_channel/lch_int_03_stage.gd")
 const FacilityCard = preload("res://scenes/landmarks/limahong_channel/interior/lch_int_03_facility_card.tscn")
-const GOLD := Color(0.88, 0.80, 0.55)
+const GOLD := Color("e8d5b4")
 
 var current_stage: HeritageStage = HeritageStage.MILESTONE_2019
 var contributor_expanded: bool = false
@@ -169,8 +169,8 @@ func _update_contributor() -> void:
 	_contributor_heading.text = "MODERN CONTRIBUTOR\n" + _data.contributor_name + "\n" + ("HIDE ROLE" if contributor_expanded else "VIEW ROLE")
 	if _compact and contributor_expanded:
 		_contributor_heading.text = "MODERN CONTRIBUTOR\n" + _data.contributor_name
-	_contributor_heading.add_theme_color_override("font_color", Color(0.06, 0.09, 0.07) if contributor_expanded else GOLD)
-	_fallbacks[1].add_theme_color_override("font_color", Color(0.06, 0.09, 0.07) if contributor_expanded else GOLD)
+	_contributor_heading.add_theme_color_override("font_color", Color("101d19") if contributor_expanded else GOLD)
+	_fallbacks[1].add_theme_color_override("font_color", Color("101d19") if contributor_expanded else GOLD)
 	_contributor.custom_minimum_size.y = (60 if contributor_expanded else 72) if _compact else (72 if size.x < 1050 else 92)
 	_contributor.accessibility_name = _contributor_heading.text
 	_contributor_details.visible = contributor_expanded
@@ -264,7 +264,7 @@ func _layout_story() -> void:
 	_story_nodes[0].position = Vector2((dimensions.x - top_size.x) * 0.5, dimensions.y * 0.10)
 	for i in 2:
 		_story_nodes[i + 1].size = lower_size
-		_story_nodes[i + 1].position = Vector2(0 if i == 0 else dimensions.x - lower_size.x, dimensions.y - lower_size.y - dimensions.y * 0.10)
+		_story_nodes[i + 1].position = Vector2(0.0 if i == 0 else dimensions.x - lower_size.x, dimensions.y - lower_size.y - dimensions.y * 0.10)
 	for label in _story_labels:
 		label.add_theme_font_size_override("font_size", 16 if small else 20)
 	_story_ends.clear()

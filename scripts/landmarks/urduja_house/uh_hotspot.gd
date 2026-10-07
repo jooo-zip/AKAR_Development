@@ -26,15 +26,12 @@ var _redraw_generation: int = 0
 const Presentation = preload("res://scripts/landmarks/urduja_house/uh_legacy_presentation.gd")
 
 func _ready() -> void:
-	var style_reference: Control = load("res://scenes/components/conference_room_interaction.tscn").instantiate()
-	theme = style_reference.theme
-	style_reference.free()
 	var panel := PanelContainer.new()
 	add_child(panel)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var border := StyleBoxFlat.new()
-	border.bg_color = Color("101c18")
-	border.border_color = Color("867951")
+	border.bg_color = Color("101d19")
+	border.border_color = Color("8e6c51")
 	border.set_border_width_all(1)
 	border.set_content_margin_all(12)
 	panel.add_theme_stylebox_override("panel", border)
@@ -45,6 +42,7 @@ func _ready() -> void:
 	layout.add_child(header)
 	var title := Label.new()
 	title.text = revision.title
+	title.add_theme_color_override("font_color", theme.get_color("heading", "AKAR"))
 	title.custom_minimum_size.x = 1
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -58,6 +56,7 @@ func _ready() -> void:
 	layout.add_child(context)
 	var subtitle := Label.new()
 	subtitle.text = revision.subtitle
+	subtitle.add_theme_color_override("font_color", theme.get_color("secondary", "AKAR"))
 	subtitle.custom_minimum_size.x = 1
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	subtitle.size_flags_horizontal = Control.SIZE_EXPAND_FILL

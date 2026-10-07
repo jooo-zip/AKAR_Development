@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/exterior/uh_ext_01_locator_map.png" id="map"]
 
 [sub_resource type="StyleBoxFlat" id="NodeStyle"]
-bg_color = Color(0.525, 0.475, 0.318, 1)
+bg_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_left = 5
@@ -78,7 +78,7 @@ custom_minimum_size = Vector2(1, 0)
 size_flags_horizontal = 3
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 horizontal_alignment = 1
 
 
@@ -104,7 +104,7 @@ custom_minimum_size = Vector2(1, 0)
 size_flags_horizontal = 3
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 
 [node name="Heading" type="Label" parent="Layout/ContentRow/InfoScroll/InfoColumn"]
@@ -146,7 +146,7 @@ custom_minimum_size = Vector2(1, 0)
 size_flags_horizontal = 3
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 23
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 
 [node name="Heading1953" type="Label" parent="Layout/ContentRow/InfoScroll/InfoColumn/HistorySections/Section1953"]
@@ -179,7 +179,7 @@ custom_minimum_size = Vector2(1, 0)
 size_flags_horizontal = 3
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 23
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 
 [node name="Heading1982" type="Label" parent="Layout/ContentRow/InfoScroll/InfoColumn/HistorySections/Section1982"]
@@ -212,7 +212,7 @@ custom_minimum_size = Vector2(1, 0)
 size_flags_horizontal = 3
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 
 [node name="ObservationText" type="Label" parent="Layout/ContentRow/InfoScroll/InfoColumn/HistorySections/LookCloser"]
@@ -237,7 +237,7 @@ offset_left = 26.0
 offset_top = 25.0
 offset_right = 1000.0
 offset_bottom = 27.0
-color = Color(0.525, 0.475, 0.318, 1)
+color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 mouse_filter = 2
 
 
@@ -342,7 +342,7 @@ accessibility_name = "Drag the discovery selector; or select PLACE, HISTORY, TOD
 
 [node name="Diamond" type="Polygon2D" parent="Layout/DiscoveryRail/Selector"]
 position = Vector2(26, 26)
-color = Color(0.788, 0.682, 0.404, 1)
+color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 polygon = PackedVector2Array(0, -13, 13, 0, 0, 13, -13, 0)
 
 
@@ -362,7 +362,7 @@ custom_minimum_size = Vector2(1, 0)
 size_flags_horizontal = 3
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 
 

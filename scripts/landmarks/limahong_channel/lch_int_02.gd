@@ -10,9 +10,9 @@ signal person_changed(person_index: int)
 enum CampaignPerson { LAVEZARIS, SALCEDO, LIMAHONG }
 const CampaignContent = preload("res://scripts/landmarks/limahong_channel/lch_int_02_content.gd")
 const PersonContent = preload("res://scripts/landmarks/limahong_channel/lch_int_02_person.gd")
-const GOLD := Color(0.88, 0.80, 0.55)
-const NEUTRAL := Color(0.60, 0.64, 0.55)
-const INACTIVE_LINE := Color(0.73, 0.68, 0.53, 0.5)
+const GOLD := Color("e8d5b4")
+const NEUTRAL := Color("8e6c51")
+const INACTIVE_LINE := Color(Color("8e6c51"), 0.5)
 const SELECTED_LINE_WIDTH := 3.5
 const INACTIVE_LINE_WIDTH := 2.0
 

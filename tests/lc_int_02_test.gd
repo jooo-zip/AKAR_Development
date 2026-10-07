@@ -100,7 +100,7 @@ func check_state(panel: Control, state: int) -> void:
 		check(panel.content.milestones[i].explanation == BODIES[i], "Exact supplied explanation")
 	for i in 4:
 		var style: StyleBoxFlat = panel._era_panels[i].get_theme_stylebox("panel")
-		check(style.border_color == (panel.GOLD if ERAS[state] == i + 1 else Color("414b3e")), "Only mapped era active")
+		check(style.border_color == (panel.GOLD if ERAS[state] == i + 1 else Color("8e6c51")), "Only mapped era active")
 		check(panel._era_panels[i].focus_mode == Control.FOCUS_NONE and panel._era_panels[i].mouse_filter == Control.MOUSE_FILTER_IGNORE, "Passive era, no tabs")
 	if state == 0:
 		check(panel._heading.text == "A Church Across Changing Times", "Overview heading")

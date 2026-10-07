@@ -9,12 +9,12 @@ func _ready() -> void:
 	toggle_mode = true
 	custom_minimum_size = Vector2(100, 56)
 	var normal := StyleBoxFlat.new()
-	normal.bg_color = Color("182923")
-	normal.border_color = Color("697261")
+	normal.bg_color = Color("9c4a25")
+	normal.border_color = Color("8e6c51")
 	normal.set_border_width_all(1)
 	var selected := normal.duplicate() as StyleBoxFlat
-	selected.bg_color = Color("3d3d2c")
-	selected.border_color = Color("dec787")
+	selected.bg_color = Color("e8d5b4")
+	selected.border_color = Color("e8d5b4")
 	selected.set_border_width_all(2)
 	for state in ["normal", "hover"]:
 		add_theme_stylebox_override(state, normal)
@@ -39,4 +39,4 @@ func configure(entry: LCEND01ThemeContent, compact: bool) -> void:
 
 func apply_selection(active: bool) -> void:
 	set_pressed_no_signal(active)
-	label.add_theme_color_override("font_color", Color("dec787") if active else Color("eeecdf"))
+	label.add_theme_color_override("font_color", Color("101d19") if active else Color("f9f5f0"))

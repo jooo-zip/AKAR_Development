@@ -1,9 +1,15 @@
 [gd_scene format=3]
+[ext_resource type="Theme" path="res://resources/themes/akar_hotspot_theme.tres" id="akar_theme"]
+
 
 [ext_resource type="PackedScene" path="res://scenes/components/conference_room_interaction.tscn" id="1"]
 [ext_resource type="Script" path="res://scripts/landmarks/limahong_channel/lch_ext_03.gd" id="2"]
 [ext_resource type="Resource" path="res://data/landmarks/limahong_channel/lch_ext_03.tres" id="3"]
 
 [node name="LCH_EXT_03" instance=ExtResource("1")]
+theme = ExtResource("akar_theme")
 script = ExtResource("2")
 content = ExtResource("3")
+
+[node name="Title" parent="Main/Margin/Layout/Header" index="0"]
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)

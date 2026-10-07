@@ -10,6 +10,8 @@ var current_stage: HistoricalStage = HistoricalStage.MANILA
 var route_progress: float = 0.0
 var _route_tween: Tween
 var _stage_tween: Tween
+# Read by lch_ext_02_test.gd to verify the map's share of the layout.
+@warning_ignore("unused_private_class_variable")
 @onready var _map_region: VBoxContainer = $"Main/Margin/Layout/Columns/MapRegion"
 @onready var _map_area: Control = $"Main/Margin/Layout/Columns/MapRegion/MapArea"
 @onready var _route: Line2D = $"Main/Margin/Layout/Columns/MapRegion/MapArea/RouteLine"
@@ -78,7 +80,7 @@ func show_stage(stage: HistoricalStage, animate: bool = true) -> void:
 	_settlement.position = _settlement_base_position
 	_layout_map()
 	for i in _markers.size():
-		_markers[i].modulate = Color("f3dfaa") if (i == 0 and stage != HistoricalStage.PANGASINAN) or (i == 1 and stage == HistoricalStage.PANGASINAN) else Color("aaaaaa")
+		_markers[i].modulate = Color("e8d5b4") if (i == 0 and stage != HistoricalStage.PANGASINAN) or (i == 1 and stage == HistoricalStage.PANGASINAN) else Color("aaaaaa")
 		_location_markers[i].modulate = _markers[i].modulate
 	_set_progress(0.0 if stage == HistoricalStage.MANILA or (stage == HistoricalStage.NORTHWARD and animate) else 1.0)
 	if stage == HistoricalStage.NORTHWARD and animate:
@@ -104,7 +106,7 @@ func show_stage(stage: HistoricalStage, animate: bool = true) -> void:
 	elif animate and stage == HistoricalStage.MANILA:
 		_location_markers[0].modulate = Color.WHITE
 		_stage_tween = create_tween()
-		_stage_tween.tween_property(_location_markers[0], "modulate", Color("f3dfaa"), 0.25)
+		_stage_tween.tween_property(_location_markers[0], "modulate", Color("e8d5b4"), 0.25)
 	_sync_focus()
 	concept_changed.emit(stage)
 
@@ -174,7 +176,7 @@ func _set_progress(value: float) -> void:
 		_route.add_point(endpoint)
 	_route.visible = route_progress > 0.0
 	if current_stage == HistoricalStage.NORTHWARD:
-		_markers[1].modulate = Color("aaaaaa").lerp(Color("f3dfaa"), route_progress)
+		_markers[1].modulate = Color("aaaaaa").lerp(Color("e8d5b4"), route_progress)
 		_location_markers[1].modulate = _markers[1].modulate
 
 func _resize_layout() -> void:

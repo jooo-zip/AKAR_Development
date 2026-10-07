@@ -20,8 +20,8 @@
 [ext_resource type="Texture2D" path="res://assets/landmarks/urduja_house/interior/uh_int_02_present_exterior.jpeg" id="galleryExterior"]
 
 [sub_resource type="StyleBoxFlat" id="panel"]
-bg_color = Color(0.063, 0.11, 0.094, 1)
-border_color = Color(0.525, 0.475, 0.318, 1)
+bg_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 border_width_left = 1
 border_width_right = 1
 border_width_top = 1
@@ -65,6 +65,7 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="Panel/MainMargin/MainVBox/Header"]
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(1, 0)
@@ -106,6 +107,7 @@ theme_override_font_sizes/font_size = 16
 size_flags_vertical = 4
 
 [node name="Subtitle" type="Label" parent="Panel/MainMargin/MainVBox"]
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(1, 0)
@@ -193,7 +195,7 @@ autowrap_mode = 3
 text = "Historical view of Urduja House â€¢ September 1982"
 theme_override_font_sizes/font_size = 15
 horizontal_alignment = 1
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 
 [node name="InfoScroll" type="ScrollContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow"]
 unique_name_in_owner = true
@@ -349,7 +351,7 @@ size_flags_horizontal = 3
 autowrap_mode = 3
 text = "Urduja House brings together provincial governance, cultural memory, architectural character, and continuing public service."
 theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 
 [node name="Reflection" type="Label" parent="Panel/MainMargin/MainVBox/Content"]
 unique_name_in_owner = true

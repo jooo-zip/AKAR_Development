@@ -106,7 +106,7 @@ func _play_office_transfer() -> void:
 	office_tween.tween_property(%OfficeLine, "scale:x", 1.0, 0.3)
 	office_tween.parallel().tween_property(%OfficeArrow, "modulate:a", 1.0, 0.3)
 	office_tween.tween_method(_move_office, 0.0, 1.0, 1.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	office_tween.tween_property(%CapitolEndpoint, "modulate", Color(1.0, 0.86, 0.56), 0.15)
+	office_tween.tween_property(%CapitolEndpoint, "modulate", Color("e8d5b4"), 0.15)
 	office_tween.tween_property(%CapitolEndpoint, "modulate", Color.WHITE, 0.15)
 	office_tween.parallel().tween_property(%ResidenceStatus, "modulate:a", 1.0, 0.15)
 	office_tween.parallel().tween_property(%CapitolStatus, "modulate:a", 1.0, 0.15)

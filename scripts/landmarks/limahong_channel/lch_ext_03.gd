@@ -73,7 +73,7 @@ func _ready() -> void:
 	_map_area.add_child(_passage)
 	_passage.name = "PassageLine"
 	_passage.width = 2.0
-	_passage.default_color = Color("eee0b1")
+	_passage.default_color = Color("d6c5ab")
 	_passage.antialiased = false
 	_map_area.add_child(_settlement)
 	_settlement.name = "SettlementLayer"
@@ -114,7 +114,7 @@ func _ready() -> void:
 	_information.add_child(_stage_number)
 	_information.move_child(_stage_number, 0)
 	_stage_number.add_theme_font_size_override("font_size", 16)
-	_stage_number.add_theme_color_override("font_color", Color("d8c58b"))
+	_stage_number.add_theme_color_override("font_color", Color("d37148"))
 	_information.add_child(_timeline)
 	_timeline.add_theme_constant_override("separation", 4)
 	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -138,7 +138,7 @@ func _ready() -> void:
 	for label in [_notice, _disclaimer]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.add_theme_font_size_override("font_size", 16)
-	_notice.add_theme_color_override("font_color", Color("eee0b1"))
+	_notice.add_theme_color_override("font_color", Color("d6c5ab"))
 	for button in [_close, _speaker, _sources_button]:
 		button.custom_minimum_size.y = 48
 	_map_area.resized.connect(_layout_map)

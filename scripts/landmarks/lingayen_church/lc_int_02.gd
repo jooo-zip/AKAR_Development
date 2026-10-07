@@ -20,8 +20,8 @@ enum MediaMode { DOCUMENTARY_PHOTO, CONTEXTUAL_PORTRAIT, TRANSFORMATION_ONLY }
 
 const ERA_IDS := [&"missionary_foundations", &"cathedral_development", &"war_and_change", &"continuing_leadership"]
 const ERA_NAMES := ["MISSIONARY FOUNDATIONS", "CATHEDRAL DEVELOPMENT", "WAR & INSTITUTIONAL CHANGE", "CONTINUING LEADERSHIP"]
-const SECONDARY := Color("c2bfab")
-const GOLD := Color("dec787")
+const SECONDARY := Color("d6c5ab")
+const GOLD := Color("e8d5b4")
 
 ## Local host opt-out, not a new global accessibility setting.
 @export var animate_reveals: bool = true
@@ -128,8 +128,8 @@ func _build_time_window() -> void:
 	_stage_background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_stage_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var stage_style := StyleBoxFlat.new()
-	stage_style.bg_color = Color("12231e")
-	stage_style.border_color = Color("645c42")
+	stage_style.bg_color = Color("101d19")
+	stage_style.border_color = Color("8e6c51")
 	stage_style.set_border_width_all(1)
 	_stage_background.add_theme_stylebox_override("panel", stage_style)
 	_image.reparent(_stage)
@@ -232,7 +232,7 @@ func _build_chronology() -> void:
 	_presentation_root.get_node("Main/Margin/Layout").add_child(_ribbon)
 	_ribbon.add_child(_ribbon_line)
 	_ribbon_line.width = 1
-	_ribbon_line.default_color = Color("646a58")
+	_ribbon_line.default_color = Color("8e6c51")
 	_ribbon.add_child(_points_row)
 	_points_row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_points_row.add_theme_constant_override("separation", 0)
@@ -683,8 +683,8 @@ func _apply_presentation() -> void:
 	for i in 4:
 		var active := get_active_era() == i + 1
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color("303626") if active else Color("14211c")
-		style.border_color = GOLD if active else Color("414b3e")
+		style.bg_color = Color("6f3317") if active else Color("101d19")
+		style.border_color = GOLD if active else Color("8e6c51")
 		style.set_border_width_all(1)
 		style.content_margin_top = 3
 		style.content_margin_bottom = 3

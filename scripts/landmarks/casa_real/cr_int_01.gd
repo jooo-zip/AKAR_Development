@@ -179,9 +179,9 @@ func _build_presentation() -> void:
 	for label in [_title, _subtitle, _heading, _prompt, _identity, _caption, _hint]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for label in [_period, _prompt, _identity, _before_label, _after_label]:
-		label.add_theme_color_override("font_color", Color("d8c58b"))
+		label.add_theme_color_override("font_color", Color("d37148"))
 	for label in [_subtitle, _caption, _hint, _read_hint]:
-		label.add_theme_color_override("font_color", Color("c2bfae"))
+		label.add_theme_color_override("font_color", Color("d6c5ab"))
 	_source_close.custom_minimum_size.y = 56
 	_source_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_presentation_root.add_child(_storm_audio)

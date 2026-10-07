@@ -143,7 +143,7 @@ func _build_presentation() -> void:
 		picture.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_caption.add_theme_color_override("font_color", Color("c8c3af"))
+	_caption.add_theme_color_override("font_color", Color("d6c5ab"))
 	_detail_scroll.add_child(_detail_copy)
 	_detail_copy.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_detail_copy.add_theme_constant_override("separation", 10)
@@ -153,7 +153,7 @@ func _build_presentation() -> void:
 	_detail_copy.add_child(_why)
 	_takeaway.reparent(_detail_copy)
 	_why.text = content.interpretation_label
-	for label in [_anchor_label, _why]: label.add_theme_color_override("font_color", Color("d8c58b"))
+	for label in [_anchor_label, _why]: label.add_theme_color_override("font_color", Color("d37148"))
 	_summary.add_child(_reflect)
 	_reflect.text = content.reflect_label
 	_reflect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -180,7 +180,7 @@ func _build_reflection() -> void:
 	_background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	_background.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_reflection.add_child(_shade)
-	_shade.color = Color(0.025, 0.045, 0.035, 0.86)
+	_shade.color = Color(Color("101d19"), 0.86)
 	_reflection.add_child(_reflection_margin)
 	for layer in [_background, _shade, _reflection_margin]: layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -197,12 +197,12 @@ func _build_reflection() -> void:
 		_reflection_copy.add_child(label)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_eyebrow.text = content.reflection_eyebrow
-	_eyebrow.add_theme_color_override("font_color", Color("d8c58b"))
+	_eyebrow.add_theme_color_override("font_color", Color("d37148"))
 	_reflection_heading.text = content.reflection_heading
 	_question.text = content.reflection_question
 	_prompt.text = content.reflection_prompt
 	_reflection_takeaway.text = content.learning_takeaway
-	_reflection_takeaway.add_theme_color_override("font_color", Color("e1d4ae"))
+	_reflection_takeaway.add_theme_color_override("font_color", Color("d6c5ab"))
 	_reflection_layout.add_child(_back)
 	_back.text = content.back_label
 	_back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER

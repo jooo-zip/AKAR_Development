@@ -125,9 +125,9 @@ func _build_presentation() -> void:
 	text.move_child(_heading, 1)
 	for label in [_context, _heading]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_context.add_theme_color_override("font_color", Color("d8c58b"))
+	_context.add_theme_color_override("font_color", Color("d37148"))
 	for label in [_subtitle, _caption]:
-		label.add_theme_color_override("font_color", Color("c2bfae"))
+		label.add_theme_color_override("font_color", Color("d6c5ab"))
 	_presentation_root.get_node("Main/Margin/Layout/Columns/Information/Meta").hide()
 	_source_close.custom_minimum_size.y = 56
 	_build_explore_view()
@@ -409,7 +409,7 @@ func _build_photo_controls() -> void:
 	var hover_outline := StyleBoxFlat.new()
 	hover_outline.draw_center = false
 	hover_outline.set_border_width_all(1)
-	hover_outline.border_color = Color(0.85, 0.78, 0.57, 0.65)
+	hover_outline.border_color = Color(Color("e8d5b4"), 0.65)
 	_photo_button.add_theme_stylebox_override("hover", hover_outline)
 	_photo_frame.add_child(_photo_button)
 	_photo_button.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -420,7 +420,7 @@ func _build_photo_controls() -> void:
 	var outline := StyleBoxFlat.new()
 	outline.draw_center = false
 	outline.set_border_width_all(1)
-	outline.border_color = Color(0.85, 0.78, 0.57, 0.65)
+	outline.border_color = Color(Color("e8d5b4"), 0.65)
 	_focus_frame.add_theme_stylebox_override("panel", outline)
 	_photo_frame.add_child(_focus_frame)
 	# Place observations beside the photograph, never over documentary details.
@@ -444,7 +444,7 @@ func _build_photo_controls() -> void:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.add_theme_font_size_override("font_size", 16)
-		label.add_theme_color_override("font_color", Color("d8c58b"))
+		label.add_theme_color_override("font_color", Color("d37148"))
 		tag.add_child(label)
 		_observations.add_child(tag)
 		_observation_tags.append(tag)
@@ -483,9 +483,9 @@ func _build_explore_view() -> void:
 	_presentation_root.add_child(_explore)
 	_explore.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var backdrop := StyleBoxFlat.new()
-	backdrop.bg_color = Color(0.025, 0.045, 0.04, 0.98)
+	backdrop.bg_color = Color(Color("101d19"), 0.98)
 	backdrop.set_border_width_all(2)
-	backdrop.border_color = Color(0.46, 0.40, 0.25, 1)
+	backdrop.border_color = Color("8e6c51")
 	backdrop.content_margin_left = 12
 	backdrop.content_margin_right = 12
 	backdrop.content_margin_top = 12
@@ -515,7 +515,7 @@ func _build_explore_view() -> void:
 	layout.add_child(_explore_image)
 	_explore_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_explore_caption.add_theme_font_size_override("font_size", 16)
-	_explore_caption.add_theme_color_override("font_color", Color("c2bfae"))
+	_explore_caption.add_theme_color_override("font_color", Color("d6c5ab"))
 	layout.add_child(_explore_caption)
 	_explore.hide()
 

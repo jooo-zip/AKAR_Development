@@ -13,16 +13,16 @@
 [ext_resource type="Theme" path="res://data/landmarks/urduja_house/uh_ext_01_theme.tres" id="theme"]
 
 [sub_resource type="StyleBoxFlat" id="panel"]
-bg_color = Color(0.063, 0.11, 0.094, 1)
-border_color = Color(0.525, 0.475, 0.318, 1)
+bg_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 border_width_left = 1
 border_width_right = 1
 border_width_top = 1
 border_width_bottom = 1
 
 [sub_resource type="StyleBoxFlat" id="office_card"]
-bg_color = Color(0.13, 0.19, 0.15, 1)
-border_color = Color(0.75, 0.65, 0.4, 0.9)
+bg_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 0.9)
 border_width_left = 1
 border_width_right = 1
 border_width_top = 1
@@ -70,6 +70,7 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="Panel/MainMargin/MainVBox/Header"]
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(1, 0)
@@ -111,6 +112,7 @@ theme_override_font_sizes/font_size = 16
 size_flags_vertical = 4
 
 [node name="Subtitle" type="Label" parent="Panel/MainMargin/MainVBox"]
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(1, 0)
@@ -198,7 +200,7 @@ autowrap_mode = 3
 text = ""
 theme_override_font_sizes/font_size = 15
 horizontal_alignment = 1
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 
 [node name="InfoScroll" type="ScrollContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow"]
 unique_name_in_owner = true
@@ -298,7 +300,7 @@ unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 2)
 mouse_filter = 2
-color = Color(0.75, 0.65, 0.4, 0.7)
+color = Color(0.556862745, 0.423529412, 0.317647059, 0.7)
 
 [node name="TakeawayMargin" type="MarginContainer" parent="Panel/MainMargin/MainVBox/Content"]
 unique_name_in_owner = true
@@ -315,7 +317,7 @@ size_flags_horizontal = 3
 autowrap_mode = 3
 text = "Its government function has changed over time, but Urduja House continues to serve an official provincial role."
 theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.847, 0.773, 0.545, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 
 [node name="Reflection" type="Label" parent="Panel/MainMargin/MainVBox/Content"]
 unique_name_in_owner = true
@@ -434,7 +436,7 @@ anchor_top = 0.51
 anchor_bottom = 0.51
 offset_top = -1
 offset_bottom = 1
-color = Color(0.75, 0.65, 0.4, 0.7)
+color = Color(0.556862745, 0.423529412, 0.317647059, 0.7)
 mouse_filter = 2
 
 [node name="OfficeArrow" type="Control" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
@@ -449,7 +451,7 @@ mouse_filter = 2
 [node name="Arrowhead" type="Polygon2D" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer/OfficeArrow"]
 unique_name_in_owner = true
 polygon = PackedVector2Array(-9, -5, 0, 0, -9, 5)
-color = Color(0.75, 0.65, 0.4, 0.9)
+color = Color(0.556862745, 0.423529412, 0.317647059, 0.9)
 
 [node name="OfficeToken" type="PanelContainer" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
 unique_name_in_owner = true
@@ -474,6 +476,7 @@ theme_override_font_sizes/font_size = 16
 mouse_filter = 2
 
 [node name="ResidenceStatus" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 unique_name_in_owner = true
 layout_mode = 1
 anchor_left = 0
@@ -489,6 +492,7 @@ theme_override_font_sizes/font_size = 14
 mouse_filter = 2
 
 [node name="CapitolStatus" type="Label" parent="Panel/MainMargin/MainVBox/Content/BodyRow/MediaColumn/MediaFrame/OfficeTransfer"]
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 unique_name_in_owner = true
 layout_mode = 1
 anchor_left = 0.54

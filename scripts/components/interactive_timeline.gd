@@ -13,7 +13,6 @@ signal sources_closed
 @export var content: InteractiveTimelineContent
 @export var show_development_pending: bool = false
 
-@onready var _main: PanelContainer = $Main
 @onready var _title: Label = $Main/Margin/Layout/Header/Title
 @onready var _close: Button = $Main/Margin/Layout/Header/Close
 @onready var _columns: HBoxContainer = $Main/Margin/Layout/Columns

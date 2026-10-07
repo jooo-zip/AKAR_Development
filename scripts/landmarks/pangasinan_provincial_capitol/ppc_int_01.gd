@@ -133,7 +133,7 @@ func _build_presentation() -> void:
 	for label in [_left_label, _right_label]:
 		label.size_flags_horizontal = SIZE_EXPAND_FILL
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		label.add_theme_color_override("font_color", Color("dfcf9e"))
+		label.add_theme_color_override("font_color", Color("e8d5b4"))
 		_comparison_labels.add_child(label)
 	_right_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_visual.add_child(_canvas)
@@ -146,7 +146,7 @@ func _build_presentation() -> void:
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_visual.add_child(_caption)
 	_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_caption.add_theme_color_override("font_color", Color("c9c4b1"))
+	_caption.add_theme_color_override("font_color", Color("d6c5ab"))
 	_information.reparent(_workspace)
 	_heading.reparent(_body.get_parent())
 	_body.get_parent().move_child(_heading, 0)
@@ -165,7 +165,7 @@ func _build_presentation() -> void:
 		_enlarge.pressed.connect(func() -> void: open_historical_media(selected_period))
 	var line := ColorRect.new()
 	line.custom_minimum_size.y = 1
-	line.color = Color("897952")
+	line.color = Color("8e6c51")
 	line.mouse_filter = MOUSE_FILTER_IGNORE
 	layout.add_child(line)
 	_rail.name = "DateRail"
@@ -420,7 +420,7 @@ func _build_media() -> void:
 	for label in [_media_heading, _media_caption, _media_credit]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		text.add_child(label)
-	_media_credit.add_theme_color_override("font_color", Color("c9c4b1"))
+	_media_credit.add_theme_color_override("font_color", Color("d6c5ab"))
 	_media.hide()
 
 

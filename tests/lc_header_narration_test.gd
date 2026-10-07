@@ -101,7 +101,11 @@ func check_header(panel: Control, casa: Control) -> void:
 		check(is_equal_approx(button.global_position.y, buttons[0].global_position.y), "Equal sibling alignment")
 		check(button.get_theme_font_size("font_size") == (16 if panel.size.x < 1100 else 18), "Casa Real responsive font size")
 		for style in ["normal", "hover", "pressed", "hover_pressed", "focus", "disabled"]:
-			check(button.get_theme_stylebox(style) == casa._close.get_theme_stylebox(style), "Actual shared Casa Real StyleBox reused: " + style)
+			var actual: StyleBoxFlat = button.get_theme_stylebox(style)
+			var reference: StyleBoxFlat = casa._close.get_theme_stylebox(style)
+			# The approved pilot intentionally owns a private copy of these styles.
+			check(actual.bg_color.is_equal_approx(reference.bg_color) and actual.border_color.is_equal_approx(reference.border_color), "Approved AKAR utility colors: " + style)
+			check(actual.get_minimum_size().is_equal_approx(reference.get_minimum_size()), "Shared utility style geometry: " + style)
 		if i < 2: check(button.get_global_rect().end.x <= buttons[i + 1].global_position.x, "No utility overlap")
 	for label in panel.find_children("*", "Label", true, false):
 		if label.is_visible_in_tree() and (label.text.begins_with("PHOTO:") or label.text.begins_with("SOURCE:")):

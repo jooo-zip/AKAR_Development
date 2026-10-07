@@ -56,7 +56,7 @@ func _build_presentation() -> void:
 	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	titles.add_child(_subtitle)
 	_subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_subtitle.add_theme_color_override("font_color", Color("c2bfae"))
+	_subtitle.add_theme_color_override("font_color", Color("d6c5ab"))
 	_sources_button.reparent(header)
 	_speaker.reparent(header)
 	header.move_child(_close, header.get_child_count() - 1)
@@ -85,7 +85,7 @@ func _build_presentation() -> void:
 	_interpretation.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_information.add_child(_interpretation)
 	_interpretation.add_child(_key)
-	_key.add_theme_color_override("font_color", Color("d8c58b"))
+	_key.add_theme_color_override("font_color", Color("d37148"))
 	_key.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_heading.reparent(_interpretation)
 	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -100,7 +100,7 @@ func _build_presentation() -> void:
 	_image.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_viewer.add_child(_caption)
 	_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_caption.add_theme_color_override("font_color", Color("c2bfae"))
+	_caption.add_theme_color_override("font_color", Color("d6c5ab"))
 	var image_footer := HBoxContainer.new()
 	_viewer.add_child(image_footer)
 	_caption.reparent(image_footer)

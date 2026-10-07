@@ -10,49 +10,70 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 0.95, 0.6, 1)
+border_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 
 [sub_resource type="StyleBoxFlat" id="Hover"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.2, 0.28, 0.23, 1)
+bg_color = Color(0.435294118, 0.2, 0.090196078, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.94, 0.89, 0.73, 1)
+border_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 [sub_resource type="StyleBoxFlat" id="Pressed"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.88, 0.8, 0.55, 1)
+bg_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.95, 0.75, 1)
+border_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 [sub_resource type="StyleBoxFlat" id="Normal"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.12, 0.18, 0.16, 1)
+bg_color = Color(0.611764706, 0.290196078, 0.145098039, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.66, 0.7, 0.6, 1)
+border_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 [sub_resource type="StyleBoxFlat" id="Panel"]
-bg_color = Color(0.055, 0.09, 0.085, 1)
+bg_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
+
+[sub_resource type="StyleBoxFlat" id="SelectedHover"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.941176471, 0.874509804, 0.764705882, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 [sub_resource type="Theme" id="ArtworkTheme"]
 default_font_size = 20
-Button/colors/font_color = Color(0.97, 0.96, 0.92, 1)
-Button/colors/font_hover_pressed_color = Color(0.06, 0.09, 0.07, 1)
-Button/colors/font_pressed_color = Color(0.06, 0.09, 0.07, 1)
+Button/colors/font_hover_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+Button/colors/font_focus_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+Button/colors/icon_normal_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+Button/colors/icon_hover_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+Button/colors/icon_focus_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+Button/colors/icon_pressed_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
+Button/colors/icon_hover_pressed_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
+Button/colors/font_disabled_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
+Button/colors/icon_disabled_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
+Label/colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+RichTextLabel/colors/default_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+Button/colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+Button/colors/font_hover_pressed_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
+Button/colors/font_pressed_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
 Button/styles/focus = SubResource("Focus")
 Button/styles/hover = SubResource("Hover")
-Button/styles/hover_pressed = SubResource("Pressed")
+Button/styles/hover_pressed = SubResource("SelectedHover")
 Button/styles/normal = SubResource("Normal")
 Button/styles/pressed = SubResource("Pressed")
 PanelContainer/styles/panel = SubResource("Panel")
@@ -60,52 +81,52 @@ PanelContainer/styles/panel = SubResource("Panel")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ahksw"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.12, 0.18, 0.16, 1)
+bg_color = Color(0.611764706, 0.290196078, 0.145098039, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.66, 0.7, 0.6, 1)
+border_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60di4"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.88, 0.8, 0.55, 1)
+bg_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.95, 0.75, 1)
+border_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n0jqc"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.2, 0.28, 0.23, 1)
+bg_color = Color(0.435294118, 0.2, 0.090196078, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.94, 0.89, 0.73, 1)
+border_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6hhr"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.88, 0.8, 0.55, 1)
+bg_color = Color(0.941176471, 0.874509804, 0.764705882, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.95, 0.75, 1)
+border_color = Color(0.82745098, 0.443137255, 0.282352941, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2r6i"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.12156863, 0.14901961, 0.12941177, 1)
+bg_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.4, 0.4, 0.3254902, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1w0yq"]
 draw_center = false
@@ -113,57 +134,57 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 0.95, 0.6, 1)
+border_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fcbpm"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.13, 0.2, 0.16, 1)
+bg_color = Color(0.435294118, 0.2, 0.090196078, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.4, 0.48, 0.42, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jrk58"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.13, 0.2, 0.16, 1)
+bg_color = Color(0.435294118, 0.2, 0.090196078, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.4, 0.48, 0.42, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6qm4c"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.13, 0.2, 0.16, 1)
+bg_color = Color(0.435294118, 0.2, 0.090196078, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.4, 0.48, 0.42, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bdm5j"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.13, 0.2, 0.16, 1)
+bg_color = Color(0.435294118, 0.2, 0.090196078, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.4, 0.48, 0.42, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcrkr"]
 content_margin_left = 12.0
 content_margin_right = 12.0
-bg_color = Color(0.13, 0.2, 0.16, 1)
+bg_color = Color(0.435294118, 0.2, 0.090196078, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.4, 0.48, 0.42, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [node name="LCH_END_01" type="Control"]
 layout_mode = 3
@@ -216,12 +237,13 @@ layout_mode = 2
 [node name="Label0" type="Label" parent="Main/Margin/Layout/Header/TitleArea/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 text = "LCH-END-01"
 
 [node name="Title" type="Label" parent="Main/Margin/Layout/Header/TitleArea/VBoxContainer0"]
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -243,11 +265,11 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(110, 56)
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
-theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_focus_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_hover_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_disabled_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
+theme_override_colors/icon_disabled_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/icon_max_width = 24
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_ahksw")
@@ -264,12 +286,12 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(136, 56)
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
-theme_override_colors/icon_pressed_color = Color(0.06, 0.09, 0.07, 1)
-theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_focus_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_hover_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_disabled_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
+theme_override_colors/icon_pressed_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
+theme_override_colors/icon_disabled_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/icon_max_width = 24
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_ahksw")
@@ -288,11 +310,11 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 56)
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_colors/font_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_focus_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_hover_color = Color(0.96862745, 0.9607843, 0.92156863, 1)
-theme_override_colors/font_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
-theme_override_colors/icon_disabled_color = Color(0.6666667, 0.65882355, 0.59607846, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_focus_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_hover_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
+theme_override_colors/font_disabled_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
+theme_override_colors/icon_disabled_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/icon_max_width = 24
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_ahksw")
@@ -313,7 +335,7 @@ visible = false
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_colors/font_color = Color(0.7254902, 0.70980394, 0.6431373, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 13
 text = "Narration pending"
@@ -325,7 +347,7 @@ theme_override_constants/separation = 12
 
 [node name="IntroHeading" type="Label" parent="Main/Margin/Layout/Intro"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Overview"
@@ -333,7 +355,7 @@ text = "Overview"
 [node name="IntroBody" type="Label" parent="Main/Margin/Layout/Intro"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 18
 text = "Overview text"
@@ -379,7 +401,7 @@ theme_override_constants/separation = 4
 
 [node name="CardNumbers0" type="Label" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 14
 text = "01"
@@ -392,7 +414,7 @@ mouse_filter = 2
 [node name="CardTitles0" type="Label" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic"
@@ -400,7 +422,7 @@ autowrap_mode = 3
 
 [node name="CardBodies0" type="Label" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic summary"
@@ -409,7 +431,7 @@ autowrap_mode = 3
 [node name="CardQualifiers0" type="Label" parent="Main/Margin/Layout/SummaryStoryline/PublicInterior/CardMargins0/VBoxContainer0"]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 autowrap_mode = 3
@@ -450,7 +472,7 @@ theme_override_constants/separation = 4
 
 [node name="CardNumbers1" type="Label" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 14
 text = "02"
@@ -463,7 +485,7 @@ mouse_filter = 2
 [node name="CardTitles1" type="Label" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic"
@@ -471,7 +493,7 @@ autowrap_mode = 3
 
 [node name="CardBodies1" type="Label" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic summary"
@@ -480,7 +502,7 @@ autowrap_mode = 3
 [node name="CardQualifiers1" type="Label" parent="Main/Margin/Layout/SummaryStoryline/OfficialFunction/CardMargins1/VBoxContainer0"]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 autowrap_mode = 3
@@ -521,7 +543,7 @@ theme_override_constants/separation = 4
 
 [node name="CardNumbers2" type="Label" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 14
 text = "03"
@@ -534,7 +556,7 @@ mouse_filter = 2
 [node name="CardTitles2" type="Label" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic"
@@ -542,7 +564,7 @@ autowrap_mode = 3
 
 [node name="CardBodies2" type="Label" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic summary"
@@ -551,7 +573,7 @@ autowrap_mode = 3
 [node name="CardQualifiers2" type="Label" parent="Main/Margin/Layout/SummaryStoryline/WhyItMatters/CardMargins2/VBoxContainer0"]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 autowrap_mode = 3
@@ -589,7 +611,7 @@ theme_override_constants/separation = 4
 
 [node name="CardNumbers3" type="Label" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 14
 text = "04"
@@ -602,7 +624,7 @@ mouse_filter = 2
 [node name="CardTitles3" type="Label" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic"
@@ -610,7 +632,7 @@ autowrap_mode = 3
 
 [node name="CardBodies3" type="Label" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic summary"
@@ -618,7 +640,7 @@ autowrap_mode = 3
 
 [node name="CardQualifiers3" type="Label" parent="Main/Margin/Layout/SummaryStoryline/TraditionCard/CardMargins3/VBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 text = "Qualification"
@@ -657,7 +679,7 @@ theme_override_constants/separation = 4
 
 [node name="CardNumbers4" type="Label" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 14
 text = "05"
@@ -670,7 +692,7 @@ mouse_filter = 2
 [node name="CardTitles4" type="Label" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0/HBoxContainer0"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic"
@@ -678,7 +700,7 @@ autowrap_mode = 3
 
 [node name="CardBodies4" type="Label" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "Topic summary"
@@ -687,7 +709,7 @@ autowrap_mode = 3
 [node name="CardQualifiers4" type="Label" parent="Main/Margin/Layout/SummaryStoryline/HeritageCard/CardMargins4/VBoxContainer0"]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 autowrap_mode = 3
@@ -743,7 +765,7 @@ theme_override_constants/separation = 8
 
 [node name="ReflectionHeading" type="Label" parent="Main/Margin/Layout/Columns/Reflection"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 16
 text = "Reflection"
@@ -751,7 +773,7 @@ autowrap_mode = 3
 
 [node name="ReflectionBody" type="Label" parent="Main/Margin/Layout/Columns/Reflection"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 18
 text = "Reflection prompt"
@@ -759,7 +781,7 @@ autowrap_mode = 3
 
 [node name="TakeawayHeading" type="Label" parent="Main/Margin/Layout/Columns/Reflection"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 16
 text = "Takeaway"
@@ -769,7 +791,7 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.94, 0.89, 0.73, 1)
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 18
 text = "Takeaway text"
@@ -818,6 +840,7 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="SourceTitle" type="Label" parent="Sources/Margin/Layout"]
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 28

@@ -126,7 +126,7 @@ func check_state(panel: Control, selected: int) -> void:
 		var secondary: bool = selected == 2 and i == 3
 		check(panel._anchor_labels[i].text == String(panel.ANCHORS[i]), "Anchor labels contain no hierarchy/completion wording")
 		var style: StyleBoxFlat = panel._anchor_markers[i].get_theme_stylebox("panel")
-		var expected_color := Color("e2cc91") if primary else (Color("d9c184") if secondary else Color("8e9789"))
+		var expected_color := Color("e8d5b4") if primary else (Color("d37148") if secondary else Color("d6c5ab"))
 		check(panel._anchor_labels[i].get_theme_color("font_color") == expected_color, "Distinct primary/secondary/neutral text colors")
 		check(style.draw_center == not secondary and style.border_width_left == (2 if secondary else 0), "Secondary outline distinct from primary fill")
 		check(panel._anchor_markers[i].size == Vector2.ONE * (12 if primary or secondary else 6), "Active markers larger than neutral markers")

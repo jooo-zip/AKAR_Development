@@ -18,6 +18,8 @@ static func begin(owner_panel: ConferenceRoomInteraction) -> Control:
 		owner_panel.remove_child(old)
 		old.queue_free()
 	var shell: Control = load("res://scenes/components/conference_room_interaction.tscn").instantiate()
+	shell.theme = owner_panel.theme
+	shell.get_node("Main/Margin/Layout/Header/Title").add_theme_color_override("font_color", owner_panel.get_node("Main/Margin/Layout/Header/Title").get_theme_color("font_color"))
 	shell.set_script(null)
 	shell.get_node("NarrationPlayer").free()
 	shell.name = VIEW_NAME

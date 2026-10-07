@@ -1,18 +1,21 @@
 [gd_scene format=3]
+[ext_resource type="Theme" path="res://resources/themes/akar_hotspot_theme.tres" id="akar_theme"]
+
 
 [ext_resource type="PackedScene" path="res://scenes/components/conference_room_interaction.tscn" id="1"]
 [ext_resource type="Script" path="res://scripts/landmarks/pangasinan_provincial_capitol/ppc_ext_02.gd" id="2"]
 [ext_resource type="Resource" path="res://data/landmarks/pangasinan_provincial_capitol/ppc_ext_02.tres" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="HeritagePanel"]
-bg_color = Color(0.055, 0.09, 0.085, 1)
+bg_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.46, 0.40, 0.25, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [node name="PPC_EXT_02" instance=ExtResource("1")]
+theme = ExtResource("akar_theme")
 script = ExtResource("2")
 content = ExtResource("3")
 
@@ -21,3 +24,6 @@ theme_override_styles/panel = SubResource("HeritagePanel")
 
 [node name="Sources" parent="." index="1"]
 theme_override_styles/panel = SubResource("HeritagePanel")
+
+[node name="Title" parent="Main/Margin/Layout/Header" index="0"]
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)

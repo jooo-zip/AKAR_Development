@@ -177,7 +177,7 @@ func _build_presentation() -> void:
 	for frame in [_left_frame, _right_frame]:
 		_media.add_child(frame)
 		frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		frame.color = Color("101b16")
+		frame.color = Color("101d19")
 	_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_image.offset_left = 8
 	_image.offset_top = 8
@@ -231,8 +231,8 @@ func _build_presentation() -> void:
 	for label in [_subtitle, _intro_heading, _intro_body, _helper, _number, _gallery_title, _invitation, _focus_title]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for label in [_subtitle, _helper, _invitation]:
-		label.add_theme_color_override("font_color", Color("c2bfae"))
-	_number.add_theme_color_override("font_color", Color("d8c58b"))
+		label.add_theme_color_override("font_color", Color("d6c5ab"))
+	_number.add_theme_color_override("font_color", Color("d37148"))
 	for button in [_previous, _next, _open_preview, _watch, _view_photo, _directory_button, _continue, _enter, _focus_close, _source_close]:
 		button.custom_minimum_size = Vector2(56, 56)
 	for scroller in [_actions_scroll, _source_scroll]:
@@ -483,8 +483,8 @@ func _build_visit_modal() -> void:
 	_visit_modal.add_child(_visit_panel)
 	_visit_panel.minimum_size_changed.connect(_resize_visit_modal.call_deferred)
 	var border := StyleBoxFlat.new()
-	border.bg_color = Color("14231d")
-	border.border_color = Color("d8c58b")
+	border.bg_color = Color("101d19")
+	border.border_color = Color("d37148")
 	border.set_border_width_all(1)
 	border.set_content_margin_all(12)
 	_visit_panel.add_theme_stylebox_override("panel", border)
@@ -495,7 +495,7 @@ func _build_visit_modal() -> void:
 	_visit_title.text = content.visit_modal_title
 	_visit_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_visit_title.add_theme_font_size_override("font_size", 22)
-	_visit_title.add_theme_color_override("font_color", Color("d8c58b"))
+	_visit_title.add_theme_color_override("font_color", Color("d37148"))
 	layout.add_child(_visit_scroll)
 	_visit_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_visit_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -520,8 +520,8 @@ func _build_visit_modal() -> void:
 		link.custom_minimum_size.y = 48
 		link.underline = LinkButton.UNDERLINE_MODE_ALWAYS
 		link.add_theme_font_size_override("font_size", 17)
-		link.add_theme_color_override("font_color", Color("d8c58b"))
-		link.add_theme_color_override("font_hover_color", Color("fff1bb"))
+		link.add_theme_color_override("font_color", Color("d37148"))
+		link.add_theme_color_override("font_hover_color", Color("f0dfc3"))
 		link.add_theme_stylebox_override("focus", _close.get_theme_stylebox("focus"))
 		text.add_child(link)
 		var url: String = content.reservation_url if i == 0 else content.visitor_info_url

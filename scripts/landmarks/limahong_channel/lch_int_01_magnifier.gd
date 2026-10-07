@@ -3,7 +3,7 @@ extends Control
 const LENS_SIZE := 76.0
 const HIT_SIZE := 96.0
 const DETAIL_SIZE := LENS_SIZE * 2.0
-const GOLD := Color(0.90, 0.82, 0.60)
+const GOLD := Color("e8d5b4")
 
 var lens_normalized_position := Vector2(0.42, 0.55)
 var lens_dragging: bool = false

@@ -153,9 +153,9 @@ func _build_presentation() -> void:
 	for label in [_title, _subtitle, _heading, _tagline, _caption]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for label in [_period, _tagline, _counter]:
-		label.add_theme_color_override("font_color", Color("d8c58b"))
+		label.add_theme_color_override("font_color", Color("d37148"))
 	for label in [_subtitle, _caption, _hint, _read_hint]:
-		label.add_theme_color_override("font_color", Color("c2bfae"))
+		label.add_theme_color_override("font_color", Color("d6c5ab"))
 	_source_close.custom_minimum_size.y = 56
 	_source_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
@@ -292,7 +292,7 @@ func _render_milestones() -> void:
 			label.text += "\n" + labels[i]
 		label.accessibility_name = dates[i] + ": " + labels[i]
 		label.add_theme_font_size_override("font_size", 16)
-		label.add_theme_color_override("font_color", Color("d8c58b"))
+		label.add_theme_color_override("font_color", Color("d37148"))
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_milestones.add_child(label)
 

@@ -86,21 +86,21 @@ func _layout_plaques() -> void:
 		plaque.pivot_offset = plaque.size / 2
 		plaque.scale = Vector2.ONE * (1.0 if i == selected else 0.94)
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color("dfcd92") if i == selected else Color("203129")
-		style.border_color = Color("f2e7bd") if i == selected else Color("8c998b")
+		style.bg_color = Color("e8d5b4") if i == selected else Color("9c4a25")
+		style.border_color = Color("e8d5b4") if i == selected else Color("8e6c51")
 		style.set_border_width_all(2 if i == selected else 1)
 		style.set_content_margin_all(8 if compact else 16)
 		plaque.add_theme_stylebox_override("panel", style)
 		var labels := plaque.get_child(0).get_children()
 		plaque.get_child(0).add_theme_constant_override("separation", 6 if compact else 16)
 		for j in labels.size():
-			labels[j].add_theme_color_override("font_color", Color("14201b") if i == selected else Color("eee8d6"))
+			labels[j].add_theme_color_override("font_color", Color("101d19") if i == selected else Color("f9f5f0"))
 			labels[j].add_theme_font_size_override("font_size", (12 if compact else 14) if j == 2 else (18 if compact else 21))
 	queue_redraw()
 
 func _draw() -> void:
 	if has_focus():
-		draw_rect(Rect2(Vector2(3, 3), size - Vector2(6, 6)), Color("fff299"), false, 3)
+		draw_rect(Rect2(Vector2(3, 3), size - Vector2(6, 6)), Color("f9f5f0"), false, 3)
 
 func _gui_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint(): return

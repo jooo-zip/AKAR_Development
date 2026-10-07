@@ -16,12 +16,12 @@ func _ready() -> void:
 	toggle_mode = true
 	custom_minimum_size = Vector2(100, 90)
 	var normal := StyleBoxFlat.new()
-	normal.bg_color = Color("182923")
-	normal.border_color = Color("697261")
+	normal.bg_color = Color("9c4a25")
+	normal.border_color = Color("8e6c51")
 	normal.set_border_width_all(1)
 	var selected := normal.duplicate() as StyleBoxFlat
-	selected.bg_color = Color("3d3d2c")
-	selected.border_color = Color("c4ad6e")
+	selected.bg_color = Color("6f3317")
+	selected.border_color = Color("e8d5b4")
 	selected.set_border_width_all(2)
 	for state in ["normal", "hover"]:
 		add_theme_stylebox_override(state, normal)
@@ -30,7 +30,7 @@ func _ready() -> void:
 	# The shared bright outline remains separate from the muted selected fill.
 	add_child(_frame)
 	var frame_style := StyleBoxFlat.new()
-	frame_style.bg_color = Color("101c18")
+	frame_style.bg_color = Color("101d19")
 	_frame.add_theme_stylebox_override("panel", frame_style)
 	_frame.add_child(portrait)
 	portrait.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -50,8 +50,8 @@ func _ready() -> void:
 	for label in [name_label, role_label]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.add_theme_constant_override("line_spacing", 0)
-	name_label.add_theme_color_override("font_color", Color("f1ecda"))
-	role_label.add_theme_color_override("font_color", Color("c8c5ae"))
+	name_label.add_theme_color_override("font_color", Color("f9f5f0"))
+	role_label.add_theme_color_override("font_color", Color("d6c5ab"))
 	for child in [_frame, portrait, placeholder, _copy, name_label, role_label]:
 		child.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	resized.connect(_layout)

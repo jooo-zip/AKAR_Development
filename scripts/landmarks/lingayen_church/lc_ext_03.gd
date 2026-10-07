@@ -26,7 +26,7 @@ const BELL_REGIONS := [Rect2(), Rect2(0.08, 0.03, 0.90, 0.91), Rect2(0.12, 0.40,
 
 const BellsContent = preload("res://scripts/landmarks/lingayen_church/lc_ext_03_content.gd")
 const StoryPoint = preload("res://scripts/landmarks/lingayen_church/lc_ext_03_story_point.gd")
-const SECONDARY := Color(0.76, 0.75, 0.67, 1)
+const SECONDARY := Color("d6c5ab")
 
 var _wartime_view: WartimeView = WartimeView.POSTWAR_DAMAGE
 var _subtitle: Label
@@ -202,9 +202,9 @@ func _build_interpretation() -> void:
 	_style_label(_support_credit, 14, true)
 	_note.name = "HistoricalNote"
 	var note_style := StyleBoxFlat.new()
-	note_style.bg_color = Color(0.10, 0.14, 0.12, 1)
+	note_style.bg_color = Color("101d19")
 	note_style.border_width_left = 2
-	note_style.border_color = Color(0.46, 0.40, 0.25, 1)
+	note_style.border_color = Color("8e6c51")
 	note_style.content_margin_left = 10
 	note_style.content_margin_right = 10
 	note_style.content_margin_top = 8
@@ -356,7 +356,7 @@ func _render() -> void:
 	for i in _concepts.size():
 		_concepts[i].set_pressed_no_signal(_selected == i + 1)
 		_story_dots[i].add_theme_stylebox_override("panel", _point_style(_selected == i + 1))
-		_story_labels[i].add_theme_color_override("font_color", Color("e2d092") if _selected == i + 1 else SECONDARY)
+		_story_labels[i].add_theme_color_override("font_color", Color("e8d5b4") if _selected == i + 1 else SECONDARY)
 	_render_main_media()
 	_bell_overlay.visible = _selected == StoryState.HISTORIC_BELLS
 	_bell_legend.visible = _bell_overlay.visible
@@ -621,8 +621,8 @@ func _exit_tree() -> void:
 
 func _point_style(selected: bool, radius: int = 16) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color("dfcd90") if selected else Color("172b25")
-	style.border_color = Color("dfcd90") if selected else Color("887b52")
+	style.bg_color = Color("e8d5b4") if selected else Color("9c4a25")
+	style.border_color = Color("e8d5b4") if selected else Color("8e6c51")
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(radius)
 	return style
@@ -634,14 +634,14 @@ func _build_evidence_path() -> void:
 		for state in ["normal", "pressed", "hover_pressed", "disabled"]:
 			button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 		var hover := StyleBoxFlat.new()
-		hover.bg_color = Color(0.16, 0.22, 0.18, 0.5)
+		hover.bg_color = Color(Color("6f3317"), 0.5)
 		hover.set_corner_radius_all(24)
 		button.add_theme_stylebox_override("hover", hover)
 		var focus := StyleBoxFlat.new()
 		focus.draw_center = false
 		focus.set_corner_radius_all(28)
 		focus.set_border_width_all(2)
-		focus.border_color = Color("fff299")
+		focus.border_color = Color("f9f5f0")
 		button.add_theme_stylebox_override("focus", focus)
 		var row := HBoxContainer.new()
 		row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -664,7 +664,7 @@ func _build_evidence_path() -> void:
 		if i < 2:
 			var connector := ColorRect.new()
 			connector.name = "DecorativeConnector%d" % i
-			connector.color = Color("756b4b")
+			connector.color = Color("8e6c51")
 			connector.custom_minimum_size = Vector2(24, 1)
 			connector.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			connector.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -689,8 +689,8 @@ func _build_observations() -> void:
 	_bell_overlay.add_child(_bell_focus)
 	_bell_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var frame := _point_style(false, 0)
-	frame.bg_color = Color(0.88, 0.80, 0.55, 0.05)
-	frame.border_color = Color("dfcd90")
+	frame.bg_color = Color(Color("e8d5b4"), 0.05)
+	frame.border_color = Color("e8d5b4")
 	_bell_focus.add_theme_stylebox_override("panel", frame)
 	for i in 2:
 		var button := Button.new()
@@ -750,7 +750,7 @@ func _render_observation() -> void:
 		var selected := _bell_observation == i + 1
 		_bell_buttons[i].set_pressed_no_signal(selected)
 		_bell_badges[i].add_theme_stylebox_override("panel", _point_style(selected))
-		_bell_symbols[i].add_theme_color_override("font_color", Color("172b25") if selected else Color("e5ddc4"))
+		_bell_symbols[i].add_theme_color_override("font_color", Color("101d19") if selected else Color("f9f5f0"))
 	_layout_observations()
 
 

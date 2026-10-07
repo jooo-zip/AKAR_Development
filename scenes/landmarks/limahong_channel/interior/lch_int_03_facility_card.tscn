@@ -5,12 +5,12 @@ content_margin_left = 8.0
 content_margin_top = 8.0
 content_margin_right = 8.0
 content_margin_bottom = 8.0
-bg_color = Color(0.1, 0.15, 0.125, 1)
+bg_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.55, 0.58, 0.47, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [node name="FacilityCard" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 80)
@@ -26,7 +26,7 @@ mouse_filter = 2
 [node name="Name" type="Label" parent="Text"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(0.97, 0.96, 0.92, 1)
+theme_override_colors/font_color = Color(0.976470588, 0.960784314, 0.941176471, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 16
 text = "Facility name"
@@ -34,7 +34,7 @@ autowrap_mode = 3
 
 [node name="Status" type="Label" parent="Text"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.8, 0.55, 1)
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 text = "Status"

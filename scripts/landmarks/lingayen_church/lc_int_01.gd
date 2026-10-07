@@ -15,10 +15,10 @@ signal close_requested
 
 enum PersonSelection { NONE, GUERRERO, MADRIAGA, SHEEHAN, FEENY }
 
-const SECONDARY := Color("c2bfab")
-const PRIMARY := Color("e2cc91")
-const ANCHOR_SECONDARY := Color("d9c184")
-const ANCHOR_NEUTRAL := Color("8e9789")
+const SECONDARY := Color("d6c5ab")
+const PRIMARY := Color("e8d5b4")
+const ANCHOR_SECONDARY := Color("d37148")
+const ANCHOR_NEUTRAL := Color("d6c5ab")
 const ANCHORS := [&"1929", &"1933", &"WAR / POSTWAR", &"1963"]
 
 var selected_person: PersonSelection = PersonSelection.NONE
@@ -147,7 +147,7 @@ func _build_footer() -> void:
 			connector.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			connector.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			connector.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			connector.modulate = Color("77715a")
+			connector.modulate = Color("8e6c51")
 			_anchor_strip.add_child(connector)
 		var anchor := HBoxContainer.new()
 		anchor.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -368,6 +368,8 @@ func _layout_cards() -> void:
 	var card_size := (_wall.size - Vector2.ONE * gap) * 0.5
 	for i in _cards.size():
 		_cards[i].size = card_size
+		# Integer division deliberately groups each pair of cards into one row.
+		@warning_ignore("integer_division")
 		_cards[i].position = Vector2(i % 2, i / 2) * (card_size + Vector2.ONE * gap)
 		_cards[i].configure(parish.people[i], compact)
 

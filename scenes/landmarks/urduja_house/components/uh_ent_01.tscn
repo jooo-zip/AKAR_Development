@@ -3,10 +3,12 @@
 [ext_resource type="Resource" path="res://data/landmarks/urduja_house/revision/uh_ent_01.tres" id="revision"]
 [ext_resource type="PackedScene" path="res://scenes/landmarks/urduja_house/components/embedded_video.tscn" id="interaction"]
 [ext_resource type="Resource" path="res://data/landmarks/urduja_house/uh_ent_01.tres" id="content"]
+[ext_resource type="Theme" path="res://data/landmarks/urduja_house/uh_ext_01_theme.tres" id="theme"]
 [node name="Hotspot" type="Control"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource("theme")
 script = ExtResource("script")
 revision = ExtResource("revision")
 interaction_scene = ExtResource("interaction")

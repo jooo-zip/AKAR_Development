@@ -137,9 +137,9 @@ func _build_presentation() -> void:
 		label.mouse_filter = MOUSE_FILTER_IGNORE
 	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_cue.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_caption.add_theme_color_override("font_color", Color("c9c4b1"))
-	_cue.add_theme_color_override("font_color", Color("dfcf9e"))
-	_takeaway.add_theme_color_override("font_color", Color("dfcf9e"))
+	_caption.add_theme_color_override("font_color", Color("d6c5ab"))
+	_cue.add_theme_color_override("font_color", Color("e8d5b4"))
+	_takeaway.add_theme_color_override("font_color", Color("e8d5b4"))
 	_rail.custom_minimum_size.y = 64
 	_rail.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_rail.follow_focus = true
@@ -185,7 +185,7 @@ func _build_reflection() -> void:
 	_reflection.add_child(_reflection_background)
 	_reflection_background.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var shade := ColorRect.new()
-	shade.color = Color(0.035, 0.06, 0.048, 0.92)
+	shade.color = Color(Color("101d19"), 0.92)
 	shade.mouse_filter = MOUSE_FILTER_IGNORE
 	_reflection.add_child(shade)
 	shade.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
@@ -221,7 +221,7 @@ func _build_reflection() -> void:
 	_response_copy.add_child(_response)
 	_response_copy.add_child(_closing_synthesis)
 	_closing_synthesis.text = content.learning_takeaway
-	_closing_synthesis.add_theme_color_override("font_color", Color("dfcf9e"))
+	_closing_synthesis.add_theme_color_override("font_color", Color("e8d5b4"))
 	for label in [_reflection_heading, _question, _response, _closing_synthesis]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

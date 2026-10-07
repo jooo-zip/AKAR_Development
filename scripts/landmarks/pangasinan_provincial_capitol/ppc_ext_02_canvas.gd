@@ -4,7 +4,7 @@ extends Control
 
 signal reveal_changed(value: float)
 
-const GOLD := Color("e2c87e")
+const GOLD := Color("d37148")
 const REGIONS := {
 	&"steps": Rect2(0.26, 0.78, 0.48, 0.095),
 	&"portico": Rect2(0.404, 0.49, 0.184, 0.30),
@@ -69,15 +69,15 @@ func _region(rect: Rect2, tint: Color = GOLD) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("0b1311"))
+	draw_rect(Rect2(Vector2.ZERO, size), Color("101d19"))
 	if texture == null:
 		return
 	draw_texture_rect(texture, photo_rect(), false)
 	if mode == &"balance":
 		# The generous drag strip uses sky, leaving the façade and steps clear.
 		var rail := Rect2(24, 38, maxf(1, size.x - 48), 4)
-		draw_rect(Rect2(0, 0, size.x, 52), Color(0.03, 0.06, 0.05, 0.8))
-		draw_rect(rail, Color("7c8779"))
+		draw_rect(Rect2(0, 0, size.x, 52), Color(Color("101d19"), 0.8))
+		draw_rect(rail, Color("8e6c51"))
 		draw_rect(Rect2(rail.position, Vector2(rail.size.x * reveal, 4)), GOLD)
 		draw_rect(Rect2(rail.position + Vector2(rail.size.x * reveal - 7, -10), Vector2(14, 24)), GOLD)
 		draw_line(image_point(Vector2(0.495, 0.28)), image_point(Vector2(0.495, 0.88)), GOLD, 2)
@@ -103,7 +103,7 @@ func _draw() -> void:
 					var p := image_point(Vector2(rect.position.x + rect.size.x * (n + 0.5) / 4.0, 0.40))
 					draw_line(p, p + Vector2(0, 12), Color("a8d2c6"), 2)
 	if has_focus():
-		draw_rect(Rect2(Vector2(2, 2), size - Vector2(4, 4)), Color("fff29a"), false, 3)
+		draw_rect(Rect2(Vector2(2, 2), size - Vector2(4, 4)), Color("f9f5f0"), false, 3)
 
 
 func set_reveal(value: float) -> void:

@@ -59,12 +59,12 @@ func _gui_input(event: InputEvent) -> void:
 
 func _draw() -> void:
 	var center := Vector2(lerpf(28.0, size.x - 28.0, value), size.y * 0.5)
-	draw_line(Vector2(28, center.y), Vector2(size.x - 28, center.y), Color("9aa893"), 3.0, true)
-	draw_circle(center, 22, Color("d8c58b"), true, -1, true)
-	draw_line(center + Vector2(-10, 0), center + Vector2(10, 0), Color("17251f"), 2, true)
+	draw_line(Vector2(28, center.y), Vector2(size.x - 28, center.y), Color("8e6c51"), 3.0, true)
+	draw_circle(center, 22, Color("d37148"), true, -1, true)
+	draw_line(center + Vector2(-10, 0), center + Vector2(10, 0), Color("101d19"), 2, true)
 	for direction in [-1, 1]:
 		var tip := center + Vector2(direction * 11, 0)
-		draw_line(tip, tip + Vector2(-direction * 5, -5), Color("17251f"), 2, true)
-		draw_line(tip, tip + Vector2(-direction * 5, 5), Color("17251f"), 2, true)
+		draw_line(tip, tip + Vector2(-direction * 5, -5), Color("101d19"), 2, true)
+		draw_line(tip, tip + Vector2(-direction * 5, 5), Color("101d19"), 2, true)
 	if has_focus():
-		draw_rect(Rect2(Vector2(2, 2), size - Vector2(4, 4)), Color("fff299"), false, 3)
+		draw_rect(Rect2(Vector2(2, 2), size - Vector2(4, 4)), Color("f9f5f0"), false, 3)

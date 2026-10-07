@@ -60,7 +60,7 @@ func _draw_images(first: Texture2D, second: Texture2D, alpha: float) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("101a17"))
+	draw_rect(Rect2(Vector2.ZERO, size), Color("101d19"))
 	_draw_images(previous_primary, previous_secondary, 1.0 - blend)
 	_draw_images(primary, secondary, blend)
 	if secondary == null:
@@ -71,4 +71,4 @@ func _draw() -> void:
 		var lines := (left_label if i == 0 else right_label).split("\n")
 		for row in lines.size():
 			var width := font.get_string_size(lines[row], HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
-			draw_string(font, Vector2(area.position.x + (area.size.x - width) * 0.5, 18 + row * 22), lines[row], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("dfcf9e") if row == 0 else Color("f4efe1"))
+			draw_string(font, Vector2(area.position.x + (area.size.x - width) * 0.5, 18 + row * 22), lines[row], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("e8d5b4") if row == 0 else Color("f9f5f0"))

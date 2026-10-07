@@ -11,13 +11,12 @@ enum InfoSection { WHO_WAS_LIMAHONG, WHY_THIS_SITE }
 
 const Magnifier = preload("res://scripts/landmarks/limahong_channel/lch_int_01_magnifier.gd")
 const StatueContent = preload("res://scripts/landmarks/limahong_channel/lch_int_01_content.gd")
-const GOLD := Color(0.88, 0.80, 0.55)
+const GOLD := Color("e8d5b4")
 
 var current_section: int = InfoSection.WHO_WAS_LIMAHONG
 @onready var _explorer: Control = $"Main/Margin/Layout/Columns/StatueExplorer"
 @onready var _magnifier: Control = $"Main/Margin/Layout/Columns/StatueExplorer/InspectionLayer"
 @onready var _section_buttons: Array[Button] = [$"Main/Margin/Layout/Columns/Information/SectionButtons/PublicInterior", $"Main/Margin/Layout/Columns/Information/SectionButtons/OfficialFunction"]
-@onready var _prompt: Label = $"Main/Margin/Layout/Columns/Information/Prompt"
 @onready var _status: Label = $"Main/Margin/Layout/Header/HeaderUtilityArea/NarrationStatusSlot/Status"
 @onready var _placeholder: Label = $"Main/Margin/Layout/Columns/StatueExplorer/Placeholder"
 

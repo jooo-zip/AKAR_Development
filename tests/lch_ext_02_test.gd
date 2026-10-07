@@ -152,7 +152,7 @@ func run() -> void:
 		check(panel.route_progress > 0.4 and panel.route_progress < 0.6 and panel._follower.position.is_equal_approx(panel._route.points[-1]), "Relayout preserves progress")
 		await finish_route(panel)
 		check(panel.route_progress == 1, "Route completes")
-		check(panel._location_markers[1].modulate.is_equal_approx(Color("f3dfaa")), "Destination emphasized after travel")
+		check(panel._location_markers[1].modulate.is_equal_approx(Color("e8d5b4")), "Destination emphasized after travel")
 		check(panel._follower.progress_ratio == 1 and not panel._settlement.visible, "Northward endpoint without settlement")
 		for stage in [0,1,2,0,1]:
 			panel.show_stage(stage)

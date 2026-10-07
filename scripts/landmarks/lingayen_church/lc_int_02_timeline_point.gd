@@ -29,12 +29,12 @@ func configure(short_year: String, full_title: String) -> void:
 
 func apply_selection(selected: bool) -> void:
 	set_pressed_no_signal(selected)
-	var color := Color("dec787") if selected else Color("8e9789")
+	var color := Color("e8d5b4") if selected else Color("8e6c51")
 	var style := StyleBoxFlat.new()
 	style.bg_color = color
 	style.set_corner_radius_all(9)
 	dot.add_theme_stylebox_override("panel", style)
-	year.add_theme_color_override("font_color", color)
+	year.add_theme_color_override("font_color", Color("e8d5b4") if selected else Color("d6c5ab"))
 	accessibility_description = "Selected" if selected else "Select this point in time"
 
 func _layout() -> void:

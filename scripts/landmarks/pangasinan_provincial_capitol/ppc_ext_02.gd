@@ -123,7 +123,7 @@ func _build_presentation() -> void:
 	_hint.mouse_filter = MOUSE_FILTER_IGNORE
 	_hint.position = Vector2(12, 6)
 	_hint.add_theme_font_size_override("font_size", 14)
-	_hint.add_theme_color_override("font_color", Color("fff0bb"))
+	_hint.add_theme_color_override("font_color", Color("f0dfc3"))
 	_hint.add_theme_color_override("font_shadow_color", Color.BLACK)
 	_hint.add_theme_constant_override("shadow_offset_x", 1)
 	_hint.add_theme_constant_override("shadow_offset_y", 1)
@@ -393,7 +393,7 @@ func _build_detail() -> void:
 	for label in [_detail_heading, _detail_body, _detail_caption]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		text.add_child(label)
-	_detail_caption.add_theme_color_override("font_color", Color("c9c4ae"))
+	_detail_caption.add_theme_color_override("font_color", Color("d6c5ab"))
 	_detail.hide()
 
 

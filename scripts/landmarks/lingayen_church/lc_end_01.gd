@@ -15,9 +15,9 @@ signal close_requested
 signal theme_selected(theme_id: StringName)
 
 enum ThemeSelection { NONE, HISTORICAL_ROOTS, CATHEDRAL_ROLE, WAR_RECOVERY, LIVING_HERITAGE }
-const GOLD := Color("dec787")
-const NEUTRAL := Color("697261")
-const SECONDARY := Color("c2bfab")
+const GOLD := Color("e8d5b4")
+const NEUTRAL := Color("8e6c51")
+const SECONDARY := Color("d6c5ab")
 
 @export var animate_transitions: bool = true
 var selected_theme: ThemeSelection = ThemeSelection.NONE
@@ -124,8 +124,8 @@ func _build_map() -> void:
 	if not Engine.is_editor_hint():
 		_center.pressed.connect(set_selected_theme.bind(ThemeSelection.NONE))
 	var frame := StyleBoxFlat.new()
-	frame.bg_color = Color("12231e")
-	frame.border_color = Color("887c55")
+	frame.bg_color = Color("101d19")
+	frame.border_color = Color("8e6c51")
 	frame.set_border_width_all(1)
 	for state in ["normal", "hover", "pressed", "hover_pressed"]:
 		_center.add_theme_stylebox_override(state, frame)
@@ -228,7 +228,7 @@ func reset_hotspot() -> void:
 		_sync_focus()
 		_cards[0].grab_focus()
 
-func set_selected_theme(theme: ThemeSelection) -> void:
+func set_selected_theme(selection: ThemeSelection) -> void:
 	if Engine.is_editor_hint():
 		return
 	if not is_node_ready() or not content is LCEND01Content or _closing or _sources.visible:
@@ -239,7 +239,7 @@ func set_selected_theme(theme: ThemeSelection) -> void:
 	cancel_active_tweens()
 	if _open and animate_transitions:
 		_capture_outgoing_detail()
-	selected_theme = theme if theme >= ThemeSelection.NONE and theme <= ThemeSelection.LIVING_HERITAGE else ThemeSelection.NONE
+	selected_theme = selection if selection >= ThemeSelection.NONE and selection <= ThemeSelection.LIVING_HERITAGE else ThemeSelection.NONE
 	_apply_presentation()
 	update_narration_state()
 	_scroll.scroll_vertical = 0
@@ -414,7 +414,7 @@ func _layout_map() -> void:
 	var gap := 6.0 if compact else 24.0
 	var inner_height := _map.size.y - credit_height
 	for i in 4:
-		_cards[i].position = Vector2(0 if i % 2 == 0 else _map.size.x - card_width, 0 if i < 2 else inner_height - card_height)
+		_cards[i].position = Vector2(0.0 if i % 2 == 0 else _map.size.x - card_width, 0.0 if i < 2 else inner_height - card_height)
 		_cards[i].size = Vector2(card_width, card_height)
 	_center.position = Vector2(_map.size.x * 0.10, card_height + gap)
 	_center.size = Vector2(_map.size.x * 0.80, maxf(56, inner_height - card_height * 2 - gap * 2))

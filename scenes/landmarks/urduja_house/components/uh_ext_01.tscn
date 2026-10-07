@@ -13,12 +13,12 @@ content_margin_left = 0.0
 content_margin_top = 0.0
 content_margin_right = 0.0
 content_margin_bottom = 0.0
-bg_color = Color(0.063, 0.11, 0.094, 1)
+bg_color = Color(0.062745098, 0.11372549, 0.098039216, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.525, 0.475, 0.318, 1)
+border_color = Color(0.556862745, 0.423529412, 0.317647059, 1)
 
 [node name="Hotspot" type="Control" unique_id=1680649083]
 layout_mode = 3
@@ -56,6 +56,7 @@ theme_override_constants/separation = 8
 layout_mode = 2
 
 [node name="Title" type="Label" parent="Panel/MainMargin/MainVBox/Header" unique_id=317408921]
+theme_override_colors/font_color = Color(0.909803922, 0.835294118, 0.705882353, 1)
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
@@ -94,6 +95,7 @@ accessibility_name = "CLOSE"
 text = "CLOSE"
 
 [node name="Subtitle" type="Label" parent="Panel/MainMargin/MainVBox" unique_id=1805309706]
+theme_override_colors/font_color = Color(0.839215686, 0.77254902, 0.670588235, 1)
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2

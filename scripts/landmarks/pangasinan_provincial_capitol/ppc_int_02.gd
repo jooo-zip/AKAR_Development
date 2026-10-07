@@ -131,9 +131,9 @@ func _build_presentation() -> void:
 	for label in [_heading, _context, _topic_heading, _topic_body, _caption]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.mouse_filter = MOUSE_FILTER_IGNORE
-	_context.add_theme_color_override("font_color", Color("dfcf9e"))
-	_topic_heading.add_theme_color_override("font_color", Color("dfcf9e"))
-	_caption.add_theme_color_override("font_color", Color("c9c4b1"))
+	_context.add_theme_color_override("font_color", Color("e8d5b4"))
+	_topic_heading.add_theme_color_override("font_color", Color("e8d5b4"))
+	_caption.add_theme_color_override("font_color", Color("d6c5ab"))
 	_rail.custom_minimum_size.y = 68
 	_rail.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_rail.follow_focus = true

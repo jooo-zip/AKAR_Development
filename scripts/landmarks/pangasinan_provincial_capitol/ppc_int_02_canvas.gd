@@ -67,7 +67,7 @@ func _ready() -> void:
 		comparison_cards.append(card)
 		var heading := Label.new()
 		heading.text = branch.text + " FUNCTION"
-		heading.add_theme_color_override("font_color", Color("dfcf9e"))
+		heading.add_theme_color_override("font_color", Color("e8d5b4"))
 		card.add_child(heading)
 		var space := Label.new()
 		space.name = "Space"
@@ -160,19 +160,19 @@ func arrange() -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("101c19"))
+	draw_rect(Rect2(Vector2.ZERO, size), Color("101d19"))
 	if not diagram.visible:
 		return
 	var origin := diagram.position
 	var w := diagram.size.x
 	var stem := origin + Vector2(w * 0.5, 63)
 	var joint := origin + Vector2(w * 0.5, maxf(68, diagram.size.y * 0.45))
-	draw_line(stem, joint, Color("897952"), 2)
+	draw_line(stem, joint, Color("8e6c51"), 2)
 	for i in 2:
 		var end := origin + Vector2(w * (0.25 if i == 0 else 0.75), branches[i].position.y - 6)
-		var color := Color("897952")
+		var color := Color("8e6c51")
 		if highlighted == (&"executive" if i == 0 else &"legislative"):
-			color = color.lerp(Color("dfcf9e"), highlight_strength)
+			color = color.lerp(Color("e8d5b4"), highlight_strength)
 		draw_line(joint, Vector2(end.x, joint.y), color, 2)
 		draw_line(Vector2(end.x, joint.y), end, color, 2)
 		draw_line(end, end + Vector2(-4, -5), color, 2)

@@ -120,7 +120,7 @@ func _build_presentation() -> void:
 	_intro.text = content.overview_heading
 	_intro_body.text = content.overview_body
 	_anchor.text = content.anchor_title + "\n" + content.anchor_location
-	_anchor.add_theme_color_override("font_color", Color("d8c58b"))
+	_anchor.add_theme_color_override("font_color", Color("d37148"))
 	for i in content.period_ids.size():
 		var button := Button.new()
 		_network.add_child(button)
@@ -146,7 +146,7 @@ func _build_presentation() -> void:
 		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_caption.add_theme_color_override("font_color", Color("d8c58b"))
+	_caption.add_theme_color_override("font_color", Color("d37148"))
 	_details.add_child(_reading)
 	_reading.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_reading.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -164,8 +164,8 @@ func _build_presentation() -> void:
 	for label in [_date, _period_label, _person_name, _role, _contribution]:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_date.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_date.add_theme_color_override("font_color", Color("d8c58b"))
-	_period_label.add_theme_color_override("font_color", Color("c2bfae"))
+	_date.add_theme_color_override("font_color", Color("d37148"))
+	_period_label.add_theme_color_override("font_color", Color("d6c5ab"))
 	_details.add_child(_actions)
 	_actions.add_child(_context)
 	_context.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -176,12 +176,12 @@ func _build_presentation() -> void:
 	if not Engine.is_editor_hint():
 		_view_all.pressed.connect(view_all_connections)
 	var secondary_style := _view_all.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
-	secondary_style.bg_color = Color("14201b")
-	secondary_style.border_color = Color("647363")
+	secondary_style.bg_color = Color("101d19")
+	secondary_style.border_color = Color("8e6c51")
 	secondary_style.content_margin_left = 10.0
 	secondary_style.content_margin_right = 10.0
 	_view_all.add_theme_stylebox_override("normal", secondary_style)
-	_view_all.add_theme_color_override("font_color", Color("d2d0bf"))
+	_view_all.add_theme_color_override("font_color", Color("d6c5ab"))
 	_network.add_child(_rail)
 	_rail.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	_rail.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -199,13 +199,13 @@ func _build_presentation() -> void:
 		if not Engine.is_editor_hint():
 			button.focus_entered.connect(_reveal_portrait.bind(i))
 		var mount := StyleBoxFlat.new()
-		mount.bg_color = Color("192b25")
-		mount.border_color = Color("77806a")
+		mount.bg_color = Color("9c4a25")
+		mount.border_color = Color("8e6c51")
 		mount.set_border_width_all(1)
 		button.add_theme_stylebox_override("normal", mount)
 		var selected := mount.duplicate() as StyleBoxFlat
-		selected.bg_color = Color("3b3e2e")
-		selected.border_color = Color("d8c58b")
+		selected.bg_color = Color("6f3317")
+		selected.border_color = Color("d37148")
 		selected.set_border_width_all(2)
 		button.add_theme_stylebox_override("pressed", selected)
 		button.add_theme_stylebox_override("hover_pressed", selected)
@@ -226,7 +226,7 @@ func _build_presentation() -> void:
 			button.add_child(label)
 			label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		date_label.add_theme_color_override("font_color", Color("d8c58b"))
+		date_label.add_theme_color_override("font_color", Color("d6c5ab"))
 		_names.append(name_label)
 		_dates.append(date_label)
 	for button in _buttons():

@@ -23,8 +23,8 @@ func _init(owner_panel: ConferenceRoomInteraction, narration_status: Label, cont
 	for state in ["normal", "hover", "pressed", "hover_pressed", "focus"]:
 		_styles[state] = panel.get_theme_stylebox(state, "Button").duplicate()
 	var disabled: StyleBoxFlat = _styles.normal.duplicate()
-	disabled.bg_color = Color("1f2621")
-	disabled.border_color = Color("666653")
+	disabled.bg_color = Color("101d19")
+	disabled.border_color = Color("8e6c51")
 	_styles.disabled = disabled
 	panel.resized.connect(resize)
 	resize()
@@ -66,14 +66,14 @@ func _build_legacy_header(header: HBoxContainer, context: Control) -> void:
 	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	status.autowrap_mode = TextServer.AUTOWRAP_OFF
 	status.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	status.add_theme_color_override("font_color", Color("b9b5a4"))
+	status.add_theme_color_override("font_color", Color("d6c5ab"))
 	if context != null:
 		context.reparent(title_area)
 	elif old_titles == header:
 		var code := Label.new()
 		code.text = panel.content.hotspot_id
 		code.add_theme_font_size_override("font_size", 12)
-		code.add_theme_color_override("font_color", Color("d8c58b"))
+		code.add_theme_color_override("font_color", Color("d37148"))
 		title_area.add_child(code)
 	# EXT-01's original ListenGroup is now empty; it must not reserve header width.
 	for child in header.get_children():
@@ -105,9 +105,9 @@ func resize() -> void:
 		button.add_theme_constant_override("icon_max_width", 20 if small else 24)
 		for state in _styles: button.add_theme_stylebox_override(state, _styles[state])
 		for color_name in ["font_color", "font_hover_color", "font_focus_color"]:
-			button.add_theme_color_override(color_name, Color("f7f5eb"))
-		button.add_theme_color_override("font_disabled_color", Color("aaa898"))
-		button.add_theme_color_override("icon_disabled_color", Color("aaa898"))
+			button.add_theme_color_override(color_name, Color("f9f5f0"))
+		button.add_theme_color_override("font_disabled_color", Color("d6c5ab"))
+		button.add_theme_color_override("icon_disabled_color", Color("d6c5ab"))
 
 func refresh() -> void:
 	panel._sources_button.text = "SOURCES"

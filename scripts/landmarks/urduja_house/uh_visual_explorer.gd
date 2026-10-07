@@ -65,7 +65,7 @@ func _ready() -> void:
 	if not content.takeaway.is_empty():
 		var takeaway := _label(text_column, 18)
 		takeaway.text = content.takeaway
-		takeaway.add_theme_color_override("font_color", Color("d8c58b"))
+		takeaway.add_theme_color_override("font_color", Color("d37148"))
 	caption = _label(layout, 16)
 	caption.text = content.image_caption
 	if content.hotspot_id == "UH-EXT-01":
@@ -118,7 +118,7 @@ func _build_rail(parent: Node) -> void:
 	parent.add_child(track)
 	track.gui_input.connect(_handle_input)
 	track.draw.connect(func() -> void:
-		track.draw_line(Vector2(_point(0), 8), Vector2(_point(2), 8), Color("867951"), 3))
+		track.draw_line(Vector2(_point(0), 8), Vector2(_point(2), 8), Color("8e6c51"), 3))
 	for i in 3:
 		var stop := _button(track, i)
 		stop.gui_input.connect(_handle_input)

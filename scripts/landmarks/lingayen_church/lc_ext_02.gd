@@ -18,7 +18,7 @@ enum Observation { OVERVIEW, OVERALL_FORM, TIERED_SILHOUETTE, TOWER_AND_CHURCH }
 
 const TowerContent = preload("res://scripts/landmarks/lingayen_church/lc_ext_02_content.gd")
 const ObservationEntry = preload("res://scripts/landmarks/lingayen_church/lc_ext_02_observation.gd")
-const SECONDARY := Color(0.76, 0.75, 0.67, 1)
+const SECONDARY := Color("d6c5ab")
 
 var _media: VBoxContainer
 var _viewer_area: Control
@@ -109,9 +109,9 @@ func _build_viewer() -> void:
 	_focus_overlay.name = "FocusRegion"
 	_focus_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var focus_style := StyleBoxFlat.new()
-	focus_style.bg_color = Color(0.88, 0.8, 0.55, 0.06)
+	focus_style.bg_color = Color(Color("e8d5b4"), 0.06)
 	focus_style.set_border_width_all(2)
-	focus_style.border_color = Color(0.88, 0.8, 0.55, 0.85)
+	focus_style.border_color = Color(Color("e8d5b4"), 0.85)
 	_focus_overlay.add_theme_stylebox_override("panel", focus_style)
 	_viewer.add_child(_focus_overlay)
 	_focus_overlay.hide()
@@ -186,12 +186,12 @@ func _build_information() -> void:
 	_information.get_node("Meta").hide()
 	_prompt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_prompt.add_theme_font_size_override("font_size", 18)
-	_prompt.add_theme_color_override("font_color", Color("d8c58b"))
+	_prompt.add_theme_color_override("font_color", Color("d37148"))
 	text_column.add_child(_prompt)
 	text_column.move_child(_prompt, 2)
 	_key_label.text = "KEY TAKEAWAY"
 	_key_label.add_theme_font_size_override("font_size", 14)
-	_key_label.add_theme_color_override("font_color", Color("d8c58b"))
+	_key_label.add_theme_color_override("font_color", Color("d37148"))
 	text_column.add_child(_key_label)
 	text_column.move_child(_key_label, 3)
 	_takeaway.add_theme_font_size_override("font_size", 18)
@@ -328,7 +328,7 @@ func _render() -> void:
 		var selected := _selected == i + 1
 		_concepts[i].set_pressed_no_signal(selected)
 		_badges[i].add_theme_stylebox_override("panel", _marker_selected if selected else _marker_normal)
-		_marker_numbers[i].add_theme_color_override("font_color", Color(0.06, 0.09, 0.07) if selected else Color(0.97, 0.96, 0.92))
+		_marker_numbers[i].add_theme_color_override("font_color", Color("101d19") if selected else Color("f9f5f0"))
 	_scroll.scroll_vertical = 0
 
 

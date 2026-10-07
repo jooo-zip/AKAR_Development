@@ -10,7 +10,7 @@ func _ready() -> void:
 func _draw() -> void:
 	for i in paths.size():
 		if paths[i].size() < 2: continue
-		var color := Color("bca76c") if highlighted[i] else Color("46564c")
+		var color := Color("d37148") if highlighted[i] else Color("8e6c51")
 		draw_polyline(paths[i], color, 2.0 if highlighted[i] else 1.0, true)
 		if highlighted[i]:
 			draw_circle(paths[i][0], 3.0, color)

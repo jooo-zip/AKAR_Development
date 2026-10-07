@@ -101,7 +101,7 @@ func run() -> void:
 		check(not preview.get_node("Margin").visible and not trigger.is_visible_in_tree(), "Open panel has unobstructed gray margins")
 		check(panel.size.is_equal_approx(Vector2(dimensions) * 0.9), "Limahong five-percent inset")
 		var border: StyleBoxFlat = panel.get_node("Main").get_theme_stylebox("panel")
-		check(border.border_width_left == 2 and border.border_color.is_equal_approx(Color(0.46, 0.40, 0.25, 1)), "Shared heritage border")
+		check(border.border_width_left == 2 and border.border_color.is_equal_approx(Color("8e6c51")), "Shared heritage border")
 		var header: Control = panel.get_node("Main/Margin/Layout/Header")
 		check(header.is_ancestor_of(panel._speaker) and header.is_ancestor_of(panel._pending), "Listen and pending status in header")
 		check(not panel._pending.visible or panel._pending.global_position.y >= panel._speaker.get_global_rect().end.y, "Pending status below Listen")
