@@ -16,6 +16,17 @@ AKAR is an educational museum-support system. It is not a game.
 - Presentation: 2D pixel-art interactive walkthrough
 - Reference viewport: 1280 x 720
 
+### Museum analytics module exception
+
+The separately authorized `analytics-dashboard/` module may use Node.js 24,
+JavaScript, Express, and SQLite. The Godot visitor application remains
+GDScript-only. Keep analytics independent of historical content and hotspot
+internals; do not change Godot files to implement the standalone backend.
+Visitor accounts remain prohibited. An analytics-only administrator table is
+permitted; administrator login is reserved for its separately requested milestone.
+This exception does not authorize a historical-content CMS or change the study's
+acceptability evaluation. Record required manuscript alignment in module docs.
+
 ## Core Visitor Flow
 
 1. Loading Screen
