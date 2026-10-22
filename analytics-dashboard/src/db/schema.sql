@@ -38,4 +38,15 @@ CREATE INDEX IF NOT EXISTS sessions_started_at_idx ON sessions(started_at);
 CREATE INDEX IF NOT EXISTS landmark_visits_landmark_time_idx
     ON landmark_visits(landmark_id, first_opened_at);
 
+-- Milestone 2: separately approved authentication storage, not visitor sessions.
+CREATE TABLE IF NOT EXISTS admin_sessions (
+    token_hash TEXT PRIMARY KEY NOT NULL CHECK (length(token_hash) = 64),
+    admin_id INTEGER NOT NULL REFERENCES admins(admin_id) ON DELETE CASCADE,
+    credential_fingerprint TEXT NOT NULL CHECK (length(credential_fingerprint) = 64),
+    created_at INTEGER NOT NULL,
+    expires_at INTEGER NOT NULL CHECK (expires_at > created_at)
+) STRICT;
+CREATE INDEX IF NOT EXISTS admin_sessions_expiry_idx ON admin_sessions(expires_at);
+CREATE INDEX IF NOT EXISTS admin_sessions_admin_idx ON admin_sessions(admin_id);
+
 COMMIT;

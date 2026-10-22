@@ -47,10 +47,10 @@ function assertUtcTimestamp(timestamp, lowerBound) {
   assert.ok(Date.parse(timestamp) <= Date.now());
 }
 
-test('database initializes all three tables, indexes, foreign keys, and no admin seed', async t => {
+test('database initializes original tables plus approved admin sessions, indexes, foreign keys, and no admin seed', async t => {
   const { db, path } = await fixture(t);
   const tables = db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table' ORDER BY name").all();
-  assert.deepEqual(tables.map(row => row.name), ['admins', 'landmark_visits', 'sessions']);
+  assert.deepEqual(tables.map(row => row.name), ['admin_sessions', 'admins', 'landmark_visits', 'sessions']);
   assert.equal(db.prepare('PRAGMA foreign_keys').get().foreign_keys, 1);
   assert.equal(db.prepare('PRAGMA journal_mode').get().journal_mode, 'wal');
   assert.equal(count(db, 'admins'), 0);

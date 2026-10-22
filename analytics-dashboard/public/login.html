@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AKAR Admin — Museum Analytics Dashboard</title>
+  <link rel="stylesheet" href="/admin/login.css">
+  <script src="/admin/login.js" defer></script>
+</head>
+<body>
+  <main class="login-card" aria-labelledby="page-title">
+    <header>
+      <div class="logo-placeholder" role="img" aria-label="Temporary museum logo placeholder. Approved logo not yet supplied.">
+        <span aria-hidden="true">BM</span>
+        <small>Temporary logo placeholder</small>
+      </div>
+      <p class="institution">Banáan Pangasinan Provincial Museum</p>
+      <h1 id="page-title">AKAR Admin</h1>
+      <p class="subtitle">Museum Analytics Dashboard</p>
+    </header>
+
+    <section id="sign-in" aria-label="Administrator sign in">
+      <p class="intro">Sign in with your museum administrator account.</p>
+      <form id="login-form" method="post" action="/api/admin/login">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" autocapitalize="none"
+          spellcheck="false" required minlength="3" maxlength="64" aria-describedby="form-message">
+        <label for="password">Password</label>
+        <!-- HTML counts UTF-16 units; 128 Unicode characters can require 256 units. -->
+        <input id="password" name="password" type="password" autocomplete="current-password"
+          required maxlength="256" aria-describedby="form-message">
+        <button id="sign-in-button" type="submit">Sign In</button>
+      </form>
+    </section>
+
+    <section id="signed-in" aria-labelledby="signed-in-title" hidden>
+      <h2 id="signed-in-title">You’re signed in</h2>
+      <p id="signed-in-user"></p>
+      <p>Administrator access is ready. Dashboard reports will be added in a later milestone.</p>
+      <button id="sign-out-button" type="button">Sign Out</button>
+    </section>
+
+    <p id="form-message" class="message" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></p>
+    <noscript><p class="message">Enable JavaScript to use secure administrator sign-in.</p></noscript>
+    <footer>For authorized museum administrators only.</footer>
+  </main>
+</body>
+</html>

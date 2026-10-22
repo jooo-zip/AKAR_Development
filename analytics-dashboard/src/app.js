@@ -2,6 +2,9 @@ import express from 'express';
 import { rateLimit, ipKeyGenerator } from 'express-rate-limit';
 import { createHmac, randomBytes } from 'node:crypto';
 import { analyticsRouter, errorResponse } from './routes/analytics.js';
+import { adminRouter } from './routes/admin.js';
+import { adminSecurity } from './auth/security.js';
+import { fileURLToPath } from 'node:url';
 
 export function createApp(db, config) {
   const app = express();
@@ -10,6 +13,9 @@ export function createApp(db, config) {
   app.use((_req, res, next) => {
     res.set('Cache-Control', 'no-store');
     res.set('X-Content-Type-Options', 'nosniff');
+    res.set('Referrer-Policy', 'no-referrer');
+    res.set('X-Frame-Options', 'DENY');
+    res.set('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
     next();
   });
 
@@ -33,7 +39,11 @@ export function createApp(db, config) {
     next();
   });
   app.use('/api', express.json({ limit: '4kb', strict: true, inflate: false }));
+  app.use('/api/admin', adminRouter(db, config));
   app.use('/api', analyticsRouter(db));
+  app.use('/admin', adminSecurity(config), express.static(fileURLToPath(new URL('../public', import.meta.url)), {
+    index: 'login.html', dotfiles: 'deny', etag: false, maxAge: 0,
+  }));
   app.use((_req, res) => errorResponse(res, 404, 'not_found', 'Endpoint not found.'));
 
   app.use((error, _req, res, _next) => {
