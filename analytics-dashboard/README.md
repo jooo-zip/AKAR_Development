@@ -2,8 +2,9 @@
 
 Milestone 1 supplies an independent anonymous tracking API and SQLite database.
 Milestone 2 adds local administrator provisioning, secure login/logout, persistent
-administrator sessions, and a simple login page. Statistics, charts, and Godot
-integration are not implemented.
+administrator sessions, and a simple login page. Milestone 3 adds a protected,
+read-only usage dashboard with server-calculated statistics and locally served
+Chart.js charts. Godot integration is not implemented.
 The visitor Main Menu, Begin Walkthrough handler and landmark navigation are
 not present in this checkout. No session is created automatically by the Godot
 application. A future client must generate a fresh random UUID v4 per visit,
@@ -12,14 +13,14 @@ reuse it for retries, and keep navigation independent of analytics success.
 ## Requirements and boundaries
 
 - Node.js 24.x and npm. No separate SQLite server or native SQLite npm package.
-- Runtime dependencies: Express and express-rate-limit, pinned in package.json
+- Runtime dependencies: Express, express-rate-limit, and Chart.js, pinned in package.json
   and package-lock.json. Installation scripts are not needed.
 - Tests use Node's built-in test runner, assertions, HTTP client, and SQLite.
 - `.gdignore` keeps this module out of Godot's resource scanning. Existing scenes,
   scripts, assets, historical resources, and project.godot remain unchanged.
 - Database files, environment files, dependencies, and temporary outputs are
   ignored by this module's `.gitignore`. Only `public/` is served at `/admin/`;
-  it contains login HTML/CSS/JavaScript, never database files or credentials.
+  it contains login HTML and frontend CSS/JavaScript, never database files or credentials.
 
 ## Files
 
@@ -33,6 +34,10 @@ reuse it for retries, and keep navigation independent of analytics success.
 - `src/auth/create-admin.js`, `terminal.js`: interactive CLI with hidden password input.
 - `src/auth/sessions.js`, `security.js`: persistent sessions, authentication gate, CSRF/HTTPS checks.
 - `public/login.html`, `login.css`, `login.js`: responsive administrator login page.
+- `src/reporting.js`: validated Manila date ranges and read-only aggregate queries.
+- `src/views/dashboard.html`: protected dashboard document, outside public assets.
+- `public/dashboard.css`, `dashboard.js`: responsive charts, filters, tables, and session handling.
+- `tests/reporting.test.js`: isolated reporting, date boundary, and authorization tests.
 - `src/db/schema.sql`: tables and indexes; no administrator seed.
 - `src/db/database.js`: initialization, foreign keys, WAL, and connection timeout.
 - `src/db/init.js`: explicit database initialization command.
@@ -115,8 +120,9 @@ entry. Provisioning does not log the username, password, or hash.
 
 Open `http://127.0.0.1:3000/admin/` for the default configuration. Use the exact
 configured origin: `localhost` and `127.0.0.1` are different origins. A successful
-login displays a short signed-in confirmation and Sign Out button. It does not
-open a statistics dashboard. Sign Out invalidates the session in SQLite; simply
+login redirects to the protected `/admin/dashboard` page. An already authenticated
+visit to the login page offers an Open Analytics Dashboard link. Logout on the
+dashboard (or Sign Out on the login page) invalidates the session in SQLite; simply
 closing a tab is not logout. No real museum administrator was created during
 verification; use the local CLI to create the approved account when ready.
 
@@ -216,7 +222,7 @@ expensive password verifications run concurrently, with excess requests receivin
 `src/auth/sessions.js` exposes `requireAdmin`. In `src/routes/admin.js`, `/me`
 and every future route registered below `router.use(sessions.requireAdmin)` are
 protected. Visitor session and landmark tracking endpoints remain public and
-independent of administrator authentication. No statistics routes were added.
+independent of administrator authentication. `/reports` uses the same authentication gate.
 
 - Passwords use Node's asynchronous scrypt with `N=131072`, `r=8`, `p=1`,
   a random 16-byte salt, and a 64-byte result. Encoded hashes include parameters
@@ -249,6 +255,123 @@ hotspot handoff palette: dark green `#101D19`, brown `#9C4A25`, dark brown
 `#F9F5F0`, and secondary text `#D6C5AB`. A supplementary dark input shade is
 `#0B1512`. The museum mark remains explicitly labeled **Temporary logo placeholder**;
 no approved official logo asset has been supplied or fabricated.
+
+## Museum Analytics Dashboard (Milestone 3)
+
+Start the local service with `npm.cmd start`, sign in at
+`http://127.0.0.1:3000/admin/`, and use `/admin/dashboard`. Use the configured
+`ADMIN_ORIGIN` if it differs from the default. Dashboard HTML is served only
+after authentication, including its `/admin/dashboard.html` alias. An unauthenticated
+direct request returns 401 JSON; open `/admin/` to sign in. Expiration while using
+the dashboard hides the reports and displays a sign-in link. Logout returns to
+the login page; refreshing or revisiting protected routes does not restore access.
+
+The interface includes four summary cards, a usage line chart, a horizontal
+landmark chart, and a device doughnut chart. Exact values are also available in
+accessible tables, with all five landmark names and all four device categories.
+The layout has no sidebar, editing tools, visitor accounts, or export controls.
+Chart.js 4.5.1 is served from the pinned npm package at `/admin/vendor/chart.js`;
+the service exposes only that library file, not `node_modules`. No external CDN,
+additional browser telemetry, or inline-script CSP exception is required.
+
+### Reporting endpoint
+
+`GET /api/admin/reports` requires the existing administrator session cookie.
+It returns `{ "ok": true, "data": ... }` containing reporting timezone, generation
+time, selected date/UTC boundaries, summary metrics, usage intervals, landmark
+counts, and device counts/percentages. It exposes no session IDs, individual
+visitor rows, administrator credentials, or raw tokens. Calculations run on the
+server using parameterized SQLite queries in one consistent read transaction.
+The four-table schema is unchanged in Milestone 3.
+
+Supported query examples:
+
+```text
+/api/admin/reports?period=this_week
+/api/admin/reports?period=this_month
+/api/admin/reports?period=last_3_months
+/api/admin/reports?period=custom&start=2026-10-01&end=2026-10-15
+```
+
+Omitting `period` selects `this_month`. Unknown/repeated parameters, invalid
+periods, dates attached to a non-custom period, and invalid ranges receive
+400 `invalid_date_range`. Authentication failure receives 401; general rate
+limits receive 429, SQLite busy errors 503, and unexpected storage errors a
+sanitized 500. Responses retain no-store and the existing security headers.
+
+### Date filters and metric definitions
+
+All reporting uses **Asia/Manila**. Timestamps remain canonical UTC ISO strings
+in SQLite. User-facing dates are inclusive; queries use `timestamp >= start`
+and `timestamp < next-day midnight`, converting Philippine midnight to UTC.
+For example, 1 October 2026 covers `2026-09-30T16:00:00.000Z` through, but not
+including, `2026-10-01T16:00:00.000Z`. Modern Philippine dates use UTC+08:00;
+reporting does not depend on the server or browser's local timezone.
+
+| Filter | Calendar boundaries in Asia/Manila |
+| --- | --- |
+| This Week | Monday 00:00 through today, inclusive |
+| This Month | First day of the current month through today, inclusive |
+| Last 3 Months | Three completed calendar months before the current month |
+| Custom Date Range | Explicit inclusive start/end dates in `YYYY-MM-DD`; from 2000 onward, end no later than today, at most 3660 days |
+
+| Metric | Calculation |
+| --- | --- |
+| Total Sessions | Count of anonymous `sessions` rows whose `started_at` falls in the selected period; not unique people or museum attendance |
+| Weekly Average | Sessions in the last four completed Monday–Sunday weeks divided by exactly 4, including zero weeks; current week excluded |
+| Monthly Average | Sessions in the last three completed calendar months divided by exactly 3, including zero months; current month excluded |
+| Total Landmark Views | Count of unique `(session_id, landmark_id)` rows with `first_opened_at` in the selected period; the original composite primary key prevents repeated access being counted again |
+| Most Viewed Landmarks | Same view counts, grouped by landmark and sorted descending; all five included at zero where needed; ties follow the configured landmark order |
+| Device Distribution | Each mobile/tablet/desktop/unknown count divided by the selected period's session count × 100; rounded to one decimal |
+
+The two average cards ignore the selected filter and show their own date basis.
+Averages are displayed to at most two decimals; the API retains the computed
+value and denominator. A landmark opening may count even if its session began
+before the selected period. Consequently landmark views and sessions have
+independent timestamp filters; views are not restricted to sessions created
+inside the range.
+
+Usage intervals are daily for ranges up to 62 days, Monday-based weekly for
+63–366 days, and calendar-monthly beyond 366 days. Intervals at the edges are
+clipped to the requested range; missing intervals are filled with zero. The
+sum of all usage intervals equals Total Sessions. Reports reflect available
+records at request time and refresh on Apply dates or window focus, not continuous
+polling. Today is included as a calendar date; normal ingestion uses server time.
+
+### Empty states and failures
+
+An empty database returns zero counts and zero averages, all five landmarks,
+and four device counts of zero. Device percentages are `null` in the API and
+displayed as an em dash, with no doughnut chart. Missing chart assets leave
+the statistic tables available. Invalid ranges, network failures, and unavailable
+storage show explanatory messages and hide stale reports. Apply dates retries
+the request. Report content is cleared before browser back/forward caching and
+authentication is checked when the page returns or regains focus.
+
+### Isolated verification and deployment limits
+
+Never insert demonstration records into the default/deployed database. For
+manual testing, use a separate PowerShell session and set `DATABASE_PATH` to a
+unique temporary path **before** provisioning and starting the server. Automated
+tests create and remove their own temporary databases and never use `.env` data.
+No demonstration seed runs during ordinary startup and no sample metric values
+are hardcoded into the dashboard.
+
+Production still requires Node.js 24, persistent local SQLite storage, filesystem
+permissions, SQLite-aware backups, HTTPS termination, explicit HTTPS `ADMIN_ORIGIN`,
+`NODE_ENV=production`, correct trusted-proxy addresses, and restricted direct
+backend access. Keep request-body/credential logging disabled at the proxy too.
+Chart.js must be installed by `npm.cmd ci --ignore-scripts` along with the server
+dependencies. No public hosting is configured by this milestone.
+
+Reports use synchronous SQLite reads; large data volumes need load testing and
+an index/performance review before deployment. Custom ranges are capped at 3660
+days. Historical usage before collection began is unknown and contributes zero
+to the defined denominators; averages are not adjusted to deployment age. Device
+categories are client claims, and rounded shares may not total exactly 100%.
+There is no visitor-duration metric, real-time push, cross-device visitor identity,
+museum-attendance metric, export, or Godot tracking integration. Modern browsers
+with fetch, AbortSignal.any/timeout, and responsive canvas support are required.
 
 ## Exercise the API from a second PowerShell window
 
@@ -293,6 +416,10 @@ It is a local operator command, not a public API. Do not publish its output.
 
 ```powershell
 npm.cmd test
+Get-ChildItem src,public,tests -Recurse -Filter *.js | ForEach-Object {
+    node --check $_.FullName
+    if ($LASTEXITCODE -ne 0) { throw "JavaScript syntax check failed" }
+}
 git -C .. diff --check
 git -C .. diff --name-only HEAD -- project.godot scenes scripts data assets resources tests
 ```
@@ -315,6 +442,34 @@ The migration test starts from Milestone 1 schema at commit `5568040`, then prov
 existing administrator, visitor session, and landmark records remain intact.
 The original 21 tests remain, with the initialization assertion updated for the
 approved fourth table; 18 authentication tests bring the total to 39.
+
+Milestone 3 final verification on **22 October 2026**: all **54 tests passed**
+(39 existing + 15 reporting), with zero failures/skips. JavaScript syntax checks
+and `git diff --check` passed. Reporting tests cover empty results, calendar/day/
+Monday/year/leap-day boundaries, zero-period averages, independent filters,
+opening-time landmark counts, deduplication, device percentages, interval grouping,
+invalid ranges, aggregate-only responses, authenticated/expired/logged-out access,
+read-only queries, and unchanged schema. Milestone 1 and 2 regression tests pass.
+
+Local browser verification used a disposable database and test administrator,
+never the default database. Empty reports showed zero counts and no percentages.
+The isolated populated fixture showed 6 October sessions, 7 landmark views,
+weekly average 1.25, and monthly average 1.67. All five landmarks appeared; device
+shares were 33.3%, 33.3%, 16.7%, and 16.7%. These are **test-only values**, not museum
+usage statistics. Week/month/three-month/custom filters and the reversed-date
+error were verified. Login redirected to the protected dashboard; server-side
+expiration hid reports and required reauthentication. Logout, login-page refresh,
+and repeated direct dashboard access did not restore authenticated access.
+
+Responsive checks used browser viewport overrides at 1280×720, 960×540, and
+390×844. Charts resized, cards reflowed, controls remained usable, full landmark
+names remained available in tables, and document width did not overflow the
+viewport. Vertical scrolling is expected. These are local browser checks, not a
+physical-device or cross-browser certification. The existing AKAR colors and
+clearly marked temporary museum-logo placeholder were retained. The local server
+was stopped and the disposable database removed after verification. Godot files,
+the 34 existing hotspots, and the four-table schema remain unchanged; Godot
+runtime tests were not run because this milestone changes no Godot resources.
 
 Continuation verification on 22 October 2026: **39 tests passed, zero failures or
 skips**, using Node.js 24.20.0. An actual interactive CLI run created a disposable
@@ -360,8 +515,8 @@ UH-ENT-01 Skip. No Godot changes or new navigation are needed for backend testin
   its event loop. Load testing, retention, backups, monitoring, and storage sizing
   are deployment work. This initial schema has no migration framework.
 - Session duration is not implemented: the requested Milestone 1 schema has no
-  duration, heartbeat, or session-end fields. Weekly/monthly metrics and charts
-  are also deferred; define their periods and denominators before implementation.
+  duration, heartbeat, or session-end fields. Usage counts and averages do not
+  establish learning effectiveness or museum attendance.
 - Login failure counters are in memory per process, reset on restart, and can
   temporarily block a targeted username or a shared network. Durable SQLite
   authentication sessions are separate from these counters. Multi-process or
@@ -397,3 +552,6 @@ or replace the study's acceptability evaluation.
 - [express-rate-limit documentation](https://express-rate-limit.mintlify.app/)
 - [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
 - [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
+- [Chart.js script-tag integration](https://www.chartjs.org/docs/latest/getting-started/integration.html)
+- [Chart.js responsive charts](https://www.chartjs.org/docs/latest/configuration/responsive.html)
+- [Chart.js accessibility](https://www.chartjs.org/docs/latest/general/accessibility.html)

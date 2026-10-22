@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AKAR Analytics — Banáan Museum</title>
+  <link rel="stylesheet" href="/admin/dashboard.css">
+  <script src="/admin/vendor/chart.js" defer></script>
+  <script src="/admin/dashboard.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to reports</a>
+  <header class="masthead">
+    <div class="brand">
+      <div class="logo-placeholder" role="img" aria-label="Temporary museum logo placeholder. Approved logo not yet supplied.">
+        <span aria-hidden="true">BM</span><small>Temporary logo<br>placeholder</small>
+      </div>
+      <div><p class="eyebrow">Banáan Pangasinan Provincial Museum</p><h1>AKAR Analytics</h1></div>
+    </div>
+    <button id="logout" type="button" class="secondary">Logout</button>
+  </header>
+  <main id="main">
+    <section class="intro"><div><p class="eyebrow">Museum Analytics Dashboard</p><h2>Walkthrough usage</h2>
+      <p>Recorded AKAR sessions and landmark views. Session counts do not represent unique visitors or museum attendance.</p></div>
+      <span class="timezone">Asia/Manila · UTC+08:00</span>
+    </section>
+    <form id="filters" class="filters" aria-label="Reporting period">
+      <div class="field"><label for="period">Reporting period</label><select id="period" name="period">
+        <option value="this_week">This Week</option><option value="this_month" selected>This Month</option>
+        <option value="last_3_months">Last 3 Months</option><option value="custom">Custom Date Range</option>
+      </select></div>
+      <div id="custom-dates" class="custom-dates" hidden>
+        <div class="field"><label for="start">From</label><input type="date" id="start" name="start" min="2000-01-01" disabled></div>
+        <div class="field"><label for="end">Through</label><input type="date" id="end" name="end" min="2000-01-01" disabled></div>
+      </div>
+      <button type="submit" id="apply">Apply dates</button>
+      <p class="filter-help">Dates are inclusive. This week starts Monday. Last 3 Months uses completed calendar months.</p>
+    </form>
+    <div id="status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">Loading reports…</div>
+    <p id="session-status" role="status" aria-live="polite" tabindex="-1"></p>
+    <a id="login-link" href="/admin/" hidden>Return to administrator sign in</a>
+    <noscript><p>Enable JavaScript to load authenticated reports.</p></noscript>
+    <div id="reports" hidden>
+      <div class="report-heading"><p id="range-label"></p><p id="updated"></p></div>
+      <section class="cards" aria-label="Usage summary">
+        <article class="card"><p>Total Sessions</p><strong id="total-sessions">—</strong><small>Selected reporting period</small></article>
+        <article class="card"><p>Weekly Average</p><strong id="weekly-average">—</strong><small>Sessions / week · last 4 completed Monday–Sunday weeks</small><small id="weekly-basis"></small></article>
+        <article class="card"><p>Monthly Average</p><strong id="monthly-average">—</strong><small>Sessions / month · last 3 completed calendar months</small><small id="monthly-basis"></small></article>
+        <article class="card"><p>Total Landmark Views</p><strong id="total-views">—</strong><small>Unique session–landmark pairs opened in the selected period</small></article>
+      </section>
+      <p class="basis-note">Weekly and monthly averages include zero-usage periods and do not change with the date filter.</p>
+      <section class="panel usage-panel" aria-labelledby="usage-title">
+        <div class="panel-heading"><div><p class="eyebrow">Session activity</p><h2 id="usage-title">Usage Over Time</h2></div><p id="grouping"></p></div>
+        <p id="usage-empty" class="empty" hidden>No recorded sessions in this period.</p>
+        <div class="chart"><canvas id="usage-chart" role="img" aria-label="Walkthrough sessions over time. Exact values are in the table below."></canvas></div>
+        <details><summary>View session counts as a table</summary><div class="table-scroll"><table><caption>Sessions by reporting interval</caption><thead><tr><th scope="col">Period</th><th scope="col">Sessions</th></tr></thead><tbody id="usage-table"></tbody></table></div></details>
+      </section>
+      <div class="chart-grid">
+        <section class="panel" aria-labelledby="landmark-title"><p class="eyebrow">Landmark exploration</p><h2 id="landmark-title">Most Viewed Landmarks</h2>
+          <p class="description">One view per landmark per session, counted on first opening.</p>
+          <p id="landmark-empty" class="empty" hidden>No landmark views in this period.</p>
+          <div class="chart landmark-chart"><canvas id="landmark-chart" role="img" aria-label="Landmarks ranked by recorded views. Full names and counts are listed below."></canvas></div>
+          <table><caption class="sr-only">All five landmarks, ranked by views</caption><thead><tr><th scope="col">Landmark</th><th scope="col">Views</th></tr></thead><tbody id="landmark-table"></tbody></table>
+        </section>
+        <section class="panel" aria-labelledby="device-title"><p class="eyebrow">Access devices</p><h2 id="device-title">Device Distribution</h2>
+          <p class="description">Share of session records in the selected period.</p>
+          <p id="device-empty" class="empty" hidden>No sessions recorded. Percentages are unavailable.</p>
+          <div id="device-chart-container" class="chart device-chart"><canvas id="device-chart" role="img" aria-label="Session distribution by device. Counts and percentages are listed below."></canvas></div>
+          <table><caption class="sr-only">Device counts and percentages</caption><thead><tr><th scope="col">Device</th><th scope="col">Sessions</th><th scope="col">Share</th></tr></thead><tbody id="device-table"></tbody></table>
+          <p class="footnote">Device categories are reported by the client. Rounded percentages may not total exactly 100%.</p>
+        </section>
+      </div>
+    </div>
+    <footer>AKAR · Anonymous walkthrough usage only. Historical content and visitor accounts are not managed here.</footer>
+  </main>
+</body>
+</html>

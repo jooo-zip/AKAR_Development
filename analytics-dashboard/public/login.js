@@ -53,7 +53,7 @@ form.addEventListener('submit', async event => {
   tell('');
   try {
     showAdmin(await request('login', { username: form.elements.username.value, password: password.value }));
-    logoutButton.focus();
+    location.replace('/admin/dashboard');
   } catch (error) { tell(error.status ? error.message : 'Unable to connect. Please try again.', true); }
   finally {
     password.value = '';

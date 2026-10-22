@@ -36,4 +36,5 @@ button:disabled { cursor: wait; opacity: .7; }
 footer { border-top: 1px solid var(--border); padding-top: 20px; color: var(--secondary); text-align: center; font-size: 12px; line-height: 1.6; }
 h2 { font-size: 22px; color: var(--cream); }
 [hidden] { display: none !important; }
+.dashboard-link { display: inline-block; padding: 14px 0; color: var(--cream); text-underline-offset: 4px; }
 @media (max-width: 360px) { body { padding: 12px; } .login-card { padding: 20px; } }

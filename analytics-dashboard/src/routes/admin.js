@@ -5,6 +5,7 @@ import { normalizeUsername, verifyPassword } from '../auth/passwords.js';
 import { createAdminSessions } from '../auth/sessions.js';
 import { adminSecurity } from '../auth/security.js';
 import { errorResponse } from './analytics.js';
+import { buildReport, ReportValidationError } from '../reporting.js';
 
 export function adminRouter(db, config) {
   const router = Router();
@@ -54,6 +55,13 @@ export function adminRouter(db, config) {
   });
   // Every future route added below this gate is administrator-only.
   router.use(sessions.requireAdmin);
+  router.get('/reports', (req, res, next) => {
+    try { res.json({ ok: true, data: buildReport(db, req.query) }); }
+    catch (error) {
+      if (error instanceof ReportValidationError) return errorResponse(res, 400, 'invalid_date_range', error.message);
+      next(error);
+    }
+  });
   router.get('/me', (req, res) => res.json({ ok: true, data: {
     admin: req.admin, expires_at: req.adminSessionExpiresAt,
   } }));

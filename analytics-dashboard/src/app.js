@@ -4,6 +4,7 @@ import { createHmac, randomBytes } from 'node:crypto';
 import { analyticsRouter, errorResponse } from './routes/analytics.js';
 import { adminRouter } from './routes/admin.js';
 import { adminSecurity } from './auth/security.js';
+import { createAdminSessions } from './auth/sessions.js';
 import { fileURLToPath } from 'node:url';
 
 export function createApp(db, config) {
@@ -41,6 +42,14 @@ export function createApp(db, config) {
   app.use('/api', express.json({ limit: '4kb', strict: true, inflate: false }));
   app.use('/api/admin', adminRouter(db, config));
   app.use('/api', analyticsRouter(db));
+  app.get(['/admin/dashboard', '/admin/dashboard.html'], adminSecurity(config),
+    createAdminSessions(db, config).requireAdmin, (_req, res) => {
+      res.sendFile(fileURLToPath(new URL('./views/dashboard.html', import.meta.url)));
+    });
+  // Serve only this pinned library asset, never the node_modules directory.
+  app.get('/admin/vendor/chart.js', adminSecurity(config), (_req, res) => {
+    res.sendFile(fileURLToPath(new URL('../node_modules/chart.js/dist/chart.umd.js', import.meta.url)));
+  });
   app.use('/admin', adminSecurity(config), express.static(fileURLToPath(new URL('../public', import.meta.url)), {
     index: 'login.html', dotfiles: 'deny', etag: false, maxAge: 0,
   }));
